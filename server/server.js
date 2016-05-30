@@ -16,26 +16,13 @@ app.get('/', function (req, res) {
 // Apply Webpack HMR Middleware
 // ------------------------------------
 if (process.env.NODE_ENV !== 'production') {
+    var webpackDevMiddleware = require("webpack-dev-middleware");
+    var webpackHotMiddleware = require("webpack-hot-middleware");
     var webpackConfig = require('../webpack.config');
     var compiler = webpack(webpackConfig);
 
-    var host = process.env.HOST || 'localhost';
-    var port = (Number(process.env.PORT) + 1) || 3001;
-
-    var serverOptions = {
-        contentBase: 'http://' + host + ':' + port,
-        quiet: true,
-        noInfo: true,
-        hot: true,
-        inline: true,
-        lazy: false,
-        publicPath: webpackConfig.output.path,
-        headers: {'Access-Control-Allow-Origin': '*'},
-        stats: {colors: true}
-    };
-
-    app.use(require('webpack-dev-middleware')(compiler, serverOptions));
-    app.use(require('webpack-hot-middleware')(compiler));
+    app.use(webpackDevMiddleware(compiler));
+    app.use(webpackHotMiddleware(compiler));
 }
 
 app.listen(app.get('port'), function() {

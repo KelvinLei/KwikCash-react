@@ -4,7 +4,7 @@ export default class App extends Component {
     render() {
         return (
             <div>
-                Hello world! In Home page.asdf
+                Hello world! In Home page.
             </div>
         )
     }
