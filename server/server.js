@@ -1,4 +1,5 @@
 var webpack = require('webpack');
+var config = require('../config/config');
 
 var path = require('path');
 var express = require('express');
@@ -22,7 +23,7 @@ if (process.env.NODE_ENV !== 'production') {
     var compiler = webpack(webpackConfig);
 
     var serverOptions = {
-        contentBase: 'http://localhost:3001',
+        contentBase: 'http://' + config.host + ':' + config.devServerPort,
         quiet: true,
         noInfo: true,
         hot: true,
@@ -37,6 +38,6 @@ if (process.env.NODE_ENV !== 'production') {
 }
 
 app.listen(app.get('port'), function() {
-  console.log('Server started: http://localhost:' + app.get('port') + '/');
+  console.log('Server started: http://' + config.host + ':' + app.get('port') + '/');
 });
 

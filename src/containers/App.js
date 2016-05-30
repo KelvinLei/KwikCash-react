@@ -5,7 +5,7 @@ export default class App extends Component {
         return (
             <div>
                 <div className="col-sm-6">
-                    Hello world! In Home page.
+                    In Home page. First column
                 </div>
                 <div className="col-sm-3">
                     Second column
