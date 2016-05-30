@@ -14,7 +14,8 @@ module.exports = {
     context: path.resolve(__dirname, 'src'),
     entry: [
         'webpack-hot-middleware/client',
-        APP_DIR + '/client.js',
+        'bootstrap-loader',
+        APP_DIR + '/client.js'
     ],
     output: {
         path: BUILD_DIR,
@@ -66,6 +67,10 @@ module.exports = {
             __SERVER__: false,
             __DEVELOPMENT__: true,
             __DEVTOOLS__: true  // <-------- DISABLE redux-devtools HERE
+        }),
+        new webpack.ProvidePlugin({
+            $: "jquery",
+            jQuery: "jquery"
         })
     ]
 };

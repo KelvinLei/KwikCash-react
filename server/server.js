@@ -21,7 +21,18 @@ if (process.env.NODE_ENV !== 'production') {
     var webpackConfig = require('../webpack.config');
     var compiler = webpack(webpackConfig);
 
-    app.use(webpackDevMiddleware(compiler));
+    var serverOptions = {
+        contentBase: 'http://localhost:3001',
+        quiet: true,
+        noInfo: true,
+        hot: true,
+        inline: true,
+        lazy: false,
+        headers: {'Access-Control-Allow-Origin': '*'},
+        stats: {colors: true}
+    };
+
+    app.use(webpackDevMiddleware(compiler, serverOptions));
     app.use(webpackHotMiddleware(compiler));
 }
 
