@@ -12,6 +12,9 @@ export default class App extends Component {
 
                 <div className="col-sm-9">
                     <TopHeader/>
+
+                    {/* add this */}
+                    { this.props.children }
                 </div>
             </div>
         )

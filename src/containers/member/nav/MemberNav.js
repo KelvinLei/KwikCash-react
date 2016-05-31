@@ -1,16 +1,23 @@
 import React, { Component } from 'react'
+import { IndexLink, Link } from 'react-router'
+import styles from './MemberNavStyle.scss'
 
 export default class MemberNav extends Component {
     render() {
+
         return (
             <div>
-                <ul className="nav nav-pills nav-stacked">
+                <ul className="nav nav-pills nav-stacked" >
                     <li><a href="#">Brand Image</a></li>
-                    <li className="active"><a href="#">Loan Summary</a></li>
-                    <li><a href="#">Payment Select</a></li>
-                    <li><a href="#">Re-finance</a></li>
+
+                    <li><Link to="/loanSummary" activeClassName="active">Loan Summary</Link></li>
+
+                    <li><Link to="/paymentInfo" activeClassName="active">Payment Info</Link></li>
+
+                    <li><a href="#">Re-finance></a></li>
+
                     <li><a href="#">Log Out</a></li>
-                    <li className="disabled"><a href="#">Disabled</a></li>
+
                     <li className="dropdown">
                         <a className="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
                             Dropdown <span className="caret"/>
@@ -24,9 +31,6 @@ export default class MemberNav extends Component {
                         </ul>
                     </li>
                 </ul>
-
-                {/* add this */}
-                {/* this.props.children*/}
             </div>
         )
     }

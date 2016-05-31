@@ -5,11 +5,13 @@ var path = require('path');
 var express = require('express');
 var app = express();
 
+const BUILD_DIR = path.join(__dirname, '..', 'build');
+
 app.set('port', (process.env.PORT || 3000));
 
-app.use(express.static(path.join(__dirname, '..', 'build')));
+app.use(express.static(BUILD_DIR));
 
-app.get('/', function (req, res) {
+app.get('*', function (req, res) {
   res.sendFile(path.join(__dirname, '..', 'src', 'index.html'))
 });
 
@@ -28,6 +30,7 @@ if (process.env.NODE_ENV !== 'production') {
         noInfo: true,
         hot: true,
         inline: true,
+        historyApiFallback: true,
         lazy: false,
         headers: {'Access-Control-Allow-Origin': '*'},
         stats: {colors: true}

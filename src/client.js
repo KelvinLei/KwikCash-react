@@ -2,9 +2,10 @@ import 'babel-polyfill';
 
 import React from 'react';
 import ReactDOM from 'react-dom';
-import App from './containers/App';
+import MemberRoutes from './route/memberRoutes'
+import { Router, browserHistory } from 'react-router';
 
 ReactDOM.render(
-    <App/>,
+    <Router routes={MemberRoutes} history={browserHistory}/>,
     document.getElementById('app')
 );
