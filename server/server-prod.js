@@ -1,5 +1,6 @@
 var app = require('./server-shared');
 var config = require('../config/config');
+var path = require('path');
 
 app.get('*', function (req, res) {
     res.sendFile(path.join(__dirname, '..', 'src', 'index.html'))

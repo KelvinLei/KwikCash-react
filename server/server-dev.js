@@ -1,6 +1,7 @@
 var app = require('./server-shared');
 var config = require('../config/config');
 var webpack = require('webpack');
+var path = require('path');
 
 // ------------------------------------
 // Apply Webpack HMR Middleware
