@@ -4,10 +4,12 @@ import TopHeader from './member/header/TopHeader';
 
 export default class App extends Component {
     render() {
+        const { location } = this.props;
+
         return (
             <div className="container-fluid">
                 <div className="col-sm-3">
-                    <MemberNav/>
+                    <MemberNav location={location} />
                 </div>
 
                 <div className="col-sm-9">

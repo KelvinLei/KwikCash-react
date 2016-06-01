@@ -5,28 +5,32 @@ import styles from './MemberNavStyle.scss'
 export default class MemberNav extends Component {
     render() {
 
+        const { location } = this.props;
+        const loanSummaryClass = location.pathname.match(/^\/loanSummary/) ? "active" : "";
+        const paymentInfoClass = location.pathname.match(/^\/paymentInfo/) ? "active" : "";
+
         return (
             <div>
-                <ul className="nav nav-pills nav-stacked" >
-                    <li><a href="#">Brand Image</a></li>
+                <ul class="nav nav-pills nav-stacked" >
+                    <li><a className={styles.brandImage} href="#">Brand Image</a></li>
 
-                    <li><Link to="/loanSummary" activeClassName="active">Loan Summary</Link></li>
+                    <li class={loanSummaryClass}><Link to="/loanSummary">Loan Summary</Link></li>
 
-                    <li><Link to="/paymentInfo" activeClassName="active">Payment Info</Link></li>
+                    <li class={paymentInfoClass}><Link to="/paymentInfo">Payment Info</Link></li>
 
                     <li><a href="#">Re-finance></a></li>
 
                     <li><a href="#">Log Out</a></li>
 
-                    <li className="dropdown">
-                        <a className="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                            Dropdown <span className="caret"/>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                            Dropdown <span class="caret"/>
                         </a>
-                        <ul className="dropdown-menu">
+                        <ul class="dropdown-menu">
                             <li><a href="#">Action</a></li>
                             <li><a href="#">Another action</a></li>
                             <li><a href="#">Something else here</a></li>
-                            <li className="divider"/>
+                            <li class="divider"/>
                             <li><a href="#">Separated link</a></li>
                         </ul>
                     </li>

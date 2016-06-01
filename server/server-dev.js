@@ -25,6 +25,10 @@ var serverOptions = {
 app.use(webpackDevMiddleware(compiler, serverOptions));
 app.use(webpackHotMiddleware(compiler));
 
+app.get('*', function (req, res) {
+	res.sendFile(path.join(__dirname, '..', 'src', 'index.html'))
+});
+
 app.listen(app.get('port'), function() {
   console.log('Server started: http://' + config.host + ':' + app.get('port') + '/');
 });

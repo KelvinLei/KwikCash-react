@@ -8,8 +8,4 @@ app.set('port', (process.env.PORT || 3000));
 
 app.use(express.static(BUILD_DIR));
 
-app.get('*', function (req, res) {
-  res.sendFile(path.join(__dirname, '..', 'src', 'index.html'))
-});
-
 module.exports = app;

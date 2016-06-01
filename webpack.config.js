@@ -29,7 +29,8 @@ module.exports = {
                 loader: 'babel',
                 query: {
                     cacheDirectory: true,
-                    plugins: ['transform-runtime'],
+                    // react-html-attrs enables html tag in JSX, like 'class'
+                    plugins: ['react-html-attrs', 'transform-runtime'],
                     presets: ['es2015', 'react', 'stage-0'],
                     env: {
                         production: {
@@ -39,8 +40,8 @@ module.exports = {
                 }
             },
             { test: /\.json$/, loader: 'json-loader' },
-            { test: /\.less$/, loader: 'style!css?modules&importLoaders=2&sourceMap&localIdentName=[local]___[hash:base64:5]!autoprefixer?browsers=last 2 version!less?outputStyle=expanded&sourceMap' },
-            { test: /\.scss$/, loader: 'style-loader!css-loader' },
+            { test: /\.less$/, loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' },
+            { test: /\.scss$/, loader: 'style!css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]' },
             { test: /\.woff(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
             { test: /\.woff2(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/font-woff" },
             { test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/, loader: "url?limit=10000&mimetype=application/octet-stream" },
