@@ -7,15 +7,15 @@ export default class App extends Component {
     const { location } = this.props;
 
     return (
-      <div className="container-fluid">
+      <div className="container">
         <div className="row">
           <div className="col-sm-3">
             <MemberNav location={location} />
           </div>
-  
+
           <div className="col-sm-9">
             <TopHeader/>
-  
+
             {/* add this */}
             { this.props.children }
           </div>
