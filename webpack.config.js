@@ -9,14 +9,14 @@ var debug = process.env.NODE_ENV !== "production";
 const BUILD_DIR = path.resolve(__dirname, 'build');
 const APP_DIR = path.resolve(__dirname, 'src');
 
+var entry = ['bootstrap-loader', APP_DIR + '/client.js'];
+if (debug) {
+    entry.push('webpack-hot-middleware/client');
+}
 module.exports = {
     devtool: debug ? "inline-source-map" : null,
     context: path.resolve(__dirname, 'src'),
-    entry: [
-        'webpack-hot-middleware/client',
-        'bootstrap-loader',
-        APP_DIR + '/client.js'
-    ],
+    entry: entry,
     output: {
         path: BUILD_DIR,
         filename: 'app.bundle.js'
