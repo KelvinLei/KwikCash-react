@@ -7,7 +7,7 @@
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm run test -- --watch",
     "start": "node server/server-prod.js",
-    "dev": "node server/server-dev.js",
+    "dev": "webpack && node server/server-dev.js",
     "build": "webpack",
     "postinstall": "npm run build"
   },
