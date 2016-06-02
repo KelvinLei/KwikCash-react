@@ -3,9 +3,13 @@ import PaymentPlanRow from './PaymentPlanRow'
 
 export default class PaymentPlanTable extends Component {
   render() {
-    const { paymentList } = this.props;
+    const { paymentList, selectedTab } = this.props;
 
-    var paymentListContent = paymentList.map( payment => {
+    function filterPayment(payment) {
+      return selectedTab === "all" ? true : payment.state.toLowerCase().match(selectedTab)
+    }
+
+    var paymentListContent = paymentList.filter(filterPayment).map(payment => {
       return (
         <PaymentPlanRow key={payment.id} status={payment.status} dueDate={payment.dueDate} amount={payment.amount}/>
       )

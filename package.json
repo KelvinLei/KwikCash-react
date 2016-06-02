@@ -66,6 +66,7 @@
     "react-transform-hmr": "^1.0.4",
     "redux": "^3.5.2",
     "redux-form": "^5.2.5",
+    "redux-logger": "^2.6.1",
     "redux-thunk": "^2.0.0",
     "resolve-url-loader": "^1.4.3",
     "sass": "^0.5.0",
