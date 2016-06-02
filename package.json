@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm run test -- --watch",
-    "start": "node server/server-prod.js",
+    "start": "webpack && node server/server-prod.js",
     "dev": "webpack && node server/server-dev.js",
     "build": "webpack",
     "postinstall": "npm run build"
@@ -76,7 +76,9 @@
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "warning": "^2.1.0",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "webpack-dev-middleware": "^1.4.0",
+    "webpack-hot-middleware": "^2.5.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
