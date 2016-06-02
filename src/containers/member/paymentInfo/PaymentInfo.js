@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import PaymentPlanTable from '../../../components/member/paymentInfo/PaymentPlanTable'
+import PaymentStatusTabs from '../../../components/member/paymentInfo/PaymentStatusTabs'
 
 export default class PaymentInfo extends Component {
   render() {
@@ -10,8 +11,14 @@ export default class PaymentInfo extends Component {
       {id: 3, status: "Pending", dueDate: "08/01/2016", amount: "800"}
     ];
 
+    var tabList = ["All", "Complete", "Pending"];
+
     return (
       <div>
+        <h2>Payment Plan</h2>
+
+        <PaymentStatusTabs tabList={tabList}/>
+
         <PaymentPlanTable paymentList={data}/>
       </div>
     )
