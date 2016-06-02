@@ -5,17 +5,17 @@ import styles from './MemberNavStyle.scss'
 export default class MemberNav extends Component {
   render() {
     const { location } = this.props;
-    const loanSummaryClass = location.pathname.match(/^\/loanSummary/) ? "active" : "";
-    const paymentInfoClass = location.pathname.match(/^\/paymentInfo/) ? "active" : "";
+    const loanSummaryClass = location.pathname.match(/^\/myLoan/) ? "active" : "";
+    const paymentInfoClass = location.pathname.match(/^\/paymentPlan/) ? "active" : "";
 
     return (
       <div>
         <ul class="nav nav-pills nav-stacked" >
           <li><a className={styles.brandImage} href="#">Brand Image</a></li>
 
-          <li class={loanSummaryClass}><Link to="/loanSummary">Loan Summary</Link></li>
+          <li class={loanSummaryClass}><Link to="/myLoan">My Loan</Link></li>
 
-          <li class={paymentInfoClass}><Link to="/paymentInfo">Payment Info</Link></li>
+          <li class={paymentInfoClass}><Link to="/paymentPlan">Payment Plan</Link></li>
 
           <li><a href="#">Re-finance></a></li>
 

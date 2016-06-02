@@ -9,8 +9,8 @@ module.exports = (
     <Route path="/" component={App}>
         <IndexRoute component={LoanSummary}/>
 
-        <Route path="/loanSummary" name="loansummary" component={LoanSummary}/>
+        <Route path="/myLoan" name="myloan" component={LoanSummary}/>
 
-        <Route path="/paymentInfo" name="paymentinfo" component={PaymentInfo}/>
+        <Route path="/paymentPlan" name="paymentplan" component={PaymentInfo}/>
     </Route>
 )
