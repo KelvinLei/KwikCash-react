@@ -128,7 +128,8 @@ webpackConfig.module.loaders = [{
   loader: 'babel',
   query: {
     cacheDirectory: true,
-    plugins: ['transform-runtime'],
+    // enable react-html-attrs to allow class HTML tags in react components
+    plugins: ['react-html-attrs', 'transform-runtime'],
     presets: ['es2015', 'react', 'stage-0'],
     env: {
       production: {
