@@ -102,8 +102,7 @@
     "warning": "^2.1.0",
     "webpack": "^1.13.1",
     "webpack-dev-middleware": "^1.4.0",
-    "webpack-hot-middleware": "^2.5.0",
-    "yargs": "^4.7.1"
+    "webpack-hot-middleware": "^2.5.0"
   },
   "devDependencies": {
     "babel-eslint": "^6.0.4",
