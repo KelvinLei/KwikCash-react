@@ -6,7 +6,8 @@ export default class PaymentPlanTable extends Component {
     const { paymentList, selectedTab } = this.props;
 
     function filterPayment(payment) {
-      return selectedTab === "all" ? true : payment.state.toLowerCase().match(selectedTab)
+      const selectedTabLowerCase = selectedTab.toLowerCase()
+      return selectedTabLowerCase === "all" ? true : String(payment.status).toLowerCase().match(selectedTabLowerCase)
     }
 
     var paymentListContent = paymentList.filter(filterPayment).map(payment => {

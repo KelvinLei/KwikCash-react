@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 
 export default class PaymentStatusTab extends Component {
   render() {
-    const { className, status, onClick } = this.props;
+    const { className, status, onClickPaymentTab } = this.props;
 
     function handleOnClick(event) {
-      onClick(event.target.value)
+      onClickPaymentTab(event.target.text)
     }
 
     return (
-      <li class={className} onClick={this.handleOnClick}>
+      <li class={className} onClick={handleOnClick}>
         <a data-toggle="tab" aria-expanded="true">{status}</a>
       </li>
     )

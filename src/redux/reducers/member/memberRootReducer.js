@@ -6,7 +6,7 @@ import {
 function selectPaymentStatus(state = "all", action) {
   switch (action.type) {
     case SELECT_PAYMENT_STATUS:
-      return action.state
+      return action.selectedStatus
 
     default:
       return state

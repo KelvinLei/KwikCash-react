@@ -9,17 +9,12 @@ class PaymentInfo extends Component {
 
   constructor(props) {
     super(props)
-    this.handleSelectPaymentTab = this.handleSelectPaymentTab.bind(this)
-  }
-
-  handleSelectPaymentTab(selectedTab) {
-    this.props.dispatch(selectPaymentStatus(selectedTab))
   }
 
   render() {
     const tabList = ["All", "Complete", "Pending"];
 
-    const {selectedPaymentStatusToShow, paymentList} = this.props;
+    const {selectPaymentStatus, paymentList} = this.props;
 
     return (
       <div>
@@ -27,21 +22,29 @@ class PaymentInfo extends Component {
 
         <PayOffButton/>
 
-        <PaymentStatusTabs tabList={tabList} selectedTab={selectedPaymentStatusToShow} onClick={this.handleSelectPaymentTab}/>
+        <PaymentStatusTabs tabList={tabList} selectedTab={selectPaymentStatus} onClickPaymentTab={this.props.handleSelectPaymentTab}/>
 
-        <PaymentPlanTable paymentList={paymentList} selectedTab={selectedPaymentStatusToShow}/>
+        <PaymentPlanTable paymentList={paymentList} selectedTab={selectPaymentStatus}/>
       </div>
     )
   }
 }
 
 PaymentInfo.propTypes = {
-  selectedPaymentStatusToShow: PropTypes.string.isRequired,
+  selectPaymentStatus: PropTypes.string.isRequired,
   paymentList: PropTypes.array.isRequired
 }
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleSelectPaymentTab: (selectedTab) => {
+      dispatch(selectPaymentStatus(selectedTab))
+    }
+  }
+}
+
 function mapStateToProps(state) {
-  const selectedPaymentStatusToShow = state.selectedPaymentStatusToShow || "all"
+  const selectPaymentStatus = state.selectPaymentStatus || "all"
 
   const paymentList = [
     {id: 1, status: "Complete", dueDate: "06/01/2016", amount: "500"},
@@ -56,9 +59,12 @@ function mapStateToProps(state) {
   ];
 
   return {
-    selectedPaymentStatusToShow,
+    selectPaymentStatus,
     paymentList
   }
 }
 
-export default connect(mapStateToProps)(PaymentInfo)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PaymentInfo)

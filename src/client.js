@@ -8,7 +8,7 @@ import { Provider } from 'react-redux'
 import MemberRootReducer from './redux/reducers/member/memberRootReducer'
 import configureStore from './redux/storeCreator'
 
-let store = configureStore(MemberRootReducer);
+let store = configureStore(MemberRootReducer, './redux/reducers/member/memberRootReducer');
 
 ReactDOM.render(
   <Provider store={store}>
