@@ -5,6 +5,7 @@ import _debug from 'debug'
 import config from './config/'
 import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
+import fallback from 'express-history-api-fallback'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
@@ -41,5 +42,10 @@ if (config.env === 'development') {
   // server in production.
   app.use(Express.static(paths.dist()))
 }
+
+// This rewrites all routes requests to the root /index.html file
+// (ignoring file requests). If you want to implement isomorphic
+// rendering, you'll want to remove this middleware.
+app.use(fallback('index.html', { root: paths.dist() }))
 
 export default app
