@@ -4,23 +4,23 @@
   "description": "",
   "main": "client.js",
   "scripts": {
+    "start": "npm run clean && npm run build && better-npm-run start-server",
     "clean": "rimraf dist build lib",
+    "build": "npm run build-server && npm run build-webpack-config && better-npm-run create-app-vendor-bundle",
+    "build-server": "babel server -d lib/server",
+    "build-webpack-config": "babel webpack -d lib/webpack",
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm run test -- --watch",
-    "start": "npm run clean && npm run build && better-npm-run start",
-    "webpack-build": "better-npm-run webpack-build",
-    "build": "npm run build-server && npm run webpack-build",
-    "build-server": "babel server -d lib/server && babel webpack -d lib/webpack",
     "postinstall": "npm run build"
   },
   "betterScripts": {
-    "webpack-build": {
+    "create-app-vendor-bundle": {
       "command": "babel-node lib/webpack/compile.js",
       "env": {
         "DEBUG": "app:*"
       }
     },
-    "start": {
+    "start-server": {
       "command": "node lib/server/server.js",
       "env": {
         "DEBUG": "app:*"
