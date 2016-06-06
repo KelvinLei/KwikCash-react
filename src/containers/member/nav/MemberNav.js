@@ -11,8 +11,6 @@ export default class MemberNav extends Component {
     return (
       <div>
         <ul class="nav nav-pills nav-stacked" >
-          <li><a className={styles.brandImage} href="#">Brand Image</a></li>
-
           <li class={loanSummaryClass}><Link to="/myLoan">My Loan</Link></li>
 
           <li class={paymentInfoClass}><Link to="/paymentPlan">Payment Plan</Link></li>
