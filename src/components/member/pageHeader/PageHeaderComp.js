@@ -9,18 +9,12 @@ export default class PageHeaderComp extends Component {
     pageToHeaderMap[MY_LOAN_PAGE_STATE] = "My Loan Summary"
     pageToHeaderMap[PAYMENT_PLAN_PAGE_STATE] = "Payment Plan Info"
 
-    var pageToSubHeaderMap = {}
-    pageToSubHeaderMap[MY_LOAN_PAGE_STATE] = "view loan status"
-    pageToSubHeaderMap[PAYMENT_PLAN_PAGE_STATE] = "view payment plan summary"
-
     const header = pageToHeaderMap[selectedPage] || pageToHeaderMap[MY_LOAN_PAGE_STATE]
-
-    const subHeader = pageToSubHeaderMap[selectedPage] || pageToSubHeaderMap[MY_LOAN_PAGE_STATE]
 
     return (
       <div className="content-heading page-header">
         <h2>{header}</h2>
-        <small data-localize="dashboard.WELCOME">{subHeader}</small>
+        <small data-localize="dashboard.WELCOME">Loan ID: 1234</small>
       </div>
     )
   }

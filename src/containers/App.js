@@ -8,7 +8,7 @@ export default class App extends Component {
     const { location } = this.props;
 
     return (
-      <div className="wrapper">
+      <div className="container-fluid">
         <div className="row">
           <div className="col-sm-12">
             <TopHeader/>
@@ -20,7 +20,7 @@ export default class App extends Component {
             <MemberNav/>
           </div>
 
-          <div className="col-sm-9">
+          <div className="col-sm-8">
             <div className="row">
               <PageHeader/>
             </div>
