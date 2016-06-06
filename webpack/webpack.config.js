@@ -25,7 +25,6 @@ const webpackConfig = {
 // ------------------------------------
 const APP_ENTRY_PATHS = [
   'babel-polyfill',
-  'bootstrap-loader',
   paths.client('client.js')
 ]
 
