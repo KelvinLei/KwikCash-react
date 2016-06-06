@@ -1,38 +1,49 @@
-import React, { Component } from 'react'
-import { IndexLink, Link } from 'react-router'
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import MemberNavBar from '../../../components/member/nav/MemberNavBar'
+import {MY_LOAN_PAGE_STATE, PAYMENT_PLAN_PAGE_STATE} from "../../../components/member/shared/Constants"
+
+import {selectMemberPage} from '../../../redux/actions/member/memberAction'
 import styles from './MemberNavStyle.scss'
 
 export default class MemberNav extends Component {
   render() {
-    const { location } = this.props;
-    const loanSummaryClass = location.pathname.match(/^\/myLoan/) ? "active" : "";
-    const paymentInfoClass = location.pathname.match(/^\/paymentPlan/) ? "active" : "";
+    const { selectedPage } = this.props;
+    const loanSummaryClass = selectedPage === MY_LOAN_PAGE_STATE? "active" : "";
+    const paymentInfoClass = selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : "";
 
     return (
       <div>
-        <ul class="nav nav-pills nav-stacked" >
-          <li class={loanSummaryClass}><Link to="/myLoan">My Loan</Link></li>
-
-          <li class={paymentInfoClass}><Link to="/paymentPlan">Payment Plan</Link></li>
-
-          <li><a href="#">Re-finance></a></li>
-
-          <li><a href="#">Log Out</a></li>
-
-          <li class="dropdown">
-            <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-              Dropdown <span class="caret"/>
-            </a>
-              <ul class="dropdown-menu">
-                  <li><a href="#">Action</a></li>
-                  <li><a href="#">Another action</a></li>
-                  <li><a href="#">Something else here</a></li>
-                  <li class="divider"/>
-                  <li><a href="#">Separated link</a></li>
-              </ul>
-          </li>
-        </ul>
+        <MemberNavBar loanSummaryClass={loanSummaryClass}
+                      paymentInfoClass={paymentInfoClass}
+                      onClickNavTab={this.props.handleSelectedNavTab}
+        />
       </div>
     )
   }
 }
+
+MemberNav.propTypes = {
+  selectedPage: PropTypes.string.isRequired
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleSelectedNavTab: (selectedTab) => {
+      dispatch(selectMemberPage(selectedTab))
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  const selectedPage = state.selectedPage || MY_LOAN_PAGE_STATE
+
+  return {
+    selectedPage
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(MemberNav)

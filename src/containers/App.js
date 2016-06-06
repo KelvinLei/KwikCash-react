@@ -17,12 +17,12 @@ export default class App extends Component {
 
         <div className="row">
           <div className="col-sm-3">
-            <MemberNav location={location} />
+            <MemberNav/>
           </div>
 
           <div className="col-sm-9">
             <div className="row">
-              <PageHeader location={location} />
+              <PageHeader/>
             </div>
             <div className="row">
               {/* add this */}

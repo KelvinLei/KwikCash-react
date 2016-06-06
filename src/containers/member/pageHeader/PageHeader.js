@@ -1,17 +1,28 @@
 import React, { Component } from 'react'
-import { IndexLink, Link } from 'react-router'
+import { connect } from 'react-redux'
+import PageHeaderComp from '../../../components/member/pageHeader/PageHeaderComp'
+import {MY_LOAN_PAGE} from '../nav/MemberNav'
 
 export default class PageHeader extends Component {
   render() {
-    const { location } = this.props;
-    const loanSummaryClass = location.pathname.match(/^\/myLoan/) ? "active" : "";
-    const paymentInfoClass = location.pathname.match(/^\/paymentPlan/) ? "active" : "";
+    const { selectedPage } = this.props;
 
     return (
-      <div className="content-heading page-header">
-        <h2>Page title</h2>
-        <small data-localize="dashboard.WELCOME">sub-title</small>
+      <div>
+        <PageHeaderComp selectedPage={selectedPage}/>
       </div>
     )
   }
 }
+
+function mapStateToProps(state) {
+  const selectedPage = state.selectedPage || MY_LOAN_PAGE
+
+  return {
+    selectedPage
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(PageHeader)
