@@ -12,13 +12,34 @@ export default class MemberNav extends Component {
     const loanSummaryClass = selectedPage === MY_LOAN_PAGE_STATE? "active" : "";
     const paymentInfoClass = selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : "";
 
+    // <MemberNavBar loanSummaryClass={loanSummaryClass}
+    //               paymentInfoClass={paymentInfoClass}
+    //               onClickNavTab={this.props.handleSelectedNavTab}
+    // />
     return (
-      <div>
-        <MemberNavBar loanSummaryClass={loanSummaryClass}
-                      paymentInfoClass={paymentInfoClass}
-                      onClickNavTab={this.props.handleSelectedNavTab}
-        />
-      </div>
+      <aside className='aside'>
+        { /* START Sidebar (left) */ }
+        <div className="aside-inner">
+          <nav data-sidebar-anyclick-close="" className="sidebar">
+            { /* START sidebar nav */ }
+            <ul className="nav">
+              { /* Iterates over all sidebar items */ }
+              <li className="nav-heading ">
+                <span data-localize="sidebar.heading.HEADER">Main Navigation</span>
+              </li>
+
+              <li className={ '' }>
+                <a href="#">
+                  <em className="icon-grid"></em>
+                  <span data-localize="sidebar.nav.SINGLEVIEW">Single View</span>
+                </a>
+              </li>
+            </ul>
+            { /* END sidebar nav */ }
+          </nav>
+        </div>
+        { /* END Sidebar (left) */ }
+      </aside>
     )
   }
 }

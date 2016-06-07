@@ -8,17 +8,12 @@ export default class App extends Component {
     const { location } = this.props;
 
     return (
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-12">
+      <div className="wrapper">
+          <div className="topnavbar-wrapper">
             <TopHeader/>
           </div>
-        </div>
 
-        <div className="row">
-          <div className="col-sm-3">
-            <MemberNav/>
-          </div>
+          <MemberNav/>
 
           <div className="col-sm-8">
             <div className="row">
@@ -29,7 +24,6 @@ export default class App extends Component {
               { this.props.children }
             </div>
           </div>
-        </div>
       </div>
     )
   }
