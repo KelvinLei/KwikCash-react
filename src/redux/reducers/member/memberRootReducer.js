@@ -16,7 +16,8 @@ function selectPaymentStatus(state = "all", action) {
 function selectedPage(state = "myLoan", action) {
   switch (action.type) {
     case SELECT_MEMBER_PAGE:
-      return action.page
+      console.log(action.selectedNavTab)
+      return action.selectedNavTab
 
     default:
       return state

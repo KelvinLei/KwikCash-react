@@ -17,7 +17,7 @@ export default class TopHeader extends Component {
                 <span className="icon-bar"></span>
                 <span className="icon-bar"></span>
               </button>
-              <a className="navbar-brand" href="#">Brand</a>
+              <a className="navbar-brand" href="#">KwikCash</a>
             </div>
 
             <div className="navbar-collapse collapse" id="bs-example-navbar-collapse-1" aria-expanded="false" style={cStyle}>

@@ -6,7 +6,7 @@ export default class PaymentStatusTabs extends Component {
     const { tabList, selectedTab, onClickPaymentTab } = this.props;
 
     var statusTabContent = tabList.map((status, id) => {
-      const className = status.toLowerCase().match(selectedTab) ? "active" : "";
+      const className = status.toLowerCase() === String(selectedTab).toLowerCase() ? "active" : "";
       return (
         <PaymentStatusTab key={id} className={className} onClickPaymentTab={onClickPaymentTab} status={status}/>
       )

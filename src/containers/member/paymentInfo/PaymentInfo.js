@@ -18,8 +18,6 @@ class PaymentInfo extends Component {
 
     return (
       <div>
-        <h2>Payment Plan</h2>
-
         <PayOffButton/>
 
         <PaymentStatusTabs tabList={tabList} selectedTab={selectPaymentStatus} onClickPaymentTab={this.props.handleSelectPaymentTab}/>
@@ -35,7 +33,7 @@ PaymentInfo.propTypes = {
   paymentList: PropTypes.array.isRequired
 }
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch) => {  
   return {
     handleSelectPaymentTab: (selectedTab) => {
       dispatch(selectPaymentStatus(selectedTab))

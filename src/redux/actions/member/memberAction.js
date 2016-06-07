@@ -11,6 +11,6 @@ export const selectPaymentStatus = (status) => {
 export const selectMemberPage = (page) => {
   return {
     type: SELECT_MEMBER_PAGE,
-    selectedStatus: page
+    selectedNavTab: page
   }
 }
