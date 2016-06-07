@@ -25,7 +25,7 @@ const webpackConfig = {
 // ------------------------------------
 const APP_ENTRY_PATHS = [
   'babel-polyfill',
-  paths.client('themeJsx/App.jsx')
+  paths.client('client.js')
 ]
 
 webpackConfig.entry = {
@@ -253,7 +253,7 @@ webpackConfig.module.loaders.push(
   { test: /\.eot(\?.*)?$/,   loader: 'file?prefix=fonts/&name=[path][name].[ext]' },
   { test: /\.svg(\?.*)?$/,   loader: 'url?prefix=fonts/&name=[path][name].[ext]&limit=10000&mimetype=image/svg+xml' },
   { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'url?limit=8192' }
-  
+
 )
 /* eslint-enable */
 

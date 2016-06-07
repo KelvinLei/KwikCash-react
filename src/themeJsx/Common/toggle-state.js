@@ -25,7 +25,7 @@ class StateToggler {
 
   // Add a state to the browser storage to be restored later
   addState(classname) {
-    var data = $.localStorage.get(STORAGE_KEY_NAME);
+    var data = $.localStorage && $.localStorage.get(STORAGE_KEY_NAME);
 
     if (!data) {
       data = classname;
@@ -38,7 +38,7 @@ class StateToggler {
 
   // Remove a state from the browser storage
   removeState(classname) {
-    var data = $.localStorage.get(STORAGE_KEY_NAME);
+    var data = $.localStorage && $.localStorage.get(STORAGE_KEY_NAME);
     // nothing to remove
     if (!data) return;
 

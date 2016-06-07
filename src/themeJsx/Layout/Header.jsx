@@ -17,13 +17,6 @@ class Header extends React.Component {
   }
 
   render() {
-    const ddAlertTitle = (
-      <span>
-        <em className="icon-bell"/>
-        <span className="label label-danger">11</span>
-      </span>
-    )
-
     const logo = require('../../styles/img/logo.png');
     const logoSingle = require('../../styles/img/logo-single.png');
 
@@ -57,59 +50,31 @@ class Header extends React.Component {
                   <em className="fa fa-navicon"/>
                 </a>
               </li>
-              { /* START User avatar toggle */ }
-              <li>
-                { /* Button used to collapse the left sidebar. Only visible on tablet and desktops */ }
-                <a id="user-block-toggle" href="#" onClick={ this.toggleUserblock }>
-                  <em className="icon-user"></em>
-                </a>
-              </li>
-              { /* END User avatar toggle */ }
             </ul>
             { /* END Left navbar */ }
-            { /* START Right Navbar */ }
-            <ul className="nav navbar-nav navbar-right">
-              { /* Search icon */ }
-              <li>
-                <a href="#" data-search-open="">
-                  <em className="icon-magnifier"></em>
-                </a>
-              </li>
-              { /* START Alert menu */ }
-              <NavDropdown noCaret eventKey={ 3 } title={ ddAlertTitle } id="basic-nav-dropdown" >
-                <MenuItem className="animated flipInX" eventKey={3.1}>Login</MenuItem>
-                <MenuItem className="animated flipInX" eventKey={3.2}>Profile</MenuItem>
-                <MenuItem className="animated flipInX" eventKey={3.3}>Dashboard</MenuItem>
-                <MenuItem divider />
-                <MenuItem className="animated flipInX" eventKey={3.3}>Logout</MenuItem>
+
+            { /* START Refer friends */ }
+            <ul className="nav navbar-nav navbar">
+              <NavDropdown eventKey={ 3 } title="Refer friends" id="basic-nav-dropdown" >
+                <MenuItem className="animated flipInX" eventKey={3.1}>Refer friends</MenuItem>
               </NavDropdown>
-              { /* END Alert menu */ }
-              { /* START Offsidebar button */ }
-              <li>
-                <a href="#" data-toggle-state="offsidebar-open" data-no-persist="true">
-                  <em className="icon-notebook"></em>
-                </a>
-              </li>
-              { /* END Offsidebar menu */ }
             </ul>
-            { /* END Right Navbar */ }
+
+            { /* START my account */ }
+            <ul className="nav navbar-nav navbar-right">
+              <NavDropdown eventKey={ 4 } title="My account" id="basic-nav-dropdown" >
+                <MenuItem className="animated flipInX" eventKey={4.1}>Profile</MenuItem>
+                <MenuItem divider />
+                <MenuItem className="animated flipInX" eventKey={4.2}>Logout</MenuItem>
+              </NavDropdown>
+            </ul>
           </div>
           { /* END Nav wrapper */ }
-          { /* START Search form */ }
-          <form role="search" action="search.html" className="navbar-form">
-            <div className="form-group has-feedback">
-              <input type="text" placeholder="Type and hit enter ..." className="form-control" />
-              <div data-search-dismiss="" className="fa fa-times form-control-feedback"></div>
-            </div>
-            <button type="submit" className="hidden btn btn-default">Submit</button>
-          </form>
-          { /* END Search form */ }
         </nav>
         { /* END Top Navbar */ }
       </header>
     );
   }
-
 }
 
 export default Header;
