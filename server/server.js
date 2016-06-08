@@ -1,11 +1,13 @@
 import 'babel-polyfill'
 import config from './config'
 import server from './main'
+import api from './api'
 import _debug from 'debug'
 
 const debug = _debug('app:server:server')
 const port = config.server_port
 const host = config.server_host
+api(server);
 
 server.listen(port)
 debug(`Server is now running at http://${host}:${port}.`)
