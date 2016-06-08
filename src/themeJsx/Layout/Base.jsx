@@ -1,9 +1,10 @@
 import React from 'react';
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
+import TopHeader from '../../containers/member/header/TopHeader'
+
 import Header from './Header'
 import Sidebar from './Sidebar'
-import Offsidebar from './Offsidebar'
 import Footer from './Footer'
 
 class Base extends React.Component {
@@ -26,11 +27,9 @@ class Base extends React.Component {
 
         return (
             <div className="wrapper">
-                <Header />
+                <TopHeader />
 
                 <Sidebar />
-
-                <Offsidebar />
 
                 <ReactCSSTransitionGroup
                   component="section"

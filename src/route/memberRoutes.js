@@ -18,13 +18,20 @@ import PaymentInfo from '../containers/member/paymentInfo/PaymentInfo'
 //   <Route path="/myLoan" name="myloan" component={LoanSummary}/>
 //
 //   <Route path="/paymentPlan" name="paymentplan" component={PaymentInfo}/>
+
+// <Route path="paymentPlan" component={SingleView}/>
+//   <Route path="refinance" component={SingleView}/>
+//   <Route path="myProfile" component={SingleView}/>
+//   <Route path="logout" component={SingleView}/>
 // </Route>
 
 module.exports = (
-    <Route path="/" component={Base}>
+    <Route path="/" component={App}>
       {/* Default route*/}
-      <IndexRoute component={SingleView} />
+      <IndexRoute component={LoanSummary} />
 
-      <Route path="singleview" component={SingleView}/>
+      <Route path="myLoan" component={LoanSummary}/>
+      <Route path="paymentPlan" component={SingleView}/>
+      
     </Route>
 )

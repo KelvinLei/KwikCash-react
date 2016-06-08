@@ -1,0 +1,59 @@
+import React, { Component, PropTypes } from 'react'
+import { connect } from 'react-redux'
+import Sidebar from '../../../themeJsx/Layout/Sidebar'
+import {MY_LOAN_PAGE_STATE, PAYMENT_PLAN_PAGE_STATE, REFINANCE_PAGE_STATE, MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE}
+  from "../../../components/member/shared/Constants"
+
+import {selectMemberPage} from '../../../redux/actions/member/memberAction'
+
+export default class SidebarContainer extends Component {
+  render() {
+    const { selectedPage } = this.props;
+    const loanSummaryClass = selectedPage === MY_LOAN_PAGE_STATE? "active" : "";
+    const paymentInfoClass = selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : "";
+
+    const tabList = [
+      {tabName: 'My Loan',      toLink: MY_LOAN_PAGE_STATE,       className: selectedPage === MY_LOAN_PAGE_STATE? "active" : ""},
+      {tabName: 'Payment Plan', toLink: PAYMENT_PLAN_PAGE_STATE,  className: selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : ""},
+      {tabName: 'Refinance',    toLink: REFINANCE_PAGE_STATE,     className: selectedPage === REFINANCE_PAGE_STATE? "active" : ""},
+      {tabName: 'My Profile',   toLink: MY_PROFILE_PAGE_STATE,    className: selectedPage === MY_PROFILE_PAGE_STATE? "active" : ""},
+      {tabName: 'Logout',       toLink: LOGOUT_PAGE_STATE,        className: selectedPage === LOGOUT_PAGE_STATE? "active" : ""}
+    ]
+
+    // <MemberNavBar loanSummaryClass={loanSummaryClass}
+    //               paymentInfoClass={paymentInfoClass}
+    //               onClickNavTab={this.props.handleSelectedNavTab}
+    // />
+    return (
+      <aside className='aside'>
+        { /* invoke Sidebar from theme pack */ }
+        <Sidebar tabList={tabList} onClickSidebarTab={this.props.handleSelectedNavTab}/>
+      </aside>
+    )
+  }
+}
+
+SidebarContainer.propTypes = {
+  selectedPage: PropTypes.string.isRequired
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    handleSelectedNavTab: (selectedTab) => {
+      dispatch(selectMemberPage(selectedTab))
+    }
+  }
+}
+
+function mapStateToProps(state) {
+  const selectedPage = state.selectedPage || MY_LOAN_PAGE_STATE
+
+  return {
+    selectedPage
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SidebarContainer)

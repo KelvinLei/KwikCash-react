@@ -8,19 +8,6 @@ class SingleView extends React.Component {
         return (
             <ContentWrapper>
                 <div className="content-heading">
-                    { /* START Language list */ }
-                    <div className="pull-right">
-                        <Dropdown id="dropdown-tr" pullRight>
-                            <Dropdown.Toggle>
-                                English
-                            </Dropdown.Toggle>
-                            <Dropdown.Menu className="animated fadeInUpShort">
-                                <MenuItem eventKey="1" data-set-lang="en">English</MenuItem>
-                                <MenuItem eventKey="2" data-set-lang="es">Spanish</MenuItem>
-                            </Dropdown.Menu>
-                        </Dropdown>
-                    </div>
-                    { /* END Language list */ }
                     Dashboard
                     <small data-localize="dashboard.WELCOME">Welcome to Angle!</small>
                 </div>

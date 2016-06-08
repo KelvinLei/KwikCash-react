@@ -32,7 +32,7 @@ class StateToggler {
     } else {
       data = WordChecker.addWord(data, classname);
     }
-
+    
     $.localStorage.set(STORAGE_KEY_NAME, data);
   }
 
