@@ -43,29 +43,18 @@ class Sidebar extends React.Component {
     return false;
   }
 
+  handleOnClick(selectedTab) {
+    const { onClickSidebarTab } = this.props
+    onClickSidebarTab(selectedTab)
+  }
+
   render() {
-    const { tabList, icon, onClickSidebarTab } = this.props
-
-    function handleOnClickTab(event) {
-      const pageTextToStateMap = {
-        'myloan': MY_LOAN_PAGE_STATE,
-        'paymentplan': PAYMENT_PLAN_PAGE_STATE,
-        'refinance': REFINANCE_PAGE_STATE,
-        'myprofile': MY_PROFILE_PAGE_STATE,
-        'logout': LOGOUT_PAGE_STATE
-      }
-
-      const selectedTabText = String(event.target.text).toLowerCase().trim().replace(/\s+/g, '');
-
-      const selectedTabStateName = pageTextToStateMap[selectedTabText] || MY_LOAN_PAGE_STATE
-
-      onClickSidebarTab(selectedTabStateName)
-    }
+    const { tabList, onClickSidebarTab } = this.props
 
     var displayTabs = tabList.map((tabData, id) => {
       return (
-        <li key={id} className={tabData.className} onClick={handleOnClickTab}>
-          <Link to={tabData.toLink} title={tabData.tabName}>
+        <li key={id} className={tabData.className}>
+          <Link to={tabData.toLink} title={tabData.tabName} data-stateValue={tabData.toLink} onClick={this.handleOnClick.bind(this, tabData.toLink)}>
             <em className={tabData.icon}/>
             <span data-localize="sidebar.nav.SINGLEVIEW">{tabData.tabName}</span>
           </Link>

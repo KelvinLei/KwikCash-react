@@ -16,7 +16,7 @@ export default class LoanSummaryContent extends Component {
           <Col xs={12} className="text-center">
             <h2 className="text-thin">Loan Summary</h2>
             <Row>
-              <h4>Current balance: $3333.33</h4>
+              <h4>Current balance: $3000.00</h4>
             </Row>
 
             <Row>

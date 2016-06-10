@@ -14,11 +14,11 @@ export default class SidebarContainer extends Component {
 
     // icons provided by bower_components/simple-line-icons/css/simple-line-icons.css
     const tabList = [
-      {tabName: 'My Loan',      toLink: MY_LOAN_PAGE_STATE,       icon: "icon-home", className: selectedPage === MY_LOAN_PAGE_STATE? "active" : ""},
-      {tabName: 'Payment Plan', toLink: PAYMENT_PLAN_PAGE_STATE,  icon: "icon-layers", className: selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : ""},
+      {tabName: 'My Loan',      toLink: MY_LOAN_PAGE_STATE,       icon: "icon-home",    className: selectedPage === MY_LOAN_PAGE_STATE? "active" : ""},
+      {tabName: 'Payment Plan', toLink: PAYMENT_PLAN_PAGE_STATE,  icon: "icon-layers",  className: selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : ""},
       {tabName: 'Refinance',    toLink: REFINANCE_PAGE_STATE,     icon: "icon-support", className: selectedPage === REFINANCE_PAGE_STATE? "active" : ""},
-      {tabName: 'My Profile',   toLink: MY_PROFILE_PAGE_STATE,    icon: "icon-user", className: selectedPage === MY_PROFILE_PAGE_STATE? "active" : ""},
-      {tabName: 'Logout',       toLink: LOGOUT_PAGE_STATE,        icon: "icon-logout", className: selectedPage === LOGOUT_PAGE_STATE? "active" : ""}
+      {tabName: 'My Profile',   toLink: MY_PROFILE_PAGE_STATE,    icon: "icon-user",    className: selectedPage === MY_PROFILE_PAGE_STATE? "active" : ""},
+      {tabName: 'Logout',       toLink: LOGOUT_PAGE_STATE,        icon: "icon-logout",  className: selectedPage === LOGOUT_PAGE_STATE? "active" : ""}
     ]
 
     // <MemberNavBar loanSummaryClass={loanSummaryClass}
@@ -41,7 +41,9 @@ SidebarContainer.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     handleSelectedNavTab: (selectedTab) => {
-      dispatch(selectMemberPage(selectedTab))
+      const selectedTabValue = selectedTab || MY_LOAN_PAGE_STATE
+      
+      dispatch(selectMemberPage(selectedTabValue))
     }
   }
 }

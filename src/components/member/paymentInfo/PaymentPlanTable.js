@@ -14,10 +14,10 @@ export default class PaymentPlanTable extends Component {
 
     var paymentListContent = paymentList.filter(filterPayment).map((payment, id) => {
       return (
-        <PaymentPlanRow key={payment.id} index={id} status={payment.status} dueDate={payment.dueDate} amount={payment.amount}/>
+        <PaymentPlanRow key={payment.id} index={id + 1} status={payment.status} dueDate={payment.dueDate} amount={payment.amount}/>
       )
     })
-    
+
     return (
       <div>
         <Panel header="Context Classes">
