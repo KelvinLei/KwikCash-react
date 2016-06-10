@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import PaymentPlanRow from './PaymentPlanRow'
 
+import { Row, Col, Panel, Table } from 'react-bootstrap'
+
 export default class PaymentPlanTable extends Component {
   render() {
     const { paymentList, selectedTab } = this.props;
@@ -10,27 +12,30 @@ export default class PaymentPlanTable extends Component {
       return selectedTabLowerCase === "all" ? true : String(payment.status).toLowerCase().match(selectedTabLowerCase)
     }
 
-    var paymentListContent = paymentList.filter(filterPayment).map(payment => {
+    var paymentListContent = paymentList.filter(filterPayment).map((payment, id) => {
       return (
-        <PaymentPlanRow key={payment.id} status={payment.status} dueDate={payment.dueDate} amount={payment.amount}/>
+        <PaymentPlanRow key={payment.id} index={id} status={payment.status} dueDate={payment.dueDate} amount={payment.amount}/>
       )
-    });
-
+    })
+    
     return (
       <div>
-        <table class="table table-striped table-hover ">
-          <thead>
-          <tr>
-            <th>Status</th>
-            <th>Due Date</th>
-            <th>Payment</th>
-          </tr>
-          </thead>
+        <Panel header="Context Classes">
+          <Table>
+            <thead>
+            <tr>
+              <th className="sort-numeric">#</th>
+              <th className="sort-alpha">Status</th>
+              <th className="sort-numeric">Due Date</th>
+              <th className="sort-numeric">Payment</th>
+            </tr>
+            </thead>
 
-          <tbody>
-            {paymentListContent}
-          </tbody>
-        </table>
+            <tbody>
+              {paymentListContent}
+            </tbody>
+          </Table>
+        </Panel>
       </div>
     )
   }

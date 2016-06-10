@@ -1,13 +1,6 @@
 import React from 'react'
 import { Route, IndexRoute } from 'react-router'
 
-
-import Base from '../themeJsx/Layout/Base';
-import BasePage from '../themeJsx/Layout/BasePage';
-import BaseHorizontal from '../themeJsx/Layout/BaseHorizontal';
-
-import SingleView from '../themeJsx/SingleView/SingleView';
-
 import App from '../containers/App'
 import LoanSummary from '../containers/member/loanSummary/LoanSummary'
 import PaymentInfo from '../containers/member/paymentInfo/PaymentInfo'
@@ -31,7 +24,7 @@ module.exports = (
       <IndexRoute component={LoanSummary} />
 
       <Route path="myLoan" component={LoanSummary}/>
-      <Route path="paymentPlan" component={SingleView}/>
-      
+      <Route path="paymentPlan" component={PaymentInfo}/>
+
     </Route>
 )
