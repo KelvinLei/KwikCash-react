@@ -12,12 +12,13 @@ export default class SidebarContainer extends Component {
     const loanSummaryClass = selectedPage === MY_LOAN_PAGE_STATE? "active" : "";
     const paymentInfoClass = selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : "";
 
+    // icons provided by bower_components/simple-line-icons/css/simple-line-icons.css
     const tabList = [
-      {tabName: 'My Loan',      toLink: MY_LOAN_PAGE_STATE,       className: selectedPage === MY_LOAN_PAGE_STATE? "active" : ""},
-      {tabName: 'Payment Plan', toLink: PAYMENT_PLAN_PAGE_STATE,  className: selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : ""},
-      {tabName: 'Refinance',    toLink: REFINANCE_PAGE_STATE,     className: selectedPage === REFINANCE_PAGE_STATE? "active" : ""},
-      {tabName: 'My Profile',   toLink: MY_PROFILE_PAGE_STATE,    className: selectedPage === MY_PROFILE_PAGE_STATE? "active" : ""},
-      {tabName: 'Logout',       toLink: LOGOUT_PAGE_STATE,        className: selectedPage === LOGOUT_PAGE_STATE? "active" : ""}
+      {tabName: 'My Loan',      toLink: MY_LOAN_PAGE_STATE,       icon: "icon-home", className: selectedPage === MY_LOAN_PAGE_STATE? "active" : ""},
+      {tabName: 'Payment Plan', toLink: PAYMENT_PLAN_PAGE_STATE,  icon: "icon-layers", className: selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : ""},
+      {tabName: 'Refinance',    toLink: REFINANCE_PAGE_STATE,     icon: "icon-support", className: selectedPage === REFINANCE_PAGE_STATE? "active" : ""},
+      {tabName: 'My Profile',   toLink: MY_PROFILE_PAGE_STATE,    icon: "icon-user", className: selectedPage === MY_PROFILE_PAGE_STATE? "active" : ""},
+      {tabName: 'Logout',       toLink: LOGOUT_PAGE_STATE,        icon: "icon-logout", className: selectedPage === LOGOUT_PAGE_STATE? "active" : ""}
     ]
 
     // <MemberNavBar loanSummaryClass={loanSummaryClass}

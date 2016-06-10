@@ -8,7 +8,6 @@ import Footer from '../themeJsx/Layout/Footer'
 
 import SidebarContainer from './member/sidebar/SidebarContainer';
 import TopHeader from './member/header/TopHeader';
-import PageHeader from './member/pageHeader/PageHeader';
 
 /*
  This is a clone version of Base.jsx in themeJsx.

@@ -4,6 +4,7 @@ import pubsub from 'pubsub-js';
 import {MY_LOAN_PAGE_STATE, PAYMENT_PLAN_PAGE_STATE, REFINANCE_PAGE_STATE, MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE}
   from "../../components/member/shared/Constants"
 import SidebarRun from './Sidebar.run';
+import singleLineIcons from '../bower_components/simple-line-icons/css/simple-line-icons.css'
 
 class Sidebar extends React.Component {
 
@@ -43,7 +44,7 @@ class Sidebar extends React.Component {
   }
 
   render() {
-    const { tabList, onClickSidebarTab } = this.props
+    const { tabList, icon, onClickSidebarTab } = this.props
 
     function handleOnClickTab(event) {
       const pageTextToStateMap = {
@@ -61,11 +62,11 @@ class Sidebar extends React.Component {
       onClickSidebarTab(selectedTabStateName)
     }
 
-    var displayTabs = tabList.map(tabData => {
+    var displayTabs = tabList.map((tabData, id) => {
       return (
-        <li className={tabData.className} onClick={handleOnClickTab}>
+        <li key={id} className={tabData.className} onClick={handleOnClickTab}>
           <Link to={tabData.toLink} title={tabData.tabName}>
-            <em className="icon-grid"/>
+            <em className={tabData.icon}/>
             <span data-localize="sidebar.nav.SINGLEVIEW">{tabData.tabName}</span>
           </Link>
         </li>

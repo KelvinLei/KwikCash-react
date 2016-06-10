@@ -15,9 +15,17 @@ export default class LoanSummaryContent extends Component {
         <Row>
           <Col xs={12} className="text-center">
             <h2 className="text-thin">Loan Summary</h2>
-            <h4>Current balance: $3333.33</h4>
-            <h5>Next payment: June 12, 2016</h5>
-            <button type="button" class="btn btn-info">Refinance</button>
+            <Row>
+              <h4>Current balance: $3333.33</h4>
+            </Row>
+
+            <Row>
+              <h5>Next payment: June 12, 2016</h5>
+            </Row>
+
+            <Row>
+              <button type="button" class="btn btn-info">Refinance</button>
+            </Row>
           </Col>
         </Row>
       </ContentWrapper>
