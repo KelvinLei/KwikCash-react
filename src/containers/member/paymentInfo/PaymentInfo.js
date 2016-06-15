@@ -52,7 +52,12 @@ function mapStateToProps(state) {
     {id: 6, status: "Pending", dueDate: "11/01/2016", amount: "800"},
     {id: 7, status: "Pending", dueDate: "12/01/2016", amount: "800"},
     {id: 8, status: "Pending", dueDate: "12/02/2016", amount: "800"},
-    {id: 9, status: "Pending", dueDate: "12/03/2016", amount: "800"}
+    {id: 9, status: "Pending", dueDate: "12/03/2016", amount: "800"},
+    {id: 10, status: "Pending", dueDate: "12/04/2016", amount: "800"},
+    {id: 11, status: "Pending", dueDate: "12/05/2016", amount: "800"},
+    {id: 12, status: "Pending", dueDate: "12/06/2016", amount: "800"},
+    {id: 13, status: "Pending", dueDate: "12/07/2016", amount: "800"},
+    {id: 14, status: "Pending", dueDate: "12/08/2016", amount: "800"}
   ];
 
   return {

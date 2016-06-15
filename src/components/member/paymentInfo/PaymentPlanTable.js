@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import PaymentPlanRow from './PaymentPlanRow'
+import { Table } from 'react-bootstrap'
 
-import { Row, Col, Panel, Table } from 'react-bootstrap'
+import styles from './PaymentInfo.scss'
 
 export default class PaymentPlanTable extends Component {
+
   render() {
     const { paymentList, selectedTab } = this.props;
 
@@ -19,24 +21,20 @@ export default class PaymentPlanTable extends Component {
     })
 
     return (
-      <div>
-        <Panel header="Context Classes">
-          <Table>
-            <thead>
-            <tr>
-              <th className="sort-numeric">#</th>
-              <th className="sort-alpha">Status</th>
-              <th className="sort-numeric">Due Date</th>
-              <th className="sort-numeric">Payment</th>
-            </tr>
-            </thead>
+      <Table id="paymentPlantTable" responsive striped hover>
+        <thead>
+        <tr>
+          <th className="sort-numeric">#</th>
+          <th className="sort-alpha">Status</th>
+          <th className="sort-numeric">Due Date</th>
+          <th className="sort-numeric">Payment</th>
+        </tr>
+        </thead>
 
-            <tbody>
-              {paymentListContent}
-            </tbody>
-          </Table>
-        </Panel>
-      </div>
+        <tbody>
+          {paymentListContent}
+        </tbody>
+      </Table>
     )
   }
 }

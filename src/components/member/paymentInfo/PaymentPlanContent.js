@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Grid, Row, Col } from 'react-bootstrap';
+import { Grid, Row, Col, Panel } from 'react-bootstrap';
 
 import PaymentPlanTable from './PaymentPlanTable'
 import PaymentStatusTabs from './PaymentStatusTabs'
@@ -12,25 +12,31 @@ export default class PaymentPlanContent extends Component {
 
     return (
       <ContentWrapper>
-        <div className="content-heading">
+        <h3 className="content-heading">
           Payment plan summary
           <small data-localize="dashboard.WELCOME">Loan ID: 1234</small>
-        </div>
+        </h3>
 
         <Grid fluid>
           <Row>
             <Col lg={12}>
+              { /* Payoff button */ }
               <Row>
-                <PayOffButton/>
+                <Col lg={ 3 } sm={ 6 }>
+                  <PayOffButton/>
+                </Col>
               </Row>
 
-              <Row>
-                <PaymentStatusTabs tabList={tabList} selectedTab={selectedTab} onClickPaymentTab={onClickPaymentTab}/>
-              </Row>
+              { /* payment table */ }
+              <Panel>
+                <Row>
+                  <PaymentStatusTabs tabList={tabList} selectedTab={selectedTab} onClickPaymentTab={onClickPaymentTab}/>
+                </Row>
 
-              <Row>
-                <PaymentPlanTable paymentList={paymentList} selectedTab={selectedTab}/>
-              </Row>
+                <Row>
+                  <PaymentPlanTable paymentList={paymentList} selectedTab={selectedTab}/>
+                </Row>
+              </Panel>
             </Col>
           </Row>
         </Grid>

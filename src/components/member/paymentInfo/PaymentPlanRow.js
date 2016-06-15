@@ -6,12 +6,14 @@ export default class PaymentPlanRow extends Component {
 
     var amountText = "$" + amount;
 
-    var className = status === "Complete" ? "success" : "warning"
+    var className = status === "Complete" ? "label label-success" : "label label-warning"
 
     return (
-      <tr className={className}>
+      <tr>
         <td>{index}</td>
-        <td>{status}</td>
+        <td>
+          <div className={className}>{status}</div>
+        </td>
         <td>{dueDate}</td>
         <td>{amountText}</td>
       </tr>

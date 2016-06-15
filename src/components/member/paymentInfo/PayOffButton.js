@@ -6,7 +6,7 @@ export default class PayOffButton extends Component {
   render() {
     return (
       <div>
-        <Button bsClass="btn btn-green" className="mb-sm">Payoff Loan</Button>
+        <Button bsSize="large" bsStyle="info" className="mb-sm">Payoff Loan</Button>
       </div>
     )
   }
