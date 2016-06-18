@@ -14,16 +14,13 @@ export function getEncryptedPasswordForUser(userName) {
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query('select member_password from e_tbl_members where member_username="' + userName + '"',
+      connection.query('select member_password from e_tbl_members where member_username = ?', [userName],
         (err, rows) => {
-          let result;
           if (rows.length) {
-           debug('getEncryptedPasswordForUser database response ' + rows[0].member_password)
-              result = rows[0].member_password;
-              resolve(result);
+            debug('getEncryptedPasswordForUser database response ' + rows[0].member_password)
+            resolve(rows[0].member_password);
           } else {
-             debug("couldnt validate user");
-             reject();
+            reject(new Error("couldnt validate user"));
           }
       })
       connection.release()
@@ -31,3 +28,21 @@ export function getEncryptedPasswordForUser(userName) {
   });
 }
 
+export function getLoanList(userName) {
+  debug('getLoanList ' + userName);
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query('select loan_id, loan_date, loan_status from tbl_loans where loan_member in (select member_id from e_tbl_members where member_username = ?)', [userName],
+        (err, rows) => {
+          if (rows) {
+            debug('getLoanList database response ' + rows)
+            resolve(rows);
+          } else {
+            reject(new Error("couldnt get loans from user"));
+          }
+      })
+      connection.release()
+    })
+  });
+}
