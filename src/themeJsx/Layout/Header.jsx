@@ -18,6 +18,7 @@ class Header extends React.Component {
 
   render() {
     const currentLog = require('../../styles/img/current_logo_white.png');
+    const collapseLogo = require('../../styles/img/collapse_kc_logo.png');
 
     return (
       <header className="topnavbar-wrapper">
@@ -30,7 +31,7 @@ class Header extends React.Component {
                 <img src={currentLog} alt="App Logo" className="img-responsive" />
               </div>
               <div className="brand-logo-collapsed">
-                <img src={currentLog} alt="App Logo" className="img-responsive" />
+                <img src={collapseLogo} alt="App Logo" className="img-responsive" />
               </div>
             </a>
           </div>
