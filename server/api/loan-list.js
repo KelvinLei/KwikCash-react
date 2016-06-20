@@ -12,16 +12,15 @@ var LOAN_STATUS_MAP = {
   F: 'PLAN',
 };
 
-export function getLoans(userName) {
-  return getLoanList(userName).then((rows) => {
-    debug('getLoans' + rows)
-    return rows.map(r => {
-      return {
-        id : r.loan_id,
-        date : r.loan_date,
-        status : LOAN_STATUS_MAP[r.loan_status]
-      }
-    })
-  });
+export async function getLoans(userName) {
+  var rows = await getLoanList(userName)
+  debug('getLoans' + rows)
+  return rows.map(r => {
+    return {
+      id : r.loan_id,
+      date : r.loan_date,
+      status : LOAN_STATUS_MAP[r.loan_status]
+    }
+  })
 }
 

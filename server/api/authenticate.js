@@ -21,11 +21,10 @@ function salted_compare(text, hash, saltLength = 4) {
   return salted_hash(text, hash.substring(0, saltLength)) === hash
 }
 
-export function validateUser(userName, password) {
-  return getEncryptedPasswordForUser(userName).then((encryptedPassword) => {
-    return {
+export async function validateUser(userName, password) {
+  var encryptedPassword = await getEncryptedPasswordForUser(userName)
+  return {
       isValidPassword: encryptedPassword && encryptedPassword.length && salted_compare(password, encryptedPassword)
-    };
-  });
+  }
 }
 
