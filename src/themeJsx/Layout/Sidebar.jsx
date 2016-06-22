@@ -44,8 +44,7 @@ class Sidebar extends React.Component {
   }
 
   handleOnClick(selectedTab) {
-    const { onClickSidebarTab } = this.props
-    onClickSidebarTab(selectedTab)
+    this.props.onClickSidebarTab(selectedTab)
   }
 
   render() {

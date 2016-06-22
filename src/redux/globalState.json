@@ -8,5 +8,9 @@
     {"id": 1, "status": "Complete", "dueDate": "06/01/2016", "amount": "500"}
   ],
 
-  "selectPaymentStatus": "All"
+  "selectPaymentStatus": "All",
+
+  "refinanceValue": "5000",
+
+  "currentBalance": "3000.00"
 }

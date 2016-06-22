@@ -2,12 +2,13 @@ import React, { Component } from 'react'
 import { Row, Col, Panel, Alert } from 'react-bootstrap';
 
 export default class RefinanceValueSelect extends Component {
+
   render() {
-    const { valueList } = this.props;
+    const { refinanceValue, valueList, onClickRefinanceValue } = this.props;
 
     var refinanceValueOptions = valueList.map((value, id) => {
       return (
-        <RefinanceValueRadioButton key={id} value={value}/>
+        <RefinanceValueRadioButton key={id} refinanceValue={refinanceValue} value={value} onClickRefinanceValue={onClickRefinanceValue}/>
       )
     })
 
@@ -40,11 +41,23 @@ export default class RefinanceValueSelect extends Component {
 }
 
 class RefinanceValueRadioButton extends Component{
+
+  handleOnClick(selectedValue) {
+    this.props.onClickRefinanceValue(selectedValue)
+  }
+
   render() {
+    const { refinanceValue, value, onClickRefinanceValue} = this.props
+
+    const isChecked = refinanceValue === value ? 'checked' : ''
+
     return (
       <Col md={ 3 } mdOffset={ 2 } >
         <div class="radio">
-          <label><input type="radio" name="refinanceValue"/>${this.props.value}</label>
+          <label>
+            <input checked={isChecked} type="radio" name="refinanceValue" onChange={this.handleOnClick.bind(this, value)}/>
+            ${value}
+          </label>
         </div>
       </Col>
     )

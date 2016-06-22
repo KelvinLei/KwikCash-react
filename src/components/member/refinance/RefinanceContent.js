@@ -6,12 +6,9 @@ import EstimateTable from './EstimateTable'
 
 export default class RefinanceContent extends Component {
   render() {
-    var {currentBalance, refinanceAmount, newBalance} = this.props
-    currentBalance = 3000
-    refinanceAmount = 4000
-    newBalance = 1000
+    var {currentBalance, refinanceValue, newBalance, onClickRefinanceValue} = this.props
 
-    const refinanceValue = [2000, 3000, 4000, 5000];
+    const refinanceOptions = [2000.00, 3000.00, 4000.00, 5000.00];
 
     return (
       <ContentWrapper>
@@ -30,11 +27,11 @@ export default class RefinanceContent extends Component {
         { /* refinance value and table */}
         <Row>
           <Col md={ 6 }>
-            <RefinanceValueSelect valueList={refinanceValue}/>
+            <RefinanceValueSelect refinanceValue={refinanceValue} valueList={refinanceOptions} onClickRefinanceValue={onClickRefinanceValue}/>
           </Col>
 
           <Col md={ 6 }>
-            <EstimateTable currentBalance={currentBalance} refinanceAmount={refinanceAmount} newBalance={newBalance} />
+            <EstimateTable key={Math.random()} currentBalance={currentBalance} refinanceValue={refinanceValue} newBalance={newBalance} />
           </Col>
         </Row>
 

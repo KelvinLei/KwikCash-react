@@ -3,7 +3,7 @@ import { Panel, Table } from 'react-bootstrap';
 
 export default class EstimateTable extends Component {
   render() {
-    const { currentBalance, refinanceAmount, newBalance } = this.props;
+    const { currentBalance, refinanceValue, newBalance } = this.props;
 
     return (
       <Panel header="Estimated new balance">
@@ -18,7 +18,7 @@ export default class EstimateTable extends Component {
           <tbody>
             <tr>
               <td>Refinance amount:</td>
-              <td>${refinanceAmount}</td>
+              <td>${refinanceValue}</td>
             </tr>
 
             <tr>

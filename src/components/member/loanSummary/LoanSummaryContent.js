@@ -4,7 +4,7 @@ import { Row, Col } from 'react-bootstrap';
 
 export default class LoanSummaryContent extends Component {
   render() {
-    const {} = this.props;
+    const { currentBalance } = this.props;
 
     return (
       <ContentWrapper>
@@ -16,7 +16,7 @@ export default class LoanSummaryContent extends Component {
           <Col xs={12} className="text-center">
             <h2 className="text-thin">Loan Summary</h2>
             <Row>
-              <h4>Current balance: $3000.00</h4>
+              <h4>Current balance: ${currentBalance}</h4>
             </Row>
 
             <Row>
