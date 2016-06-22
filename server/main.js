@@ -60,6 +60,7 @@ app.use(session({
     schemaName: 'kwikca5_wp'
   }),
   secret: 'kwikCash198elkjdf9Xkd',
+  saveUninitialized: false,
   resave: false,
   cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
 }));
