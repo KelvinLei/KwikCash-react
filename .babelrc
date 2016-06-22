@@ -10,7 +10,8 @@
             "locals": ["module"]
           }]
         },
-        "transform-decorators-legacy"]
+        "transform-decorators-legacy",
+        "transform-es2015-template-literals"]
       ]
     }
   }

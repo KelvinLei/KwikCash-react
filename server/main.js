@@ -6,6 +6,10 @@ import config from './config/'
 import webpackDevMiddleware from './middleware/webpack-dev'
 import webpackHMRMiddleware from './middleware/webpack-hmr'
 import fallback from 'express-history-api-fallback'
+import session from 'express-session'
+import passport from 'passport';
+import connectPgSimple from 'connect-pg-simple'
+import pg from 'pg'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
@@ -47,5 +51,20 @@ if (config.env === 'development') {
 // (ignoring file requests). If you want to implement isomorphic
 // rendering, you'll want to remove this middleware.
 app.use(fallback('index.html', { root: paths.dist() }))
+
+var pgSession = connectPgSimple(session)
+app.use(session({
+  store: new pgSession({
+    pg: pg,
+    conString: 'postgres://kwikcash_dev:TPIN6u$OfbP9@kwikcash-app-db.cfmywxse2pds.us-east-1.rds.amazonaws.com:5432/kwikcash_app',
+    schemaName: 'kwikca5_wp'
+  }),
+  secret: 'kwikCash198elkjdf9Xkd',
+  resave: false,
+  cookie: { maxAge: 30 * 24 * 60 * 60 * 1000 } // 30 days
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 export default app
