@@ -15,7 +15,7 @@ export default class RefinanceContent extends Component {
         { /* header */}
         <div className="content-heading">
           Refinance options
-          <small data-localize="dashboard.WELCOME">Loan ID: 1234</small>
+          <small data-localize="dashboard.WELCOME">Selected loan ID: 1234</small>
         </div>
 
         <Row>

@@ -10,7 +10,7 @@ export default class LoanSummaryContent extends Component {
       <ContentWrapper>
         <div className="content-heading">
           Hello John
-          <small data-localize="dashboard.WELCOME">Loan ID: 1234</small>
+          <small data-localize="dashboard.WELCOME">Selected loan ID: 1234</small>
         </div>
         <Row>
           <Col xs={12} className="text-center">

@@ -14,7 +14,7 @@ export default class PaymentPlanContent extends Component {
       <ContentWrapper>
         <h3 className="content-heading">
           Payment plan summary
-          <small data-localize="dashboard.WELCOME">Loan ID: 1234</small>
+          <small data-localize="dashboard.WELCOME">Selected loan ID: 1234</small>
         </h3>
 
         <Grid fluid>

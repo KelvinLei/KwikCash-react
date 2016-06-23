@@ -6,9 +6,7 @@ import { NavDropdown, MenuItem } from 'react-bootstrap';
 class Header extends React.Component {
 
   componentDidMount() {
-
     HeaderRun();
-
   }
 
   toggleUserblock(e) {
@@ -53,19 +51,28 @@ class Header extends React.Component {
             </ul>
             { /* END Left navbar */ }
 
+            { /* loan selection dropdown */ }
+            <ul className="nav navbar-nav navbar">
+              <NavDropdown eventKey={ 3 } title="Select your loan" id="basic-nav-dropdown" >
+                <MenuItem className="animated flipInX" eventKey={3.1}>Loan 1 - balance: $3000</MenuItem>
+                <MenuItem className="animated flipInX" eventKey={3.2}>Loan 2 - balance: $4000</MenuItem>
+                <MenuItem className="animated flipInX" eventKey={3.3}>Loan 3 - balance: $5000</MenuItem>
+              </NavDropdown>
+            </ul>
+
             { /* START Refer friends */ }
             <ul className="nav navbar-nav navbar">
               <NavDropdown eventKey={ 3 } title="Refer friends" id="basic-nav-dropdown" >
-                <MenuItem className="animated flipInX" eventKey={3.1}>Refer friends</MenuItem>
+                <MenuItem className="animated flipInX" eventKey={4.2}>Refer friends</MenuItem>
               </NavDropdown>
             </ul>
 
             { /* START my account */ }
             <ul className="nav navbar-nav navbar-right">
               <NavDropdown eventKey={ 4 } title="My account" id="basic-nav-dropdown" >
-                <MenuItem className="animated flipInX" eventKey={4.1}>Profile</MenuItem>
+                <MenuItem className="animated flipInX" eventKey={5.1}>Profile</MenuItem>
                 <MenuItem divider />
-                <MenuItem className="animated flipInX" eventKey={4.2}>Logout</MenuItem>
+                <MenuItem className="animated flipInX" eventKey={5.2}>Logout</MenuItem>
               </NavDropdown>
             </ul>
           </div>
