@@ -10,7 +10,12 @@
 
   "selectPaymentStatus": "All",
 
-  "refinanceValue": "5000",
+  "refinanceValue": 5000,
 
-  "currentBalance": "3000.00"
+  "currentBalance": "3000.00",
+
+  "userInputRefinanceValue": {
+    "selected": false,
+    "value": "3000"
+  }
 }

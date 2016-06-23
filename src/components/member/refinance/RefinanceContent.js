@@ -1,14 +1,19 @@
 import React, { Component } from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel } from 'react-bootstrap';
-import RefinanceValueSelect from './RefinanceValueSelect'
+import RefinanceValueOptions from './RefinanceValueOptions'
 import EstimateTable from './EstimateTable'
 
 export default class RefinanceContent extends Component {
   render() {
-    var {currentBalance, refinanceValue, newBalance, onClickRefinanceValue} = this.props
+    var { currentBalance,
+          refinanceValue,
+          userInputRefinanceValue,
+          onClickRefinanceValue,
+          onClickUserRefinanceValue,
+          onEnterUserFinanceValue } = this.props
 
-    const refinanceOptions = [2000.00, 3000.00, 4000.00, 5000.00];
+    const refinanceOptions = [2000, 3000, 4000, 5000];
 
     return (
       <ContentWrapper>
@@ -27,11 +32,17 @@ export default class RefinanceContent extends Component {
         { /* refinance value and table */}
         <Row>
           <Col md={ 6 }>
-            <RefinanceValueSelect refinanceValue={refinanceValue} valueList={refinanceOptions} onClickRefinanceValue={onClickRefinanceValue}/>
+            <RefinanceValueOptions refinanceValue={refinanceValue} 
+                                   valueList={refinanceOptions} 
+                                   userInputRefinanceValue={userInputRefinanceValue} 
+                                   onClickRefinanceValue={onClickRefinanceValue}
+                                   onClickUserRefinanceValue={onClickUserRefinanceValue}
+                                   onEnterUserFinanceValue={onEnterUserFinanceValue}
+            />
           </Col>
 
           <Col md={ 6 }>
-            <EstimateTable key={Math.random()} currentBalance={currentBalance} refinanceValue={refinanceValue} newBalance={newBalance} />
+            <EstimateTable key="estimateTable" currentBalance={currentBalance} refinanceValue={refinanceValue} newBalance={newBalance} />
           </Col>
         </Row>
 

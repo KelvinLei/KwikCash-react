@@ -1,10 +1,26 @@
 import React, { Component } from 'react'
 import { Row, Col, Panel, Alert } from 'react-bootstrap';
 
-export default class RefinanceValueSelect extends Component {
+export default class RefinanceValueOptions extends Component {
+
+  handleValueOnChange(e) {
+    const value = e.target.value
+    console.log(value)
+    this.props.onEnterUserFinanceValue(value)
+  }
+
+  handleOnClickUserValue() {
+    console.log("user radio clicked")
+    this.props.onClickUserRefinanceValue()
+  }
 
   render() {
-    const { refinanceValue, valueList, onClickRefinanceValue } = this.props;
+    const { refinanceValue,
+            valueList,
+            userInputRefinanceValue,
+            onClickRefinanceValue,
+            onClickUserRefinanceValue,
+            onEnterUserFinanceValue } = this.props;
 
     var refinanceValueOptions = valueList.map((value, id) => {
       return (
@@ -22,15 +38,15 @@ export default class RefinanceValueSelect extends Component {
         {refinanceValueOptions}
 
         <Row>
-          <Col md={ 8 } mdOffset={ 1 }>
+          <Col key='refinanceValueInput' md={ 8 } mdOffset={ 1 }>
             <div class="input-group">
               <span class="input-group-addon">
-                <input type="radio" name="refinanceValue"/>
+                <input checked={userInputRefinanceValue.selected} type="radio" name="refinanceValue" onChange={this.handleOnClickUserValue.bind(this)}/>
               </span>
 
               <span class="input-group-addon">Other: $</span>
 
-              <input type="text" class="form-control text-right" aria-label="Amount (to the nearest dollar)"/>
+              <input type="text" placeholder="enter a refinance value" value={onEnterUserFinanceValue} class="form-control text-right" onEnter={this.handleValueOnChange.bind(this)} />
               <span class="input-group-addon">.00</span>
             </div>
           </Col>
