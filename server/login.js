@@ -39,7 +39,7 @@ export function init(server) {
     done(null, username);
   });
 
-  server.get('/login',
+  server.post('/loginform',
     passport.authenticate('local', { successRedirect: '/', failureRedirect: '/login' }),
   );
 }
