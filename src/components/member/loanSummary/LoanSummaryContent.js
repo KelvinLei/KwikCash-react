@@ -1,8 +1,15 @@
 import React, { Component } from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Panel } from 'react-bootstrap';
+import ProgressChart from './progressChart';
+import styles from './styles.scss'
 
 export default class LoanSummaryContent extends Component {
+
+  componentDidMount() {
+    ProgressChart('25%');
+  }
+
   render() {
     const { currentBalance } = this.props;
 
@@ -13,20 +20,40 @@ export default class LoanSummaryContent extends Component {
           <small data-localize="dashboard.WELCOME">Selected loan ID: 1234</small>
         </div>
         <Row>
-          <Col xs={12} className="text-center">
+          <Col md={12} className="text-center">
             <h2 className="text-thin">Loan Summary</h2>
-            <Row>
-              <h4>Current balance: ${currentBalance}</h4>
-            </Row>
-
-            <Row>
-              <h5>Next payment: June 12, 2016</h5>
-            </Row>
-
-            <Row>
-              <button type="button" class="btn btn-info">Refinance</button>
-            </Row>
           </Col>
+        </Row>
+
+        <Row>
+          <Col md={ 6 } className="text-center">
+            <Panel header="Payments progress">
+              <div id="chartdiv"></div>
+            </Panel>
+          </Col>
+
+          <Col md={ 6 } className="text-center">
+            <Panel header="Overview">
+              <Row>
+                <Col md={12}>
+                  <h4>Current balance: ${currentBalance}</h4>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col md={12}>
+                <h5>Next payment: June 12, 2016</h5>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col md={12}>
+                <button type="button" class="btn btn-info">Refinance</button>
+                </Col>
+              </Row>
+            </Panel>
+          </Col>
+
         </Row>
       </ContentWrapper>
     )
