@@ -7,8 +7,9 @@ import EstimateTable from './EstimateTable'
 export default class RefinanceContent extends Component {
   render() {
     var { currentBalance,
-          refinanceValue,
-          userInputRefinanceValue,
+          refinanceState,
+          refinanceValueForTable,
+          newBalance,
           onClickRefinanceValue,
           onClickUserRefinanceValue,
           onEnterUserFinanceValue } = this.props
@@ -32,9 +33,8 @@ export default class RefinanceContent extends Component {
         { /* refinance value and table */}
         <Row>
           <Col md={ 6 }>
-            <RefinanceValueOptions refinanceValue={refinanceValue} 
-                                   valueList={refinanceOptions} 
-                                   userInputRefinanceValue={userInputRefinanceValue} 
+            <RefinanceValueOptions refinanceState={refinanceState}
+                                   valueList={refinanceOptions}
                                    onClickRefinanceValue={onClickRefinanceValue}
                                    onClickUserRefinanceValue={onClickUserRefinanceValue}
                                    onEnterUserFinanceValue={onEnterUserFinanceValue}
@@ -42,10 +42,11 @@ export default class RefinanceContent extends Component {
           </Col>
 
           <Col md={ 6 }>
-            <EstimateTable key="estimateTable" currentBalance={currentBalance} refinanceValue={refinanceValue} newBalance={newBalance} />
+            <EstimateTable key="estimateTable" currentBalance={currentBalance} refinanceValueForTable={refinanceValueForTable} newBalance={newBalance} />
           </Col>
         </Row>
 
+        { /* refinance button */}
         <Row>
           <Col md={ 4 } mdOffset={ 4 } className="text-center">
             <Panel>
@@ -54,6 +55,7 @@ export default class RefinanceContent extends Component {
           </Col>
         </Row>
 
+        { /* refinance instructions */}
         <Row>
           <Col md={ 4 } mdOffset={ 4 }>
             <div id="panelDemo10" className="panel panel-default">

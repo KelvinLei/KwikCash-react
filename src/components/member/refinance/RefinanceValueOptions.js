@@ -5,29 +5,35 @@ export default class RefinanceValueOptions extends Component {
 
   handleValueOnChange(e) {
     const value = e.target.value
-    console.log(value)
     this.props.onEnterUserFinanceValue(value)
   }
 
   handleOnClickUserValue() {
-    console.log("user radio clicked")
     this.props.onClickUserRefinanceValue()
   }
 
   render() {
-    const { refinanceValue,
+    const { refinanceState,
             valueList,
-            userInputRefinanceValue,
             onClickRefinanceValue,
             onClickUserRefinanceValue,
             onEnterUserFinanceValue } = this.props;
 
+    const userInputRadioChecked = refinanceState.userInputRefinanceValue.selected ? 'checked' : ''
+
     var refinanceValueOptions = valueList.map((value, id) => {
       return (
-        <RefinanceValueRadioButton key={id} refinanceValue={refinanceValue} value={value} onClickRefinanceValue={onClickRefinanceValue}/>
+        <RefinanceValueRadioButton key={id}
+                                   userInputRadioChecked={userInputRadioChecked}
+                                   refinanceValue={refinanceState.refinanceValue}
+                                   value={value}
+                                   onClickRefinanceValue={onClickRefinanceValue}
+        />
       )
     })
 
+    const refinanceValue = refinanceState.userInputRefinanceValue.value
+    
     return (
       <Panel header="Potential refinance value">
         <Alert bsStyle="info">
@@ -41,12 +47,12 @@ export default class RefinanceValueOptions extends Component {
           <Col key='refinanceValueInput' md={ 8 } mdOffset={ 1 }>
             <div class="input-group">
               <span class="input-group-addon">
-                <input checked={userInputRefinanceValue.selected} type="radio" name="refinanceValue" onChange={this.handleOnClickUserValue.bind(this)}/>
+                <input checked={userInputRadioChecked} type="radio" name="refinanceValue" onChange={this.handleOnClickUserValue.bind(this)}/>
               </span>
 
               <span class="input-group-addon">Other: $</span>
 
-              <input type="text" placeholder="enter a refinance value" value={onEnterUserFinanceValue} class="form-control text-right" onEnter={this.handleValueOnChange.bind(this)} />
+              <input type="text" placeholder="enter a refinance value" value={refinanceValue} class="form-control text-right" onChange={this.handleValueOnChange.bind(this)} />
               <span class="input-group-addon">.00</span>
             </div>
           </Col>
@@ -63,9 +69,10 @@ class RefinanceValueRadioButton extends Component{
   }
 
   render() {
-    const { refinanceValue, value, onClickRefinanceValue} = this.props
+    const { refinanceValue, value, userInputRadioChecked, onClickRefinanceValue} = this.props
 
-    const isChecked = refinanceValue === value ? 'checked' : ''
+    // if user input radio is checked, it takes precedence. Thus no other radio options should be checked
+    const isChecked = !userInputRadioChecked && refinanceValue === value ? 'true' : ''
 
     return (
       <Col md={ 3 } mdOffset={ 2 } >

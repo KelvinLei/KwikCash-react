@@ -23,33 +23,45 @@ function selectedPage(state = "myLoan", action) {
   }
 }
 
-function refinanceValue(state = 5000, action) {
-  switch (action.type) {
-    case SELECT_REFINANCE_VALUE:
-      return action.selectedRefinanceValue
-
-    default:
-      return state
-  }
-}
-
-function userInputRefinanceValue(
+function refinanceState(
   state = {
-    "value": "",
-    "selected": false
-  }, 
+    refinanceValue: 5000,
+    userInputRefinanceValue: {
+      selected: false,
+      value: ""
+    }
+  },
   action
 ) {
   switch (action.type) {
-    case ENTER_REFINANCE_VALUE:
+    case SELECT_REFINANCE_VALUE:
+      const userValueState = {
+        ...state.userInputRefinanceValue,
+        selected: false
+      }
       return {
-        ...state,
+        refinanceValue: action.selectedRefinanceValue,
+        userInputRefinanceValue: userValueState
+      }
+
+    case ENTER_REFINANCE_VALUE:
+      const userValueStateForEnter = {
+        ...state.userInputRefinanceValue,
         value: action.userInputRefinanceValue
       }
-    case SELECT_USER_REFINANCE_VALUE:
       return {
         ...state,
+        userInputRefinanceValue: userValueStateForEnter
+      }
+
+    case SELECT_USER_REFINANCE_VALUE:
+      const userValueStateForSelect = {
+        ...state.userInputRefinanceValue,
         selected: true
+      }
+      return {
+        ...state,
+        userInputRefinanceValue: userValueStateForSelect
       }
 
     default:
@@ -60,8 +72,7 @@ function userInputRefinanceValue(
 const memberReducer = combineReducers({
   selectedPage,
   selectPaymentStatus,
-  refinanceValue,
-  userInputRefinanceValue
+  refinanceState
 })
 
 export default memberReducer

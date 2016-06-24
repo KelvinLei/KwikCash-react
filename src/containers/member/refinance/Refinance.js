@@ -12,21 +12,26 @@ class Refinance extends Component {
 
   render() {
     const { currentBalance,
-            refinanceValue,
-            userInputRefinanceValue,
+            refinanceState,
             handleSelectRefinanceValue,
             handleSelectUserRefinanceValue,
             handleEnterUserRefinanceValue
     } = this.props
 
-    const newBalance = refinanceValue - currentBalance
+    const refinanceValueOption = refinanceState.refinanceValue
+    const userInputRefinanceValue = refinanceState.userInputRefinanceValue.value
+    const userInputRadioChecked = refinanceState.userInputRefinanceValue.selected
+
+    const refinanceValueForTable = userInputRadioChecked ? userInputRefinanceValue : refinanceValueOption
+    
+    const newBalance = refinanceValueForTable - currentBalance
 
     return (
       <div>
         <RefinanceContent currentBalance={currentBalance}
-                          refinanceValue={refinanceValue}
+                          refinanceState={refinanceState}
+                          refinanceValueForTable={refinanceValueForTable}
                           newBalance={newBalance}
-                          userInputRefinanceValue={userInputRefinanceValue}
                           onClickRefinanceValue={handleSelectRefinanceValue}
                           onClickUserRefinanceValue={handleSelectUserRefinanceValue}
                           onEnterUserFinanceValue={handleEnterUserRefinanceValue}
@@ -38,8 +43,7 @@ class Refinance extends Component {
 
 Refinance.propTypes = {
   currentBalance: PropTypes.string.isRequired,
-  refinanceValue: PropTypes.number.isRequired,
-  userInputRefinanceValue: PropTypes.object.isRequired,
+  refinanceState: PropTypes.object.isRequired,
   handleSelectRefinanceValue: PropTypes.func.isRequired,
   handleSelectUserRefinanceValue: PropTypes.func.isRequired,
   handleEnterUserRefinanceValue: PropTypes.func.isRequired
@@ -63,13 +67,11 @@ const mapDispatchToProps = (dispatch) => {
 
 function mapStateToProps(state) {
   const currentBalance = "3000.00" // state.currentBalance || "unknown"
-  const refinanceValue = state.refinanceValue || 5000
-  const userInputRefinanceValue = state.userInputRefinanceValue
+  const refinanceState = state.refinanceState
 
   return {
     currentBalance,
-    refinanceValue,
-    userInputRefinanceValue
+    refinanceState
   }
 }
 
