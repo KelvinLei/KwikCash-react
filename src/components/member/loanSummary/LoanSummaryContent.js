@@ -16,12 +16,12 @@ export default class LoanSummaryContent extends Component {
     return (
       <ContentWrapper>
         <div className="content-heading">
-          Hello John
+          Loan Summary
           <small data-localize="dashboard.WELCOME">Selected loan ID: 1234</small>
         </div>
         <Row>
           <Col md={12} className="text-center">
-            <h2 className="text-thin">Loan Summary</h2>
+            <h2 className="text-thin">Hello John</h2>
           </Col>
         </Row>
 
