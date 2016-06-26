@@ -27,7 +27,12 @@ initLoadCss();
 
 let store = configureStore(RootReducer);
 
+const ENABLE_AUTH = false;
 const requireAuth = (nextState, replace, callback) => {
+  if (!ENABLE_AUTH) {
+    callback();
+    return;
+  }
   var user = getUser().then((data) => {
     const user = data.user;
     if (!user || !user.id) {

@@ -13,8 +13,8 @@ export const login = (userName, password) => {
         dispatch(loginSuccess())
       })
       .catch(() => {
-          dispatch(loginFailed())
-        })
+        dispatch(loginFailed())
+      })
   }
 }
 

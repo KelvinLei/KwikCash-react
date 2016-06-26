@@ -5,7 +5,7 @@ import { login } from '../../redux/actions/login'
 require('./login.scss');
 const logo = require('../../styles/img/current_logo_white.png');
 
-let Login = ({dispatch}) => {
+let Login = ({dispatch, isAuthenticated}) => {
   let userName;
   let password;
   return (
