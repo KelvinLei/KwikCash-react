@@ -35,6 +35,17 @@ export function init(server) {
     })()
   });
 
+  // no input/service call needed here. user is deduced from the jwt token stored in local storage
+  server.post('/api/user', (req, res) => {
+    debug("calling authenticate/validate");
+
+    res.format({
+      'application/json': () => {
+        res.send({ 'user': req.user });
+      }
+    });
+  });
+
   server.get('/api/loanlist', (req, res) => {
     debug("getting loanlist");
 

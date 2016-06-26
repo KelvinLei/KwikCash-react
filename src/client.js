@@ -18,6 +18,7 @@ import LoanSummary from './containers/member/loanSummary/LoanSummary'
 import PaymentInfo from './containers/member/paymentInfo/PaymentInfo'
 import Refinance from './containers/member/refinance/Refinance'
 import Login from './containers/login/Login'
+import { getUser } from './api'
 
 // Init translation system
 initTranslation();
@@ -26,22 +27,29 @@ initLoadCss();
 
 let store = configureStore(RootReducer);
 
-function requireAuth(nextState, replace) {
-  // todo , actually assess auth state
-  if (false) {
+const requireAuth = (nextState, replace, callback) => {
+  var user = getUser().then((data) => {
+    const user = data.user;
+    if (!user || !user.id) {
+      throw new Error('user not valid');
+    }
+    callback();
+  }).catch(() => {
+    // redirect to login page when the user isnt authenticated
     replace({
       pathname: '/login',
       state: { nextPathname: nextState.location.pathname }
     })
-  }
+    callback()
+  })
 }
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={App}>
+      <Route path="/" component={App} onEnter={requireAuth}>
         {/* Default route*/}
-        <IndexRoute component={LoanSummary} onEnter={requireAuth}/>
+        <IndexRoute component={LoanSummary}/>
 
         <Route path="myLoan" component={LoanSummary}/>
         <Route path="paymentPlan" component={PaymentInfo}/>
