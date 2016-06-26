@@ -1,7 +1,7 @@
 import rand from 'locutus/php/math/mt_rand'
 import sha1 from 'locutus/php/strings/sha1'
 import pack from 'locutus/php/misc/pack'
-import { getEncryptedPasswordForUser } from './database-proxy'
+import { getUser } from './database-proxy'
 import _debug from 'debug'
 
 const debug = _debug('app:server:api:authenticate')
@@ -21,10 +21,19 @@ function salted_compare(text, hash, saltLength = 4) {
   return salted_hash(text, hash.substring(0, saltLength)) === hash
 }
 
-export async function validateUser(userName, password) {
-  var encryptedPassword = await getEncryptedPasswordForUser(userName)
-  return {
-      isValidPassword: encryptedPassword && encryptedPassword.length && salted_compare(password, encryptedPassword)
+export async function authenticateUser(userName, password) {
+  try {
+    var user = await getUser(userName)
+    debug(user);
+    var isValidPassword = user.encryptedPassword && user.encryptedPassword.length && salted_compare(password, user.encryptedPassword)
+    return {
+      id: user.id,
+      userName: user.userName,
+      isValidPassword: isValidPassword,
+      name: user.name,
+    }
+  } catch(e) {
+    throw new Error('invalid user');
   }
 }
 

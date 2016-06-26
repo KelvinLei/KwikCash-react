@@ -29,6 +29,11 @@ const config = {
   server_port : process.env.PORT || 3000,
 
   // ----------------------------------
+  // jwt configuration
+  // ----------------------------------
+  jwt_secret : 'kweekca$h98f%xlmnpm',
+
+  // ----------------------------------
   // Compiler Configuration
   // ----------------------------------
   compiler_css_modules     : false,

@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, browserHistory, Route, IndexRoute } from 'react-router'
 import { Provider } from 'react-redux'
-import MemberRootReducer from './redux/reducers/member/memberRootReducer'
+import RootReducer from './redux/reducers'
 import configureStore from './redux/store/configureStore'
 import initTranslation from './themeJsx/Common/localize';
 import initLoadCss from './themeJsx/Common/load-css';
@@ -17,14 +17,14 @@ import App from './containers/App'
 import LoanSummary from './containers/member/loanSummary/LoanSummary'
 import PaymentInfo from './containers/member/paymentInfo/PaymentInfo'
 import Refinance from './containers/member/refinance/Refinance'
-import Login from './themeJsx/Pages/Login'
+import Login from './containers/login/Login'
 
 // Init translation system
 initTranslation();
 // Init css loader (for themes)
 initLoadCss();
 
-let store = configureStore(MemberRootReducer, './redux/reducers/member/memberRootReducer');
+let store = configureStore(RootReducer);
 
 function requireAuth(nextState, replace) {
   // todo , actually assess auth state

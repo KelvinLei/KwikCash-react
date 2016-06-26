@@ -1,4 +1,3 @@
-import { combineReducers } from 'redux'
 import {
   SELECT_MEMBER_PAGE, SELECT_PAYMENT_STATUS, SELECT_REFINANCE_VALUE, ENTER_REFINANCE_VALUE, SELECT_USER_REFINANCE_VALUE
 } from '../../actions/member/memberAction'
@@ -69,10 +68,8 @@ function refinanceState(
   }
 }
 
-const memberReducer = combineReducers({
+export default {
   selectedPage,
   selectPaymentStatus,
   refinanceState
-})
-
-export default memberReducer
+}

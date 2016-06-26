@@ -9,17 +9,25 @@ var pool = mysql.createPool({
   database : 'kwikca5_wp'
 })
 
-export function getEncryptedPasswordForUser(userName) {
-  debug('getEncryptedPasswordForUser' + userName);
+export function getUser(userName) {
+  debug('getUser' + userName);
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query('select member_password from e_tbl_members where member_username = ?', [userName],
+      connection.query('select member_id, member_username, member_password, member_name from e_tbl_members where member_username = ?', [userName],
         (err, rows) => {
-          if (rows.length) {
-            debug('getEncryptedPasswordForUser database response ' + rows[0].member_password)
-            resolve(rows[0].member_password);
+          if (rows && rows.length) {
+            var row = rows[0];
+            var result = {
+              id: row.member_id,
+              userName: row.member_username,
+              encryptedPassword: row.member_password,
+              name: row.member_name,
+            }
+            debug('getUser db response ' + JSON.stringify(result))
+            resolve(result);
           } else {
+            debug('coudnlt validate user')
             reject(new Error("couldnt validate user"));
           }
       })

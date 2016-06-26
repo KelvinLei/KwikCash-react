@@ -1,20 +1,35 @@
-import { validateUser } from './api/authenticate'
+import { authenticateUser } from './api/authenticate'
 import { getLoans } from './api/loan-list'
 import _debug from 'debug'
+import jwt from 'jsonwebtoken'
+import config from './config'
 
 const debug = _debug('app:server:api')
 
 export function init(server) {
   // todo: change to POST once ready for frontend integration
-  server.get('/api/authenticate', (req, res) => {
+  server.post('/api/authenticate', (req, res) => {
     debug("calling authenticate");
 
     (async () => {
-      var response = await validateUser(req.query.username, req.query.password);
-      debug("is user validated?: " + JSON.stringify(response));
+      debug(JSON.stringify(req.body));
+      debug(`${req.body.username} ${req.body.password}`);
+      let user;
+      try {
+        user = await authenticateUser(req.body.username, req.body.password);
+      } catch(e) {
+        res.status(401).send("wrong user or password");
+      }
+      debug("user: " + JSON.stringify(user));
+
+      if (!user || !user.isValidPassword) {
+        res.status(401).send("wrong user or password");
+      }
+      const token = jwt.sign(user, config.jwt_secret, { expiresIn: "2hr" });
+      debug("token: " + JSON.stringify(token));
       res.format({
         'application/json': () => {
-          res.send(response);
+          res.send({ token });
         }
       });
     })()
