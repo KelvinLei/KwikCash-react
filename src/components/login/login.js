@@ -1,15 +1,22 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
-import { login } from '../../redux/actions/login'
 
 require('./login.scss');
 const logo = require('../../styles/img/current_logo_white.png');
 
-let Login = ({dispatch, isAuthenticated}) => {
-  let userName;
-  let password;
-  return (
-    <div className="block-center mt-xl wd-xl">
+export default class Login extends React.Component {
+
+  componentWillReceiveProps (nextProps) {
+    const { isAuthenticated, router } = nextProps
+    if (isAuthenticated) {
+      router.push('/')
+    }
+  }
+  render() {
+    let username;
+    let password;
+    return (
+      <div className="block-center mt-xl wd-xl">
       { /* START panel */ }
       <div className="panel panel-dark panel-flat">
         <div className="panel-heading text-center">
@@ -25,16 +32,16 @@ let Login = ({dispatch, isAuthenticated}) => {
             className="mb-lg"
             onSubmit={ e => {
               e.preventDefault();
-              dispatch(login(userName.value, password.value))
+              this.props.onLoginSubmit(username.value, password.value);
             }}>
               <div className="form-group has-feedback">
                 <input id="inputEmail"
                   type="email"
                   placeholder="Enter email"
-                  autoComplete="off"
+                  autoComplete="on"
                   required="required"
                   className="form-control"
-                  ref = { e => userName = e }/>
+                  ref = { e => username = e }/>
                   <span className="fa fa-envelope form-control-feedback text-muted"></span>
               </div>
               <div className="form-group has-feedback">
@@ -69,7 +76,7 @@ let Login = ({dispatch, isAuthenticated}) => {
       </div>
       { /* END panel */ }
     </div>
-  );
-}
+    )
+  }
+};
 
-export default Login;

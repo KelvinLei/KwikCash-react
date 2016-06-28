@@ -27,13 +27,13 @@ initLoadCss();
 
 let store = configureStore(RootReducer);
 
-const ENABLE_AUTH = false;
+const ENABLE_AUTH = true;
 const requireAuth = (nextState, replace, callback) => {
   if (!ENABLE_AUTH) {
     callback();
     return;
   }
-  var user = getUser().then((data) => {
+  getUser().then((data) => {
     const user = data.user;
     if (!user || !user.id) {
       throw new Error('user not valid');
