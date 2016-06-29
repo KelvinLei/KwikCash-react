@@ -12,26 +12,19 @@ export function init(server) {
     debug("calling authenticate");
 
     (async () => {
-      //      debug(JSON.stringify(req.body));
-      //      debug(`${req.body.username} ${req.body.password}`);
-      //      let user;
-      //      try {
-      //        user = await authenticateUser(req.body.username, req.body.password);
-      //      } catch(e) {
-      //        res.status(401).send("wrong user or password");
-      //      }
-      //      debug("user: " + JSON.stringify(user));
-      //
-      //      if (!user || !user.isValidPassword) {
-      //        res.status(401).send("wrong user or password");
-      //      }
-
-      var user = {
-          "id": 1944,
-          "userName": "thalia@kwikcashonline.com",
-          "isValidPassword": true,
-          "name": "John Customer",
+      debug(`${req.body.username} ${req.body.password}`);
+      let user;
+      try {
+        user = await authenticateUser(req.body.username, req.body.password);
+      } catch(e) {
+        res.status(401).send("wrong user or password");
       }
+      debug("user: " + JSON.stringify(user));
+
+      if (!user || !user.isValidPassword) {
+        res.status(401).send("wrong user or password");
+      }
+
       const token = jwt.sign(user, config.jwt_secret, { expiresIn: "2hr" });
       debug("token: " + JSON.stringify(token));
       res.format({
