@@ -75,7 +75,7 @@ class Sidebar extends React.Component {
               <MenuItem className="animated flipInX" eventKey={3.2}>Loan 2 - balance: $4000</MenuItem>
               <MenuItem className="animated flipInX" eventKey={3.3}>Loan 3 - balance: $5000</MenuItem>
             </NavDropdown>
-            
+
             { /* render tabs */ }
             {displayTabs}
           </ul>

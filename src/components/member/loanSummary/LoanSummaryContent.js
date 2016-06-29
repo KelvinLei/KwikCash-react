@@ -48,7 +48,7 @@ export default class LoanSummaryContent extends Component {
 
               <Row>
                 <Col md={12}>
-                <button type="button" class="btn btn-info">Refinance</button>
+                  <button type="button" class="btn btn-info">Refinance</button>
                 </Col>
               </Row>
             </Panel>

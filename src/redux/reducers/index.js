@@ -1,10 +1,9 @@
 import { combineReducers } from 'redux'
 
-import memberReducers from './member/memberRootReducer.js'
+import memberReducers from './member/memberRootReducer'
 import loginReducers from './login'
 
-export default combineReducers(Object.assign({},
+export default combineReducers(
   memberReducers,
   loginReducers
-))
-
+)

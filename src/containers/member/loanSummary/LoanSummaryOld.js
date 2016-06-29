@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import LoanSummaryContent from '../../../components/member/loanSummary/LoanSummaryContent'
 
-class LoanSummary extends Component {
+class LoanSummaryOld extends Component {
 
   constructor(props) {
     super(props)
@@ -10,8 +10,7 @@ class LoanSummary extends Component {
 
   render() {
     const { currentBalance } = this.props
-    const { loanId } = this.props.params
-
+    
     return (
       <div>
         <LoanSummaryContent currentBalance={currentBalance}/>
@@ -20,7 +19,7 @@ class LoanSummary extends Component {
   }
 }
 
-LoanSummary.propTypes = {
+LoanSummaryOld.propTypes = {
   currentBalance: PropTypes.string.isRequired
 }
 
@@ -34,4 +33,4 @@ function mapStateToProps(state) {
 
 export default connect(
   mapStateToProps
-)(LoanSummary)
+)(LoanSummaryOld)

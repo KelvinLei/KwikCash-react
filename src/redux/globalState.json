@@ -2,6 +2,12 @@
   // selected tab in vertical navbar
   "selectedPage": "paymentPlan",
 
+  "loanList": [
+    {"id": 1234, "status": "Active", "currentBalance": 3000.00, "nextPaymentDate": "06/01/2016"},
+    {"id": 5342, "status": "Active", "currentBalance": 4000.00, "nextPaymentDate": "06/15/2016"},
+    {"id": 1534, "status": "Complete", "currentBalance": 0, "nextPaymentDate": ""}
+  ],
+
   "paymentList": [
     {"id": 1, "status": "Complete", "dueDate": "06/01/2016", "amount": "500"},
     {"id": 1, "status": "Complete", "dueDate": "06/01/2016", "amount": "500"},

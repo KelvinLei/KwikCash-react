@@ -12,7 +12,7 @@ function selectPaymentStatus(state = "all", action) {
   }
 }
 
-function selectedPage(state = "myLoan", action) {
+function selectedPage(state = "myLoans", action) {
   switch (action.type) {
     case SELECT_MEMBER_PAGE:
       return action.selectedNavTab
@@ -21,6 +21,17 @@ function selectedPage(state = "myLoan", action) {
       return state
   }
 }
+
+function loanList(state = [], action) {
+  switch (action.type) {
+    case SELECT_MEMBER_PAGE:
+      return action.selectedNavTab
+
+    default:
+      return state
+  }
+}
+
 
 function refinanceState(
   state = {

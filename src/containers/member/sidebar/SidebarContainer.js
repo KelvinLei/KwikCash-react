@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Sidebar from '../../../themeJsx/Layout/Sidebar'
-import {MY_LOAN_PAGE_STATE, PAYMENT_PLAN_PAGE_STATE, REFINANCE_PAGE_STATE, MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE}
+import {MY_LOAN_PAGE_STATE, PAYMENT_PLAN_PAGE_STATE, REFINANCE_PAGE_STATE, MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE, MY_LOANS_PAGE_STATE}
   from "../../../components/member/shared/Constants"
 
 import {selectMemberPage} from '../../../redux/actions/member/memberAction'
@@ -9,11 +9,10 @@ import {selectMemberPage} from '../../../redux/actions/member/memberAction'
 export default class SidebarContainer extends Component {
   render() {
     const { selectedPage } = this.props;
-    const loanSummaryClass = selectedPage === MY_LOAN_PAGE_STATE? "active" : "";
-    const paymentInfoClass = selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : "";
 
     // icons provided by bower_components/simple-line-icons/css/simple-line-icons.css
     const tabList = [
+      {tabName: 'My Loans',      toLink: MY_LOANS_PAGE_STATE,       icon: "icon-home",    className: selectedPage === MY_LOANS_PAGE_STATE? "active" : ""},
       {tabName: 'My Loan',      toLink: MY_LOAN_PAGE_STATE,       icon: "icon-home",    className: selectedPage === MY_LOAN_PAGE_STATE? "active" : ""},
       {tabName: 'Payment Plan', toLink: PAYMENT_PLAN_PAGE_STATE,  icon: "icon-layers",  className: selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : ""},
       {tabName: 'Refinance',    toLink: REFINANCE_PAGE_STATE,     icon: "icon-support", className: selectedPage === REFINANCE_PAGE_STATE? "active" : ""},
@@ -42,7 +41,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     handleSelectedNavTab: (selectedTab) => {
       const selectedTabValue = selectedTab || MY_LOAN_PAGE_STATE
-      
+
       dispatch(selectMemberPage(selectedTabValue))
     }
   }
