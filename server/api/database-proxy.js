@@ -9,18 +9,18 @@ var pool = mysql.createPool({
   database : 'kwikca5_wp'
 })
 
-export function getUser(userName) {
-  debug('getUser' + userName);
+export function getUser(userId) {
+  debug('getUser' + userId);
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query('select member_id, member_username, member_password, member_name from e_tbl_members where member_username = ?', [userName],
+      connection.query('select member_id, member_username, member_password, member_name from e_tbl_members where member_username = ?', [userId],
         (err, rows) => {
           if (rows && rows.length) {
             var row = rows[0];
             var result = {
               id: row.member_id,
-              userName: row.member_username,
+              userId: row.member_username,
               encryptedPassword: row.member_password,
               name: row.member_name,
             }
@@ -36,17 +36,38 @@ export function getUser(userName) {
   });
 }
 
-export function getLoanList(userName) {
-  debug('getLoanList ' + userName);
+export function getLoanList(userId) {
+  debug('getLoanList ' + userId);
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query('select loan_id, loan_date, loan_status from tbl_loans where loan_member in (select member_id from e_tbl_members where member_username = ?)', [userName],
+      connection.query('select loan_id, loan_date, loan_status, loan_amount, loan_paymentdate, loan_funddate, loan_rate, loan_term, loan_fundamount from tbl_loans where loan_member = ?', [userId],
         (err, rows) => {
           if (rows) {
             debug('getLoanList database response ' + rows)
             resolve(rows);
           } else {
+            debug('couldnt get loans from user')
+            reject(new Error("couldnt get loans from user"));
+          }
+      })
+      connection.release()
+    })
+  });
+}
+
+export function getPaymentsForLoan(loanId) {
+  debug('getPaymentsForLoan ' + userId);
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query('select * from tbl_loanpayments where loanpayment_loan = ?', [loanId],
+        (err, rows) => {
+          if (rows) {
+            debug('getPaymentsForLoan database response ' + rows)
+            resolve(rows);
+          } else {
+            debug('couldnt get loans from user')
             reject(new Error("couldnt get loans from user"));
           }
       })

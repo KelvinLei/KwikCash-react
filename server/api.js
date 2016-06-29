@@ -46,11 +46,13 @@ export function init(server) {
     });
   });
 
-  server.get('/api/loanlist', (req, res) => {
+  server.post('/api/loanlist', (req, res) => {
     debug("getting loanlist");
 
     (async () => {
-      var loans = await getLoans(req.query.username);
+
+      debug("getting loanlist for " + req.user.id);
+      var loans = await getLoans(req.user.id);
       debug("loans: " + JSON.stringify(loans));
       res.format({
         'application/json': () => {

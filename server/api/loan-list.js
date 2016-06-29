@@ -12,8 +12,8 @@ var LOAN_STATUS_MAP = {
   F: 'PLAN',
 };
 
-export async function getLoans(userName) {
-  var rows = await getLoanList(userName)
+export async function getLoans(userId) {
+  var rows = await getLoanList(userId)
   debug('getLoans' + rows)
   return rows.map(r => {
     return {

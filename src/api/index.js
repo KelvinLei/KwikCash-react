@@ -34,3 +34,7 @@ export const authenticate = (username, password) => {
 export const getUser = () => {
   return authenticatedPost('/api/user')
 }
+
+export const getLoanList = () => {
+  return authenticatedPost('/api/loanlist')
+}
