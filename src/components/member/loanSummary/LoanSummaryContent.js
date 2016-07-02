@@ -39,7 +39,7 @@ export default class LoanSummaryContent extends Component {
 
 const LoanSummaryOverview = ({currentBalance}) => (
   <Row>
-    <Col md={ 6 } className="text-center">
+    <Col md={ 6 } className="text-left">
       <Panel className="panel-default" header="Payment progress">
         <div id="chartdiv"></div>
       </Panel>

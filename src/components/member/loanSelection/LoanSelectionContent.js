@@ -33,13 +33,21 @@ export default class LoanSelectionContent extends Component {
 
         <Row>
           <Col md={ 12 }>
-            { /* START List group */ }
-            <ul className="list-group">
-              {loanListDisplay}
-            </ul>
-            { /* END List group */ }
+            <h4>Hello John</h4>
           </Col>
         </Row>
+
+        <Panel className="panel-default" header="Please select a loan for details">
+          <Row>
+            <Col md={ 12 }>
+              { /* START List group */ }
+              <ul className="list-group">
+                {loanListDisplay}
+              </ul>
+              { /* END List group */ }
+            </Col>
+          </Row>
+        </Panel>
       </ContentWrapper>
     )
   }
@@ -58,16 +66,19 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate}) => {
           <tr>
             <td className="wd-xs">
               <div className="ph">
-                <div className={className}>{status}</div>
+                <div className={className + " hidden-xs"}> {status} </div>
+                <div className={className + " visible-xs"}> {status[0]} </div>
               </div>
             </td>
-            <td>
+            <td className="wd-lg">
               <div className="ph">
-                <h4 className="media-box-heading">Loan ID: {id}</h4>
-                <small className="text-muted">Click for details</small>
+                <h4 className="media-box-heading hidden-xs">Loan ID: {id}</h4>
+                <h4 className="media-box-heading visible-xs">Loan {id}</h4>
+                <small className="text-muted hidden-xs">Click for details</small>
+                <small className="text-muted visible-xs">Click</small>
               </div>
             </td>
-            <td className="ph">
+            <td className="wd-sm">
               <div className="ph">
                 <p className="m0">Balance</p>
                 <small className="text-muted">${currentBalance}</small>
@@ -79,9 +90,9 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate}) => {
                 <small className="text-muted">{APR}%</small>
               </div>
             </td>
-            <td className="wd-sm">
+            <td className="wd-xs">
               <div className="ph">
-                <p className="m0">Date</p>
+                <p className="m0">Next payment</p>
                 <small className="text-muted">{nextPaymentDate}</small>
               </div>
             </td>
