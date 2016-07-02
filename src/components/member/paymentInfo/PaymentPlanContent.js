@@ -1,46 +1,29 @@
-import React, { Component } from 'react'
-import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Grid, Row, Col, Panel } from 'react-bootstrap';
+import React from 'react'
+import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 
-import PaymentPlanTable from './PaymentPlanTable'
-import PaymentStatusTabs from './PaymentStatusTabs'
-import PayOffButton from './PayOffButton'
+import { PaymentPlanTable } from './PaymentPlanTable'
+import { PaymentStatusTabs } from './PaymentStatusTabs'
 
-export default class PaymentPlanContent extends Component {
-  render() {
-    const { tabList, selectedTab, paymentList, onClickPaymentTab} = this.props;
-
-    return (
-      <ContentWrapper>
-        <h3 className="content-heading">
-          Payment plan summary
-          <small data-localize="dashboard.WELCOME">Selected loan ID: 1234</small>
-        </h3>
-
-        <Grid fluid>
+export const PaymentPlanContent = ({tabList, selectedPaymentStatus, paymentList, onClickPaymentTab}) => (
+  <Panel className="panel-default" header="Payment plan">
+    <Row className="text-center">
+      <Button bsStyle="info" className="mb-sm">Payoff Loan</Button>
+    </Row>
+    <Grid fluid>
+      <Row>
+        <Col md={12}>
+          { /* payment table */ }
           <Row>
-            <Col lg={12}>
-              { /* Payoff button */ }
-              <Row>
-                <Col lg={ 3 } sm={ 6 }>
-                  <PayOffButton/>
-                </Col>
-              </Row>
-
-              { /* payment table */ }
-              <Panel>
-                <Row>
-                  <PaymentStatusTabs tabList={tabList} selectedTab={selectedTab} onClickPaymentTab={onClickPaymentTab}/>
-                </Row>
-
-                <Row>
-                  <PaymentPlanTable paymentList={paymentList} selectedTab={selectedTab}/>
-                </Row>
-              </Panel>
-            </Col>
+            <PaymentStatusTabs tabList={tabList}
+                               selectedTab={selectedPaymentStatus}
+                               onClickPaymentTab={onClickPaymentTab}/>
           </Row>
-        </Grid>
-      </ContentWrapper>
-    )
-  }
-}
+
+          <Row>
+            <PaymentPlanTable paymentList={paymentList} selectedTab={selectedPaymentStatus}/>
+          </Row>
+        </Col>
+      </Row>
+    </Grid>
+  </Panel>
+)

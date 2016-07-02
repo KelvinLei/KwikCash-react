@@ -1,10 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router';
 import pubsub from 'pubsub-js';
-import {MY_LOAN_PAGE_STATE, PAYMENT_PLAN_PAGE_STATE, REFINANCE_PAGE_STATE, MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE}
-  from "../../components/member/shared/Constants"
 import SidebarRun from './Sidebar.run';
-import { NavDropdown, MenuItem } from 'react-bootstrap';
+
 import singleLineIcons from '../bower_components/simple-line-icons/css/simple-line-icons.css'
 
 class Sidebar extends React.Component {
@@ -45,7 +43,7 @@ class Sidebar extends React.Component {
   }
 
   handleOnClick(selectedTab) {
-    this.props.onClickSidebarTab(selectedTab)
+    this.props.onClickSidebarTab(selectedTab.replace('/', ''))
   }
 
   render() {
@@ -69,12 +67,6 @@ class Sidebar extends React.Component {
             <li className="nav-heading ">
               <span data-localize="sidebar.heading.HEADER">Main Navigation</span>
             </li>
-
-            <NavDropdown eventKey={ 3 } title="Select your loan" id="basic-nav-dropdown" >
-              <MenuItem className="animated flipInX" eventKey={3.1}>Loan 1 - balance: $3000</MenuItem>
-              <MenuItem className="animated flipInX" eventKey={3.2}>Loan 2 - balance: $4000</MenuItem>
-              <MenuItem className="animated flipInX" eventKey={3.3}>Loan 3 - balance: $5000</MenuItem>
-            </NavDropdown>
 
             { /* render tabs */ }
             {displayTabs}

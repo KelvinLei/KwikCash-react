@@ -16,8 +16,6 @@ import fontAwesome from './themeJsx/bower_components/fontawesome/css/font-awesom
 import App from './containers/App'
 import LoanSelection from './containers/member/loanSelection/LoanSelection'
 import LoanSummary from './containers/member/loanSummary/LoanSummary'
-import LoanSummaryOld from './containers/member/loanSummary/LoanSummaryOld'
-import PaymentInfo from './containers/member/paymentInfo/PaymentInfo'
 import Refinance from './containers/member/refinance/Refinance'
 import Login from './containers/login/Login'
 import { getUser } from './api'
@@ -62,12 +60,9 @@ ReactDOM.render(
         {/* if no loadId is specified, redirect back to loan selection page */}
         <Route path="/loanSummary" component={LoanSelection}/>
         <Route path="/loanSummary/:loanId" component={LoanSummary}/>
-
-
-        <Route path="/myLoan" component={LoanSummaryOld}/>
-        <Route path="/paymentPlan" component={PaymentInfo}/>
         <Route path="/refinance" component={Refinance}/>
       </Route>
+      
       <Route path="/login" component={Login}/>
     </Router>
   </Provider>,

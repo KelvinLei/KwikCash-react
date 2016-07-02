@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {selectPaymentStatus} from '../../../redux/actions/member/memberAction'
-import PaymentPlanContent from '../../../components/member/paymentInfo/PaymentPlanContent'
+import { PaymentPlanContent } from '../../../components/member/paymentInfo/PaymentPlanContent'
 
 class PaymentInfo extends Component {
 
@@ -12,15 +12,16 @@ class PaymentInfo extends Component {
   render() {
     const tabList = ["All", "Complete", "Pending"];
 
-    const {selectPaymentStatus, paymentList} = this.props;
+    const { selectedPaymentStatus, paymentList, handleSelectPaymentTab } = this.props;
 
     return (
       <div>
+        
         <PaymentPlanContent
           tabList={tabList}
-          selectedTab={selectPaymentStatus}
+          selectedPaymentStatus={selectedPaymentStatus}
           paymentList={paymentList}
-          onClickPaymentTab={this.props.handleSelectPaymentTab}
+          onClickPaymentTab={handleSelectPaymentTab}
         />
       </div>
     )
@@ -28,7 +29,7 @@ class PaymentInfo extends Component {
 }
 
 PaymentInfo.propTypes = {
-  selectPaymentStatus: PropTypes.string.isRequired,
+  selectedPaymentStatus: PropTypes.string.isRequired,
   paymentList: PropTypes.array.isRequired
 }
 
@@ -41,7 +42,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
-  const selectPaymentStatus = state.selectPaymentStatus || "all"
+  const selectedPaymentStatus = state.selectedPaymentStatus || "all"
 
   const paymentList = [
     {id: 1, status: "Complete", dueDate: "06/01/2016", amount: "500"},
@@ -61,7 +62,7 @@ function mapStateToProps(state) {
   ];
 
   return {
-    selectPaymentStatus,
+    selectedPaymentStatus,
     paymentList
   }
 }

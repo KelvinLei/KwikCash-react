@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 
 import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 
-
-// import Sidebar from '../themeJsx/Layout/Sidebar'
 import Footer from '../themeJsx/Layout/Footer'
 
 import SidebarContainer from './member/sidebar/SidebarContainer';

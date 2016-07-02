@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Sidebar from '../../../themeJsx/Layout/Sidebar'
-import {MY_LOAN_PAGE_STATE, PAYMENT_PLAN_PAGE_STATE, REFINANCE_PAGE_STATE, MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE, MY_LOANS_PAGE_STATE}
+import { REFINANCE_PAGE_STATE, MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE, MY_LOANS_PAGE_STATE }
   from "../../../components/member/shared/Constants"
 
 import {selectMemberPage} from '../../../redux/actions/member/memberAction'
@@ -12,18 +12,12 @@ export default class SidebarContainer extends Component {
 
     // icons provided by bower_components/simple-line-icons/css/simple-line-icons.css
     const tabList = [
-      {tabName: 'My Loans',      toLink: MY_LOANS_PAGE_STATE,       icon: "icon-home",    className: selectedPage === MY_LOANS_PAGE_STATE? "active" : ""},
-      {tabName: 'My Loan',      toLink: MY_LOAN_PAGE_STATE,       icon: "icon-home",    className: selectedPage === MY_LOAN_PAGE_STATE? "active" : ""},
-      {tabName: 'Payment Plan', toLink: PAYMENT_PLAN_PAGE_STATE,  icon: "icon-layers",  className: selectedPage === PAYMENT_PLAN_PAGE_STATE? "active" : ""},
-      {tabName: 'Refinance',    toLink: REFINANCE_PAGE_STATE,     icon: "icon-support", className: selectedPage === REFINANCE_PAGE_STATE? "active" : ""},
-      {tabName: 'My Profile',   toLink: MY_PROFILE_PAGE_STATE,    icon: "icon-user",    className: selectedPage === MY_PROFILE_PAGE_STATE? "active" : ""},
-      {tabName: 'Logout',       toLink: LOGOUT_PAGE_STATE,        icon: "icon-logout",  className: selectedPage === LOGOUT_PAGE_STATE? "active" : ""}
+      {tabName: 'My Loans',     toLink: '/' + MY_LOANS_PAGE_STATE,      icon: "icon-home",    className: selectedPage === MY_LOANS_PAGE_STATE? "active" : ""},
+      {tabName: 'Refinance',    toLink: '/' + REFINANCE_PAGE_STATE,     icon: "icon-support", className: selectedPage === REFINANCE_PAGE_STATE? "active" : ""},
+      {tabName: 'My Profile',   toLink: '/' + MY_PROFILE_PAGE_STATE,    icon: "icon-user",    className: selectedPage === MY_PROFILE_PAGE_STATE? "active" : ""},
+      {tabName: 'Logout',       toLink: '/' + LOGOUT_PAGE_STATE,        icon: "icon-logout",  className: selectedPage === LOGOUT_PAGE_STATE? "active" : ""}
     ]
 
-    // <MemberNavBar loanSummaryClass={loanSummaryClass}
-    //               paymentInfoClass={paymentInfoClass}
-    //               onClickNavTab={this.props.handleSelectedNavTab}
-    // />
     return (
       <aside className='aside'>
         { /* invoke Sidebar from theme pack */ }
@@ -40,7 +34,7 @@ SidebarContainer.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     handleSelectedNavTab: (selectedTab) => {
-      const selectedTabValue = selectedTab || MY_LOAN_PAGE_STATE
+      const selectedTabValue = selectedTab || MY_LOANS_PAGE_STATE
 
       dispatch(selectMemberPage(selectedTabValue))
     }
@@ -48,7 +42,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
-  const selectedPage = state.selectedPage || MY_LOAN_PAGE_STATE
+  const selectedPage = state.selectedPage || MY_LOANS_PAGE_STATE
 
   return {
     selectedPage

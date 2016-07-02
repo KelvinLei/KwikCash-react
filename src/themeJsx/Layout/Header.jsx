@@ -51,15 +51,6 @@ class Header extends React.Component {
             </ul>
             { /* END Left navbar */ }
 
-            { /* loan selection dropdown */ }
-            <ul className="nav navbar-nav navbar">
-              <NavDropdown eventKey={ 3 } title="Select your loan" id="basic-nav-dropdown" >
-                <MenuItem className="animated flipInX" eventKey={3.1}>Loan 1 - balance: $3000</MenuItem>
-                <MenuItem className="animated flipInX" eventKey={3.2}>Loan 2 - balance: $4000</MenuItem>
-                <MenuItem className="animated flipInX" eventKey={3.3}>Loan 3 - balance: $5000</MenuItem>
-              </NavDropdown>
-            </ul>
-
             { /* START Refer friends */ }
             <ul className="nav navbar-nav navbar">
               <NavDropdown eventKey={ 3 } title="Refer friends" id="basic-nav-dropdown" >

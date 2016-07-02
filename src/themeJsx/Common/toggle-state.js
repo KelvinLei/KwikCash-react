@@ -32,8 +32,8 @@ class StateToggler {
     } else {
       data = WordChecker.addWord(data, classname);
     }
-    
-    $.localStorage.set(STORAGE_KEY_NAME, data);
+
+    $.localStorage && $.localStorage.set(STORAGE_KEY_NAME, data);
   }
 
   // Remove a state from the browser storage

@@ -2,7 +2,7 @@ import {
   SELECT_MEMBER_PAGE, SELECT_PAYMENT_STATUS, SELECT_REFINANCE_VALUE, ENTER_REFINANCE_VALUE, SELECT_USER_REFINANCE_VALUE
 } from '../../actions/member/memberAction'
 
-function selectPaymentStatus(state = "all", action) {
+function selectedPaymentStatus(state = "all", action) {
   switch (action.type) {
     case SELECT_PAYMENT_STATUS:
       return action.selectedStatus
@@ -81,6 +81,6 @@ function refinanceState(
 
 export default {
   selectedPage,
-  selectPaymentStatus,
+  selectedPaymentStatus,
   refinanceState
 }

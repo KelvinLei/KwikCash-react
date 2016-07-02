@@ -5,7 +5,7 @@ export default function(completePercentage) {
     "theme": "light",
     "titles": [ {
       "text": completePercentage + " completed!",
-      "size": 16
+      "size": 14
     } ],
     "dataProvider": [ {
       "status": "Complete",
@@ -25,7 +25,14 @@ export default function(completePercentage) {
     "angle": 15,
     "export": {
       "enabled": true
-    }
+    },
+    // "labelsEnabled": false,
+    "autoMargins": false,
+    "marginTop": 0,
+    "marginBottom": 0,
+    "marginLeft": 0,
+    "marginRight": 0,
+    "pullOutRadius": 0
   } );
   $( '.chart-input' ).off().on( 'input change', function() {
     var property = jQuery( this ).data( 'property' );
