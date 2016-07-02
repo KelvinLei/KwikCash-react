@@ -25,7 +25,7 @@ export default class LoanSummaryContent extends Component {
         <LoanSummaryOverview loanId={loanId} currentBalance={currentBalance} />
 
         <Row>
-          <Col md={ 8 } >
+          <Col md={ 10 } mdOffset={1} >
             <PaymentPlanContent tabList={tabList}
                                 selectedPaymentStatus={selectedPaymentStatus}
                                 paymentList={paymentList}
