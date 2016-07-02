@@ -16,7 +16,8 @@ class LoanSummary extends Component {
 
     return (
       <div>
-        <LoanSummaryContent currentBalance={currentBalance}
+        <LoanSummaryContent loanId={loanId}
+                            currentBalance={currentBalance}
                             tabList={tabList}
                             selectedPaymentStatus={selectedPaymentStatus}
                             paymentList={paymentList}

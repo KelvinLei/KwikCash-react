@@ -18,17 +18,20 @@ class Refinance extends Component {
             handleEnterUserRefinanceValue
     } = this.props
 
+    const { loanId } = this.props.params
+
     const refinanceValueOption = refinanceState.refinanceValue
     const userInputRefinanceValue = refinanceState.userInputRefinanceValue.value
     const userInputRadioChecked = refinanceState.userInputRefinanceValue.selected
 
     const refinanceValueForTable = userInputRadioChecked ? userInputRefinanceValue : refinanceValueOption
-    
+
     const newBalance = refinanceValueForTable - currentBalance
 
     return (
       <div>
-        <RefinanceContent currentBalance={currentBalance}
+        <RefinanceContent loandId={loanId}
+                          currentBalance={currentBalance}
                           refinanceState={refinanceState}
                           refinanceValueForTable={refinanceValueForTable}
                           newBalance={newBalance}

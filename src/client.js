@@ -2,7 +2,7 @@ import 'babel-polyfill'
 
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Router, browserHistory, Route, IndexRoute } from 'react-router'
+import { Router, browserHistory, Route, IndexRoute, Redirect } from 'react-router'
 import { Provider } from 'react-redux'
 import RootReducer from './redux/reducers'
 import configureStore from './redux/store/configureStore'
@@ -58,11 +58,13 @@ ReactDOM.render(
 
         <Route path="/myLoans" component={LoanSelection}/>
         {/* if no loadId is specified, redirect back to loan selection page */}
-        <Route path="/loanSummary" component={LoanSelection}/>
+        <Redirect from="/loanSummary" to="/myLoans" />
+        <Redirect from="/refinance" to="/myLoans" />
+
         <Route path="/loanSummary/:loanId" component={LoanSummary}/>
-        <Route path="/refinance" component={Refinance}/>
+        <Route path="/refinance(/:loanId)" component={Refinance}/>
       </Route>
-      
+
       <Route path="/login" component={Login}/>
     </Router>
   </Provider>,

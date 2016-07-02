@@ -6,7 +6,8 @@ import EstimateTable from './EstimateTable'
 
 export default class RefinanceContent extends Component {
   render() {
-    var { currentBalance,
+    var { loanId,
+          currentBalance,
           refinanceState,
           refinanceValueForTable,
           newBalance,
@@ -21,7 +22,7 @@ export default class RefinanceContent extends Component {
         { /* header */}
         <div className="content-heading">
           Refinance options
-          <small data-localize="dashboard.WELCOME">Selected loan ID: 1234</small>
+          <small data-localize="dashboard.WELCOME">Selected loan ID: {loanId}</small>
         </div>
 
         <Row>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel, Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 import ProgressChart from './progressChart';
 import styles from './styles.scss'
 import { PaymentPlanContent } from '../paymentInfo/PaymentPlanContent'
@@ -12,16 +13,16 @@ export default class LoanSummaryContent extends Component {
   }
 
   render() {
-    const { currentBalance, tabList, selectedPaymentStatus, paymentList, onClickPaymentTab } = this.props;
+    const { loanId, currentBalance, tabList, selectedPaymentStatus, paymentList, onClickPaymentTab } = this.props;
 
     return (
       <ContentWrapper>
         <div className="content-heading">
           Loan Summary
-          <small data-localize="dashboard.WELCOME">Selected loan ID: 1234</small>
+          <small data-localize="dashboard.WELCOME">Selected loan ID: {loanId}</small>
         </div>
 
-        <LoanSummaryOverview currentBalance={currentBalance} />
+        <LoanSummaryOverview loanId={loanId} currentBalance={currentBalance} />
 
         <Row>
           <Col md={ 8 } >
@@ -37,7 +38,7 @@ export default class LoanSummaryContent extends Component {
   }
 }
 
-const LoanSummaryOverview = ({currentBalance}) => (
+const LoanSummaryOverview = ({loanId, currentBalance}) => (
   <Row>
     <Col md={ 6 } className="text-left">
       <Panel className="panel-default" header="Payment progress">
@@ -67,7 +68,7 @@ const LoanSummaryOverview = ({currentBalance}) => (
 
           { /* END list group */ }
           <div className="panel-footer text-left">
-            <a href="#" className="btn btn-info btn-sm">Refinance</a>
+            <Link to={"/refinance/" + loanId} className="btn btn-info btn-sm">Refinance</Link>
           </div>
         </div>
       </Panel>
