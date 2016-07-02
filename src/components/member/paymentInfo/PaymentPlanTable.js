@@ -19,7 +19,7 @@ export const PaymentPlanTable = ({paymentList, selectedTab}) => {
   })
 
   return (
-    <Table id="paymentPlantTable" responsive bordered striped hover>
+    <Table id="paymentPlantTable" responsive striped hover>
       <thead>
       <tr>
         <th className="sort-numeric">#</th>
