@@ -1,5 +1,6 @@
 import React from 'react';
-import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
+import { Grid, Row, Col, Panel, Button } from 'react-bootstrap'
+import ErrorMessage from './loginErrorMessage'
 
 require('./login.scss');
 const logo = require('../../styles/img/current_logo_white.png');
@@ -12,9 +13,11 @@ export default class Login extends React.Component {
       router.push('/')
     }
   }
+
   render() {
     let username;
     let password;
+
     return (
       <div className="block-center mt-xl wd-xl">
       { /* START panel */ }
@@ -40,7 +43,7 @@ export default class Login extends React.Component {
                   placeholder="Enter email"
                   autoComplete="on"
                   required="required"
-                  className="form-control"
+                  className={ "form-control " + (this.props.loginFailed ? 'parsley-error' : '') }
                   ref = { e => username = e }/>
                   <span className="fa fa-envelope form-control-feedback text-muted"></span>
               </div>
@@ -49,9 +52,12 @@ export default class Login extends React.Component {
                   type="password"
                   placeholder="Password"
                   required="required"
-                  className="form-control"
+                  className={ "form-control " + (this.props.loginFailed ? 'parsley-error' : '') }
                   ref = { p => password = p} />
                   <span className="fa fa-lock form-control-feedback text-muted"></span>
+                  {(() => {
+                    return this.props.loginFailed ? <ErrorMessage/> : ''
+                  })()}
               </div>
               <div className="clearfix">
                   <div className="checkbox c-checkbox pull-left mt0">

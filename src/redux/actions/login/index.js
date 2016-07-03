@@ -23,6 +23,7 @@ export const loginRequest = () => {
     type: LOGIN_REQUEST,
     isFetching: true,
     isAuthenticated: false,
+    loginFailed: false,
   }
 }
 
@@ -31,6 +32,7 @@ export const loginSuccess = () => {
     type: LOGIN_SUCCESS,
     isFetching: false,
     isAuthenticated: true,
+    loginFailed: false,
   }
 }
 
@@ -39,5 +41,6 @@ export const loginFailed = () => {
     type: LOGIN_FAILED,
     isFetching: false,
     isAuthenticated: false,
+    loginFailed: true,
   }
 }
