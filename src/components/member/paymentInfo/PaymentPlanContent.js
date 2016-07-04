@@ -5,10 +5,11 @@ import { PaymentPlanTable } from './PaymentPlanTable'
 import { PaymentStatusTabs } from './PaymentStatusTabs'
 
 export const PaymentPlanContent = ({tabList, selectedPaymentStatus, paymentList, onClickPaymentTab}) => (
-  <Panel className="panel-default" header="Payment plan">
+  <Panel className="panel-default" header="Payment schedule plan">
     <Row className="text-center">
       <Button bsStyle="info" className="mb-sm">Payoff Loan</Button>
     </Row>
+
     <Grid fluid>
       <Row>
         <Col md={12}>
