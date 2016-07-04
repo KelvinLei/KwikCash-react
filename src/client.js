@@ -17,6 +17,7 @@ import App from './containers/App'
 import LoanSelection from './containers/member/loanSelection/LoanSelection'
 import LoanSummary from './containers/member/loanSummary/LoanSummary'
 import Refinance from './containers/member/refinance/Refinance'
+import MyProfile from './containers/member/myProfile/MyProfile'
 import Login from './containers/login/Login'
 import { getUser } from './api'
 
@@ -62,7 +63,9 @@ ReactDOM.render(
         <Redirect from="/refinance" to="/myLoans" />
 
         <Route path="/loanSummary/:loanId" component={LoanSummary}/>
-        <Route path="/refinance(/:loanId)" component={Refinance}/>
+        <Route path="/refinance/:loanId" component={Refinance}/>
+
+        <Route path="/myProfile" component={MyProfile}/>
       </Route>
 
       <Route path="/login" component={Login}/>
