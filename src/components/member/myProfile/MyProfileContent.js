@@ -97,7 +97,7 @@ export const MyProfileContent = ({
                   <div className="form-group">
                     <label className="col-sm-2 control-label">Update profile?</label>
                     <Col sm={ 10 }>
-                      <span className="help-block m-b-none">Please contact us for updating your profile</span>
+                      <span className="help-block m-b-none">Please contact us to update your profile</span>
                     </Col>
                   </div>
                 </fieldset>
