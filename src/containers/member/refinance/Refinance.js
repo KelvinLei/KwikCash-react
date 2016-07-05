@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import {selectRefinanceValue, enterRefinanceValue, selectUserRefinanceValue} from '../../../redux/actions/member/memberAction'
 
-import RefinanceContent from '../../../components/member/refinance/RefinanceContent'
+import { RefinanceContent } from '../../../components/member/refinance/RefinanceContent'
 
 class Refinance extends Component {
 
@@ -30,7 +30,7 @@ class Refinance extends Component {
 
     return (
       <div>
-        <RefinanceContent loandId={loanId}
+        <RefinanceContent loanId={loanId}
                           currentBalance={currentBalance}
                           refinanceState={refinanceState}
                           refinanceValueForTable={refinanceValueForTable}
