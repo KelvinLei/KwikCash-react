@@ -19,6 +19,7 @@ import LoanSummary from './containers/member/loanSummary/LoanSummary'
 import Refinance from './containers/member/refinance/Refinance'
 import MyProfile from './containers/member/myProfile/MyProfile'
 import Login from './containers/login/Login'
+import Logout from './components/login/logout'
 import { getUser } from './api'
 
 // Init translation system
@@ -69,6 +70,7 @@ ReactDOM.render(
       </Route>
 
       <Route path="/login" component={Login}/>
+      <Route path="/logout" component={Logout}/>
     </Router>
   </Provider>,
   document.getElementById('app')

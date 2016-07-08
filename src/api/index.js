@@ -31,6 +31,11 @@ export const authenticate = (username, password) => {
   })
 }
 
+// just clear the token
+export const logout = () => {
+  localStorage.user_token = ""
+}
+
 export const getUser = () => {
   return authenticatedPost('/api/user')
 }
