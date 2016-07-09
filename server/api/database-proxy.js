@@ -41,7 +41,11 @@ export function getLoanList(userId) {
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query('select loan_id, loan_date, loan_status, loan_amount, loan_paymentdate, loan_funddate, loan_rate, loan_term, loan_fundamount from tbl_loans where loan_member = ?', [userId],
+        connection.query(`select a.loan_member, a.loan_id, a.loan_date, a.loan_status, a.loan_amount, a.loan_funddate, a.loan_rate, a.loan_term,
+            a.loan_fundamount, b.loanpayment_date, b.loanpayment_amount, b.loanpayment_principal,  b.loanpayment_interest, b.loanpayment_scheduled
+            from tbl_loans a
+            join tbl_loanpayments b
+            where a.loan_id = b.loanpayment_loan and a.loan_member=? order by a.loan_funddate desc`, [userId],
         (err, rows) => {
           if (rows) {
             debug('getLoanList database response ' + rows)

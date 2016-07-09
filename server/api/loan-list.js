@@ -14,13 +14,51 @@ var LOAN_STATUS_MAP = {
 
 export async function getLoans(userId) {
   var rows = await getLoanList(userId)
-  debug('getLoans' + rows)
-  return rows.map(r => {
-    return {
-      id : r.loan_id,
-      date : r.loan_date,
-      status : LOAN_STATUS_MAP[r.loan_status]
+  debug(JSON.stringify(rows))
+
+  const loans = rows.reduce((prev, curr) => {
+    if (!prev[curr.loan_id]) {
+      prev[curr.loan_id] = []
     }
+    prev[curr.loan_id].push(curr);
+    return prev;
+  }, {})
+
+  //debug(JSON.stringify(loans))
+
+  const result = Object.keys(loans).map(loan => loans[loan]).map(loan => {
+    return loan.reduce((prevLoan, currentLoan) => {
+      var result = {
+        loanId : currentLoan.loan_id,
+        loanFundAmount: currentLoan.loan_fundamount,
+        loanFundDate : currentLoan.loan_funddate,
+        loanRate: currentLoan.loan_rate,
+        loanTerm: currentLoan.loan_term
+      };
+
+      if (!prevLoan.balance) {
+        result.balance = currentLoan.loan_fundamount
+      }
+
+      if (currentLoan.loanpayment_amount > 0) {
+        result.balance -= currentLoan.loanpayment_principal
+      }
+
+      const currentLoanDate = new Date(currentLoan.loanpayment_date)
+      const prevLoanDate = prevLoan.nextPaymentDate ? new Date(prevLoan.nextPaymentDate) : null
+
+      if (!prevLoanDate && currentLoanDate > Date.now()) {
+        result.nextPaymentDate = currentLoan.loanpayment_date;
+      }
+
+      if (prevLoanDate && currentLoanDate > Date.now() && currentLoanDate < prevLoanDate) {
+        result.nextPaymentDate = currentLoan.loanpayment_date
+      }
+      return {...prevLoan, ...result};
+    }, {})
   })
+
+  debug('getLoans' + result)
+  return result
 }
 
