@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import LoanSelectionContent from '../../../components/member/loanSelection/LoanSelectionContent'
+import { LoanSelectionContent } from '../../../components/member/loanSelection/LoanSelectionContent'
 import { fetchLoanListAction } from '../../../redux/actions/member/fetchLoanList'
 
 export default class LoanSelection extends Component {
@@ -15,26 +15,37 @@ export default class LoanSelection extends Component {
   }
 
   render() {
-    // const { loanList } = this.props;
+    const { isFetching, loans } = this.props;
 
-    const { loanId } = this.props.params
+    // convert data model from database to application data model
+    const loanList = loans.map( (loan) => {
+      // date format should be YYYY-MM-DD
+      const nextPayDate = new Date(loan.nextPaymentDate).toISOString().slice(0, 10)
+      const fundDate = new Date(loan.loanFundDate).toISOString().slice(0, 10)
 
-    const loanList = [
-        {"id": 1234, "status": "Active", "currentBalance": 3000.00, "APR": "4.00", "nextPaymentDate": "06/01/2016"},
-        {"id": 5342, "status": "Active", "currentBalance": 4000.00, "APR": "5.00", "nextPaymentDate": "06/15/2016"},
-        {"id": 1534, "status": "Complete", "currentBalance": 0, "APR": "6.00", "nextPaymentDate": ""}
-      ]
+      return {
+        id: loan.loanId,
+        status: loan.loanStatus,
+        balance: loan.balance,
+        APR: loan.loanRate.toFixed(2), // two decimals for APR
+        nextPaymentDate: nextPayDate,
+        term: loan.loanTerm,
+        fundDate: fundDate
+      }
+    })
 
     return (
       <div>
-        <LoanSelectionContent loanList={loanList}/>
+        <LoanSelectionContent isFetching={isFetching} loanList={loanList}/>
       </div>
     )
   }
 }
 
 LoanSelection.propTypes = {
-  loanList: PropTypes.object.isRequired
+  isFetching: PropTypes.bool.isRequired,
+  loans: PropTypes.array.isRequired,
+  fetchLoanList: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = dispatch => {
@@ -44,10 +55,11 @@ const mapDispatchToProps = dispatch => {
 }
 
 function mapStateToProps(state) {
-  const currentBalance = "3000.00" // state.currentBalance || "unknown"
+  const { loanList } = state
 
   return {
-    currentBalance
+    isFetching: loanList.isFetching,
+    loans: loanList.loans
   }
 }
 

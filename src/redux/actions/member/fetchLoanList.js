@@ -9,11 +9,12 @@ export const fetchLoanListAction = () => {
     dispatch(fetchLoanListRequest())
 
     getLoanList()
-      .then(loanList => {
-        console.log(loanList)
+      .then(response => {
+        dispatch(fetchLoanListSuccess(response.loans))
       })
       .catch(() => {
         console.log("fetch loan list failed")
+        dispatch(fetchLoanListError())
       })
   }
 }
@@ -26,7 +27,8 @@ export const fetchLoanListRequest = () => {
 
 export const fetchLoanListSuccess = (loanList) => {
   return {
-    type: FETCH_LOAN_LIST_SUCCESS
+    type: FETCH_LOAN_LIST_SUCCESS,
+    loans: loanList
   }
 }
 

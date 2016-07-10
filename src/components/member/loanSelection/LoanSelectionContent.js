@@ -1,60 +1,60 @@
-import React, { Component } from 'react'
+import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel } from 'react-bootstrap';
 import { Link } from 'react-router';
 
-export default class LoanSelectionContent extends Component {
+export const LoanSelectionContent = ({
+  isFetching,
+  loanList
+}) => {
 
-  render() {
-    const { loanList } = this.props;
+  const loanListDisplay = loanList.map( loan => {
+    const { id, status, balance, APR, term } = loan
 
-    const loanListDisplay = loanList.map( loan => {
-      const { id, status, currentBalance, APR } = loan
-
-      const nextPaymentDateDisplay = loan.nextPaymentDate || "NONE"
-
-      return (
-        <LoanEntry key={id}
-                   id={id}
-                   status={status}
-                   APR={APR}
-                   currentBalance={currentBalance}
-                   nextPaymentDate={nextPaymentDateDisplay}
-        />
-      )
-    })
+    const nextPaymentDateDisplay = loan.nextPaymentDate || "NONE"
 
     return (
-      <ContentWrapper>
-        <div className="content-heading">
-          Loan Selection
-          <small data-localize="dashboard.WELCOME">Please select a loan</small>
-        </div>
+      <LoanEntry key={id}
+                 id={id}
+                 status={status}
+                 APR={APR}
+                 currentBalance={balance}
+                 nextPaymentDate={nextPaymentDateDisplay}
+                 term={term}
+      />
+    )
+  })
 
+  return (
+    <ContentWrapper>
+      <div className="content-heading">
+        Loan Selection
+        <small data-localize="dashboard.WELCOME">Please select a loan</small>
+      </div>
+
+      <Row>
+        <Col md={ 12 }>
+          <h4>Hello John</h4>
+        </Col>
+      </Row>
+
+      <Panel className="panel-default" header="Please select a loan for details">
         <Row>
           <Col md={ 12 }>
-            <h4>Hello John</h4>
+            { /* START List group */ }
+            <ul className="list-group">
+              {loanListDisplay}
+            </ul>
+            { /* END List group */ }
           </Col>
         </Row>
-
-        <Panel className="panel-default" header="Please select a loan for details">
-          <Row>
-            <Col md={ 12 }>
-              { /* START List group */ }
-              <ul className="list-group">
-                {loanListDisplay}
-              </ul>
-              { /* END List group */ }
-            </Col>
-          </Row>
-        </Panel>
-      </ContentWrapper>
-    )
-  }
+      </Panel>
+    </ContentWrapper>
+  )
 }
 
-const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate}) => {
-  const className = status === "Complete" ? "label label-success" : "label label-warning"
+const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term}) => {
+  const className = status === "COMPLETE" ? "label label-success" : "label label-warning"
 
   const loanSummaryUrl = '/loanSummary/' + id
 
@@ -82,6 +82,12 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate}) => {
               <div className="ph">
                 <p className="m0">Balance</p>
                 <small className="text-muted">${currentBalance}</small>
+              </div>
+            </td>
+            <td className="wd-xs hidden-xs hidden-sm">
+              <div className="ph">
+                <p className="m0">Term</p>
+                <small className="text-muted">{term} mo</small>
               </div>
             </td>
             <td className="wd-xs hidden-xs hidden-sm">
