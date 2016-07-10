@@ -2,6 +2,7 @@ import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
+require('./profile.scss');
 
 export const MyProfileContent = ({
   activeLoansCount,
@@ -16,10 +17,6 @@ export const MyProfileContent = ({
 
   const visaIcon = require('../../../styles/img/visa-credit-card.png')
 
-  const profileBackgroundStyles = {
-    backgroundImage: "url('bg7.jpg')"
-  }
-
   const inlineImageWithText = {
     display: "inline",
     width:  "40px",
@@ -28,7 +25,7 @@ export const MyProfileContent = ({
 
   return (
     <ContentWrapper unwrap>
-      <div className="bg-cover" style={profileBackgroundStyles}>
+      <div id="profile-bg" className="bg-cover">
         <div className="p-xl text-center text-white">
           <img src={profileIconImg} alt="Image" className="img-thumbnail img-circle thumb128" />
           <h3 className="m0">{name}</h3>
