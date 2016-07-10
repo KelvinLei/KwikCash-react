@@ -33,7 +33,8 @@ export async function getLoans(userId) {
         loanFundAmount: currentLoan.loan_fundamount,
         loanFundDate : currentLoan.loan_funddate,
         loanRate: currentLoan.loan_rate,
-        loanTerm: currentLoan.loan_term
+        loanTerm: currentLoan.loan_term,
+        loanStatus : LOAN_STATUS_MAP[currentLoan.loan_status],
       };
 
       if (!prevLoan.balance) {
