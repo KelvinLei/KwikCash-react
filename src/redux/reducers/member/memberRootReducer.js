@@ -82,19 +82,32 @@ const loanList = (state = {
         loans: []
       }
     case FETCH_LOAN_LIST_SUCCESS:
-      // mocking a complete loan for testing purpose
+      // mocking a complete loan and a late loan for testing purpose
       const completeLoan = {
         balance: 0,
         loanFundAmount: 10000,
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 6123,
         loanRate: 75.5123,
-        loanStatus: "COMPLETE",
+        loanStatus: "PAID",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
+
+      const lateLoan = {
+        balance: 3000,
+        loanFundAmount: 10000,
+        loanFundDate: "2016-06-01T07:00:00.000Z",
+        loanId: 6055,
+        loanRate: 75.5123,
+        loanStatus: "LATE",
+        loanTerm: 24,
+        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+      }
+
       action.loans.push(completeLoan)
-      
+      action.loans.push(lateLoan)
+
       return {
         ...state,
         isFetching: false,

@@ -54,7 +54,20 @@ export const LoanSelectionContent = ({
 }
 
 const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term}) => {
-  const className = status === "COMPLETE" ? "label label-success" : "label label-warning"
+
+  let className;
+  switch (status) {
+    case "ACTIVE":
+    case "MANUAL":
+    case "PLAN":
+      className = "label label-warning"
+      break;
+    case "PAID":
+      className = "label label-success"
+      break;
+    default:
+      className = "label label-danger"
+  }
 
   const loanSummaryUrl = '/loanSummary/' + id
 
