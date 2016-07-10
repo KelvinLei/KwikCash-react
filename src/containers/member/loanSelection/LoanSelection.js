@@ -1,11 +1,17 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import LoanSelectionContent from '../../../components/member/loanSelection/LoanSelectionContent'
+import { fetchLoanListAction } from '../../../redux/actions/member/fetchLoanList'
 
 export default class LoanSelection extends Component {
 
   constructor(props) {
     super(props)
+  }
+
+  componentDidMount() {
+    const { fetchLoanList } = this.props
+    fetchLoanList()
   }
 
   render() {
@@ -27,18 +33,25 @@ export default class LoanSelection extends Component {
   }
 }
 
-// LoanSelection.propTypes = {
-//   loanList: PropTypes.object.isRequired
-// }
-//
-// function mapStateToProps(state) {
-//   const currentBalance = "3000.00" // state.currentBalance || "unknown"
-//
-//   return {
-//     currentBalance
-//   }
-// }
-//
-// export default connect(
-//   mapStateToProps
-// )(LoanSelection)
+LoanSelection.propTypes = {
+  loanList: PropTypes.object.isRequired
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchLoanList: () => dispatch(fetchLoanListAction())
+  }
+}
+
+function mapStateToProps(state) {
+  const currentBalance = "3000.00" // state.currentBalance || "unknown"
+
+  return {
+    currentBalance
+  }
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoanSelection)
