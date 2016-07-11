@@ -6,9 +6,20 @@ import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 
 export const LoanSelectionContent = ({
   isFetching,
+  fetchLoansFailed,
   loanList
 }) => {
-  const displayContent = isFetching ? <LoadingSpinner/> : <LoanSelectionWidget loanList={loanList}/>
+  // display different components based on the status of getLoanList api call
+  let displayContent
+  if (isFetching) {
+    displayContent = <LoadingSpinner/>
+  }
+  else if (fetchLoansFailed) {
+    displayContent = <FailureWidget/>
+  }
+  else {
+    displayContent = <LoanSelectionWidget loanList={loanList}/>
+  }
 
   return (
     <ContentWrapper>
@@ -67,8 +78,7 @@ const LoanSelectionWidget = ({loanList}) => {
  Renders each loan entry in the loan selection
  */
 const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term}) => {
-
-  let className;
+  let className
   switch (status) {
     case "ACTIVE":
     case "MANUAL":
@@ -135,3 +145,16 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term}) => 
     </div>
   )
 }
+
+/*
+  Renders error messagings
+ */
+const FailureWidget = () => (
+  <Panel className="panel-default" header="Error">
+    <Row>
+      <Col md={ 12 }>
+        Sorry, we failed to retrieve your data. Please try again or contact us.
+      </Col>
+    </Row>
+  </Panel>
+)

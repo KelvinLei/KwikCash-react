@@ -15,10 +15,10 @@ export default class LoanSelection extends Component {
   }
 
   render() {
-    const { isFetching, loans } = this.props;
+    const { isFetching, fetchLoansFailed, loans } = this.props;
 
     // convert data model from database to application data model
-    const loanList = loans.map( (loan) => {
+    const loanList = !isFetching && !fetchLoansFailed && loans.map( (loan) => {
       // date format should be YYYY-MM-DD
       const nextPayDate = new Date(loan.nextPaymentDate).toISOString().slice(0, 10)
       const fundDate = new Date(loan.loanFundDate).toISOString().slice(0, 10)
@@ -36,7 +36,7 @@ export default class LoanSelection extends Component {
 
     return (
       <div>
-        <LoanSelectionContent isFetching={isFetching} loanList={loanList}/>
+        <LoanSelectionContent isFetching={isFetching} fetchLoansFailed={fetchLoansFailed} loanList={loanList}/>
       </div>
     )
   }
@@ -44,6 +44,7 @@ export default class LoanSelection extends Component {
 
 LoanSelection.propTypes = {
   isFetching: PropTypes.bool.isRequired,
+  fetchLoansFailed: PropTypes.bool.isRequired,
   loans: PropTypes.array.isRequired,
   fetchLoanList: PropTypes.func.isRequired
 }
@@ -59,6 +60,7 @@ function mapStateToProps(state) {
 
   return {
     isFetching: loanList.isFetching,
+    fetchLoansFailed: loanList.fetchLoansFailed,
     loans: loanList.loans
   }
 }
