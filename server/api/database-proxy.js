@@ -61,7 +61,7 @@ export function getLoanList(userId) {
 }
 
 export function getPaymentsForLoan(loanId) {
-  debug('getPaymentsForLoan ' + userId);
+  debug('getPaymentsForLoan ' + loanId);
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {

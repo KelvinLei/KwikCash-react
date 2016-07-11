@@ -43,3 +43,9 @@ export const getUser = () => {
 export const getLoanList = () => {
   return authenticatedPost('/api/loanlist')
 }
+
+export const getPayments = (loanId) => {
+  return authenticatedPost('/api/loanlist', {
+    loanId
+  })
+}

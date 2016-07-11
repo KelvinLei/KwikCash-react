@@ -24,8 +24,6 @@ export async function getLoans(userId) {
     return prev;
   }, {})
 
-  //debug(JSON.stringify(loans))
-
   const result = Object.keys(loans).map(loan => loans[loan]).map(loan => {
     return loan.reduce((prevLoan, currentLoan) => {
       var result = {

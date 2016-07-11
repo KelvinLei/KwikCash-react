@@ -1,5 +1,6 @@
 import { authenticateUser } from './api/authenticate'
 import { getLoans } from './api/loan-list'
+import { getPayments } from './api/payments'
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from './config'
@@ -58,6 +59,26 @@ export function init(server) {
         'application/json': () => {
           res.send({
             loans: loans
+          });
+        }
+      });
+    })();
+  });
+
+  server.post('/api/payments', (req, res) => {
+    debug("invoking /api/payments");
+
+    if (!req.body.loanId) {
+      res.status(400).send("missing input loanId");
+    }
+
+    (async () => {
+      var payments = await getPayments(req.body.loanId);
+      debug("payments: " + JSON.stringify(payments));
+      res.format({
+        'application/json': () => {
+          res.send({
+            payments: payments
           });
         }
       });
