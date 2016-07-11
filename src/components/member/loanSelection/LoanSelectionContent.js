@@ -2,28 +2,13 @@ import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel } from 'react-bootstrap';
 import { Link } from 'react-router';
+import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 
 export const LoanSelectionContent = ({
   isFetching,
   loanList
 }) => {
-
-  const loanListDisplay = loanList.map( loan => {
-    const { id, status, balance, APR, term } = loan
-
-    const nextPaymentDateDisplay = loan.nextPaymentDate || "NONE"
-
-    return (
-      <LoanEntry key={id}
-                 id={id}
-                 status={status}
-                 APR={APR}
-                 currentBalance={balance}
-                 nextPaymentDate={nextPaymentDateDisplay}
-                 term={term}
-      />
-    )
-  })
+  const displayContent = isFetching ? <LoadingSpinner/> : <LoanSelectionWidget loanList={loanList}/>
 
   return (
     <ContentWrapper>
@@ -38,21 +23,49 @@ export const LoanSelectionContent = ({
         </Col>
       </Row>
 
-      <Panel className="panel-default" header="Please select a loan for details">
-        <Row>
-          <Col md={ 12 }>
-            { /* START List group */ }
-            <ul className="list-group">
-              {loanListDisplay}
-            </ul>
-            { /* END List group */ }
-          </Col>
-        </Row>
-      </Panel>
+      { displayContent }
+
     </ContentWrapper>
   )
 }
 
+/*
+ Renders the loan selection widget if loan list data is available
+ */
+const LoanSelectionWidget = ({loanList}) => {
+  const loanListDisplay = loanList.map( loan => {
+    const { id, status, balance, APR, term } = loan
+    const nextPaymentDateDisplay = loan.nextPaymentDate || "NONE"
+
+    return (
+      <LoanEntry key={id}
+                 id={id}
+                 status={status}
+                 APR={APR}
+                 currentBalance={balance}
+                 nextPaymentDate={nextPaymentDateDisplay}
+                 term={term} />
+    )
+  })
+
+  return (
+    <Panel className="panel-default" header="Please select a loan for details">
+      <Row>
+        <Col md={ 12 }>
+          { /* START List group */ }
+          <ul className="list-group">
+            {loanListDisplay}
+          </ul>
+          { /* END List group */ }
+        </Col>
+      </Row>
+    </Panel>
+  )
+}
+
+/*
+ Renders each loan entry in the loan selection
+ */
 const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term}) => {
 
   let className;
