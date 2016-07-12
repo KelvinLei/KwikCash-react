@@ -1,7 +1,6 @@
 import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Row, Col, Panel, Button } from 'react-bootstrap';
-import { Link } from 'react-router';
+import {Row, Col, Panel } from 'react-bootstrap';
 require('./profile.scss');
 
 export const MyProfileContent = ({
@@ -19,7 +18,7 @@ export const MyProfileContent = ({
 
   const inlineImageWithText = {
     display: "inline",
-    width:  "40px",
+    width: "40px",
     height: "40px"
   }
 
@@ -27,7 +26,7 @@ export const MyProfileContent = ({
     <ContentWrapper unwrap>
       <div id="profile-bg" className="bg-cover">
         <div className="p-xl text-center text-white">
-          <img src={profileIconImg} alt="Image" className="img-thumbnail img-circle thumb128" />
+          <img src={profileIconImg} alt="Image" className="img-thumbnail img-circle thumb128"/>
           <h3 className="m0">{name}</h3>
           <p>Loan Applicant</p>
         </div>
