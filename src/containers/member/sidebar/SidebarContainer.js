@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import Sidebar from '../../../themeJsx/Layout/Sidebar'
-import { MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE, MY_LOANS_PAGE_STATE }
+import { MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE, MY_LOANS_PAGE_STATE, CONTACT_US_PAGE_STATE }
   from "../../../components/member/shared/Constants"
 
 import {selectMemberPage} from '../../../redux/actions/member/memberAction'
@@ -14,6 +14,7 @@ export default class SidebarContainer extends Component {
     const tabList = [
       {tabName: 'My Loans',     toLink: '/' + MY_LOANS_PAGE_STATE,      icon: "icon-home",    className: selectedPage === MY_LOANS_PAGE_STATE? "active" : ""},
       {tabName: 'My Profile',   toLink: '/' + MY_PROFILE_PAGE_STATE,    icon: "icon-user",    className: selectedPage === MY_PROFILE_PAGE_STATE? "active" : ""},
+      {tabName: 'Contact Us',   toLink: '/' + CONTACT_US_PAGE_STATE,    icon: "icon-call-out",className: selectedPage === CONTACT_US_PAGE_STATE? "active" : ""},
       {tabName: 'Logout',       toLink: '/' + LOGOUT_PAGE_STATE,        icon: "icon-logout",  className: selectedPage === LOGOUT_PAGE_STATE? "active" : ""}
     ]
 

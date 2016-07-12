@@ -18,6 +18,7 @@ import LoanSelection from './containers/member/loanSelection/LoanSelection'
 import LoanSummary from './containers/member/loanSummary/LoanSummary'
 import Refinance from './containers/member/refinance/Refinance'
 import MyProfile from './containers/member/myProfile/MyProfile'
+import { ContactUs } from './components/member/contactUs/ContactUs'
 import Login from './containers/login/Login'
 import Logout from './components/login/logout'
 import { getUser } from './api'
@@ -67,6 +68,7 @@ ReactDOM.render(
         <Route path="/refinance/:loanId" component={Refinance}/>
 
         <Route path="/myProfile" component={MyProfile}/>
+        <Route path="/contactUs" component={ContactUs}/>
       </Route>
 
       <Route path="/login" component={Login}/>
