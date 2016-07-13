@@ -1,6 +1,6 @@
 import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Row, Col, Panel } from 'react-bootstrap';
+import { Row, Col, Panel, Alert } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 
@@ -83,7 +83,7 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term}) => 
     case "ACTIVE":
     case "MANUAL":
     case "PLAN":
-      className = "label label-warning"
+      className = "label label-info"
       break;
     case "PAID":
       className = "label label-success"
@@ -142,12 +142,20 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term}) => 
           </tbody>
         </table>
       </Link>
+
+      { status === "LATE" &&
+        <Link to="/contactUs">
+          <Alert bsStyle="warning">
+            <em className="fa fa-exclamation-circle fa-lg fa-fw"/>Your account is currently past due, please contact our office. Click for contact info.
+          </Alert>
+        </Link>
+      }
     </div>
   )
 }
 
 /*
-  Renders error messagings
+ Renders error messagings
  */
 const FailureWidget = () => (
   <Panel className="panel-default" header="Error">

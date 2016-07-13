@@ -1,5 +1,5 @@
 import {
-  SELECT_MEMBER_PAGE, SELECT_PAYMENT_STATUS, SELECT_REFINANCE_VALUE, ENTER_REFINANCE_VALUE, SELECT_USER_REFINANCE_VALUE
+  SELECT_PAYMENT_STATUS, SELECT_REFINANCE_VALUE, ENTER_REFINANCE_VALUE, SELECT_USER_REFINANCE_VALUE
 } from '../../actions/member/memberAction'
 import {
   FETCH_LOAN_LIST_REQUEST, FETCH_LOAN_LIST_SUCCESS, FETCH_LOAN_LIST_ERROR
@@ -9,16 +9,6 @@ function selectedPaymentStatus(state = "all", action) {
   switch (action.type) {
     case SELECT_PAYMENT_STATUS:
       return action.selectedStatus
-
-    default:
-      return state
-  }
-}
-
-function selectedPage(state = "myLoans", action) {
-  switch (action.type) {
-    case SELECT_MEMBER_PAGE:
-      return action.selectedNavTab
 
     default:
       return state
@@ -93,7 +83,6 @@ const loanList = (state = {
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
-
       const lateLoan = {
         balance: 3000,
         loanFundAmount: 10000,
@@ -104,9 +93,42 @@ const loanList = (state = {
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
+      const manualLoan = {
+        balance: 3000,
+        loanFundAmount: 10000,
+        loanFundDate: "2016-06-01T07:00:00.000Z",
+        loanId: 5123,
+        loanRate: 75.5123,
+        loanStatus: "MANUAL",
+        loanTerm: 24,
+        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+      }
+      const chargedOffLoan = {
+        balance: 3000,
+        loanFundAmount: 10000,
+        loanFundDate: "2016-06-01T07:00:00.000Z",
+        loanId: 1231,
+        loanRate: 75.5123,
+        loanStatus: "DEFAULTED",
+        loanTerm: 24,
+        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+      }
+      const planLoan = {
+        balance: 3000,
+        loanFundAmount: 10000,
+        loanFundDate: "2016-06-01T07:00:00.000Z",
+        loanId: 5635,
+        loanRate: 75.5123,
+        loanStatus: "PLAN",
+        loanTerm: 24,
+        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+      }
 
       action.loans.push(completeLoan)
       action.loans.push(lateLoan)
+      action.loans.push(manualLoan)
+      action.loans.push(chargedOffLoan)
+      action.loans.push(planLoan)
 
       return {
         ...state,
@@ -128,7 +150,6 @@ const loanList = (state = {
 }
 
 export default {
-  selectedPage,
   selectedPaymentStatus,
   refinanceState,
   loanList

@@ -47,12 +47,12 @@ class Sidebar extends React.Component {
   }
 
   render() {
-    const { tabList, onClickSidebarTab } = this.props
+    const { tabList } = this.props
 
     var displayTabs = tabList.map((tabData, id) => {
       return (
         <li key={id} className={tabData.className}>
-          <Link to={tabData.toLink} title={tabData.tabName} data-stateValue={tabData.toLink} onClick={this.handleOnClick.bind(this, tabData.toLink)}>
+          <Link to={tabData.toLink} title={tabData.tabName} data-stateValue={tabData.toLink} >
             <em className={tabData.icon}/>
             <span data-localize="sidebar.nav.SINGLEVIEW">{tabData.tabName}</span>
           </Link>
