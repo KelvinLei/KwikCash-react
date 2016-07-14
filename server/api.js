@@ -1,6 +1,7 @@
 import { authenticateUser } from './api/authenticate'
 import { getLoans } from './api/loan-list'
 import { getPayments } from './api/payments'
+import { getUserDataAsync } from './api/get-user-data'
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from './config'
@@ -45,6 +46,24 @@ export function init(server) {
         res.send({ 'user': req.user });
       }
     });
+  });
+
+  server.post('/api/userdata', (req, res) => {
+    debug("getting userdata");
+
+    (async () => {
+
+      debug("getting userdata for " + req.user.id);
+      var userData = await getUserDataAsync(req.user.id);
+      debug("userData: " + JSON.stringify(userData));
+      res.format({
+        'application/json': () => {
+          res.send({
+            userData,
+          });
+        }
+      });
+    })();
   });
 
   server.post('/api/loanlist', (req, res) => {

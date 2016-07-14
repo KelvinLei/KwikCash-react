@@ -36,6 +36,34 @@ export function getUser(userId) {
   });
 }
 
+export function getUserData(userId) {
+  debug('getUserData' + userId);
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query('select fname, lname, hcity, hstate, hzip from e_applications where application_member = ? order by time DESC limit 1', [userId],
+        (err, rows) => {
+          if (rows && rows.length) {
+            var row = rows[0];
+            var result = {
+              firstName: row.fname,
+              lastName: row.lname,
+              city: row.hcity,
+              state: row.hstate,
+              zip: row.hzip,
+            }
+            debug('getUserData db response ' + JSON.stringify(result))
+            resolve(result);
+          } else {
+            debug('coudnlt get userData')
+            reject(new Error("couldnt get userData"));
+          }
+      })
+      connection.release()
+    })
+  });
+}
+
 export function getLoanList(userId) {
   debug('getLoanList ' + userId);
 
