@@ -28,7 +28,7 @@ export async function authenticateUser(userName, password) {
     var isValidPassword = user.encryptedPassword && user.encryptedPassword.length && salted_compare(password, user.encryptedPassword)
     return {
       id: user.id,
-      userName: user.userName,
+      username: user.userId,
       isValidPassword: isValidPassword,
       name: user.name,
     }

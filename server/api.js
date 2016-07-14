@@ -38,7 +38,7 @@ export function init(server) {
 
   // no input/service call needed here. user is deduced from the jwt token stored in local storage
   server.post('/api/user', (req, res) => {
-    debug("calling authenticate/validate");
+    debug("calling api/user");
 
     res.format({
       'application/json': () => {
