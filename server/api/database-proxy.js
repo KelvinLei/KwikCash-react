@@ -48,9 +48,9 @@ export function getUserData(userId) {
             var result = {
               firstName: row.fname,
               lastName: row.lname,
-              city: row.hcity,
+              encryptedCity: row.hcity.toString(),
               state: row.hstate,
-              zip: row.hzip,
+              encryptedZip: row.hzip.toString(),
             }
             debug('getUserData db response ' + JSON.stringify(result))
             resolve(result);
