@@ -58,13 +58,13 @@ ReactDOM.render(
         {/* Default route*/}
         <IndexRoute component={LoanSelection}/>
 
-        <Route path="/myLoans" component={LoanSelection}/>
+        <Route path="/myLoans/loanSummary/:loanId" component={LoanSummary}/>
+        <Route path="/myLoans/refinance/:loanId" component={Refinance}/>
         {/* if no loadId is specified, redirect back to loan selection page */}
-        <Redirect from="/loanSummary" to="/myLoans" />
-        <Redirect from="/refinance" to="/myLoans" />
-
-        <Route path="/loanSummary/:loanId" component={LoanSummary}/>
-        <Route path="/refinance/:loanId" component={Refinance}/>
+        <Redirect from="/myLoans/loanSummary" to="/myLoans" />
+        <Redirect from="/myLoans/refinance" to="/myLoans" />
+        
+        <Route path="/myLoans" component={LoanSelection}/>
 
         <Route path="/myProfile" component={MyProfile}/>
       </Route>

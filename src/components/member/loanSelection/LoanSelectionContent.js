@@ -95,7 +95,7 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term, loan
       className = "label label-danger"
   }
 
-  const loanSummaryUrl = '/loanSummary/' + id
+  const loanSummaryUrl = '/myLoans/loanSummary/' + id
   const loanStatusName = loanStatusMap[status]
 
   return (
