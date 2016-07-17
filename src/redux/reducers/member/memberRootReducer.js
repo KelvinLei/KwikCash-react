@@ -79,7 +79,7 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 6123,
         loanRate: 75.5123,
-        loanStatus: "PAID",
+        loanStatus: "P",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -89,7 +89,7 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 6055,
         loanRate: 75.5123,
-        loanStatus: "LATE",
+        loanStatus: "L",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -99,7 +99,7 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 5123,
         loanRate: 75.5123,
-        loanStatus: "MANUAL",
+        loanStatus: "M",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -109,7 +109,7 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 1231,
         loanRate: 75.5123,
-        loanStatus: "DEFAULTED",
+        loanStatus: "D",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -119,7 +119,7 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 5635,
         loanRate: 75.5123,
-        loanStatus: "PLAN",
+        loanStatus: "F",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }

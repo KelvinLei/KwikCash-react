@@ -3,15 +3,6 @@ import _debug from 'debug'
 
 const debug = _debug('app:server:api:loan-list')
 
-var LOAN_STATUS_MAP = {
-  A: 'ACTIVE',
-  L: 'LATE',
-  M: 'MANUAL',
-  P: 'PAID',
-  D: 'DEFAULTED',
-  F: 'PLAN',
-};
-
 export async function getLoans(userId) {
   var rows = await getLoanList(userId)
   debug(JSON.stringify(rows))
@@ -32,7 +23,7 @@ export async function getLoans(userId) {
         loanFundDate : currentLoan.loan_funddate,
         loanRate: currentLoan.loan_rate,
         loanTerm: currentLoan.loan_term,
-        loanStatus : LOAN_STATUS_MAP[currentLoan.loan_status],
+        loanStatus : currentLoan.loan_status,
       };
 
       if (!prevLoan.balance) {

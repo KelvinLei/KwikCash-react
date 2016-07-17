@@ -17,6 +17,15 @@ export default class LoanSelection extends Component {
   render() {
     const { isFetching, fetchLoansFailed, loans } = this.props;
 
+    var loanStatusMap = {
+      A: 'ACTIVE',
+      L: 'LATE',
+      M: 'MANUAL',
+      P: 'PAID',
+      D: 'Charged off',
+      F: 'PLAN'
+    };
+
     // convert data model from database to application data model
     const loanList = !isFetching && !fetchLoansFailed && loans.map( (loan) => {
       // date format should be YYYY-MM-DD
@@ -36,7 +45,7 @@ export default class LoanSelection extends Component {
 
     return (
       <div>
-        <LoanSelectionContent isFetching={isFetching} fetchLoansFailed={fetchLoansFailed} loanList={loanList}/>
+        <LoanSelectionContent isFetching={isFetching} fetchLoansFailed={fetchLoansFailed} loanList={loanList} loanStatusMap={loanStatusMap}/>
       </div>
     )
   }
