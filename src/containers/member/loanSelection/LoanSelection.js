@@ -17,35 +17,9 @@ export default class LoanSelection extends Component {
   render() {
     const { isFetching, fetchLoansFailed, loans } = this.props;
 
-    var loanStatusMap = {
-      A: 'ACTIVE',
-      L: 'LATE',
-      M: 'MANUAL',
-      P: 'PAID',
-      D: 'Charged off',
-      F: 'PLAN'
-    };
-
-    // convert data model from database to application data model
-    const loanList = !isFetching && !fetchLoansFailed && loans.map( (loan) => {
-      // date format should be YYYY-MM-DD
-      const nextPayDate = new Date(loan.nextPaymentDate).toISOString().slice(0, 10)
-      const fundDate = new Date(loan.loanFundDate).toISOString().slice(0, 10)
-
-      return {
-        id: loan.loanId,
-        status: loan.loanStatus,
-        balance: loan.balance,
-        APR: loan.loanRate.toFixed(2), // two decimals for APR
-        nextPaymentDate: nextPayDate,
-        term: loan.loanTerm,
-        fundDate: fundDate
-      }
-    })
-
     return (
       <div>
-        <LoanSelectionContent isFetching={isFetching} fetchLoansFailed={fetchLoansFailed} loanList={loanList} loanStatusMap={loanStatusMap}/>
+        <LoanSelectionContent isFetching={isFetching} fetchLoansFailed={fetchLoansFailed} loanList={loans}/>
       </div>
     )
   }

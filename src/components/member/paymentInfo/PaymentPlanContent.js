@@ -4,11 +4,14 @@ import { Grid, Row, Col, Panel, Button } from 'react-bootstrap';
 import { PaymentPlanTable } from './PaymentPlanTable'
 import { PaymentStatusTabs } from './PaymentStatusTabs'
 
-export const PaymentPlanContent = ({tabList, selectedPaymentStatus, paymentList, onClickPaymentTab}) => (
+export const PaymentPlanContent = ({tabList, shouldDisplayPayoff, selectedPaymentStatus, paymentList, onClickPaymentTab}) => (
   <Panel className="panel-default" header="Payments schedule">
-    <Row className="text-center">
-      <Button bsStyle="info" className="mb-sm">Payoff Loan</Button>
-    </Row>
+    {
+      shouldDisplayPayoff &&
+      <Row className="text-center">
+        <Button bsStyle="info" className="mb-sm">Payoff Loan</Button>
+      </Row>
+    }
 
     <Grid fluid>
       <Row>

@@ -10,14 +10,29 @@ class LoanSummary extends Component {
   }
 
   render() {
-    const { currentBalance, selectedPaymentStatus, paymentList } = this.props
+    const { loans, selectedPaymentStatus, paymentList } = this.props
     const { loanId } = this.props.params
+
+    const loanData = loans.find( (loan) => loan.loanId == loanId)
+
+    // only ACTIVE loans can refinance
+    const shouldDisplayRefinance = loanData.loanCode === 'A'
+
+    // only ACTIVE, MANUAL, PLAN loans can payoff
+    const canPayoffStatusMap = {
+      'A': true,
+      'M': true,
+      'F': true
+    }
+    const shouldDisplayPayoff = canPayoffStatusMap[loanData.loanCode] == true
+
     const tabList = ["All", "Complete", "Pending"];
 
     return (
       <div>
-        <LoanSummaryContent loanId={loanId}
-                            currentBalance={currentBalance}
+        <LoanSummaryContent loanData={loanData}
+                            shouldDisplayRefinance={shouldDisplayRefinance}
+                            shouldDisplayPayoff={shouldDisplayPayoff}
                             tabList={tabList}
                             selectedPaymentStatus={selectedPaymentStatus}
                             paymentList={paymentList}
@@ -29,7 +44,7 @@ class LoanSummary extends Component {
 }
 
 LoanSummary.propTypes = {
-  currentBalance: PropTypes.string.isRequired,
+  loans: PropTypes.array.isRequired,
   selectedPaymentStatus: PropTypes.string.isRequired,
   paymentList: PropTypes.array.isRequired
 }
@@ -43,7 +58,7 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
-  const currentBalance = "3000.00" // state.currentBalance || "unknown"
+  const loans = state.loanList.loans
 
   const selectedPaymentStatus = state.selectedPaymentStatus || "all"
 
@@ -65,7 +80,7 @@ function mapStateToProps(state) {
   ];
 
   return {
-    currentBalance,
+    loans,
     selectedPaymentStatus,
     paymentList
   }

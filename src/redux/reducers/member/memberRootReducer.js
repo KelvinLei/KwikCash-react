@@ -79,7 +79,8 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 6123,
         loanRate: 75.5123,
-        loanStatus: "P",
+        loanStatus: "PAID",
+        loanCode: "P",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -89,7 +90,8 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 6055,
         loanRate: 75.5123,
-        loanStatus: "L",
+        loanStatus: "LATE",
+        loanCode: "L",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -99,7 +101,8 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 5123,
         loanRate: 75.5123,
-        loanStatus: "M",
+        loanStatus: "MANUAL",
+        loanCode: "M",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -109,7 +112,8 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 1231,
         loanRate: 75.5123,
-        loanStatus: "D",
+        loanStatus: "Charged off",
+        loanCode: "D",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -119,7 +123,8 @@ const loanList = (state = {
         loanFundDate: "2016-06-01T07:00:00.000Z",
         loanId: 5635,
         loanRate: 75.5123,
-        loanStatus: "F",
+        loanStatus: "PLAN",
+        loanCode: "F",
         loanTerm: 24,
         nextPaymentDate: "2016-06-01T07:00:00.000Z"
       }
@@ -130,11 +135,25 @@ const loanList = (state = {
       action.loans.push(chargedOffLoan)
       action.loans.push(planLoan)
 
+      // convert raw data from database to application data format
+      const loanList = action.loans.map( (loan) => {
+          // date format should be YYYY-MM-DD
+          const nextPayDate = new Date(loan.nextPaymentDate).toISOString().slice(0, 10)
+          const fundDate = new Date(loan.loanFundDate).toISOString().slice(0, 10)
+
+          return {
+            ...loan,
+            loanRate: loan.loanRate.toFixed(2), // two decimals for APR
+            nextPaymentDate: nextPayDate,
+            loanFundDate: fundDate
+          }
+        })
+
       return {
         ...state,
         isFetching: false,
         fetchLoansFailed: false,
-        loans: action.loans
+        loans: loanList
       }
     case FETCH_LOAN_LIST_ERROR:
       return {

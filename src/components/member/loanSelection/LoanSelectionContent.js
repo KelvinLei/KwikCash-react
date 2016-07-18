@@ -3,12 +3,12 @@ import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel, Alert } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+import {getClassNameForLoanStatus} from "../shared/LoanStyles";
 
 export const LoanSelectionContent = ({
   isFetching,
   fetchLoansFailed,
-  loanList,
-  loanStatusMap
+  loanList
 }) => {
   // display different components based on the status of getLoanList api call
   let displayContent
@@ -19,7 +19,7 @@ export const LoanSelectionContent = ({
     displayContent = <FailureWidget/>
   }
   else {
-    displayContent = <LoanSelectionWidget loanList={loanList} loanStatusMap={loanStatusMap}/>
+    displayContent = <LoanSelectionWidget loanList={loanList}/>
   }
 
   return (
@@ -44,20 +44,20 @@ export const LoanSelectionContent = ({
 /*
  Renders the loan selection widget if loan list data is available
  */
-const LoanSelectionWidget = ({loanList, loanStatusMap}) => {
+const LoanSelectionWidget = ({loanList}) => {
   const loanListDisplay = loanList.map( loan => {
-    const { id, status, balance, APR, term } = loan
+    const { loanId, loanStatus, loanCode, balance, loanRate, loanTerm } = loan
     const nextPaymentDateDisplay = loan.nextPaymentDate || "NONE"
 
     return (
-      <LoanEntry key={id}
-                 id={id}
-                 status={status}
-                 APR={APR}
+      <LoanEntry key={loanId}
+                 id={loanId}
+                 status={loanStatus}
+                 statusCode={loanCode}
+                 APR={loanRate}
                  currentBalance={balance}
                  nextPaymentDate={nextPaymentDateDisplay}
-                 term={term}
-                 loanStatusMap={loanStatusMap}
+                 term={loanTerm}
       />
     )
   })
@@ -80,23 +80,10 @@ const LoanSelectionWidget = ({loanList, loanStatusMap}) => {
 /*
  Renders each loan entry in the loan selection
  */
-const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term, loanStatusMap}) => {
-  let className
-  switch (status) {
-    case "A":
-    case "M":
-    case "F":
-      className = "label label-info"
-      break;
-    case "P":
-      className = "label label-success"
-      break;
-    default:
-      className = "label label-danger"
-  }
+const LoanEntry = ({id, status, statusCode, currentBalance, APR, nextPaymentDate, term}) => {
+  const className = getClassNameForLoanStatus(statusCode)
 
   const loanSummaryUrl = '/myLoans/loanSummary/' + id
-  const loanStatusName = loanStatusMap[status]
 
   return (
     <div className="list-group">
@@ -106,8 +93,8 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term, loan
           <tr>
             <td className="wd-xs">
               <div className="ph">
-                <div className={className + " hidden-xs"}> {loanStatusName} </div>
-                <div className={className + " visible-xs"}> {status} </div>
+                <div className={className + " hidden-xs"}> {status} </div>
+                <div className={className + " visible-xs"}> {statusCode} </div>
               </div>
             </td>
             <td className="wd-lg">
@@ -147,7 +134,7 @@ const LoanEntry = ({id, status, currentBalance, APR, nextPaymentDate, term, loan
         </table>
       </Link>
 
-      { status === "L" &&
+      { statusCode === "L" &&
         <Alert bsStyle="warning">
           <em className="fa fa-exclamation-circle fa-lg fa-fw"/>Your account is currently past due, please contact our office.
         </Alert>
