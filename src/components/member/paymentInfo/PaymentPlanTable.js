@@ -8,12 +8,23 @@ export const PaymentPlanTable = ({paymentList, selectedTab}) => {
   }
 
   const paymentListContent = paymentList.filter(filterPayment).map((payment, id) => {
+    const { loanpayment_id, 
+            loanpayment_type, 
+            loanpayment_date, 
+            loanpayment_due, 
+            loanpayment_principal, 
+            loanpayment_interest, 
+            loanpayment_rate } = payment
+    
     return (
-      <PaymentPlanRow key={payment.id}
+      <PaymentPlanRow key={loanpayment_id}
                       index={id + 1}
-                      status={payment.status}
-                      dueDate={payment.dueDate}
-                      amount={payment.amount}
+                      status={loanpayment_type}
+                      dueDate={loanpayment_date}
+                      amount={loanpayment_due}
+                      principal={loanpayment_principal}
+                      interest={loanpayment_interest}
+                      rate={loanpayment_rate}
       />
     )
   })
@@ -25,7 +36,10 @@ export const PaymentPlanTable = ({paymentList, selectedTab}) => {
         <th className="sort-numeric">#</th>
         <th className="sort-alpha">Status</th>
         <th className="sort-numeric">Due Date</th>
-        <th className="sort-numeric">Payment</th>
+        <th className="sort-numeric">Amount</th>
+        <th className="sort-numeric">Principal</th>
+        <th className="sort-numeric">Interest</th>
+        <th className="sort-numeric">Rate</th>
       </tr>
       </thead>
 
@@ -36,7 +50,7 @@ export const PaymentPlanTable = ({paymentList, selectedTab}) => {
   )
 }
 
-const PaymentPlanRow = ({index, status, dueDate, amount}) => {
+const PaymentPlanRow = ({index, status, dueDate, amount, principal, interest, rate}) => {
   var amountText = "$" + amount;
 
   var className = status === "Complete" ? "label label-success" : "label label-warning"
@@ -49,6 +63,9 @@ const PaymentPlanRow = ({index, status, dueDate, amount}) => {
       </td>
       <td>{dueDate}</td>
       <td>{amountText}</td>
+      <td>{principal}</td>
+      <td>{interest}</td>
+      <td>{rate}%</td>
     </tr>
   )
 }

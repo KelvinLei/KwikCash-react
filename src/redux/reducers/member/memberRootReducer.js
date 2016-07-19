@@ -4,6 +4,9 @@ import {
 import {
   FETCH_LOAN_LIST_REQUEST, FETCH_LOAN_LIST_SUCCESS, FETCH_LOAN_LIST_ERROR
 } from '../../actions/member/fetchLoanList'
+import {
+  FETCH_PAYMENTS_ERROR, FETCH_PAYMENTS_REQUEST, FETCH_PAYMENTS_SUCCESS
+} from '../../actions/member/fetchPayments'
 
 function selectedPaymentStatus(state = "all", action) {
   switch (action.type) {
@@ -168,8 +171,57 @@ const loanList = (state = {
   }
 }
 
+const paymentState = (state = {
+  isFetching: false,
+  fetchPaymentsFailed: false,
+  payments: []
+}, action) => {
+  switch (action.type) {
+    case FETCH_PAYMENTS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        fetchPaymentsFailed: false,
+        payments: []
+      }
+    case FETCH_PAYMENTS_SUCCESS:
+      // convert raw data from database to application data format
+      const newPaymentList = action.payments.map( (payment) => {
+        // date format should be YYYY-MM-DD
+        const paymentDueDate = new Date(payment.loanpayment_date).toISOString().slice(0, 10)
+
+        return {
+          ...payment,
+          loanpayment_rate: payment.loanpayment_rate.toFixed(2), // two decimals for APR,
+          loanpayment_date: paymentDueDate
+        }
+      })
+      
+      const newPaymentsMap = state.payments.slice()
+      newPaymentsMap[action.loanId] = newPaymentList
+
+      return {
+        ...state,
+        isFetching: false,
+        fetchPaymentsFailed: false,
+        payments: newPaymentsMap
+      }
+    case FETCH_PAYMENTS_ERROR:
+      return {
+        ...state,
+        isFetching: false,
+        fetchPaymentsFailed: true,
+        payments: []
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   selectedPaymentStatus,
   refinanceState,
-  loanList
+  loanList,
+  paymentState
 }

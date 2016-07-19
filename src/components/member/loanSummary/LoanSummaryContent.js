@@ -15,12 +15,22 @@ export default class LoanSummaryContent extends Component {
 
   render() {
     const { loanData,
-      shouldDisplayRefinance,
-      shouldDisplayPayoff,
-      tabList,
-      selectedPaymentStatus,
-      paymentList,
-      onClickPaymentTab } = this.props;
+            paymentState,
+            shouldDisplayRefinance,
+            shouldDisplayPayoff,
+            tabList,
+            selectedPaymentStatus,
+            onClickPaymentTab } = this.props;
+
+    const paymentList = !paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.payments[loanData.loanId]
+                        ? paymentState.payments[loanData.loanId]
+                        : []
+
+    const paymentsData = {
+      isFetching: paymentState.isFetching,
+      fetchPaymentsFailed: paymentState.fetchPaymentsFailed,
+      paymentList
+    }
 
     return (
       <ContentWrapper>
@@ -33,10 +43,11 @@ export default class LoanSummaryContent extends Component {
 
         <Row>
           <Col md={ 10 } mdOffset={1} >
-            <PaymentPlanContent tabList={tabList}
+            <PaymentPlanContent paymentsData={paymentsData}
+                                tabList={tabList}
                                 shouldDisplayPayoff={shouldDisplayPayoff}
                                 selectedPaymentStatus={selectedPaymentStatus}
-                                paymentList={paymentList}
+                                paymentState={paymentState}
                                 onClickPaymentTab={onClickPaymentTab} />
           </Col>
         </Row>

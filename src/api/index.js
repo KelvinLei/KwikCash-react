@@ -45,7 +45,7 @@ export const getLoanList = () => {
 }
 
 export const getPayments = (loanId) => {
-  return authenticatedPost('/api/loanlist', {
+  return authenticatedPost('/api/payments', {
     loanId
   })
 }

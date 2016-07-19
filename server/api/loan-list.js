@@ -58,7 +58,7 @@ export async function getLoans(userId) {
     }, {})
   })
 
-  debug('getLoans' + result)
+  // debug('getLoans' + result)
   return result
 }
 

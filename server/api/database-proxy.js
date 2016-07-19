@@ -76,7 +76,7 @@ export function getLoanList(userId) {
             where a.loan_id = b.loanpayment_loan and a.loan_member=? order by a.loan_funddate desc`, [userId],
         (err, rows) => {
           if (rows) {
-            debug('getLoanList database response ' + rows)
+            // debug('getLoanList database response ' + rows)
             resolve(rows);
           } else {
             debug('couldnt get loans from user')
@@ -96,7 +96,7 @@ export function getPaymentsForLoan(loanId) {
       connection.query('select * from tbl_loanpayments where loanpayment_loan = ?', [loanId],
         (err, rows) => {
           if (rows) {
-            debug('getPaymentsForLoan database response ' + rows)
+            // debug('getPaymentsForLoan database response ' + rows)
             resolve(rows);
           } else {
             debug('couldnt get loans from user')
