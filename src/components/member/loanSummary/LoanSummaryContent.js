@@ -19,7 +19,6 @@ export default class LoanSummaryContent extends Component {
             shouldDisplayRefinance,
             shouldDisplayPayoff,
             tabList,
-            selectedPaymentStatus,
             onClickPaymentTab } = this.props;
 
     return (
@@ -36,7 +35,6 @@ export default class LoanSummaryContent extends Component {
             <PaymentPlanContent paymentsData={paymentsData}
                                 tabList={tabList}
                                 shouldDisplayPayoff={shouldDisplayPayoff}
-                                selectedPaymentStatus={selectedPaymentStatus}
                                 onClickPaymentTab={onClickPaymentTab} />
           </Col>
         </Row>

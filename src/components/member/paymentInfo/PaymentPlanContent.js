@@ -5,8 +5,18 @@ import { PaymentPlanTable } from './PaymentPlanTable'
 import { PaymentStatusTabs } from './PaymentStatusTabs'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 
-export const PaymentPlanContent = ({paymentsData, tabList, shouldDisplayPayoff, selectedPaymentStatus, onClickPaymentTab}) => {
-  const { isFetching, fetchPaymentsFailed, paymentList, selectedPaymentYear, paymentYearsList } = paymentsData
+export const PaymentPlanContent = ({
+  paymentsData,
+  tabList,
+  shouldDisplayPayoff,
+  onClickPaymentTab
+}) => {
+  const { isFetching,
+          fetchPaymentsFailed,
+          paymentList,
+          selectedPaymentYear,
+          paymentYearsList,
+          selectedPaymentStatus } = paymentsData
 
   // display different components based on the status of getLoanList api call
   let displayContent
@@ -17,7 +27,7 @@ export const PaymentPlanContent = ({paymentsData, tabList, shouldDisplayPayoff, 
     displayContent = <FailureWidget/>
   }
   else {
-    displayContent = <PaymentPlanTable paymentList={paymentList} selectedTab={selectedPaymentStatus}/>
+    displayContent = <PaymentPlanTable paymentList={paymentList}/>
   }
 
   return (
@@ -36,7 +46,7 @@ export const PaymentPlanContent = ({paymentsData, tabList, shouldDisplayPayoff, 
               </Dropdown.Toggle>
               <Dropdown.Menu className="fadeIn">
                 {/* populate all possible years in which payments are due */}
-                { paymentYearsList.map( (year) => <MenuItem eventKey={year}>{year}</MenuItem> )}
+                { paymentYearsList.map( (year) => <MenuItem key={year} eventKey={year}>{year}</MenuItem> )}
 
                 <MenuItem divider />
                 <MenuItem eventKey="4">All</MenuItem>

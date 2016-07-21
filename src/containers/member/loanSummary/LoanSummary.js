@@ -14,9 +14,25 @@ class LoanSummary extends Component {
 
     this.tabList = ["All", "Complete", "Pending"];
 
-    this.filterPaymentsForDisplay = (paymentList, selectedPaymentYear) => {
+    this.filterPaymentsForDisplay = (paymentList, paymentYear, paymentStatus) => {
       return paymentList.filter(
-        (payment) => payment.loanpayment_date.slice(0, 4) == selectedPaymentYear
+        (payment) => {
+          let matchSelectedStatus
+          if (paymentStatus == 'All') {
+            matchSelectedStatus = true
+          }
+          else if (paymentStatus == 'Complete') {
+            matchSelectedStatus = payment.isPaid
+          }
+          else if (paymentStatus == 'Pending') {
+            matchSelectedStatus = !payment.isPaid
+          }
+          else {
+            matchSelectedStatus = false
+          }
+          
+          return matchSelectedStatus && payment.paymentDate.slice(0, 4) == paymentYear
+        }
       )
     }
   }
@@ -28,7 +44,7 @@ class LoanSummary extends Component {
   }
 
   render() {
-    const { loans, selectedPaymentStatus, paymentState } = this.props
+    const { loans, paymentState } = this.props
     const { loanId } = this.props.params
 
     const loanData = loans.find( (loan) => loan.loanId == loanId)
@@ -38,18 +54,24 @@ class LoanSummary extends Component {
 
     const shouldDisplayPayoff = this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
 
-    const paymentListForSelectedLoan = !paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.payments[loanData.loanId]
+    const paymentListForSelectedLoan = 
+      !paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.payments[loanData.loanId]
       ? paymentState.payments[loanData.loanId]
       : []
 
-    const paymentsToDisplay = this.filterPaymentsForDisplay(paymentListForSelectedLoan, paymentState.selectedPaymentYear)
+    const paymentsToDisplay = this.filterPaymentsForDisplay(
+      paymentListForSelectedLoan, 
+      paymentState.selectedPaymentYear, 
+      paymentState.selectedPaymentStatus
+    )
 
     const paymentsData = {
       isFetching: paymentState.isFetching,
       fetchPaymentsFailed: paymentState.fetchPaymentsFailed,
       paymentList: paymentsToDisplay,
       selectedPaymentYear: paymentState.selectedPaymentYear,
-      paymentYearsList: paymentState.paymentYearsList
+      paymentYearsList: paymentState.paymentYearsList,
+      selectedPaymentStatus: paymentState.selectedPaymentStatus
     }
 
     return (
@@ -59,7 +81,6 @@ class LoanSummary extends Component {
                             shouldDisplayRefinance={shouldDisplayRefinance}
                             shouldDisplayPayoff={shouldDisplayPayoff}
                             tabList={this.tabList}
-                            selectedPaymentStatus={selectedPaymentStatus}
                             onClickPaymentTab={this.props.handleSelectPaymentTab}
         />
       </div>
@@ -69,7 +90,6 @@ class LoanSummary extends Component {
 
 LoanSummary.propTypes = {
   loans: PropTypes.array.isRequired,
-  selectedPaymentStatus: PropTypes.string.isRequired,
   paymentState: PropTypes.object.isRequired
 }
 
@@ -84,12 +104,11 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
-  const { selectedPaymentStatus, paymentState } = state
+  const { paymentState } = state
   const loans = state.loanList.loans
 
   return {
     loans,
-    selectedPaymentStatus,
     paymentState
   }
 }

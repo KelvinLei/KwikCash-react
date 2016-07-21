@@ -8,16 +8,6 @@ import {
   FETCH_PAYMENTS_ERROR, FETCH_PAYMENTS_REQUEST, FETCH_PAYMENTS_SUCCESS
 } from '../../actions/member/fetchPayments'
 
-function selectedPaymentStatus(state = "all", action) {
-  switch (action.type) {
-    case SELECT_PAYMENT_STATUS:
-      return action.selectedStatus
-
-    default:
-      return state
-  }
-}
-
 const refinanceState = (state = {
   refinanceValue: 5000,
   userInputRefinanceValue: {
@@ -174,12 +164,12 @@ const loanList = (state = {
 const parsePaymentList = (payments, loanId) => {
   const newPaymentList = payments.map( (payment) => {
     // date format should be YYYY-MM-DD
-    const paymentDueDate = new Date(payment.loanpayment_date).toISOString().slice(0, 10)
+    const paymentDueDate = new Date(payment.paymentDate).toISOString().slice(0, 10)
 
     return {
       ...payment,
-      loanpayment_rate: payment.loanpayment_rate.toFixed(2), // two decimals for APR,
-      loanpayment_date: paymentDueDate
+      interestRate: 5, // payment.interestRate.toFixed(2), // two decimals for APR,
+      paymentDate: paymentDueDate
     }
   })
 
@@ -191,7 +181,7 @@ const parsePaymentList = (payments, loanId) => {
 
 const generateUniquePaymentDueYear = (payments) => {
   const paymentYearsListValueWithDup = payments.map ( (payment) => {
-    return new Date(payment.loanpayment_date).toISOString().slice(0, 4)
+    return new Date(payment.paymentDate).toISOString().slice(0, 4)
   })
 
   const storedPaymentYearSet = new Set(paymentYearsListValueWithDup)
@@ -203,7 +193,8 @@ const paymentState = (state = {
   fetchPaymentsFailed: false,
   payments: [],
   paymentYearsList: [],
-  selectedPaymentYear: 'All'
+  selectedPaymentYear: 'All',
+  selectedPaymentStatus: 'All'
 }, action) => {
 
   switch (action.type) {
@@ -235,6 +226,11 @@ const paymentState = (state = {
         isFetching: false,
         fetchPaymentsFailed: true
       }
+    case SELECT_PAYMENT_STATUS:
+      return {
+        ...state,
+        selectedPaymentStatus: action.selectedStatus
+      }
 
     default:
       return state
@@ -242,7 +238,6 @@ const paymentState = (state = {
 }
 
 export default {
-  selectedPaymentStatus,
   refinanceState,
   loanList,
   paymentState

@@ -1,30 +1,25 @@
 import React from 'react'
 import { Table } from 'react-bootstrap'
 
-export const PaymentPlanTable = ({paymentList, selectedTab}) => {
-  const filterPayment = payment => {
-    const selectedTabLowerCase = selectedTab.toLowerCase()
-    return selectedTabLowerCase === "all" ? true : String(payment.status).toLowerCase().match(selectedTabLowerCase)
-  }
+export const PaymentPlanTable = ({paymentList}) => {
+  const paymentListContent = paymentList.map((payment, index) => {
+    const { id,
+            isPaid,
+            paymentDate,
+            amountDue,
+            principal,
+            interest,
+            interestRate } = payment
 
-  const paymentListContent = paymentList.filter(filterPayment).map((payment, id) => {
-    const { loanpayment_id, 
-            loanpayment_type, 
-            loanpayment_date, 
-            loanpayment_due, 
-            loanpayment_principal, 
-            loanpayment_interest, 
-            loanpayment_rate } = payment
-    
     return (
-      <PaymentPlanRow key={loanpayment_id}
-                      index={id + 1}
-                      status={loanpayment_type}
-                      dueDate={loanpayment_date}
-                      amount={loanpayment_due}
-                      principal={loanpayment_principal}
-                      interest={loanpayment_interest}
-                      rate={loanpayment_rate}
+      <PaymentPlanRow key={id}
+                      index={index + 1}
+                      status={ isPaid ? 'Complete' : 'Pending'}
+                      dueDate={paymentDate}
+                      amount={amountDue}
+                      principal={principal}
+                      interest={interest}
+                      rate={interestRate}
       />
     )
   })
