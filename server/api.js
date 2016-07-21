@@ -96,9 +96,7 @@ export function init(server) {
       debug("payments: " + JSON.stringify(payments));
       res.format({
         'application/json': () => {
-          res.send({
-            payments: payments
-          });
+          res.send(payments);
         }
       });
     })();
