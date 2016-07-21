@@ -40,6 +40,10 @@ export const getUser = () => {
   return authenticatedPost('/api/user')
 }
 
+export const getUserData = () => {
+  return authenticatedPost('/api/userdata')
+}
+
 export const getLoanList = () => {
   return authenticatedPost('/api/loanlist')
 }
