@@ -8,6 +8,17 @@ class LoanSummary extends Component {
 
   constructor(props) {
     super(props)
+
+    // only ACTIVE, MANUAL, PLAN loans can payoff
+    this.CAN_PAYOFF_STATUS_SET = new Set(['A', 'M', 'F'])
+
+    this.tabList = ["All", "Complete", "Pending"];
+
+    this.filterPaymentsForDisplay = (paymentList, selectedPaymentYear) => {
+      return paymentList.filter(
+        (payment) => payment.loanpayment_date.slice(0, 4) == selectedPaymentYear
+      )
+    }
   }
 
   componentDidMount() {
@@ -25,23 +36,29 @@ class LoanSummary extends Component {
     // only ACTIVE loans can refinance
     const shouldDisplayRefinance = loanData.loanCode === 'A'
 
-    // only ACTIVE, MANUAL, PLAN loans can payoff
-    const canPayoffStatusMap = {
-      'A': true,
-      'M': true,
-      'F': true
-    }
-    const shouldDisplayPayoff = canPayoffStatusMap[loanData.loanCode] == true
+    const shouldDisplayPayoff = this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
 
-    const tabList = ["All", "Complete", "Pending"];
+    const paymentListForSelectedLoan = !paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.payments[loanData.loanId]
+      ? paymentState.payments[loanData.loanId]
+      : []
+
+    const paymentsToDisplay = this.filterPaymentsForDisplay(paymentListForSelectedLoan, paymentState.selectedPaymentYear)
+
+    const paymentsData = {
+      isFetching: paymentState.isFetching,
+      fetchPaymentsFailed: paymentState.fetchPaymentsFailed,
+      paymentList: paymentsToDisplay,
+      selectedPaymentYear: paymentState.selectedPaymentYear,
+      paymentYearsList: paymentState.paymentYearsList
+    }
 
     return (
       <div>
         <LoanSummaryContent loanData={loanData}
-                            paymentState={paymentState}
+                            paymentsData={paymentsData}
                             shouldDisplayRefinance={shouldDisplayRefinance}
                             shouldDisplayPayoff={shouldDisplayPayoff}
-                            tabList={tabList}
+                            tabList={this.tabList}
                             selectedPaymentStatus={selectedPaymentStatus}
                             onClickPaymentTab={this.props.handleSelectPaymentTab}
         />
