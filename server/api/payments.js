@@ -49,6 +49,7 @@ export async function getPayments(loanId) {
         paymentDate: row.loanpayment_date,
         amountDue: row.loanpayment_due,
         amountPaid: row.loanpayment_amount,
+        isPaid: parseFloat(row.loanpayment_amount) > 0,
         interest: row.loanpayment_interest,
         principal: row.loanpayment_principal,
     }
