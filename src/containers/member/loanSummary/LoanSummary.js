@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import {selectPaymentStatus} from '../../../redux/actions/member/memberAction'
+import { selectPaymentStatus, selectPaymentYear } from '../../../redux/actions/member/memberAction'
 import LoanSummaryContent from '../../../components/member/loanSummary/LoanSummaryContent'
 import {fetchPaymentsAction} from "../../../redux/actions/member/fetchPayments";
 
@@ -30,8 +30,10 @@ class LoanSummary extends Component {
           else {
             matchSelectedStatus = false
           }
-          
-          return matchSelectedStatus && payment.paymentDate.slice(0, 4) == paymentYear
+
+          const matchSelectedPaymentYear = paymentYear == 'All' || payment.paymentDate.slice(0, 4) == paymentYear
+
+          return matchSelectedStatus && matchSelectedPaymentYear
         }
       )
     }
@@ -44,7 +46,7 @@ class LoanSummary extends Component {
   }
 
   render() {
-    const { loans, paymentState } = this.props
+    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear } = this.props
     const { loanId } = this.props.params
 
     const loanData = loans.find( (loan) => loan.loanId == loanId)
@@ -54,14 +56,14 @@ class LoanSummary extends Component {
 
     const shouldDisplayPayoff = this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
 
-    const paymentListForSelectedLoan = 
+    const paymentListForSelectedLoan =
       !paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.payments[loanData.loanId]
       ? paymentState.payments[loanData.loanId]
       : []
 
     const paymentsToDisplay = this.filterPaymentsForDisplay(
-      paymentListForSelectedLoan, 
-      paymentState.selectedPaymentYear, 
+      paymentListForSelectedLoan,
+      paymentState.selectedPaymentYear,
       paymentState.selectedPaymentStatus
     )
 
@@ -81,7 +83,8 @@ class LoanSummary extends Component {
                             shouldDisplayRefinance={shouldDisplayRefinance}
                             shouldDisplayPayoff={shouldDisplayPayoff}
                             tabList={this.tabList}
-                            onClickPaymentTab={this.props.handleSelectPaymentTab}
+                            onClickPaymentTab={handleSelectPaymentTab}
+                            onClickPaymentYear={handleSelectPaymentYear}
         />
       </div>
     )
@@ -95,11 +98,14 @@ LoanSummary.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    // triggered when loan summary component is rendered
+    fetchPayments: (loanId) => dispatch(fetchPaymentsAction(loanId)),
+
     // triggered when payment status tab is clicked
     handleSelectPaymentTab: (selectedTab) => dispatch(selectPaymentStatus(selectedTab)),
 
-    // triggered when loan summary component is rendered
-    fetchPayments: (loanId) => dispatch(fetchPaymentsAction(loanId))
+    // triggered when payment year dropdown is selected
+    handleSelectPaymentYear: (year) => dispatch(selectPaymentYear(year))
   }
 }
 

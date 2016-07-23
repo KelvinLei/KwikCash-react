@@ -9,14 +9,15 @@ export const PaymentPlanContent = ({
   paymentsData,
   tabList,
   shouldDisplayPayoff,
-  onClickPaymentTab
+  onClickPaymentTab,
+  onClickPaymentYear
 }) => {
   const { isFetching,
-          fetchPaymentsFailed,
-          paymentList,
-          selectedPaymentYear,
-          paymentYearsList,
-          selectedPaymentStatus } = paymentsData
+    fetchPaymentsFailed,
+    paymentList,
+    selectedPaymentYear,
+    paymentYearsList,
+    selectedPaymentStatus } = paymentsData
 
   // display different components based on the status of getLoanList api call
   let displayContent
@@ -30,28 +31,30 @@ export const PaymentPlanContent = ({
     displayContent = <PaymentPlanTable paymentList={paymentList}/>
   }
 
+  const handleOnClickPaymentsYear = (event) => onClickPaymentYear(event.target.text)
+
   return (
     <Panel className="panel-default" header="Payments schedule">
       {
         shouldDisplayPayoff &&
         <Row className="text-center">
           <Col md={6}>
-            <Button bsStyle="info" className="mb-sm">Payoff Loan</Button>
-            </Col>
-
-          <Col md={6}>
             <Dropdown id="dropdown-custom-1">
               <Dropdown.Toggle>
-                <strong>Payments due in {selectedPaymentYear}</strong>
+                <strong>View payments by year ({selectedPaymentYear})</strong>
               </Dropdown.Toggle>
               <Dropdown.Menu className="fadeIn">
                 {/* populate all possible years in which payments are due */}
-                { paymentYearsList.map( (year) => <MenuItem key={year} eventKey={year}>{year}</MenuItem> )}
+                { paymentYearsList.map( (year) => <MenuItem key={year} eventKey={year} onClick={handleOnClickPaymentsYear}>{year}</MenuItem> )}
 
                 <MenuItem divider />
-                <MenuItem eventKey="4">All</MenuItem>
+                <MenuItem eventKey="4" onClick={handleOnClickPaymentsYear}>All</MenuItem>
               </Dropdown.Menu>
             </Dropdown>
+          </Col>
+
+          <Col md={6}>
+            <Button bsStyle="info" className="mb-sm">Payoff Loan</Button>
           </Col>
         </Row>
       }

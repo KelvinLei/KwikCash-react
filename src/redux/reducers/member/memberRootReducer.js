@@ -1,5 +1,5 @@
 import {
-  SELECT_PAYMENT_STATUS, SELECT_REFINANCE_VALUE, ENTER_REFINANCE_VALUE, SELECT_USER_REFINANCE_VALUE
+  SELECT_PAYMENT_STATUS, SELECT_REFINANCE_VALUE, ENTER_REFINANCE_VALUE, SELECT_USER_REFINANCE_VALUE, SELECT_PAYMENTS_YEAR
 } from '../../actions/member/memberAction'
 import {
   FETCH_LOAN_LIST_REQUEST, FETCH_LOAN_LIST_SUCCESS, FETCH_LOAN_LIST_ERROR
@@ -230,6 +230,11 @@ const paymentState = (state = {
       return {
         ...state,
         selectedPaymentStatus: action.selectedStatus
+      }
+    case SELECT_PAYMENTS_YEAR:
+      return {
+        ...state,
+        selectedPaymentYear: action.selectedPaymentYear
       }
 
     default:

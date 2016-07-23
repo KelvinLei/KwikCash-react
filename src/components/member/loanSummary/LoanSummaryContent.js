@@ -19,7 +19,8 @@ export default class LoanSummaryContent extends Component {
             shouldDisplayRefinance,
             shouldDisplayPayoff,
             tabList,
-            onClickPaymentTab } = this.props;
+            onClickPaymentTab,
+            onClickPaymentYear } = this.props;
 
     return (
       <ContentWrapper>
@@ -35,7 +36,9 @@ export default class LoanSummaryContent extends Component {
             <PaymentPlanContent paymentsData={paymentsData}
                                 tabList={tabList}
                                 shouldDisplayPayoff={shouldDisplayPayoff}
-                                onClickPaymentTab={onClickPaymentTab} />
+                                onClickPaymentTab={onClickPaymentTab}
+                                onClickPaymentYear={onClickPaymentYear}
+            />
           </Col>
         </Row>
 

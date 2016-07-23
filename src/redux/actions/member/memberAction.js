@@ -2,11 +2,19 @@ export const SELECT_PAYMENT_STATUS = 'SELECT_PAYMENT_STATUS'
 export const SELECT_REFINANCE_VALUE = 'SELECT_REFINANCE_VALUE'
 export const ENTER_REFINANCE_VALUE = 'ENTER_REFINANCE_VALUE'
 export const SELECT_USER_REFINANCE_VALUE = 'SELECT_USER_REFINANCE_VALUE'
+export const SELECT_PAYMENTS_YEAR = 'SELECT_PAYMENTS_YEAR'
 
 export const selectPaymentStatus = (status) => {
   return {
     type: SELECT_PAYMENT_STATUS,
     selectedStatus: status
+  }
+}
+
+export const selectPaymentYear = (year) => {
+  return {
+    type: SELECT_PAYMENTS_YEAR,
+    selectedPaymentYear: year
   }
 }
 
