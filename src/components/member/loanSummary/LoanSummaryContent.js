@@ -10,12 +10,20 @@ import {getClassNameForLoanStatus} from "../shared/LoanStyles";
 export default class LoanSummaryContent extends Component {
 
   componentDidMount() {
-    ProgressChart('25%');
+    const { completePercentage, completePaymentsCount, pendingPaymentsCount } = this.props.paymentsProgressData
+    ProgressChart(completePercentage, completePaymentsCount, pendingPaymentsCount);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    // once we have payments info available, rerender payments progress bar
+    const { completePercentage, completePaymentsCount, pendingPaymentsCount } = nextProps.paymentsProgressData
+    ProgressChart(completePercentage, completePaymentsCount, pendingPaymentsCount);
   }
 
   render() {
     const { loanData,
             paymentsData,
+            paymentsProgressData,
             shouldDisplayRefinance,
             shouldDisplayPayoff,
             tabList,

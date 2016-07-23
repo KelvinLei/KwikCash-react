@@ -13,36 +13,46 @@ class LoanSummary extends Component {
     this.CAN_PAYOFF_STATUS_SET = new Set(['A', 'M', 'F'])
 
     this.tabList = ["All", "Complete", "Pending"];
-
-    this.filterPaymentsForDisplay = (paymentList, paymentYear, paymentStatus) => {
-      return paymentList.filter(
-        (payment) => {
-          let matchSelectedStatus
-          if (paymentStatus == 'All') {
-            matchSelectedStatus = true
-          }
-          else if (paymentStatus == 'Complete') {
-            matchSelectedStatus = payment.isPaid
-          }
-          else if (paymentStatus == 'Pending') {
-            matchSelectedStatus = !payment.isPaid
-          }
-          else {
-            matchSelectedStatus = false
-          }
-
-          const matchSelectedPaymentYear = paymentYear == 'All' || payment.paymentDate.slice(0, 4) == paymentYear
-
-          return matchSelectedStatus && matchSelectedPaymentYear
-        }
-      )
-    }
   }
 
   componentDidMount() {
     const { fetchPayments } = this.props
     const { loanId } = this.props.params
     fetchPayments(loanId)
+  }
+
+  filterPaymentsForDisplay(paymentList, paymentYear, paymentStatus) {
+    return paymentList.filter(
+      (payment) => {
+        let matchSelectedStatus
+        if (paymentStatus == 'All') {
+          matchSelectedStatus = true
+        }
+        else if (paymentStatus == 'Complete') {
+          matchSelectedStatus = payment.isPaid
+        }
+        else if (paymentStatus == 'Pending') {
+          matchSelectedStatus = !payment.isPaid
+        }
+        else {
+          matchSelectedStatus = false
+        }
+
+        const matchSelectedPaymentYear = paymentYear == 'All' || payment.paymentDate.slice(0, 4) == paymentYear
+
+        return matchSelectedStatus && matchSelectedPaymentYear
+      }
+    )
+  }
+
+  generatePaymentsProgressData(paymentList) {
+    const completePayments = paymentList.filter( (payment) => payment.isPaid )
+    return {
+      completePercentage: (completePayments.length/paymentList.length * 100).toFixed(2),
+      pendingPercentage: ((paymentList.length - completePayments.length)/paymentList.length * 100).toFixed(2),
+      completePaymentsCount: completePayments.length,
+      pendingPaymentsCount: paymentList.length - completePayments.length
+    }
   }
 
   render() {
@@ -58,14 +68,16 @@ class LoanSummary extends Component {
 
     const paymentListForSelectedLoan =
       !paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.payments[loanData.loanId]
-      ? paymentState.payments[loanData.loanId]
-      : []
+        ? paymentState.payments[loanData.loanId]
+        : []
 
     const paymentsToDisplay = this.filterPaymentsForDisplay(
       paymentListForSelectedLoan,
       paymentState.selectedPaymentYear,
       paymentState.selectedPaymentStatus
     )
+
+    const paymentsProgressData = this.generatePaymentsProgressData(paymentListForSelectedLoan)
 
     const paymentsData = {
       isFetching: paymentState.isFetching,
@@ -80,6 +92,7 @@ class LoanSummary extends Component {
       <div>
         <LoanSummaryContent loanData={loanData}
                             paymentsData={paymentsData}
+                            paymentsProgressData={paymentsProgressData}
                             shouldDisplayRefinance={shouldDisplayRefinance}
                             shouldDisplayPayoff={shouldDisplayPayoff}
                             tabList={this.tabList}

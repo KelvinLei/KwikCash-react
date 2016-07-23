@@ -7,7 +7,7 @@ const logo = require('../../styles/img/current_logo_white.png');
 
 export default class Login extends React.Component {
 
-  componentWillReceiveProps (nextProps) {
+  componentWillReceiveProps(nextProps) {
     const { isAuthenticated, router } = nextProps
     if (isAuthenticated) {
       router.push('/')

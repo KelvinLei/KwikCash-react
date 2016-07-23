@@ -1,18 +1,18 @@
-export default function(completePercentage) {
+export default function(completePercentage, completePaymentsCount, pendingPaymentsCount) {
 
   var chart = AmCharts.makeChart( "chartdiv", {
     "type": "pie",
     "theme": "light",
     "titles": [ {
-      "text": completePercentage + " completed!",
+      "text": completePercentage + "% completed!",
       "size": 14
     } ],
     "dataProvider": [ {
       "status": "Complete",
-      "count": 5
+      "count": completePaymentsCount
     }, {
       "status": "Pending",
-      "count": 15
+      "count": pendingPaymentsCount
     }],
     "valueField": "count",
     "titleField": "status",
