@@ -15,9 +15,11 @@ export default class LoanSummaryContent extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // once we have payments info available, rerender payments progress bar
+    // once we have payments info available, rerender payments progress bar if data is different
     const { completePercentage, completePaymentsCount, pendingPaymentsCount } = nextProps.paymentsProgressData
-    ProgressChart(completePercentage, completePaymentsCount, pendingPaymentsCount);
+    if (completePercentage !== this.props.paymentsProgressData.completePercentage) {
+      ProgressChart(completePercentage, completePaymentsCount, pendingPaymentsCount);
+    }
   }
 
   render() {

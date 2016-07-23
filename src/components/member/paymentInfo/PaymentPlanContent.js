@@ -35,29 +35,29 @@ export const PaymentPlanContent = ({
 
   return (
     <Panel className="panel-default" header="Payments schedule">
-      {
-        shouldDisplayPayoff &&
-        <Row className="text-center">
-          <Col md={6}>
-            <Dropdown id="dropdown-custom-1">
-              <Dropdown.Toggle>
-                <strong>View payments by year ({selectedPaymentYear})</strong>
-              </Dropdown.Toggle>
-              <Dropdown.Menu className="fadeIn">
-                {/* populate all possible years in which payments are due */}
-                { paymentYearsList.map( (year) => <MenuItem key={year} eventKey={year} onClick={handleOnClickPaymentsYear}>{year}</MenuItem> )}
+      <Row className="text-center">
+        <Col md={6}>
+          <Dropdown id="dropdown-custom-1">
+            <Dropdown.Toggle>
+              <strong>View payments by year ({selectedPaymentYear})</strong>
+            </Dropdown.Toggle>
+            <Dropdown.Menu className="fadeIn">
+              {/* populate all possible years in which payments are due */}
+              { paymentYearsList.map( (year) => <MenuItem key={year} eventKey={year} onClick={handleOnClickPaymentsYear}>{year}</MenuItem> )}
 
-                <MenuItem divider />
-                <MenuItem eventKey="4" onClick={handleOnClickPaymentsYear}>All</MenuItem>
-              </Dropdown.Menu>
-            </Dropdown>
-          </Col>
+              <MenuItem divider />
+              <MenuItem eventKey="4" onClick={handleOnClickPaymentsYear}>All</MenuItem>
+            </Dropdown.Menu>
+          </Dropdown>
+        </Col>
 
+        {
+          shouldDisplayPayoff &&
           <Col md={6}>
             <Button bsStyle="info" className="mb-sm">Payoff Loan</Button>
           </Col>
-        </Row>
-      }
+        }
+      </Row>
 
       <Grid fluid>
         <Row>

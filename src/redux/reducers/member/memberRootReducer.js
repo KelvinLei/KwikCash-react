@@ -161,7 +161,7 @@ const loanList = (state = {
   }
 }
 
-const parsePaymentList = (payments, loanId) => {
+const parsePaymentList = (allPayments, payments, loanId) => {
   const newPaymentList = payments.map( (payment) => {
     // date format should be YYYY-MM-DD
     const paymentDueDate = new Date(payment.paymentDate).toISOString().slice(0, 10)
@@ -174,7 +174,7 @@ const parsePaymentList = (payments, loanId) => {
   })
 
   // copy the payments associative array and add the newly fetched payment to the cloned array
-  const newPaymentsMap = payments.slice()
+  const newPaymentsMap = allPayments.slice()
   newPaymentsMap[loanId] = newPaymentList
   return newPaymentsMap
 }
@@ -206,7 +206,7 @@ const paymentState = (state = {
       }
     case FETCH_PAYMENTS_SUCCESS:
       // convert raw data from database to application data format
-      const newPaymentsMap = parsePaymentList(action.payments, action.loanId)
+      const newPaymentsMap = parsePaymentList(state.payments, action.payments, action.loanId)
 
       // generate a list of unique payment due years
       const paymentYearsListUniqueValue = generateUniquePaymentDueYear(action.payments)
