@@ -64,7 +64,7 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
   const refinanceOption =
     shouldDisplayRefinance ?
     <div className="panel-footer text-left">
-      <Link to={"/refinance/" + loanData.loanId} className="btn btn-info btn-sm">Refinance</Link>
+      <Link to={"/myLoans/refinance/" + loanData.loanId} className="btn btn-info btn-sm">Refinance</Link>
     </div>
     :
     <div className="panel-footer text-left text-info">

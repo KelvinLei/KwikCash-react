@@ -11,7 +11,7 @@ class Refinance extends Component {
   }
 
   render() {
-    const { currentBalance,
+    const { loanList,
             refinanceState,
             handleSelectRefinanceValue,
             handleSelectUserRefinanceValue,
@@ -26,12 +26,15 @@ class Refinance extends Component {
 
     const refinanceValueForTable = userInputRadioChecked ? userInputRefinanceValue : refinanceValueOption
 
-    const newBalance = refinanceValueForTable - currentBalance
+    // find the loanData from loanList, get the current balance, and compute a new balance
+    // based on selected refinance value
+    const loanData = loanList.find( (loan) => loan.loanId == loanId )
+    const newBalance = refinanceValueForTable - loanData.balance
 
     return (
       <div>
         <RefinanceContent loanId={loanId}
-                          currentBalance={currentBalance}
+                          currentBalance={loanData.balance}
                           refinanceState={refinanceState}
                           refinanceValueForTable={refinanceValueForTable}
                           newBalance={newBalance}
@@ -45,7 +48,7 @@ class Refinance extends Component {
 }
 
 Refinance.propTypes = {
-  currentBalance: PropTypes.string.isRequired,
+  loanList: PropTypes.array.isRequired,
   refinanceState: PropTypes.object.isRequired,
   handleSelectRefinanceValue: PropTypes.func.isRequired,
   handleSelectUserRefinanceValue: PropTypes.func.isRequired,
@@ -69,12 +72,11 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 function mapStateToProps(state) {
-  const currentBalance = "3000.00" // state.currentBalance || "unknown"
-  const refinanceState = state.refinanceState
+  const { loanList, refinanceState } = state
 
   return {
-    currentBalance,
-    refinanceState
+    refinanceState,
+    loanList: loanList.loans
   }
 }
 
