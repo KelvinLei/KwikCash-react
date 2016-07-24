@@ -66,25 +66,32 @@ class LoanSummary extends Component {
 
     const shouldDisplayPayoff = this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
 
-    const paymentListForSelectedLoan =
-      !paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.payments[loanData.loanId]
-        ? paymentState.payments[loanData.loanId]
-        : []
-
-    const paymentsToDisplay = this.filterPaymentsForDisplay(
-      paymentListForSelectedLoan,
-      paymentState.selectedPaymentYear,
-      paymentState.selectedPaymentStatus
-    )
-
-    const paymentsProgressData = this.generatePaymentsProgressData(paymentListForSelectedLoan)
+    let paymentDataForSelectedLoan
+    let paymentsToDisplay
+    let paymentsProgressData
+    // ensure there's no ongoing fetchPayment request and paymentsDataMap has payments data for selected loan
+    if (!paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.paymentsDataMap.has(loanId)) {
+      paymentDataForSelectedLoan = paymentState.paymentsDataMap.get(loanId)
+      paymentsToDisplay = this.filterPaymentsForDisplay(
+        paymentDataForSelectedLoan.paymentList,
+        paymentDataForSelectedLoan.selectedPaymentYear,
+        paymentState.selectedPaymentStatus
+      )
+      paymentsProgressData = this.generatePaymentsProgressData(paymentDataForSelectedLoan.paymentList)
+    }
+    else {
+      paymentDataForSelectedLoan = {}
+      paymentsToDisplay = []
+      paymentsProgressData = {}
+    }
 
     const paymentsData = {
       isFetching: paymentState.isFetching,
       fetchPaymentsFailed: paymentState.fetchPaymentsFailed,
+      loanId: loanId,
       paymentList: paymentsToDisplay,
-      selectedPaymentYear: paymentState.selectedPaymentYear,
-      paymentYearsList: paymentState.paymentYearsList,
+      selectedPaymentYear: paymentDataForSelectedLoan.selectedPaymentYear,
+      paymentYearsList: paymentDataForSelectedLoan.paymentYearsList || [],
       selectedPaymentStatus: paymentState.selectedPaymentStatus
     }
 
@@ -118,7 +125,7 @@ const mapDispatchToProps = (dispatch) => {
     handleSelectPaymentTab: (selectedTab) => dispatch(selectPaymentStatus(selectedTab)),
 
     // triggered when payment year dropdown is selected
-    handleSelectPaymentYear: (year) => dispatch(selectPaymentYear(year))
+    handleSelectPaymentYear: (year, loanId) => dispatch(selectPaymentYear(year, loanId))
   }
 }
 

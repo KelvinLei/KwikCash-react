@@ -11,9 +11,10 @@ export const selectPaymentStatus = (status) => {
   }
 }
 
-export const selectPaymentYear = (year) => {
+export const selectPaymentYear = (year, loanId) => {
   return {
     type: SELECT_PAYMENTS_YEAR,
+    loanId: loanId,
     selectedPaymentYear: year
   }
 }

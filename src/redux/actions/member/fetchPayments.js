@@ -12,7 +12,7 @@ export const fetchPaymentsAction = (loanId) => {
     const state = getState()
 
     // only makes the api call when no data is cached
-    if (!state.paymentState.isFetching && !state.paymentState.payments[loanId]) {
+    if (!state.paymentState.isFetching && !state.paymentState.paymentsDataMap.has(loanId)) {
       dispatch(fetchPaymentsRequest())
 
       getPayments(loanId)

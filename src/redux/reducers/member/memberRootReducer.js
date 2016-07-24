@@ -7,6 +7,7 @@ import {
 import {
   FETCH_PAYMENTS_ERROR, FETCH_PAYMENTS_REQUEST, FETCH_PAYMENTS_SUCCESS
 } from '../../actions/member/fetchPayments'
+var Immutable = require('immutable');
 
 const refinanceState = (state = {
   refinanceValue: 5000,
@@ -161,8 +162,18 @@ const loanList = (state = {
   }
 }
 
-const parsePaymentList = (allPayments, payments, loanId) => {
-  const newPaymentList = payments.map( (payment) => {
+const generateUniquePaymentDueYear = (payments) => {
+  const paymentYearsListValueWithDup = payments.map ( (payment) => {
+    return new Date(payment.paymentDate).toISOString().slice(0, 4)
+  })
+
+  const storedPaymentYearSet = new Set(paymentYearsListValueWithDup)
+  return Array.from(storedPaymentYearSet)
+}
+
+const createPaymentData = (paymentsList) => {
+  // create a list of payments
+  const newPaymentList = paymentsList.map( (payment) => {
     // date format should be YYYY-MM-DD
     const paymentDueDate = new Date(payment.paymentDate).toISOString().slice(0, 10)
 
@@ -173,27 +184,21 @@ const parsePaymentList = (allPayments, payments, loanId) => {
     }
   })
 
-  // copy the payments associative array and add the newly fetched payment to the cloned array
-  const newPaymentsMap = allPayments.slice()
-  newPaymentsMap[loanId] = newPaymentList
-  return newPaymentsMap
-}
+  // create a list of unique payment due years
+  const paymentYearsList = generateUniquePaymentDueYear(paymentsList)
+  const selectedPaymentYear = paymentYearsList.length > 0 ? paymentYearsList[0] : 'All'
 
-const generateUniquePaymentDueYear = (payments) => {
-  const paymentYearsListValueWithDup = payments.map ( (payment) => {
-    return new Date(payment.paymentDate).toISOString().slice(0, 4)
-  })
-
-  const storedPaymentYearSet = new Set(paymentYearsListValueWithDup)
-  return Array.from(storedPaymentYearSet)
+  return {
+    paymentList: newPaymentList,
+    paymentYearsList: paymentYearsList,
+    selectedPaymentYear: selectedPaymentYear
+  }
 }
 
 const paymentState = (state = {
   isFetching: false,
   fetchPaymentsFailed: false,
-  payments: [],
-  paymentYearsList: [],
-  selectedPaymentYear: 'All',
+  paymentsDataMap: Immutable.Map(),
   selectedPaymentStatus: 'All'
 }, action) => {
 
@@ -205,20 +210,17 @@ const paymentState = (state = {
         fetchPaymentsFailed: false
       }
     case FETCH_PAYMENTS_SUCCESS:
-      // convert raw data from database to application data format
-      const newPaymentsMap = parsePaymentList(state.payments, action.payments, action.loanId)
+      // create the paymentData object
+      const paymentData = createPaymentData(action.payments)
 
-      // generate a list of unique payment due years
-      const paymentYearsListUniqueValue = generateUniquePaymentDueYear(action.payments)
-      const selectedPaymentYearValue = paymentYearsListUniqueValue.length > 0 ? paymentYearsListUniqueValue[0] : 'All'
+      // create a new paymentsDataMap with the new paymentData added
+      const newPaymentsMap = state.paymentsDataMap.set(action.loanId, paymentData)
 
       return {
         ...state,
         isFetching: false,
         fetchPaymentsFailed: false,
-        payments: newPaymentsMap,
-        paymentYearsList: paymentYearsListUniqueValue,
-        selectedPaymentYear: selectedPaymentYearValue
+        paymentsDataMap: newPaymentsMap
       }
     case FETCH_PAYMENTS_ERROR:
       return {
@@ -232,9 +234,16 @@ const paymentState = (state = {
         selectedPaymentStatus: action.selectedStatus
       }
     case SELECT_PAYMENTS_YEAR:
+      const selectedLoanPaymentData = state.paymentsDataMap.get(action.loanId)
+      const newPaymentData = {
+        ...selectedLoanPaymentData,
+        selectedPaymentYear: action.selectedPaymentYear
+      }
+      const newPaymentsDataMap = state.paymentsDataMap.set(action.loanId, newPaymentData)
+
       return {
         ...state,
-        selectedPaymentYear: action.selectedPaymentYear
+        paymentsDataMap: newPaymentsDataMap
       }
 
     default:

@@ -76,6 +76,7 @@
     "graceful-fs": "^4.1.4",
     "html-webpack-plugin": "^2.19.0",
     "if-env": "^1.0.0",
+    "immutable": "^3.8.1",
     "install": "^0.8.1",
     "ip": "^1.1.3",
     "jquery": "^3.0.0",

@@ -14,6 +14,7 @@ export const PaymentPlanContent = ({
 }) => {
   const { isFetching,
     fetchPaymentsFailed,
+    loanId,
     paymentList,
     selectedPaymentYear,
     paymentYearsList,
@@ -31,7 +32,7 @@ export const PaymentPlanContent = ({
     displayContent = <PaymentPlanTable paymentList={paymentList}/>
   }
 
-  const handleOnClickPaymentsYear = (event) => onClickPaymentYear(event.target.text)
+  const handleOnClickPaymentsYear = (event) => onClickPaymentYear(event.target.text, loanId)
 
   return (
     <Panel className="panel-default" header="Payments schedule">
