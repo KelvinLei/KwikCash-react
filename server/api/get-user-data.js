@@ -24,6 +24,8 @@ export async function getUserDataAsync(userId) {
       city: decrypt(userData.encryptedCity),
       state: userData.state,
       zip: decrypt(userData.encryptedZip),
+      homePhone: decrypt(userData.homePhone),
+
     }
   } catch(e) {
     throw new Error('invalid user');

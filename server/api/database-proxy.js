@@ -41,7 +41,7 @@ export function getUserData(userId) {
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query('select fname, lname, hcity, hstate, hzip from e_applications where application_member = ? order by time DESC limit 1', [userId],
+      connection.query('select fname, lname, hcity, hstate, hzip, hphone from e_applications where application_member = ? order by time DESC limit 1', [userId],
         (err, rows) => {
           if (rows && rows.length) {
             var row = rows[0];
@@ -51,6 +51,7 @@ export function getUserData(userId) {
               encryptedCity: row.hcity.toString(),
               state: row.hstate,
               encryptedZip: row.hzip.toString(),
+              homePhone: row.hphone.toString(),
             }
             debug('getUserData db response ' + JSON.stringify(result))
             resolve(result);

@@ -54,12 +54,16 @@ export function init(server) {
     (async () => {
 
       debug("getting userdata for " + req.user.id);
-      var userData = await getUserDataAsync(req.user.id);
+      const userData = await getUserDataAsync(req.user.id);
+      const result = {
+        ...userData,
+        username: req.user.username
+      }
       debug("userData: " + JSON.stringify(userData));
       res.format({
         'application/json': () => {
           res.send({
-            userData,
+            userData: result
           });
         }
       });

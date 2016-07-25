@@ -57,7 +57,7 @@ export const MyProfileContent = ({
                   <div className="form-group">
                     <label className="col-sm-2 control-label">Phone number</label>
                     <Col sm={ 10 }>
-                      <p className="form-control-static">858 324</p>
+                      <p className="form-control-static">{userData.homePhone}</p>
                     </Col>
                   </div>
                 </fieldset>
@@ -66,22 +66,20 @@ export const MyProfileContent = ({
                   <div className="form-group">
                     <label className="col-sm-2 control-label">Email</label>
                     <Col sm={ 10 }>
-                      <p className="form-control-static">stuff@stuff.com</p>
+                      <p className="form-control-static">{userData.username}</p>
                     </Col>
                   </div>
                 </fieldset>
-
-                <fieldset>
-                  <div className="form-group">
-                    <label className="col-sm-2 control-label">Update profile?</label>
-                    <Col sm={ 10 }>
-                      <span className="help-block m-b-none">Please contact us to update your profile</span>
-                    </Col>
-                  </div>
-                </fieldset>
-
               </form>
             </Panel>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col md={ 8 } mdOffset={2} className="text-center">
+            <p>
+              Need to update your profile? Please contact us to update your profile.
+            </p>
           </Col>
         </Row>
 
