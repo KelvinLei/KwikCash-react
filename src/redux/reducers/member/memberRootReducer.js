@@ -7,7 +7,21 @@ import {
 import {
   FETCH_PAYMENTS_ERROR, FETCH_PAYMENTS_REQUEST, FETCH_PAYMENTS_SUCCESS
 } from '../../actions/member/fetchPayments'
+import {
+  FETCH_GET_USER_DATA_REQUEST, FETCH_GET_USER_DATA_SUCCESS, FETCH_GET_USER_DATA_FAILURE
+} from '../../actions/member/fetchUserData'
+
 var Immutable = require('immutable');
+
+function selectedPaymentStatus(state = "all", action) {
+  switch (action.type) {
+    case SELECT_PAYMENT_STATUS:
+      return action.selectedStatus
+
+    default:
+      return state
+  }
+}
 
 const refinanceState = (state = {
   refinanceValue: 5000,
@@ -251,8 +265,40 @@ const paymentState = (state = {
   }
 }
 
+const userDataState = (state = {
+  isFetching: false,
+  isFailed: false,
+  userData: {}
+}, action) => {
+
+  switch (action.type) {
+    case FETCH_GET_USER_DATA_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+      }
+    case FETCH_GET_USER_DATA_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        userData: action.userData
+      }
+    case FETCH_GET_USER_DATA_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+      }
+    default:
+      return state
+  }
+}
+
 export default {
   refinanceState,
   loanList,
-  paymentState
+  paymentState,
+  userDataState,
 }

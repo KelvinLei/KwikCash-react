@@ -4,12 +4,9 @@ import {Row, Col, Panel } from 'react-bootstrap';
 require('./profile.scss');
 
 export const MyProfileContent = ({
-  activeLoansCount,
-  completeLoansCount,
-  name,
-  address,
-  phone,
-  email
+  isFetching,
+  isFailed,
+  userData,
 }) => {
 
   const profileIconImg = require('../../../styles/img/profile-icon-400x380.png')
@@ -27,20 +24,14 @@ export const MyProfileContent = ({
       <div id="profile-bg" className="bg-cover">
         <div className="p-xl text-center text-white">
           <img src={profileIconImg} alt="Image" className="img-thumbnail img-circle thumb128"/>
-          <h3 className="m0">{name}</h3>
-          <p>Loan Applicant</p>
+          <h3 className="m0">{userData.firstName} {userData.lastName}</h3>
         </div>
       </div>
 
       <div className="text-center bg-gray-dark p-lg mb-xl">
         <div className="row row-table">
-          <div className="col-xs-6 br">
-            <h3 className="m0">{activeLoansCount}</h3>
-            <p className="m0">Active loans</p>
-          </div>
-          <div className="col-xs-6">
-            <h3 className="m0">{completeLoansCount}</h3>
-            <p className="m0">Completed loans</p>
+          <div className="col-xs-12 br">
+            <h3 className="m0">{userData.city}, {userData.state}</h3>
           </div>
         </div>
       </div>
@@ -57,16 +48,7 @@ export const MyProfileContent = ({
                   <div className="form-group">
                     <label className="col-sm-2 control-label">Name</label>
                     <Col sm={ 10 }>
-                      <p className="form-control-static">{name}</p>
-                    </Col>
-                  </div>
-                </fieldset>
-
-                <fieldset>
-                  <div className="form-group">
-                    <label className="col-sm-2 control-label">Address</label>
-                    <Col sm={ 10 }>
-                      <p className="form-control-static">{address}</p>
+                      <p className="form-control-static">{userData.firstName} {userData.lastName}</p>
                     </Col>
                   </div>
                 </fieldset>
@@ -75,7 +57,7 @@ export const MyProfileContent = ({
                   <div className="form-group">
                     <label className="col-sm-2 control-label">Phone number</label>
                     <Col sm={ 10 }>
-                      <p className="form-control-static">{phone}</p>
+                      <p className="form-control-static">858 324</p>
                     </Col>
                   </div>
                 </fieldset>
@@ -84,7 +66,7 @@ export const MyProfileContent = ({
                   <div className="form-group">
                     <label className="col-sm-2 control-label">Email</label>
                     <Col sm={ 10 }>
-                      <p className="form-control-static">{email}</p>
+                      <p className="form-control-static">stuff@stuff.com</p>
                     </Col>
                   </div>
                 </fieldset>
@@ -104,10 +86,10 @@ export const MyProfileContent = ({
         </Row>
 
         <Row>
-          <Col md={ 6 } mdOffset={3} className="text-center">
+          <Col md={ 8 } mdOffset={2} className="text-center">
             <Panel className="panel-info" header="Referral">
               <p>
-                Refer a friend and receive a $200 <img style={inlineImageWithText} src={visaIcon}/> giftcard
+                Refer a friend and receive a $100 <img style={inlineImageWithText} src={visaIcon}/> giftcard
               </p>
             </Panel>
           </Col>
