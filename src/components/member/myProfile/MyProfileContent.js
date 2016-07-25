@@ -77,7 +77,7 @@ export const MyProfileContent = ({
 
         <Row>
           <Col md={ 8 } mdOffset={2} className="text-center">
-            <p>
+            <p class="text-primary">
               Need to update your profile? Please contact us to update your profile.
             </p>
           </Col>
