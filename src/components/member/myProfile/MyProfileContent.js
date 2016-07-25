@@ -39,8 +39,7 @@ export const MyProfileContent = ({
       <div className="p-lg">
         <Row>
           <Col md={ 8 } mdOffset={ 2 }>
-            { /* START Profile Details */ }
-            <Panel header="">
+            <Panel className="panel-info" header="">
               <form method="get" action="/" className="form-horizontal">
                 <fieldset>
                   <legend>Profile details</legend>
@@ -78,21 +77,20 @@ export const MyProfileContent = ({
         <Row>
           <Col md={ 8 } mdOffset={2} className="text-center">
             <p class="text-primary">
-              Need to update your profile? Please contact us to update your profile.
+              <a href="https://www.kwikcashonline.com/contact-us/">Need to update your profile? Please contact us to update your profile.</a>
             </p>
           </Col>
         </Row>
 
         <Row>
           <Col md={ 8 } mdOffset={2} className="text-center">
-            <Panel className="panel-info" header="Referral">
+            <Panel className="panel-info" header=" ">
               <p>
                 Refer a friend and receive a $100 <img style={inlineImageWithText} src={visaIcon}/> giftcard
               </p>
             </Panel>
           </Col>
         </Row>
-        { /* END panel */ }
       </div>
     </ContentWrapper>
   )
