@@ -42,7 +42,7 @@ export default class LoanSummaryContent extends Component {
         <LoanSummaryOverview loanData={loanData} shouldDisplayRefinance={shouldDisplayRefinance}/>
 
         <Row>
-          <Col md={ 10 } mdOffset={1} >
+          <Col md={ 12 } >
             <PaymentPlanContent paymentsData={paymentsData}
                                 tabList={tabList}
                                 shouldDisplayPayoff={shouldDisplayPayoff}

@@ -15,6 +15,17 @@ export const fetchLoanListAction = () => {
     if (!state.loanList.isFetching && state.loanList.loans.length === 0) {
       dispatch(fetchLoanListRequest())
 
+      // setTimeout(function(){
+      //   getLoanList()
+      //     .then(response => {
+      //       dispatch(fetchLoanListSuccess(response.loans))
+      //     })
+      //     .catch(() => {
+      //       console.log("fetch loan list failed")
+      //       dispatch(fetchLoanListError())
+      //     })
+      // },2000);
+
       getLoanList()
         .then(response => {
           dispatch(fetchLoanListSuccess(response.loans))

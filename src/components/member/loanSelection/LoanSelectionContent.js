@@ -45,9 +45,13 @@ export const LoanSelectionContent = ({
  Renders the loan selection widget if loan list data is available
  */
 const LoanSelectionWidget = ({loanList}) => {
+  let hasLatePayment = false
   const loanListDisplay = loanList.map( loan => {
     const { loanId, loanStatus, loanCode, balance, loanRate, loanTerm } = loan
     const nextPaymentDateDisplay = loan.nextPaymentDate || "NONE"
+    if (loanCode == "L") {
+      hasLatePayment = true
+    }
 
     return (
       <LoanEntry key={loanId}
@@ -64,6 +68,16 @@ const LoanSelectionWidget = ({loanList}) => {
 
   return (
     <Panel className="panel-default" header="Please select a loan for details">
+      {/* shows a warning if there's a late payment */}
+      {
+        hasLatePayment &&
+        <Row>
+          <Alert bsStyle="warning">
+            <em className="fa fa-exclamation-circle fa-lg fa-fw"/>Your account is currently past due, please contact our office.
+          </Alert>
+        </Row>
+      }
+
       <Row>
         <Col md={ 12 }>
           { /* START List group */ }
@@ -133,12 +147,6 @@ const LoanEntry = ({id, status, statusCode, currentBalance, APR, nextPaymentDate
           </tbody>
         </table>
       </Link>
-
-      { statusCode === "L" &&
-        <Alert bsStyle="warning">
-          <em className="fa fa-exclamation-circle fa-lg fa-fw"/>Your account is currently past due, please contact our office.
-        </Alert>
-      }
     </div>
   )
 }
