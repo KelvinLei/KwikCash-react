@@ -4,6 +4,9 @@ import { Row, Col, Panel } from 'react-bootstrap';
 import RefinanceValueOptions from './RefinanceValueOptions'
 import EstimateTable from './EstimateTable'
 
+require("sweetalert/dist/sweetalert.min")
+require("sweetalert/dist/sweetalert.css")
+
 export const RefinanceContent = ({
   loanId,
   currentBalance,
@@ -15,6 +18,22 @@ export const RefinanceContent = ({
   onEnterUserFinanceValue
 }) => {
   const refinanceOptions = [2000, 3000, 4000, 5000];
+
+  const showRefinanceModal = () => {
+    swal({
+      title: "Refinance your loan?",
+      text: "New loan balance: $" + refinanceState.refinanceValue,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "Cancel",
+      closeOnConfirm: false,
+      closeOnCancel: true },
+      (isConfirm) => {
+        if (isConfirm) {
+          swal("Got it!", "Your refinance request is being processed. We will email you when your application has completed", "success");
+        }
+      });
+  }
 
   return (
     <ContentWrapper>
@@ -50,7 +69,7 @@ export const RefinanceContent = ({
       <Row>
         <Col md={ 4 } mdOffset={ 4 } className="text-center">
           <Panel>
-            <button type="button" class="btn btn-info">Proceed to refinance</button>
+            <button type="button" onClick={showRefinanceModal} class="btn btn-info">Proceed to refinance</button>
           </Panel>
         </Col>
       </Row>
