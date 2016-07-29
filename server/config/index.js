@@ -133,4 +133,23 @@ if (overrides) {
   debug('No environment overrides found, defaults will be used.')
 }
 
+
+// ========================================================
+// Credentials
+// ========================================================
+//
+config.credentials = {
+  aws: {
+    "accessKeyId": "AKIAISS3RIGAZ7EQ4JGA",
+    "secretAccessKey": "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",
+    "awsRegion" : "us-east-1",
+  }
+}
+
+if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !process.env.AWS_REGION) {
+  process.env.AWS_ACCESS_KEY_ID = config.credentials.aws.accessKeyId;
+  process.env.AWS_SECRET_ACCESS_KEY = config.credentials.aws.secretAccessKey;
+  process.env.AWS_REGION = config.credentials.aws.awsRegion;
+}
+
 export default config
