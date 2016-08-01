@@ -5,6 +5,9 @@ import { PaymentPlanTable } from './PaymentPlanTable'
 import { PaymentStatusTabs } from './PaymentStatusTabs'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 
+require("sweetalert/dist/sweetalert.min")
+require("sweetalert/dist/sweetalert.css")
+
 export const PaymentPlanContent = ({
   paymentsData,
   tabList,
@@ -34,6 +37,14 @@ export const PaymentPlanContent = ({
 
   const handleOnClickPaymentsYear = (event) => onClickPaymentYear(event.target.text, loanId)
 
+  const showPayoffModal = () => {
+    swal({
+        title: "Payoff request for loan id " + loanId,
+        text: "We have been notified of your payoff request. Our staff will contact your shortly",
+        confirmButtonText: "Okay",
+        closeOnConfirm: false })
+  }
+
   return (
     <Panel className="panel-default" header="Payments schedule">
       <Row className="text-center">
@@ -55,7 +66,7 @@ export const PaymentPlanContent = ({
         {
           shouldDisplayPayoff &&
           <Col md={6}>
-            <Button bsStyle="info" className="mb-sm">Payoff Loan</Button>
+            <Button onClick={showPayoffModal} bsStyle="info" className="mb-sm">Payoff Loan</Button>
           </Col>
         }
       </Row>
