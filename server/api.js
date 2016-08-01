@@ -2,7 +2,7 @@ import { authenticateUser } from './api/authenticate'
 import { getLoans } from './api/loan-list'
 import { getPayments } from './api/payments'
 import { getUserDataAsync } from './api/get-user-data'
-import { sendRefinanceEmail } from './api/email-refinance'
+import { sendRefinanceEmail, sendPayoffEmail } from './api/email-proxy'
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from './config'
@@ -113,6 +113,22 @@ export function init(server) {
     (async () => {
       var result = await sendRefinanceEmail();
       debug("result: " + JSON.stringify(result));
+
+      res.format({
+        'application/json': () => {
+          res.send(result);
+        }
+      });
+    })();
+  });
+
+  server.post('/api/email/payoff', (req, res) => {
+    debug("invoking /api/email/payoff");
+
+    (async () => {
+      var result = await sendPayoffEmail();
+      debug("result: " + JSON.stringify(result));
+
       res.format({
         'application/json': () => {
           res.send(result);
