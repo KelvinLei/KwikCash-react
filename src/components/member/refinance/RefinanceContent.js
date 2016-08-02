@@ -2,7 +2,7 @@ import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel } from 'react-bootstrap';
 import RefinanceValueOptions from './RefinanceValueOptions'
-import EstimateTable from './EstimateTable'
+import { EstimateTable } from './EstimateTable'
 
 require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")
