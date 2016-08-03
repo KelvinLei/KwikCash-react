@@ -57,7 +57,7 @@ class LoanSummary extends Component {
   }
 
   render() {
-    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, handlePayoff } = this.props
+    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear } = this.props
     const { loanId } = this.props.params
 
     const loanData = loans.find( (loan) => loan.loanId == loanId)
@@ -90,6 +90,7 @@ class LoanSummary extends Component {
       isFetching: paymentState.isFetching,
       fetchPaymentsFailed: paymentState.fetchPaymentsFailed,
       loanId: loanId,
+      paymentSchedule: paymentDataForSelectedLoan.paymentSchedule,
       paymentList: paymentsToDisplay,
       selectedPaymentYear: paymentDataForSelectedLoan.selectedPaymentYear,
       paymentYearsList: paymentDataForSelectedLoan.paymentYearsList || [],

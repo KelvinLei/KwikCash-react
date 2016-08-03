@@ -17,7 +17,7 @@ export const fetchPaymentsAction = (loanId) => {
 
       getPayments(loanId)
         .then(response => {
-          dispatch(fetchPaymentsSuccess(loanId, response.payments))
+          dispatch(fetchPaymentsSuccess(loanId, response.payments, response.paymentSchedule, response.interestRate))
         })
         .catch(() => {
           console.log("fetch payments for loan id " + loanId + " failed")
@@ -33,11 +33,13 @@ export const fetchPaymentsRequest = () => {
   }
 }
 
-export const fetchPaymentsSuccess = (loanId, payments) => {
+export const fetchPaymentsSuccess = (loanId, payments, paymentSchedule, interestRate) => {
   return {
     type: FETCH_PAYMENTS_SUCCESS,
     payments: payments,
-    loanId: loanId
+    loanId: loanId,
+    paymentSchedule: paymentSchedule,
+    interestRate: interestRate
   }
 }
 

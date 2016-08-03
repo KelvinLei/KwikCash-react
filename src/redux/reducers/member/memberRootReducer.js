@@ -185,7 +185,7 @@ const generateUniquePaymentDueYear = (payments) => {
   return Array.from(storedPaymentYearSet)
 }
 
-const createPaymentData = (paymentsList) => {
+const createPaymentData = (paymentsList, paymentSchedule, interestRate) => {
   // create a list of payments
   const newPaymentList = paymentsList.map( (payment) => {
     // date format should be YYYY-MM-DD
@@ -193,7 +193,7 @@ const createPaymentData = (paymentsList) => {
 
     return {
       ...payment,
-      interestRate: 5, // payment.interestRate.toFixed(2), // two decimals for APR,
+      // interestRate: payment.interestRate.toFixed(2), // two decimals for APR,
       paymentDate: paymentDueDate
     }
   })
@@ -205,7 +205,9 @@ const createPaymentData = (paymentsList) => {
   return {
     paymentList: newPaymentList,
     paymentYearsList: paymentYearsList,
-    selectedPaymentYear: selectedPaymentYear
+    selectedPaymentYear: selectedPaymentYear,
+    paymentSchedule: paymentSchedule,
+    interestRate: interestRate.toFixed(2), // two decimals for APR,
   }
 }
 
@@ -225,7 +227,7 @@ const paymentState = (state = {
       }
     case FETCH_PAYMENTS_SUCCESS:
       // create the paymentData object
-      const paymentData = createPaymentData(action.payments)
+      const paymentData = createPaymentData(action.payments, action.paymentSchedule, action.interestRate)
 
       // create a new paymentsDataMap with the new paymentData added
       const newPaymentsMap = state.paymentsDataMap.set(action.loanId, paymentData)

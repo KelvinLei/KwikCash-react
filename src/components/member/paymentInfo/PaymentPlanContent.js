@@ -19,6 +19,7 @@ export const PaymentPlanContent = ({
   const { isFetching,
     fetchPaymentsFailed,
     loanId,
+    paymentSchedule,
     paymentList,
     selectedPaymentYear,
     paymentYearsList,
@@ -52,7 +53,7 @@ export const PaymentPlanContent = ({
   }
 
   return (
-    <Panel className="panel-default" header="Payments schedule">
+    <Panel className="panel-default" header={"Payments schedule - " + paymentSchedule}>
       <Row className="text-center">
         <Col xs={6}>
           <Dropdown id="dropdown-custom-1">

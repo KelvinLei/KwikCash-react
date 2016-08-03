@@ -26,7 +26,7 @@ export default function(completePercentage, completePaymentsCount, pendingPaymen
     "export": {
       "enabled": true
     },
-    // "labelsEnabled": false,
+    "labelsEnabled": false,
     "autoMargins": false,
     "marginTop": 0,
     "marginBottom": 0,
