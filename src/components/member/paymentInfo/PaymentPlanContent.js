@@ -13,7 +13,8 @@ export const PaymentPlanContent = ({
   tabList,
   shouldDisplayPayoff,
   onClickPaymentTab,
-  onClickPaymentYear
+  onClickPaymentYear,
+  onClickPayoff
 }) => {
   const { isFetching,
     fetchPaymentsFailed,
@@ -45,10 +46,15 @@ export const PaymentPlanContent = ({
         closeOnConfirm: false })
   }
 
+  const handlePayoff = () => {
+    onClickPayoff(loanId)
+    showPayoffModal()
+  }
+
   return (
     <Panel className="panel-default" header="Payments schedule">
       <Row className="text-center">
-        <Col md={6}>
+        <Col xs={6}>
           <Dropdown id="dropdown-custom-1">
             <Dropdown.Toggle>
               <strong>View payments by year ({selectedPaymentYear})</strong>
@@ -65,8 +71,8 @@ export const PaymentPlanContent = ({
 
         {
           shouldDisplayPayoff &&
-          <Col md={6}>
-            <Button onClick={showPayoffModal} bsStyle="info" className="mb-sm">Payoff Loan</Button>
+          <Col xs={6}>
+            <Button onClick={handlePayoff} bsStyle="info" className="mb-sm">Payoff Loan</Button>
           </Col>
         }
       </Row>

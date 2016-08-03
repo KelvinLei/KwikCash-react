@@ -2,7 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectPaymentStatus, selectPaymentYear } from '../../../redux/actions/member/memberAction'
 import LoanSummaryContent from '../../../components/member/loanSummary/LoanSummaryContent'
-import {fetchPaymentsAction} from "../../../redux/actions/member/fetchPayments";
+import { fetchPaymentsAction } from "../../../redux/actions/member/fetchPayments"
+import { sendPayoffRequest } from "../../../../src/api"
 
 class LoanSummary extends Component {
 
@@ -56,7 +57,7 @@ class LoanSummary extends Component {
   }
 
   render() {
-    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear } = this.props
+    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, handlePayoff } = this.props
     const { loanId } = this.props.params
 
     const loanData = loans.find( (loan) => loan.loanId == loanId)
@@ -105,6 +106,7 @@ class LoanSummary extends Component {
                             tabList={this.tabList}
                             onClickPaymentTab={handleSelectPaymentTab}
                             onClickPaymentYear={handleSelectPaymentYear}
+                            onClickPayoff={sendPayoffRequest}
         />
       </div>
     )
@@ -125,7 +127,7 @@ const mapDispatchToProps = (dispatch) => {
     handleSelectPaymentTab: (selectedTab) => dispatch(selectPaymentStatus(selectedTab)),
 
     // triggered when payment year dropdown is selected
-    handleSelectPaymentYear: (year, loanId) => dispatch(selectPaymentYear(year, loanId))
+    handleSelectPaymentYear: (year, loanId) => dispatch(selectPaymentYear(year, loanId)),
   }
 }
 

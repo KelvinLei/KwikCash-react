@@ -112,7 +112,7 @@ export function init(server) {
 
     (async () => {
       var result = await sendRefinanceEmail();
-      debug("result: " + JSON.stringify(result));
+      // debug("result: " + JSON.stringify(result));
 
       res.format({
         'application/json': () => {
@@ -126,12 +126,12 @@ export function init(server) {
     debug("invoking /api/email/payoff");
 
     (async () => {
-      var result = await sendPayoffEmail();
-      debug("result: " + JSON.stringify(result));
+      var result = await sendPayoffEmail(req.body.loanId);
+      // debug("result: " + JSON.stringify(result));
 
       res.format({
         'application/json': () => {
-          res.send(result);
+          res.send({'result': result});
         }
       });
     })();
