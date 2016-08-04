@@ -10,6 +10,7 @@ require("sweetalert/dist/sweetalert.css")
 
 export const PaymentPlanContent = ({
   paymentsData,
+  customerName,
   tabList,
   shouldDisplayPayoff,
   onClickPaymentTab,
@@ -48,7 +49,7 @@ export const PaymentPlanContent = ({
   }
 
   const handlePayoff = () => {
-    onClickPayoff(loanId)
+    onClickPayoff(loanId, customerName)
     showPayoffModal()
   }
 

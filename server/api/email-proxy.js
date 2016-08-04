@@ -24,9 +24,9 @@ export async function sendRefinanceEmail({user, loanInput}) {
   return await sendEmail(subject, message)
 }
 
-export const sendPayoffEmail = (loanId) => {
+export const sendPayoffEmail = (loanId, customerName) => {
   const subject = '[System] Payoff request for loan id ' + loanId
-  const message = `User has submitted a payoff request for loan id ${loanId}. Please contact user to proceed.`
+  const message = `User, ${customerName}, has submitted a payoff request for loan id ${loanId}. Please contact user to proceed.`
 
   return sendEmail(subject, message)
 }

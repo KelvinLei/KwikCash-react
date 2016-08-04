@@ -35,6 +35,6 @@ export const fetchGetUserDataSuccess = (userData) => {
 
 export const fetchGetUserDataError = () => {
   return {
-    type: FETCH_GET_USER_DATA_ERROR
+    type: FETCH_GET_USER_DATA_FAILURE
   }
 }

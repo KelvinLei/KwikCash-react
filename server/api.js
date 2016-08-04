@@ -131,7 +131,7 @@ export function init(server) {
     debug("invoking /api/email/payoff");
 
     (async () => {
-      var result = await sendPayoffEmail(req.body.loanId);
+      var result = await sendPayoffEmail(req.body.loanId, req.body.customerName);
       // debug("result: " + JSON.stringify(result));
 
       res.format({

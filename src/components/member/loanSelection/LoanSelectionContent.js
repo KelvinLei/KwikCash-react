@@ -8,6 +8,7 @@ import {getClassNameForLoanStatus} from "../shared/LoanStyles";
 export const LoanSelectionContent = ({
   isFetching,
   fetchLoansFailed,
+  firstName,
   loanList
 }) => {
   // display different components based on the status of getLoanList api call
@@ -31,7 +32,7 @@ export const LoanSelectionContent = ({
 
       <Row>
         <Col md={ 12 }>
-          <h4>Hello John</h4>
+          <h4>Hello {firstName}</h4>
         </Col>
       </Row>
 

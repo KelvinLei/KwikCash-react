@@ -26,6 +26,7 @@ export default class LoanSummaryContent extends Component {
     const { loanData,
             paymentsData,
             paymentsProgressData,
+            customerName,
             shouldDisplayRefinance,
             shouldDisplayPayoff,
             tabList,
@@ -45,6 +46,7 @@ export default class LoanSummaryContent extends Component {
         <Row>
           <Col md={ 12 } >
             <PaymentPlanContent paymentsData={paymentsData}
+                                customerName={customerName}
                                 tabList={tabList}
                                 shouldDisplayPayoff={shouldDisplayPayoff}
                                 onClickPaymentTab={onClickPaymentTab}

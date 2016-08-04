@@ -4,6 +4,7 @@ import { selectPaymentStatus, selectPaymentYear } from '../../../redux/actions/m
 import LoanSummaryContent from '../../../components/member/loanSummary/LoanSummaryContent'
 import { fetchPaymentsAction } from "../../../redux/actions/member/fetchPayments"
 import { sendPayoffRequest } from "../../../../src/api"
+import {fetchGetUserDataAction} from "../../../redux/actions/member/fetchUserData";
 
 class LoanSummary extends Component {
 
@@ -17,9 +18,10 @@ class LoanSummary extends Component {
   }
 
   componentDidMount() {
-    const { fetchPayments } = this.props
+    const { fetchPayments, fetchUserData } = this.props
     const { loanId } = this.props.params
     fetchPayments(loanId)
+    fetchUserData()
   }
 
   filterPaymentsForDisplay(paymentList, paymentYear, paymentStatus) {
@@ -57,7 +59,7 @@ class LoanSummary extends Component {
   }
 
   render() {
-    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear } = this.props
+    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, userDataState } = this.props
     const { loanId } = this.props.params
 
     const loanData = loans.find( (loan) => loan.loanId == loanId)
@@ -97,10 +99,15 @@ class LoanSummary extends Component {
       selectedPaymentStatus: paymentState.selectedPaymentStatus
     }
 
+    const customerName = userDataState.isFetching || userDataState.isFailed 
+      ? '' 
+      : userDataState.userData.firstName + ' ' + userDataState.userData.lastName
+    
     return (
       <div>
         <LoanSummaryContent loanData={loanData}
                             paymentsData={paymentsData}
+                            customerName={customerName}
                             paymentsProgressData={paymentsProgressData}
                             shouldDisplayRefinance={shouldDisplayRefinance}
                             shouldDisplayPayoff={shouldDisplayPayoff}
@@ -129,16 +136,19 @@ const mapDispatchToProps = (dispatch) => {
 
     // triggered when payment year dropdown is selected
     handleSelectPaymentYear: (year, loanId) => dispatch(selectPaymentYear(year, loanId)),
+
+    fetchUserData: () => dispatch(fetchGetUserDataAction()),
   }
 }
 
 function mapStateToProps(state) {
-  const { paymentState } = state
+  const { paymentState, userDataState } = state
   const loans = state.loanList.loans
 
   return {
     loans,
-    paymentState
+    paymentState,
+    userDataState
   }
 }
 
