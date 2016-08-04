@@ -118,6 +118,11 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
               </div>
 
               <div className="list-group-item">
+                <span className="pull-right">{loanData.paymentSchedule}</span>
+                <div className="text-bold">Payment schedule:</div>
+              </div>
+
+              <div className="list-group-item">
                 <span className="pull-right">{loanData.nextPaymentDate}</span>
                 <div className="text-bold">Next payment:</div>
               </div>

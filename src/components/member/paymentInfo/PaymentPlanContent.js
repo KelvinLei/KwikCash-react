@@ -54,7 +54,7 @@ export const PaymentPlanContent = ({
   }
 
   return (
-    <Panel className="panel-default" header={"Payments schedule - " + paymentSchedule}>
+    <Panel className="panel-default" header="Payments schedule">
       <Row className="text-center">
         <Col xs={6}>
           <Dropdown id="dropdown-custom-1">

@@ -90,7 +90,8 @@ const loanList = (state = {
         loanStatus: "PAID",
         loanCode: "P",
         loanTerm: 24,
-        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+        nextPaymentDate: "2016-06-01T07:00:00.000Z",
+        paymentSchedule: "Every 1st Monday"
       }
       const lateLoan = {
         balance: 3000,
@@ -101,7 +102,8 @@ const loanList = (state = {
         loanStatus: "LATE",
         loanCode: "L",
         loanTerm: 24,
-        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+        nextPaymentDate: "2016-06-01T07:00:00.000Z",
+        paymentSchedule: "Every 1st Monday"
       }
       const manualLoan = {
         balance: 3000,
@@ -112,7 +114,8 @@ const loanList = (state = {
         loanStatus: "MANUAL",
         loanCode: "M",
         loanTerm: 24,
-        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+        nextPaymentDate: "2016-06-01T07:00:00.000Z",
+        paymentSchedule: "Every 1st Monday"
       }
       const chargedOffLoan = {
         balance: 3000,
@@ -123,7 +126,8 @@ const loanList = (state = {
         loanStatus: "Charged off",
         loanCode: "D",
         loanTerm: 24,
-        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+        nextPaymentDate: "2016-06-01T07:00:00.000Z",
+        paymentSchedule: "Every 1st Monday"
       }
       const planLoan = {
         balance: 3000,
@@ -134,7 +138,8 @@ const loanList = (state = {
         loanStatus: "PLAN",
         loanCode: "F",
         loanTerm: 24,
-        nextPaymentDate: "2016-06-01T07:00:00.000Z"
+        nextPaymentDate: "2016-06-01T07:00:00.000Z",
+        paymentSchedule: "Every 1st Monday"
       }
 
       action.loans.push(completeLoan)
