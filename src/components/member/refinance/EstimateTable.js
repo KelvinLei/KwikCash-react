@@ -1,9 +1,7 @@
 import React from 'react'
 import { Panel, Table } from 'react-bootstrap';
 
-export const EstimateTable = () => {
-  const { currentBalance, refinanceValueForTable, newBalance } = this.props
-
+export const EstimateTable = ({currentBalance, refinanceValueForTable, newBalance}) => {
   return (
     <Panel header="Estimated new balance">
       <Table id="estimateTable" responsive striped hover>
