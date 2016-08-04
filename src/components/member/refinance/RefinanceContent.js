@@ -3,6 +3,7 @@ import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel } from 'react-bootstrap';
 import RefinanceValueOptions from './RefinanceValueOptions'
 import { EstimateTable } from './EstimateTable'
+import { sendRefinanceRequest } from '../../../api'
 
 require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")
@@ -30,7 +31,11 @@ export const RefinanceContent = ({
       closeOnCancel: true },
       (isConfirm) => {
         if (isConfirm) {
-          swal("Got it!", "Your refinance request is being processed. We will email you when your application has completed", "success");
+          sendRefinanceRequest(loanId, currentBalance, refinanceState.refinanceValue).then(() => {
+            swal("Got it!", "Your refinance request is being processed. We will email you when your application has completed", "success");
+          }).catch(() => {
+            sweetAlert("Oops...", "Something went wrong! Please try again", "error");
+          })
         }
       });
   }

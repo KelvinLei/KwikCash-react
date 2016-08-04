@@ -1,6 +1,5 @@
 import 'whatwg-fetch'
 
-
 const authenticatedPost = (url, input) => {
   var token = localStorage.getItem('user_token')
   return fetch(url, {
@@ -57,5 +56,13 @@ export const getPayments = (loanId) => {
 export const sendPayoffRequest = (loanId) => {
   return authenticatedPost('/api/email/payoff', {
     loanId
+  })
+}
+
+export const sendRefinanceRequest = (loanId, currentBalance, refinanceAmount) => {
+  return authenticatedPost('/api/email/refinance', {
+    loanId,
+    currentBalance,
+    refinanceAmount
   })
 }

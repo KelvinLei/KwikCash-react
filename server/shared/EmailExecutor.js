@@ -9,8 +9,8 @@ export const sendEmail = (subject, message) => {
   return new Promise((resolve, reject) => {
     debug("sending email");
     ses.sendEmail({
-        Source: 'info@kwikcashonline.com',
-        Destination: { ToAddresses: ['info@kwikcashonline.com'] },
+        Source: 'aamirnshah@gmail.com',
+        Destination: { ToAddresses: ['aamirnshah@gmail.com'] },
         Message: {
           Subject: {
             Data: subject

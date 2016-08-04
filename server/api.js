@@ -111,8 +111,13 @@ export function init(server) {
     debug("invoking /api/email/refinance");
 
     (async () => {
-      var result = await sendRefinanceEmail();
-      // debug("result: " + JSON.stringify(result));
+      var result = await sendRefinanceEmail({
+        user: req.user,
+        loanInput: {
+          currentBalance: req.body.currentBalance,
+          refinanceAmount: req.body.refinanceAmount,
+        }
+      });
 
       res.format({
         'application/json': () => {
