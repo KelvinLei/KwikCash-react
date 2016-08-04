@@ -1,3 +1,4 @@
+import config from '../config'
 import _debug from 'debug'
 
 const debug = _debug('app:server:shared:EmailExecutor')
@@ -9,11 +10,11 @@ export const sendEmail = (subject, message) => {
   return new Promise((resolve, reject) => {
     debug("sending email");
     ses.sendEmail({
-        Source: 'aamirnshah@gmail.com',
-        Destination: { ToAddresses: ['aamirnshah@gmail.com'] },
+        Source: 'info@kwikcashonline.net',
+        Destination: { ToAddresses: ['info@kwikcashonline.net'] },
         Message: {
           Subject: {
-            Data: subject
+            Data: (config.env === 'development' || config.env ===  'test') ? `[Test] ${subject}` : subject,
           },
           Body: {
             Text: {
