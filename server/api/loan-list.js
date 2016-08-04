@@ -1,5 +1,6 @@
 import { getLoanList } from './database-proxy'
 import _debug from 'debug'
+import { PAYMENT_SCHEDULE_MAPPING } from '../shared/payments-schedule-mapping'
 
 const debug = _debug('app:server:api:loan-list')
 
@@ -33,7 +34,8 @@ export async function getLoans(userId) {
         loanRate: currentLoan.loan_rate,
         loanTerm: currentLoan.loan_term,
         loanStatus : LOAN_STATUS_MAP[currentLoan.loan_status],
-        loanCode: currentLoan.loan_status
+        loanCode: currentLoan.loan_status,
+        paymentSchedule: PAYMENT_SCHEDULE_MAPPING[currentLoan.loanpayment_paymentschedule],
       };
 
       if (!prevLoan.balance) {
