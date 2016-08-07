@@ -6,6 +6,7 @@ import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail } from './api/ema
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from './config'
+import isEmail from 'validator/lib/isEmail';
 
 const debug = _debug('app:server:api')
 
@@ -130,6 +131,10 @@ export function init(server) {
   server.post('/api/email/referal', (req, res) => {
     debug("invoking /api/email/referal");
 
+    if (!req.body.referalEmail || !isEmail(req.body.referalEmail)) {
+      res.status(400).send("invalid email address");
+      return;
+    }
     (async () => {
       var result = await sendReferalEmail({
         user: req.user,
