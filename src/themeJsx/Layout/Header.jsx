@@ -2,6 +2,7 @@ import React from 'react';
 import pubsub from 'pubsub-js';
 import HeaderRun from './Header.run'
 import { NavDropdown, MenuItem } from 'react-bootstrap';
+import { showReferAFriendModal } from '../../components/referAFriend/modal'
 
 class Header extends React.Component {
 
@@ -53,9 +54,9 @@ class Header extends React.Component {
 
             { /* START Refer friends */ }
             <ul className="nav navbar-nav navbar">
-              <NavDropdown eventKey={ 3 } title="Refer friends" id="basic-nav-dropdown" >
-                <MenuItem className="animated flipInX" eventKey={4.2}>Refer friends</MenuItem>
-              </NavDropdown>
+              <li>
+                <a href="" onClick={showReferAFriendModal}>Refer a friend</a>
+              </li>
             </ul>
 
             { /* START my account */ }
