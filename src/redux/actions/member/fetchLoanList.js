@@ -11,30 +11,16 @@ export const fetchLoanListAction = () => {
   return (dispatch, getState) => {
     const state = getState()
 
-    // only makes the api call when no data is cached
-    if (!state.loanList.isFetching && state.loanList.loans.length === 0) {
-      dispatch(fetchLoanListRequest())
+    dispatch(fetchLoanListRequest())
 
-      // setTimeout(function(){
-      //   getLoanList()
-      //     .then(response => {
-      //       dispatch(fetchLoanListSuccess(response.loans))
-      //     })
-      //     .catch(() => {
-      //       console.log("fetch loan list failed")
-      //       dispatch(fetchLoanListError())
-      //     })
-      // },2000);
-
-      getLoanList()
-        .then(response => {
-          dispatch(fetchLoanListSuccess(response.loans))
-        })
-        .catch(() => {
-          console.log("fetch loan list failed")
-          dispatch(fetchLoanListError())
-        })
-    }
+    getLoanList()
+      .then(response => {
+        dispatch(fetchLoanListSuccess(response.loans))
+      })
+      .catch(() => {
+        console.log("fetch loan list failed")
+        dispatch(fetchLoanListError())
+      })
   }
 }
 

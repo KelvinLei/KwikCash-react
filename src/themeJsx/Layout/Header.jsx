@@ -59,14 +59,15 @@ class Header extends React.Component {
               </li>
             </ul>
 
-            { /* START my account */ }
-            <ul className="nav navbar-nav navbar-right">
-              <NavDropdown eventKey={ 4 } title="My account" id="basic-nav-dropdown" >
-                <MenuItem className="animated flipInX" eventKey={5.1}>Profile</MenuItem>
-                <MenuItem divider />
-                <MenuItem className="animated flipInX" eventKey={5.2}>Logout</MenuItem>
-              </NavDropdown>
-            </ul>
+            { /* START my account
+             <ul className="nav navbar-nav navbar-right">
+             <NavDropdown eventKey={ 4 } title="My account" id="basic-nav-dropdown" >
+             <MenuItem className="animated flipInX" eventKey={5.1}>Profile</MenuItem>
+             <MenuItem divider />
+             <MenuItem className="animated flipInX" eventKey={5.2}>Logout</MenuItem>
+             </NavDropdown>
+             </ul>
+             */ }
           </div>
           { /* END Nav wrapper */ }
         </nav>
