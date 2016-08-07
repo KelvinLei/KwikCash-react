@@ -153,8 +153,10 @@ export function init(server) {
     debug("invoking /api/email/payoff");
 
     (async () => {
-      var result = await sendPayoffEmail(req.body.loanId, req.body.customerName);
-      // debug("result: " + JSON.stringify(result));
+      var result = await sendPayoffEmail({
+        user: req.user,
+        loanId: req.body.loanId
+      });
 
       res.format({
         'application/json': () => {

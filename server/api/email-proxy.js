@@ -46,9 +46,20 @@ export async function sendReferalEmail({user, referalEmail}) {
   return await sendEmail(subject, message)
 }
 
-export const sendPayoffEmail = (loanId, customerName) => {
-  const subject = '[System] Payoff request for loan id ' + loanId
-  const message = `User, ${customerName}, has submitted a payoff request for loan id ${loanId}. Please contact user to proceed.`
+export async function sendPayoffEmail({user, loanId}) {
+  const subject = '[System] Customer request for payoff loan: ' + loanId
+  const userData = await getUserDataAsync(user.id);
 
-  return sendEmail(subject, message)
+  const message = `
+    Customer has requested to payoff his loan.
+    
+    Infomation:
+    loan id: ${loanId}
+    name: ${user.name}
+    username: ${user.username}
+    id: ${user.id}
+    phone: ${userData.homePhone}
+  `
+
+  return await sendEmail(subject, message)
 }
