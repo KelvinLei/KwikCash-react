@@ -67,3 +67,9 @@ export const sendRefinanceRequest = (loanId, currentBalance, refinanceAmount) =>
     refinanceAmount
   })
 }
+
+export const sendReferalRequest = (referalEmail) => {
+  return authenticatedPost('/api/email/refinance', {
+    referalEmail,
+  })
+}

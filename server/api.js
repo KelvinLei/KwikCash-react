@@ -2,7 +2,7 @@ import { authenticateUser } from './api/authenticate'
 import { getLoans } from './api/loan-list'
 import { getPayments } from './api/payments'
 import { getUserDataAsync } from './api/get-user-data'
-import { sendRefinanceEmail, sendPayoffEmail } from './api/email-proxy'
+import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail } from './api/email-proxy'
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from './config'
@@ -117,6 +117,23 @@ export function init(server) {
           currentBalance: req.body.currentBalance,
           refinanceAmount: req.body.refinanceAmount,
         }
+      });
+
+      res.format({
+        'application/json': () => {
+          res.send(result);
+        }
+      });
+    })();
+  });
+
+  server.post('/api/email/referal', (req, res) => {
+    debug("invoking /api/email/referal");
+
+    (async () => {
+      var result = await sendReferalEmail({
+        user: req.user,
+        referalEmail: req.body.referalEmail,
       });
 
       res.format({
