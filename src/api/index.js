@@ -53,10 +53,9 @@ export const getPayments = (loanId) => {
   })
 }
 
-export const sendPayoffRequest = (loanId, customerName) => {
+export const sendPayoffRequest = (loanId) => {
   return authenticatedPost('/api/email/payoff', {
     loanId,
-    customerName
   })
 }
 

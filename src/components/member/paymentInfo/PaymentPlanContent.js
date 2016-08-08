@@ -40,17 +40,23 @@ export const PaymentPlanContent = ({
 
   const handleOnClickPaymentsYear = (event) => onClickPaymentYear(event.target.text, loanId)
 
-  const showPayoffModal = () => {
+  const showPayoffModal2 = (e) => {
+    e.preventDefault();
     swal({
-        title: "Payoff request for loan id " + loanId,
-        text: "We have been notified of your payoff request. Our staff will contact your shortly",
-        confirmButtonText: "Okay",
-        closeOnConfirm: false })
-  }
-
-  const handlePayoff = () => {
-    onClickPayoff(loanId, customerName)
-    showPayoffModal()
+        title: "Payoff request",
+        text: "Please confirm of the payoff request, and our staff will reach out to you",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        animation: "slide-from-top", },
+      (isConfirm) => {
+        if (isConfirm) {
+          onClickPayoff(loanId).then(() => {
+            swal("Got it!", "Your payoff request is being processed. Our staff will contact your shortly", "success");
+          }).catch(() => {
+            sweetAlert("Oops...", "Something went wrong! Please try again", "error");
+          })
+        }
+      });
   }
 
   return (
@@ -74,7 +80,7 @@ export const PaymentPlanContent = ({
         {
           shouldDisplayPayoff &&
           <Col xs={6}>
-            <Button onClick={handlePayoff} bsStyle="info" className="mb-sm">Payoff Loan</Button>
+            <Button onClick={showPayoffModal2} bsStyle="info" className="mb-sm">Payoff Loan</Button>
           </Col>
         }
       </Row>
