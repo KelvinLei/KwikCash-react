@@ -12,18 +12,18 @@ export const fetchPaymentsAction = (loanId) => {
     const state = getState()
 
     // only makes the api call when no data is cached
-    if (!state.paymentState.isFetching && !state.paymentState.paymentsDataMap.has(loanId)) {
-      dispatch(fetchPaymentsRequest())
+    // if (!state.paymentState.isFetching && !state.paymentState.paymentsDataMap.has(loanId)) {
+    dispatch(fetchPaymentsRequest())
 
-      getPayments(loanId)
-        .then(response => {
-          dispatch(fetchPaymentsSuccess(loanId, response.payments, response.paymentSchedule, response.interestRate))
-        })
-        .catch(() => {
-          console.log("fetch payments for loan id " + loanId + " failed")
-          dispatch(fetchPaymentsError())
-        })
-    }
+    getPayments(loanId)
+      .then(response => {
+        dispatch(fetchPaymentsSuccess(loanId, response.payments, response.paymentSchedule, response.interestRate))
+      })
+      .catch(() => {
+        console.log("fetch payments for loan id " + loanId + " failed")
+        dispatch(fetchPaymentsError())
+      })
+    // }
   }
 }
 

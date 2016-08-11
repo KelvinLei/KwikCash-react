@@ -3,11 +3,17 @@ import { connect } from 'react-redux'
 import {selectRefinanceValue, enterRefinanceValue, selectUserRefinanceValue} from '../../../redux/actions/member/memberAction'
 
 import { RefinanceContent } from '../../../components/member/refinance/RefinanceContent'
+import {fetchLoanListAction} from "../../../redux/actions/member/fetchLoanList";
 
 class Refinance extends Component {
 
   constructor(props) {
     super(props)
+  }
+
+  componentDidMount() {
+    const { fetchLoanList } = this.props
+    fetchLoanList()
   }
 
   render() {
@@ -29,12 +35,12 @@ class Refinance extends Component {
     // find the loanData from loanList, get the current balance, and compute a new balance
     // based on selected refinance value
     const loanData = loanList.find( (loan) => loan.loanId == loanId )
-    const newBalance = refinanceValueForTable - loanData.balance
+    const newBalance = loanData ? refinanceValueForTable - loanData.balance : 0
 
     return (
       <div>
         <RefinanceContent loanId={loanId}
-                          currentBalance={loanData.balance}
+                          loanData={loanData}
                           refinanceState={refinanceState}
                           refinanceValueForTable={refinanceValueForTable}
                           newBalance={newBalance}
@@ -67,7 +73,9 @@ const mapDispatchToProps = (dispatch) => {
 
     handleEnterUserRefinanceValue: (value) => {
       dispatch(enterRefinanceValue(value))
-    }
+    },
+
+    fetchLoanList: () => dispatch(fetchLoanListAction()),
   }
 }
 

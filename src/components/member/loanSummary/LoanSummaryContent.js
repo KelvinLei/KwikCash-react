@@ -6,6 +6,8 @@ import ProgressChart from './progressChart';
 import styles from './styles.scss'
 import { PaymentPlanContent } from '../paymentInfo/PaymentPlanContent'
 import {getClassNameForLoanStatus} from "../shared/LoanStyles";
+import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+
 
 export default class LoanSummaryContent extends Component {
 
@@ -24,24 +26,28 @@ export default class LoanSummaryContent extends Component {
 
   render() {
     const { loanData,
-            paymentsData,
-            paymentsProgressData,
-            customerName,
-            shouldDisplayRefinance,
-            shouldDisplayPayoff,
-            tabList,
-            onClickPaymentTab,
-            onClickPaymentYear,
-            onClickPayoff } = this.props;
+      paymentsData,
+      paymentsProgressData,
+      customerName,
+      shouldDisplayRefinance,
+      shouldDisplayPayoff,
+      tabList,
+      onClickPaymentTab,
+      onClickPaymentYear,
+      onClickPayoff } = this.props;
 
     return (
       <ContentWrapper>
         <div className="content-heading">
           Loan Summary
-          <small data-localize="dashboard.WELCOME">Selected loan ID: {loanData.loanId}</small>
+          <small data-localize="dashboard.WELCOME">Selected loan ID: { loanData && loanData.loanId}</small>
         </div>
 
-        <LoanSummaryOverview loanData={loanData} shouldDisplayRefinance={shouldDisplayRefinance}/>
+        {
+          loanData
+            ? <LoanSummaryOverview loanData={loanData} shouldDisplayRefinance={shouldDisplayRefinance}/>
+            : <LoadingSpinner/>
+        }
 
         <Row>
           <Col md={ 12 } >
@@ -67,13 +73,13 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
 
   const refinanceOption =
     shouldDisplayRefinance ?
-    <div className="panel-footer text-left">
-      <Link to={"/myLoans/refinance/" + loanData.loanId} className="btn btn-info btn-sm">Refinance</Link>
-    </div>
-    :
-    <div className="panel-footer text-left text-info">
-      <span> {loanData.loanStatus} loan is not eligible for refinance </span>
-    </div>
+      <div className="panel-footer text-left">
+        <Link to={"/myLoans/refinance/" + loanData.loanId} className="btn btn-info btn-sm">Refinance</Link>
+      </div>
+      :
+      <div className="panel-footer text-left text-info">
+        <span> {loanData.loanStatus} loan is not eligible for refinance </span>
+      </div>
 
   return (
     <Row>

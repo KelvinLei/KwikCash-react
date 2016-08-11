@@ -63,7 +63,7 @@ ReactDOM.render(
         {/* if no loadId is specified, redirect back to loan selection page */}
         <Redirect from="/myLoans/loanSummary" to="/myLoans" />
         <Redirect from="/myLoans/refinance" to="/myLoans" />
-        
+
         <Route path="/myLoans" component={LoanSelection}/>
 
         <Route path="/myProfile" component={MyProfile}/>

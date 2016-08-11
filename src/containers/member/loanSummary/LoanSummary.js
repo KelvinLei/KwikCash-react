@@ -5,6 +5,7 @@ import LoanSummaryContent from '../../../components/member/loanSummary/LoanSumma
 import { fetchPaymentsAction } from "../../../redux/actions/member/fetchPayments"
 import { sendPayoffRequest } from "../../../../src/api"
 import {fetchGetUserDataAction} from "../../../redux/actions/member/fetchUserData";
+import {fetchLoanListAction} from "../../../redux/actions/member/fetchLoanList";
 
 class LoanSummary extends Component {
 
@@ -18,10 +19,11 @@ class LoanSummary extends Component {
   }
 
   componentDidMount() {
-    const { fetchPayments, fetchUserData } = this.props
+    const { fetchPayments, fetchUserData, fetchLoanList } = this.props
     const { loanId } = this.props.params
     fetchPayments(loanId)
     fetchUserData()
+    fetchLoanList()
   }
 
   filterPaymentsForDisplay(paymentList, paymentYear, paymentStatus) {
@@ -65,9 +67,9 @@ class LoanSummary extends Component {
     const loanData = loans.find( (loan) => loan.loanId == loanId)
 
     // only ACTIVE loans can refinance
-    const shouldDisplayRefinance = loanData.loanCode === 'A'
+    const shouldDisplayRefinance = loanData && loanData.loanCode === 'A'
 
-    const shouldDisplayPayoff = this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
+    const shouldDisplayPayoff = loanData && this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
 
     let paymentDataForSelectedLoan
     let paymentsToDisplay
@@ -99,10 +101,10 @@ class LoanSummary extends Component {
       selectedPaymentStatus: paymentState.selectedPaymentStatus
     }
 
-    const customerName = userDataState.isFetching || userDataState.isFailed 
-      ? '' 
+    const customerName = userDataState.isFetching || userDataState.isFailed
+      ? ''
       : userDataState.userData.firstName + ' ' + userDataState.userData.lastName
-    
+
     return (
       <div>
         <LoanSummaryContent loanData={loanData}
@@ -128,6 +130,8 @@ LoanSummary.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    fetchLoanList: () => dispatch(fetchLoanListAction()),
+
     // triggered when loan summary component is rendered
     fetchPayments: (loanId) => dispatch(fetchPaymentsAction(loanId)),
 

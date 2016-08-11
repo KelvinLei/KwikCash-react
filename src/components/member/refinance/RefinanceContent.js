@@ -4,13 +4,14 @@ import { Row, Col, Panel } from 'react-bootstrap';
 import RefinanceValueOptions from './RefinanceValueOptions'
 import { EstimateTable } from './EstimateTable'
 import { sendRefinanceRequest } from '../../../api'
+import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 
 require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")
 
 export const RefinanceContent = ({
   loanId,
-  currentBalance,
+  loanData,
   refinanceState,
   refinanceValueForTable,
   newBalance,
@@ -18,17 +19,56 @@ export const RefinanceContent = ({
   onClickUserRefinanceValue,
   onEnterUserFinanceValue
 }) => {
+  const displayContent = loanData ?
+    <RefinanceContentBody
+      loanId={loanId}
+      loanData={loanData}
+      refinanceState={refinanceState}
+      refinanceValueForTable={refinanceValueForTable}
+      newBalance={newBalance}
+      onClickRefinanceValue={onClickRefinanceValue}
+      onClickUserRefinanceValue={onClickUserRefinanceValue}
+      onEnterUserFinanceValue={onEnterUserFinanceValue} />
+    :
+    <LoadingSpinner/>
+
+  return (
+    <ContentWrapper>
+      { /* header */}
+      <div className="content-heading">
+        Refinance options
+        <small data-localize="dashboard.WELCOME">Selected loan ID: {loanId}</small>
+      </div>
+
+      { displayContent }
+    </ContentWrapper>
+  )
+}
+
+const RefinanceContentBody = ({
+  loanId,
+  loanData,
+  refinanceState,
+  refinanceValueForTable,
+  newBalance,
+  onClickRefinanceValue,
+  onClickUserRefinanceValue,
+  onEnterUserFinanceValue
+}) => {
+
   const refinanceOptions = [2000, 3000, 4000, 5000];
+
+  const currentBalance = loanData.balance
 
   const showRefinanceModal = () => {
     swal({
-      title: "Refinance your loan?",
-      text: "New loan balance: $" + refinanceState.refinanceValue,
-      showCancelButton: true,
-      confirmButtonText: "Yes",
-      cancelButtonText: "Cancel",
-      closeOnConfirm: false,
-      closeOnCancel: true },
+        title: "Refinance your loan?",
+        text: "New loan balance: $" + refinanceState.refinanceValue,
+        showCancelButton: true,
+        confirmButtonText: "Yes",
+        cancelButtonText: "Cancel",
+        closeOnConfirm: false,
+        closeOnCancel: true },
       (isConfirm) => {
         if (isConfirm) {
           sendRefinanceRequest(loanId, currentBalance, refinanceState.refinanceValue).then(() => {
@@ -41,13 +81,7 @@ export const RefinanceContent = ({
   }
 
   return (
-    <ContentWrapper>
-      { /* header */}
-      <div className="content-heading">
-        Refinance options
-        <small data-localize="dashboard.WELCOME">Selected loan ID: {loanId}</small>
-      </div>
-
+    <div>
       <Row>
         <Col xs={12} className="text-center">
           <h4>Current balance: ${currentBalance}</h4>
@@ -93,6 +127,6 @@ export const RefinanceContent = ({
           </div>
         </Col>
       </Row>
-    </ContentWrapper>
+    </div>
   )
 }
