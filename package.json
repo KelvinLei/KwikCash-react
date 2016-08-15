@@ -39,10 +39,6 @@
     "type": "git",
     "url": "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/KwikCash"
   },
-  "config": {
-    "unsafe-perm": true,
-    "user": "nodejs"
-  },
   "keywords": [],
   "author": "",
   "license": "ISC",
