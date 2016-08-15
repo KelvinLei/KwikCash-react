@@ -13,7 +13,7 @@
     "build-webpack-config": "babel webpack -d lib/webpack",
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm run test -- --watch",
-    "postinstall": "npm run build"
+    "prestart": "npm run build"
   },
   "betterScripts": {
     "create-app-vendor-bundle": {
