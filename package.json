@@ -40,6 +40,9 @@
     "type": "git",
     "url": "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/KwikCash"
   },
+  "config": {
+    "unsafe-perm": true
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
