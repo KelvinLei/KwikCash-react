@@ -4,7 +4,7 @@
   "description": "",
   "main": "client.js",
   "scripts": {
-    "start": "npm run start-prod",
+    "start": "npm run build && npm run start-prod",
     "start-prod": "better-npm-run start-server-prod",
     "dev": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server",
     "clean": "rimraf dist build lib",
@@ -12,8 +12,7 @@
     "build-server": "babel server -d lib/server",
     "build-webpack-config": "babel webpack -d lib/webpack",
     "test": "mocha --compilers js:babel-core/register --recursive",
-    "test:watch": "npm run test -- --watch",
-    "prestart": "npm run build"
+    "test:watch": "npm run test -- --watch"
   },
   "betterScripts": {
     "create-app-vendor-bundle": {
@@ -41,7 +40,8 @@
     "url": "ssh://git-codecommit.us-east-1.amazonaws.com/v1/repos/KwikCash"
   },
   "config": {
-    "unsafe-perm": true
+    "unsafe-perm": true,
+    "user": "nodejs"
   },
   "keywords": [],
   "author": "",
