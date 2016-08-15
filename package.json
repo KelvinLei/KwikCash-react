@@ -4,7 +4,7 @@
   "description": "",
   "main": "client.js",
   "scripts": {
-    "start": "npm run clean && npm run build && better-npm-run start-server",
+    "start": "npm run start-prod",
     "start-prod": "npm run clean && npm run build && better-npm-run start-server-prod",
     "dev": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server",
     "clean": "rimraf dist build lib",
