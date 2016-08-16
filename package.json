@@ -18,6 +18,7 @@
     "create-app-vendor-bundle": {
       "command": "babel-node lib/webpack/compile.js",
       "env": {
+        "NODE_ENV": "production",
         "DEBUG": "app:*"
       }
     },
