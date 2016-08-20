@@ -142,11 +142,11 @@ const loanList = (state = {
         paymentSchedule: "Every 1st Monday"
       }
 
-      action.loans.push(completeLoan)
-      action.loans.push(lateLoan)
-      action.loans.push(manualLoan)
-      action.loans.push(chargedOffLoan)
-      action.loans.push(planLoan)
+      // action.loans.push(completeLoan)
+      // action.loans.push(lateLoan)
+      // action.loans.push(manualLoan)
+      // action.loans.push(chargedOffLoan)
+      // action.loans.push(planLoan)
 
       // convert raw data from database to application data format
       const loanList = action.loans.map( (loan) => {

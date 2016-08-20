@@ -50,11 +50,13 @@ export default class LoanSummaryContent extends Component {
             </Panel>
           </Col>
 
-          {
-            loanData
-              ? <LoanSummaryOverview loanData={loanData} shouldDisplayRefinance={shouldDisplayRefinance}/>
-              : <LoadingSpinner/>
-          }
+          <Col md={ 6 }>
+            {
+              loanData
+                ? <LoanSummaryOverview loanData={loanData} shouldDisplayRefinance={shouldDisplayRefinance}/>
+                : <LoadingSpinner/>
+            }
+          </Col>
         </Row>
 
         <Row>
@@ -90,54 +92,52 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
       </div>
 
   return (
-    <Col md={ 6 }>
-      <Panel className="panel-default" header="Overview">
-        <div>
-          <div className="list-group mb0">
-            <div className="list-group-item">
-              <span className={"pull-right " + styleClassName}>{loanData.loanStatus}</span>
-              <div className="text-bold">Status:</div>
-            </div>
-
-            <div className="list-group-item">
-              <span className="pull-right">${loanData.loanFundAmount}</span>
-              <div className="text-bold">Fund amount:</div>
-            </div>
-
-            <div className="list-group-item">
-              <span className="pull-right">{loanData.loanFundDate}</span>
-              <div className="text-bold">Fund date:</div>
-            </div>
-
-            <div className="list-group-item">
-              <span className="pull-right">{loanData.loanTerm}</span>
-              <div className="text-bold">Term:</div>
-            </div>
-
-            <div className="list-group-item">
-              <span className="pull-right">{loanData.loanRate}%</span>
-              <div className="text-bold">APR:</div>
-            </div>
-
-            <div className="list-group-item">
-              <span className="pull-right">${loanData.balance}</span>
-              <div className="text-bold">Current balance:</div>
-            </div>
-
-            <div className="list-group-item">
-              <span className="pull-right">{loanData.paymentSchedule}</span>
-              <div className="text-bold">Payment schedule:</div>
-            </div>
-
-            <div className="list-group-item">
-              <span className="pull-right">{loanData.nextPaymentDate}</span>
-              <div className="text-bold">Next payment:</div>
-            </div>
+    <Panel className="panel-default" header="Overview">
+      <div>
+        <div className="list-group mb0">
+          <div className="list-group-item">
+            <span className={"pull-right " + styleClassName}>{loanData.loanStatus}</span>
+            <div className="text-bold">Status:</div>
           </div>
 
-          { refinanceOption }
+          <div className="list-group-item">
+            <span className="pull-right">${loanData.loanFundAmount}</span>
+            <div className="text-bold">Fund amount:</div>
+          </div>
+
+          <div className="list-group-item">
+            <span className="pull-right">{loanData.loanFundDate}</span>
+            <div className="text-bold">Fund date:</div>
+          </div>
+
+          <div className="list-group-item">
+            <span className="pull-right">{loanData.loanTerm}</span>
+            <div className="text-bold">Term:</div>
+          </div>
+
+          <div className="list-group-item">
+            <span className="pull-right">{loanData.loanRate}%</span>
+            <div className="text-bold">APR:</div>
+          </div>
+
+          <div className="list-group-item">
+            <span className="pull-right">${loanData.balance}</span>
+            <div className="text-bold">Current balance:</div>
+          </div>
+
+          <div className="list-group-item">
+            <span className="pull-right">{loanData.paymentSchedule}</span>
+            <div className="text-bold">Payment schedule:</div>
+          </div>
+
+          <div className="list-group-item">
+            <span className="pull-right">{loanData.nextPaymentDate}</span>
+            <div className="text-bold">Next payment:</div>
+          </div>
         </div>
-      </Panel>
-    </Col>
+
+        { refinanceOption }
+      </div>
+    </Panel>
   )
 }

@@ -87,7 +87,7 @@ class LoanSummary extends Component {
     else {
       paymentDataForSelectedLoan = {}
       paymentsToDisplay = []
-      paymentsProgressData = {}
+      paymentsProgressData = {completePercentage : 'N/A'}
     }
 
     const paymentsData = {
