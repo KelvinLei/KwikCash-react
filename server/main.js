@@ -43,6 +43,21 @@ if (config.env === 'development') {
   // the web server and not the app server, but this helps to demo the
   // server in production.
   app.use(Express.static(paths.dist()))
+
+  /*
+   Because behind the AWS load balancer, all the communication are done over http,
+   a global redirection instruction would create an infinite redirection loop.
+
+   AWS ELB adds a X-Forwarded-Proto header that you can capture to know what was
+   the protocol used before the load balancer (http or https)
+   */
+  app.use(function(req, res, next) {
+    if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
+      res.redirect('https://' + req.get('Host') + req.url);
+    }
+    else
+      next();
+  });
 }
 
 // This rewrites all routes requests to the root /index.html file
