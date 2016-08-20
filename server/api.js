@@ -11,7 +11,6 @@ import isEmail from 'validator/lib/isEmail';
 const debug = _debug('app:server:api')
 
 export function init(server) {
-  // todo: change to POST once ready for frontend integration
   server.post('/api/authenticate', (req, res) => {
     debug("calling authenticate");
 
