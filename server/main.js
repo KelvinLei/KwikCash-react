@@ -54,12 +54,16 @@ if (config.env === 'development') {
 
 }
 
-app.get('*', function(req, res){
+app.use('*', function(req, res){
   debug(`in first get *********** : ${req.secure}`)
 });
 
 app.get('*', function(req, res, next){
   debug(`in second get *********** : ${req.secure}`)
+});
+
+app.use('*', function(req, res, next){
+  debug(`in first use *********** : ${req.secure}`)
 });
 
 app.use("^(.(?!api))*$", function(req, res, next) {
@@ -78,6 +82,7 @@ app.use("^(.(?!api))*$", function(req, res, next) {
 // rendering, you'll want to remove this middleware.
 // app.use(fallback('index.html', { root: paths.dist() }))
 app.get('*', function(req, res){
+  debug('in rewrite get. Rerouting to index.html')
   res.sendFile('index.html', { root: paths.dist() });
 });
 
