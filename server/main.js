@@ -51,17 +51,27 @@ if (config.env === 'development') {
    AWS ELB adds a X-Forwarded-Proto header that you can capture to know what was
    the protocol used before the load balancer (http or https)
    */
-  app.use("^(.(?!api))*$", function(req, res, next) {
-    debug(`req.secure: ${req.secure}`)
-    debug(`req.X-Forwarded-Proto: ${req.get('X-Forwarded-Proto')}`)
 
-    if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
-      res.redirect('https://' + req.get('Host') + req.url);
-    }
-    else
-      next();
-  });
 }
+
+app.get('*', function(req, res){
+  debug(`in first get *********** : ${req.secure}`)
+});
+
+app.get('*', function(req, res, next){
+  debug(`in second get *********** : ${req.secure}`)
+});
+
+app.use("^(.(?!api))*$", function(req, res, next) {
+  debug(`req.secure: ${req.secure}`)
+  debug(`req.X-Forwarded-Proto: ${req.get('X-Forwarded-Proto')}`)
+
+  if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https')) {
+    res.redirect('https://' + req.get('Host') + req.url);
+  }
+  else
+    next();
+});
 
 // This rewrites all routes requests to the root /index.html file
 // (ignoring file requests). If you want to implement isomorphic
