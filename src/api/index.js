@@ -1,5 +1,7 @@
 import 'whatwg-fetch'
 
+export const METRICS_NAME_PROMO_CODE = 'promotionCodeLinkCount'
+
 const authenticatedPost = (url, input) => {
   var token = localStorage.getItem('user_token')
   return fetch(url, {
@@ -71,4 +73,13 @@ export const sendReferalRequest = (referalEmail) => {
   return authenticatedPost('/api/email/referal', {
     referalEmail,
   })
+}
+
+export const sendCounterMetrics = (metricsName, value) => {
+  console.log(`emitting metrics ${metricsName} ${value}`)
+  // TODO
+  // return authenticatedPost('/api/metrics/counter', {
+  //   metricsName,
+  //   value
+  // })
 }

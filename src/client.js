@@ -21,6 +21,7 @@ import MyProfile from './containers/member/myProfile/MyProfile'
 import Login from './containers/login/Login'
 import Logout from './components/login/logout'
 import { getUser } from './api'
+import {sendCounterMetrics, METRICS_NAME_PROMO_CODE} from "./api/index";
 
 // Init translation system
 initTranslation();
@@ -43,8 +44,10 @@ const requireAuth = (nextState, replace, callback) => {
     callback();
   }).catch(() => {
     // redirect to login page when the user isnt authenticated
+    const redirectUrl = location.href
     replace({
-      pathname: '/login',
+      pathname: `/login`,
+      query: { redirectUrl: redirectUrl },
       state: { nextPathname: nextState.location.pathname }
     })
     callback()

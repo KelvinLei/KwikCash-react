@@ -8,8 +8,7 @@ export const PaymentPlanTable = ({paymentList}) => {
             paymentDate,
             amountDue,
             principal,
-            interest,
-            interestRate } = payment
+            interest } = payment
 
     return (
       <PaymentPlanRow key={id}
@@ -19,7 +18,6 @@ export const PaymentPlanTable = ({paymentList}) => {
                       amount={amountDue}
                       principal={principal}
                       interest={interest}
-                      rate={interestRate}
       />
     )
   })
@@ -34,7 +32,6 @@ export const PaymentPlanTable = ({paymentList}) => {
         <th className="sort-numeric">Amount</th>
         <th className="sort-numeric">Principal</th>
         <th className="sort-numeric">Interest</th>
-        <th className="sort-numeric">Rate</th>
       </tr>
       </thead>
 
@@ -45,7 +42,7 @@ export const PaymentPlanTable = ({paymentList}) => {
   )
 }
 
-const PaymentPlanRow = ({index, status, dueDate, amount, principal, interest, rate}) => {
+const PaymentPlanRow = ({index, status, dueDate, amount, principal, interest}) => {
   var amountText = "$" + amount;
 
   var className = status === "Complete" ? "label label-success" : "label label-warning"
@@ -60,7 +57,6 @@ const PaymentPlanRow = ({index, status, dueDate, amount, principal, interest, ra
       <td>{amountText}</td>
       <td>{principal}</td>
       <td>{interest}</td>
-      <td>{rate}%</td>
     </tr>
   )
 }
