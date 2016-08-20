@@ -51,7 +51,7 @@ if (config.env === 'development') {
    AWS ELB adds a X-Forwarded-Proto header that you can capture to know what was
    the protocol used before the load balancer (http or https)
    */
-  app.get('*', function(req, res, next) {
+  app.use("^(.(?!api))*$", function(req, res, next) {
     debug(`req.secure: ${req.secure}`)
     debug(`req.X-Forwarded-Proto: ${req.get('X-Forwarded-Proto')}`)
 
