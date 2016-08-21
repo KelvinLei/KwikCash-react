@@ -39,11 +39,6 @@ if (config.env === 'development') {
     'section in the README for more information on deployment strategies.'
   )
 
-  // Serving ~/dist by default. Ideally these files should be served by
-  // the web server and not the app server, but this helps to demo the
-  // server in production.
-  app.use(Express.static(paths.dist()))
-
   /*
    Because behind the AWS load balancer, all the communication are done over http,
    a global redirection instruction would create an infinite redirection loop.
@@ -66,6 +61,11 @@ if (config.env === 'development') {
     else
       next();
   });
+
+  // Serving ~/dist by default. Ideally these files should be served by
+  // the web server and not the app server, but this helps to demo the
+  // server in production.
+  app.use(Express.static(paths.dist()))
 }
 
 // This rewrites all routes requests to the root /index.html file
