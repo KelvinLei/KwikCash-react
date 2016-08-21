@@ -54,10 +54,12 @@ if (config.env === 'development') {
   app.use('*', function(req, res, next) {
     debug(`req.secure: ${req.secure}`)
     debug(`req.X-Forwarded-Proto: ${req.get('X-Forwarded-Proto')}`)
-    debug(`req.url: ${req.get('Host') + req.url}`)
+    debug(`req.url: ${req.get('Host') + req.originalUrl}`)
     debug(`req.method: ${req.method}`)
 
-    if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https') && (req.method == 'GET')) {
+    const isApiUrl = req.originalUrl.includes("/api/")
+
+    if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https') && isApiUrl) {
       debug('redirecting to https')
       res.redirect('https://' + req.get('Host') + req.url);
     }
