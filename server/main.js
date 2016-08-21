@@ -59,7 +59,7 @@ if (config.env === 'development') {
 
     const isApiUrl = req.originalUrl.includes("/api/")
 
-    if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https') && isApiUrl) {
+    if((!req.secure) && (req.get('X-Forwarded-Proto') !== 'https') && !isApiUrl) {
       debug('redirecting to https')
       res.redirect('https://' + req.get('Host') + req.url);
     }
