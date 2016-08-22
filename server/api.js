@@ -183,6 +183,19 @@ export function init(server) {
       });
     })();
   });
+
+  server.post('/api/log', (req, res) => {
+    debug("invoking /api/log");
+
+    const type = req.body.type || 'DEBUG'
+    const output = `[${type}] ${req.body.message}`
+    debug(output)
+      res.format({
+        'application/json': () => {
+          res.send({'result': output});
+        }
+      });
+  });
 };
 
 

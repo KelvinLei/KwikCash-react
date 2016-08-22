@@ -92,3 +92,11 @@ export const sendCounterMetrics = (metricsName, dimensions) => {
     dimensions
   })
 }
+
+export const sendLog = (message, type = 'DEBUG') => {
+  console.log(`emitting log: [${type}] ${message}`)
+  return authenticatedPost('/api/log', {
+    message,
+    type
+  })
+}
