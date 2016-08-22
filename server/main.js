@@ -47,15 +47,7 @@ if (config.env === 'development') {
    the protocol used before the load balancer (http or https)
    */
   app.get('*', function(req, res, next) {
-    debug(`req.secure: ${req.secure}`)
-    debug(`req.X-Forwarded-Proto: ${req.get('X-Forwarded-Proto')}`)
-    debug(`req.url: ${req.get('Host') + req.originalUrl}`)
-    debug(`req.method: ${req.method}`)
-
-    const isApiUrl = req.originalUrl.includes("/api/")
-
     if(!req.secure && req.get('X-Forwarded-Proto') !== 'https') {
-      debug('redirecting to https')
       res.redirect('https://' + req.get('Host') + req.url);
     }
     else
@@ -73,7 +65,6 @@ if (config.env === 'development') {
 // rendering, you'll want to remove this middleware.
 // app.use(fallback('index.html', { root: paths.dist() }))
 app.get('*', function(req, res){
-  debug('in rewrite get. Rerouting to index.html')
   res.sendFile('index.html', { root: paths.dist() });
 });
 

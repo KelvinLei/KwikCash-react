@@ -32,7 +32,14 @@ export default class App extends Component {
     const { location } = this.props
 
     const promoCode = location.query.promoCode
-    promoCode && sendCounterMetrics(METRICS_NAME_PROMO_CODE, promoCode)
+    const dimensions = [
+      {
+        Name: 'promotionCode',
+        Value: promoCode
+      }
+    ]
+
+    promoCode && sendCounterMetrics(METRICS_NAME_PROMO_CODE, dimensions)
   }
 
   render() {

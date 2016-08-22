@@ -75,11 +75,20 @@ export const sendReferalRequest = (referalEmail) => {
   })
 }
 
-export const sendCounterMetrics = (metricsName, value) => {
-  console.log(`emitting metrics ${metricsName} ${value}`)
-  // TODO
-  // return authenticatedPost('/api/metrics/counter', {
-  //   metricsName,
-  //   value
-  // })
+/**
+ * @param metricsName
+ * @param dimensions
+ * A dimension is a name/value pair that helps you to uniquely identify a metric.
+ * Every metric has specific characteristics that describe it,
+ * and you can think of dimensions as categories for those characteristics.
+ * Dimensions help you design a structure for your statistics plan.
+ * Because dimensions are part of the unique identifier for a metric,
+ * whenever you add a unique name/value pair to one of your metrics, you are creating a new metric.
+ */
+export const sendCounterMetrics = (metricsName, dimensions) => {
+  console.log(`emitting metrics ${metricsName} ${dimensions}`)
+  return authenticatedPost('/api/metrics/counter', {
+    metricsName,
+    dimensions
+  })
 }

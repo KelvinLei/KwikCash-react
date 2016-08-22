@@ -21,7 +21,6 @@ import MyProfile from './containers/member/myProfile/MyProfile'
 import Login from './containers/login/Login'
 import Logout from './components/login/logout'
 import { getUser } from './api'
-import {sendCounterMetrics, METRICS_NAME_PROMO_CODE} from "./api/index";
 
 // Init translation system
 initTranslation();

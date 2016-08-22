@@ -3,6 +3,7 @@ import { getLoans } from './api/loan-list'
 import { getPayments } from './api/payments'
 import { getUserDataAsync } from './api/get-user-data'
 import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail } from './api/email-proxy'
+import { emitCounterMetrics } from './api/metrics-proxy'
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from './config'
@@ -155,6 +156,24 @@ export function init(server) {
       var result = await sendPayoffEmail({
         user: req.user,
         loanId: req.body.loanId
+      });
+
+      res.format({
+        'application/json': () => {
+          res.send({'result': result});
+        }
+      });
+    })();
+  });
+
+  server.post('/api/metrics/counter', (req, res) => {
+    debug("invoking /api/metrics/counter");
+
+    (async () => {
+      var result = await emitCounterMetrics({
+        user: req.user,
+        metricsName: req.body.metricsName,
+        dimensions: req.body.dimensions
       });
 
       res.format({
