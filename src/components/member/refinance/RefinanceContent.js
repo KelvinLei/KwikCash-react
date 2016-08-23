@@ -61,9 +61,10 @@ const RefinanceContentBody = ({
   const currentBalance = loanData.balance
 
   const showRefinanceModal = () => {
+    const refinanceValue = refinanceState.userInputRefinanceValue.selected ? refinanceState.userInputRefinanceValue.value : refinanceState.refinanceValue;
     swal({
         title: "Refinance your loan?",
-        text: "New loan balance: $" + refinanceState.refinanceValue,
+        text: "New loan balance: $" + refinanceValue,
         showCancelButton: true,
         confirmButtonText: "Yes",
         cancelButtonText: "Cancel",
@@ -71,7 +72,7 @@ const RefinanceContentBody = ({
         closeOnCancel: true },
       (isConfirm) => {
         if (isConfirm) {
-          sendRefinanceRequest(loanId, currentBalance, refinanceState.refinanceValue).then(() => {
+          sendRefinanceRequest(loanId, currentBalance, refinanceValue).then(() => {
             swal("Got it!", "Your refinance request is being processed. We will email you when your application has completed", "success");
           }).catch(() => {
             sweetAlert("Oops...", "Something went wrong! Please try again", "error");
