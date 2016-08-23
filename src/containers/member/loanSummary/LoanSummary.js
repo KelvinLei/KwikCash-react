@@ -55,8 +55,7 @@ class LoanSummary extends Component {
     const fundAmount = loanData.loanFundAmount;
     const amountPayed = loanData.loanFundAmount - loanData.balance;
     return {
-      completePercentage: (completePayments.length/paymentList.length * 100).toFixed(2),
-      pendingPercentage: ((paymentList.length - completePayments.length)/paymentList.length * 100).toFixed(2),
+      completePercentage: ((amountPayed/fundAmount) * 100).toFixed(2),
       completePaymentsCount: completePayments.length,
       pendingPaymentsCount: paymentList.length - completePayments.length,
       fundAmount,

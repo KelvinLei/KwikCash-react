@@ -71,7 +71,7 @@ export default function(completePercentage, amountPayed, fundAmount) {
     var data = {
       labels: [
         `Balance Paid`,
-        `Fund Amount`,
+        `Remaining balance`,
       ],
       datasets: [{
         data: [amountPayed, fundAmount],
