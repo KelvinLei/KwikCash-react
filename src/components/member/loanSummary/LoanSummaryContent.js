@@ -12,15 +12,15 @@ import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 export default class LoanSummaryContent extends Component {
 
   componentDidMount() {
-    const { completePercentage, amountPayed, fundAmount } = this.props.paymentsProgressData
-    ProgressChart(completePercentage, amountPayed, fundAmount);
+    const { completePercentage, amountPayed, amountRemaining } = this.props.paymentsProgressData
+    ProgressChart(completePercentage, amountPayed, amountRemaining);
   }
 
   componentWillReceiveProps(nextProps) {
     // once we have payments info available, rerender payments progress bar if data is different
-    const { completePercentage, amountPayed, fundAmount } = nextProps.paymentsProgressData
+    const { completePercentage, amountPayed, amountRemaining } = nextProps.paymentsProgressData
     if (completePercentage !== this.props.paymentsProgressData.completePercentage) {
-      ProgressChart(completePercentage, amountPayed, fundAmount);
+      ProgressChart(completePercentage, amountPayed, amountRemaining);
     }
   }
 

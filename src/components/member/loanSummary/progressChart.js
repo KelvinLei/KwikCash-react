@@ -61,65 +61,64 @@ Chart.pluginService.register({
     },
 })
 
-export default function(completePercentage, amountPayed, fundAmount) {
+export default function(completePercentage, amountPayed, amountRemaining) {
 
-  if (completePercentage === null || amountPayed  === null || fundAmount === null) {
+  if (completePercentage === undefined || amountPayed  === undefined || amountRemaining === undefined) {
     return;
   }
 
-
-    var data = {
-      labels: [
-        `Balance Paid`,
-        `Remaining balance`,
+  var data = {
+    labels: [
+      `Balance Paid`,
+      `Remaining balance`,
+    ],
+    datasets: [{
+      data: [amountPayed, amountRemaining],
+      backgroundColor: [
+        "#23b7e5",
+        "#fad732"
       ],
-      datasets: [{
-        data: [amountPayed, fundAmount],
-        backgroundColor: [
-          "#23b7e5",
-          "#fad732"
-        ],
-        hoverBackgroundColor: [
-          "#23b7e5",
-          "#fad732"
-        ]
-      }]
-    };
+      hoverBackgroundColor: [
+        "#23b7e5",
+        "#fad732"
+      ]
+    }]
+  };
 
-    var options = {
-        elements: {
-          center: {
-            // the longest text that could appear in the center
-            maxText: '100%',
-            text: `${Math.round(completePercentage)}%`,
-            fontColor: '#23b7e5',
-            fontStyle: 'normal',
-            // fontSize: 12,
-            // if a fontSize is NOT specified, we will scale (within the below limits) maxText to take up the maximum space in the center
-            // if these are not specified either, we default to 1 and 256
-            minFontSize: 1,
-            maxFontSize: 256,
-            }
-        },
-        cutoutPercentage: 85,
-        animation : {
-          animateRotate: true,
-          animateScale: false,
-          easing: 'easeOutBounce',
-          duration: 400,
-        },
-        responsive: true,
-        legend: {
-          display: false
-        }
-    };
+  var options = {
+      elements: {
+        center: {
+          // the longest text that could appear in the center
+          maxText: '100%',
+          text: `${Math.round(completePercentage)}%`,
+          fontColor: '#23b7e5',
+          fontStyle: 'normal',
+          // fontSize: 12,
+          // if a fontSize is NOT specified, we will scale (within the below limits) maxText to take up the maximum space in the center
+          // if these are not specified either, we default to 1 and 256
+          minFontSize: 1,
+          maxFontSize: 256,
+          }
+      },
+      cutoutPercentage: 85,
+      animation : {
+        animateRotate: true,
+        animateScale: false,
+        easing: 'easeOutBounce',
+        duration: 400,
+      },
+      responsive: true,
+      legend: {
+        display: false
+      }
+  };
 
-    if (document.getElementById("chartjs-doughnutchart")) {
-        var doughnutctx = document.getElementById("chartjs-doughnutchart").getContext("2d");
-        var doughnutChart = new Chart(doughnutctx, {
-          type: 'doughnut',
-          data: data,
-          options: options
-        });
-    }
+  if (document.getElementById("chartjs-doughnutchart")) {
+    var doughnutctx = document.getElementById("chartjs-doughnutchart").getContext("2d");
+    var doughnutChart = new Chart(doughnutctx, {
+      type: 'doughnut',
+      data,
+      options
+    });
+  }
 }

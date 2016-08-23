@@ -50,15 +50,12 @@ class LoanSummary extends Component {
     )
   }
 
-  generatePaymentsProgressData(paymentList, loanData) {
-    const completePayments = paymentList.filter( (payment) => payment.isPaid )
-    const fundAmount = loanData.loanFundAmount;
+  generatePaymentsProgressData(loanData) {
     const amountPayed = loanData.loanFundAmount - loanData.balance;
+    const amountRemaining = loanData.loanFundAmount - amountPayed;
     return {
-      completePercentage: ((amountPayed/fundAmount) * 100).toFixed(2),
-      completePaymentsCount: completePayments.length,
-      pendingPaymentsCount: paymentList.length - completePayments.length,
-      fundAmount,
+      completePercentage: ((amountPayed/loanData.loanFundAmount) * 100).toFixed(2),
+      amountRemaining,
       amountPayed
     }
   }
@@ -85,7 +82,7 @@ class LoanSummary extends Component {
         paymentDataForSelectedLoan.selectedPaymentYear,
         paymentState.selectedPaymentStatus
       )
-      paymentsProgressData = this.generatePaymentsProgressData(paymentDataForSelectedLoan.paymentList, loanData)
+      paymentsProgressData = this.generatePaymentsProgressData(loanData)
     }
     else {
       paymentDataForSelectedLoan = {}
