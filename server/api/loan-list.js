@@ -38,12 +38,12 @@ export async function getLoans(userId) {
         paymentSchedule: PAYMENT_SCHEDULE_MAPPING[currentLoan.loanpayment_paymentschedule],
       };
 
-      if (!prevLoan.balance) {
-        result.balance = currentLoan.loan_fundamount
+      if (prevLoan.balance === undefined) {
+        result.balance = currentLoan.loan_fundamount - currentLoan.loanpayment_principal
       }
 
-      if (currentLoan.loanpayment_amount > 0) {
-        result.balance -= currentLoan.loanpayment_principal
+      if (prevLoan.balance !== undefined && currentLoan.loanpayment_amount > 0) {
+        result.balance = prevLoan.balance - currentLoan.loanpayment_principal
       }
 
       const currentLoanDate = new Date(currentLoan.loanpayment_date)
