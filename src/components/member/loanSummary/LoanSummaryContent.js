@@ -12,15 +12,15 @@ import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 export default class LoanSummaryContent extends Component {
 
   componentDidMount() {
-    const { completePercentage, completePaymentsCount, pendingPaymentsCount } = this.props.paymentsProgressData
-    ProgressChart(completePercentage, completePaymentsCount, pendingPaymentsCount);
+    const { completePercentage, amountPayed, fundAmount } = this.props.paymentsProgressData
+    ProgressChart(completePercentage, amountPayed, fundAmount);
   }
 
   componentWillReceiveProps(nextProps) {
     // once we have payments info available, rerender payments progress bar if data is different
-    const { completePercentage, completePaymentsCount, pendingPaymentsCount } = nextProps.paymentsProgressData
+    const { completePercentage, amountPayed, fundAmount } = nextProps.paymentsProgressData
     if (completePercentage !== this.props.paymentsProgressData.completePercentage) {
-      ProgressChart(completePercentage, completePaymentsCount, pendingPaymentsCount);
+      ProgressChart(completePercentage, amountPayed, fundAmount);
     }
   }
 
@@ -45,8 +45,8 @@ export default class LoanSummaryContent extends Component {
 
         <Row>
           <Col md={ 6 } className="text-left">
-            <Panel className="panel-default" header="Payments progress">
-              <div id="chartdiv"></div>
+            <Panel className="panel-default" header="Loan progress">
+              <canvas id="chartjs-doughnutchart" height="302px"></canvas>
             </Panel>
           </Col>
 

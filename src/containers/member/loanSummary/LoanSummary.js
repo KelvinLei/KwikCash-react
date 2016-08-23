@@ -50,13 +50,17 @@ class LoanSummary extends Component {
     )
   }
 
-  generatePaymentsProgressData(paymentList) {
+  generatePaymentsProgressData(paymentList, loanData) {
     const completePayments = paymentList.filter( (payment) => payment.isPaid )
+    const fundAmount = loanData.loanFundAmount;
+    const amountPayed = loanData.loanFundAmount - loanData.balance;
     return {
       completePercentage: (completePayments.length/paymentList.length * 100).toFixed(2),
       pendingPercentage: ((paymentList.length - completePayments.length)/paymentList.length * 100).toFixed(2),
       completePaymentsCount: completePayments.length,
-      pendingPaymentsCount: paymentList.length - completePayments.length
+      pendingPaymentsCount: paymentList.length - completePayments.length,
+      fundAmount,
+      amountPayed
     }
   }
 
@@ -75,14 +79,14 @@ class LoanSummary extends Component {
     let paymentsToDisplay
     let paymentsProgressData
     // ensure there's no ongoing fetchPayment request and paymentsDataMap has payments data for selected loan
-    if (!paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.paymentsDataMap.has(loanId)) {
+    if (loanData && !paymentState.isFetching && !paymentState.fetchPaymentsFailed && paymentState.paymentsDataMap.has(loanId)) {
       paymentDataForSelectedLoan = paymentState.paymentsDataMap.get(loanId)
       paymentsToDisplay = this.filterPaymentsForDisplay(
         paymentDataForSelectedLoan.paymentList,
         paymentDataForSelectedLoan.selectedPaymentYear,
         paymentState.selectedPaymentStatus
       )
-      paymentsProgressData = this.generatePaymentsProgressData(paymentDataForSelectedLoan.paymentList)
+      paymentsProgressData = this.generatePaymentsProgressData(paymentDataForSelectedLoan.paymentList, loanData)
     }
     else {
       paymentDataForSelectedLoan = {}
