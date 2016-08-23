@@ -9,7 +9,7 @@ const NAME_SPACE_METRICS = 'KwikcashMetrics'
 
 export const emitCounterMetrics = ({metricsName, user, dimensions}) => {
   return new Promise((resolve, reject) => {
-    debug("emitting counter metrics");
+    debug(`emitting counter metrics ${metricsName} for userId ${JSON.stringify(user)}`);
 
     dimensions.push({
       Name: 'userId',
@@ -33,10 +33,9 @@ export const emitCounterMetrics = ({metricsName, user, dimensions}) => {
       if (err) {
         debug("Got an error on emitting counter metrics" + err);
         reject(new Error("Got an error on emitting counter metrics. Possibly couldnt validate user"));
-        return;
       } // an error occurred
       else {
-        debug("Emitting counter metrics success" + data);
+        debug("Emitting counter metrics success" + JSON.stringify(data));
         resolve({
           "success" : true
         })

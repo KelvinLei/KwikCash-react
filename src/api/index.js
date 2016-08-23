@@ -1,6 +1,7 @@
 import 'whatwg-fetch'
 
 export const METRICS_NAME_PROMO_CODE = 'promotionCodeLinkCount'
+export const METRICS_NAME_MEMBER_LOGIN_SUCCESS = 'successMemberLoginCount'
 
 const authenticatedPost = (url, input) => {
   var token = localStorage.getItem('user_token')

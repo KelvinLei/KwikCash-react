@@ -1,6 +1,7 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Button } from 'react-bootstrap'
 import ErrorMessage from './loginErrorMessage'
+import {sendCounterMetrics, METRICS_NAME_MEMBER_LOGIN_SUCCESS} from "../../api/index";
 
 require('./login.scss');
 const logo = require('../../styles/img/current_logo_white.png');
@@ -13,6 +14,7 @@ export default class Login extends React.Component {
     const redirectUrl = location.query.redirectUrl || '/'
 
     if (isAuthenticated) {
+      sendCounterMetrics(METRICS_NAME_MEMBER_LOGIN_SUCCESS, [])
       router.push(redirectUrl)
     }
   }
