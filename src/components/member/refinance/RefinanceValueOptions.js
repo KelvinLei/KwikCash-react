@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import { Row, Col, Panel, Alert } from 'react-bootstrap';
 
 export const RefinanceValueOptions = ({
@@ -79,7 +79,11 @@ const RefinanceValueRadioButton = ({
     <Col md={ 3 } mdOffset={ 2 } >
       <div class="radio">
         <label>
-          <input checked={isChecked} type="radio" name="refinanceValue" onChange={onClickRefinanceValue(value)}/>
+          <input checked={isChecked}
+                 type="radio"
+                 name="refinanceValue"
+                 onChange={onClickRefinanceValue.bind(this, value)}
+          />
           ${value}
         </label>
       </div>
