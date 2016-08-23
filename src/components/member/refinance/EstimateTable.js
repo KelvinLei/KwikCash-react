@@ -1,7 +1,9 @@
 import React from 'react'
 import { Panel, Table } from 'react-bootstrap';
 
-export const EstimateTable = ({currentBalance, refinanceValueForTable, newBalance}) => {
+export const EstimateTable = (
+  {currentBalance, refinanceValueForTable, newBalance, shouldShowNewBalance}
+) => {
   return (
     <Panel header="Estimated new balance">
       <Table id="estimateTable" responsive striped hover>
@@ -25,7 +27,7 @@ export const EstimateTable = ({currentBalance, refinanceValueForTable, newBalanc
 
         <tr className="warning">
           <td>Cash to be deposited:</td>
-          <td>= ${newBalance}</td>
+          <td>= {shouldShowNewBalance ? '$' + newBalance : 'invalid'}</td>
         </tr>
         </tbody>
       </Table>

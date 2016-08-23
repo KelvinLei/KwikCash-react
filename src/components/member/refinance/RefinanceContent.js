@@ -1,10 +1,11 @@
 import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel } from 'react-bootstrap';
-import RefinanceValueOptions from './RefinanceValueOptions'
+import { RefinanceValueOptions } from './RefinanceValueOptions'
 import { EstimateTable } from './EstimateTable'
 import { sendRefinanceRequest } from '../../../api'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+import stylings from './refinanceStylings.scss'
 
 require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")
@@ -60,11 +61,14 @@ const RefinanceContentBody = ({
 
   const currentBalance = loanData.balance
 
+  const selectedRefinanceValue = refinanceState.userInputRefinanceValue.selected ?
+    refinanceState.userInputRefinanceValue.value
+    : refinanceState.refinanceValue;
+
   const showRefinanceModal = () => {
-    const refinanceValue = refinanceState.userInputRefinanceValue.selected ? refinanceState.userInputRefinanceValue.value : refinanceState.refinanceValue;
     swal({
         title: "Refinance your loan?",
-        text: "New loan balance: $" + refinanceValue,
+        text: "New loan balance: $" + selectedRefinanceValue,
         showCancelButton: true,
         confirmButtonText: "Yes",
         cancelButtonText: "Cancel",
@@ -72,7 +76,7 @@ const RefinanceContentBody = ({
         closeOnCancel: true },
       (isConfirm) => {
         if (isConfirm) {
-          sendRefinanceRequest(loanId, currentBalance, refinanceValue).then(() => {
+          sendRefinanceRequest(loanId, currentBalance, selectedRefinanceValue).then(() => {
             swal("Got it!", "Your refinance request is being processed. We will email you when your application has completed", "success");
           }).catch(() => {
             sweetAlert("Oops...", "Something went wrong! Please try again", "error");
@@ -80,6 +84,8 @@ const RefinanceContentBody = ({
         }
       });
   }
+
+  const isSelectedRefinanceValueValid = selectedRefinanceValue >= currentBalance
 
   return (
     <div>
@@ -94,6 +100,8 @@ const RefinanceContentBody = ({
         <Col md={ 6 }>
           <RefinanceValueOptions refinanceState={refinanceState}
                                  valueList={refinanceOptions}
+                                 currentBalance={currentBalance}
+                                 shouldDisplayAlert={!isSelectedRefinanceValueValid}
                                  onClickRefinanceValue={onClickRefinanceValue}
                                  onClickUserRefinanceValue={onClickUserRefinanceValue}
                                  onEnterUserFinanceValue={onEnterUserFinanceValue}
@@ -101,7 +109,12 @@ const RefinanceContentBody = ({
         </Col>
 
         <Col md={ 6 }>
-          <EstimateTable key="estimateTable" currentBalance={currentBalance} refinanceValueForTable={refinanceValueForTable} newBalance={newBalance} />
+          <EstimateTable key="estimateTable"
+                         currentBalance={currentBalance}
+                         refinanceValueForTable={refinanceValueForTable}
+                         newBalance={newBalance}
+                         shouldShowNewBalance={isSelectedRefinanceValueValid}
+          />
         </Col>
       </Row>
 
@@ -109,7 +122,11 @@ const RefinanceContentBody = ({
       <Row>
         <Col md={ 4 } mdOffset={ 4 } className="text-center">
           <Panel>
-            <button type="button" onClick={showRefinanceModal} class="btn btn-info">Proceed to refinance</button>
+            <button type="button" class="btn btn-info"
+                    disabled={!isSelectedRefinanceValueValid ? 'disabled' : ''}
+                    onClick={showRefinanceModal}>
+                    Proceed to refinance
+            </button>
           </Panel>
         </Col>
       </Row>
