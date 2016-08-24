@@ -13,16 +13,6 @@ import {
 
 var Immutable = require('immutable');
 
-function selectedPaymentStatus(state = "all", action) {
-  switch (action.type) {
-    case SELECT_PAYMENT_STATUS:
-      return action.selectedStatus
-
-    default:
-      return state
-  }
-}
-
 const refinanceState = (state = {
   refinanceValue: 5000,
   userInputRefinanceValue: {
@@ -151,8 +141,10 @@ const loanList = (state = {
       // convert raw data from database to application data format
       const loanList = action.loans.map( (loan) => {
           // date format should be YYYY-MM-DD
-          const nextPayDate = new Date(loan.nextPaymentDate).toISOString().slice(0, 10)
-          const fundDate = new Date(loan.loanFundDate).toISOString().slice(0, 10)
+          const nextPayDate =
+            loan.nextPaymentDate && new Date(loan.nextPaymentDate).toISOString().slice(0, 10)
+
+          const fundDate = loan.loanFundDate && new Date(loan.loanFundDate).toISOString().slice(0, 10)
 
           return {
             ...loan,
@@ -194,7 +186,8 @@ const createPaymentData = (paymentsList, paymentSchedule, interestRate) => {
   // create a list of payments
   const newPaymentList = paymentsList.map( (payment) => {
     // date format should be YYYY-MM-DD
-    const paymentDueDate = new Date(payment.paymentDate).toISOString().slice(0, 10)
+    const paymentDueDate =
+      payment.paymentDate && new Date(payment.paymentDate).toISOString().slice(0, 10)
 
     return {
       ...payment,
