@@ -61,6 +61,8 @@ Chart.pluginService.register({
     },
 })
 
+var doughnutChart;
+
 export default function(completePercentage, amountPayed, amountRemaining) {
 
   if (completePercentage === undefined || amountPayed  === undefined || amountRemaining === undefined) {
@@ -102,20 +104,24 @@ export default function(completePercentage, amountPayed, amountRemaining) {
       },
       cutoutPercentage: 85,
       animation : {
-        animateRotate: true,
+        animateRotate: false,
         animateScale: false,
         easing: 'easeOutBounce',
         duration: 400,
       },
-      responsive: true,
+      responsive: false,
+      maintainAspectRatio: false,
       legend: {
         display: false
       }
   };
 
   if (document.getElementById("chartjs-doughnutchart")) {
+    if (doughnutChart) {
+      doughnutChart.destroy()
+    }
     var doughnutctx = document.getElementById("chartjs-doughnutchart").getContext("2d");
-    var doughnutChart = new Chart(doughnutctx, {
+    doughnutChart = new Chart(doughnutctx, {
       type: 'doughnut',
       data,
       options

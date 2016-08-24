@@ -45,12 +45,12 @@ export default class LoanSummaryContent extends Component {
 
         <Row>
           <Col md={ 6 } className="text-left">
-            <Panel className="panel-default" header="Loan progress">
-              <canvas id="chartjs-doughnutchart" height="302px"></canvas>
+            <Panel id="loan-progress-panel" className="panel-default" header="Loan progress">
+              <canvas height="365px" id="chartjs-doughnutchart"></canvas>
             </Panel>
           </Col>
 
-          <Col md={ 6 }>
+          <Col id="loan-data-col" md={ 6 }>
             {
               loanData
                 ? <LoanSummaryOverview loanData={loanData} shouldDisplayRefinance={shouldDisplayRefinance}/>
