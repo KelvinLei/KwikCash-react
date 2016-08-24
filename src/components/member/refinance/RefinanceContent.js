@@ -85,7 +85,7 @@ const RefinanceContentBody = ({
       });
   }
 
-  const isSelectedRefinanceValueValid = selectedRefinanceValue >= currentBalance
+  const isSelectedRefinanceValueValid = parseInt(selectedRefinanceValue) >= currentBalance
 
   return (
     <div>

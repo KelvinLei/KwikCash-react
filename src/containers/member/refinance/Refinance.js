@@ -43,7 +43,7 @@ class Refinance extends Component {
                           loanData={loanData}
                           refinanceState={refinanceState}
                           refinanceValueForTable={refinanceValueForTable}
-                          newBalance={newBalance}
+                          newBalance={newBalance.toFixed(2)}
                           onClickRefinanceValue={handleSelectRefinanceValue}
                           onClickUserRefinanceValue={handleSelectUserRefinanceValue}
                           onEnterUserFinanceValue={handleEnterUserRefinanceValue}
