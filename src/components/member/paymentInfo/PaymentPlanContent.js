@@ -62,7 +62,7 @@ export const PaymentPlanContent = ({
   return (
     <Panel className="panel-default" header="Payments schedule">
       <Row className="text-center">
-        <Col xs={6}>
+        <Col sm={6} xs={12}>
           <Dropdown id="dropdown-custom-1">
             <Dropdown.Toggle>
               <strong>View payments by year ({selectedPaymentYear})</strong>
@@ -79,7 +79,7 @@ export const PaymentPlanContent = ({
 
         {
           shouldDisplayPayoff &&
-          <Col xs={6}>
+          <Col sm={6} xs={12}>
             <Button onClick={showPayoffModal2} bsStyle="info" className="mb-sm">Payoff Loan</Button>
           </Col>
         }
