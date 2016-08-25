@@ -72,8 +72,8 @@ const PaymentPlanRow = ({
       <td>{'$' + amountDue}</td>
       <td>{'$' + amountPaid}</td>
       <td>{scheduleType}</td>
-      <td>{principal}</td>
-      <td>{interest}</td>
+      <td>{'$' + principal}</td>
+      <td>{'$' + interest}</td>
     </tr>
   )
 }
