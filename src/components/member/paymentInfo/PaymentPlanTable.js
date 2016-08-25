@@ -7,15 +7,21 @@ export const PaymentPlanTable = ({paymentList}) => {
             isPaid,
             paymentDate,
             amountDue,
+            amountPaid,
+            scheduled,
             principal,
             interest } = payment
+
+    const scheduleType = scheduled == 'Y' ? 'Scheduled' : 'Manual'
 
     return (
       <PaymentPlanRow key={id}
                       index={index + 1}
                       status={ isPaid ? 'Complete' : 'Pending'}
                       dueDate={paymentDate}
-                      amount={amountDue}
+                      amountDue={amountDue}
+                      amountPaid={amountPaid}
+                      scheduleType={scheduleType}
                       principal={principal}
                       interest={interest}
       />
@@ -29,7 +35,9 @@ export const PaymentPlanTable = ({paymentList}) => {
         <th className="sort-numeric">#</th>
         <th className="sort-alpha">Status</th>
         <th className="sort-numeric">Due Date</th>
-        <th className="sort-numeric">Amount</th>
+        <th className="sort-numeric">Due</th>
+        <th className="sort-numeric">Paid</th>
+        <th className="sort-numeric">Schedule</th>
         <th className="sort-numeric">Principal</th>
         <th className="sort-numeric">Interest</th>
       </tr>
@@ -42,9 +50,16 @@ export const PaymentPlanTable = ({paymentList}) => {
   )
 }
 
-const PaymentPlanRow = ({index, status, dueDate, amount, principal, interest}) => {
-  var amountText = "$" + amount;
-
+const PaymentPlanRow = ({
+  index,
+  status,
+  dueDate,
+  amountDue,
+  amountPaid,
+  scheduleType,
+  principal,
+  interest
+}) => {
   var className = status === "Complete" ? "label label-success" : "label label-warning"
 
   return (
@@ -54,7 +69,9 @@ const PaymentPlanRow = ({index, status, dueDate, amount, principal, interest}) =
         <div className={className}>{status}</div>
       </td>
       <td>{dueDate}</td>
-      <td>{amountText}</td>
+      <td>{'$' + amountDue}</td>
+      <td>{'$' + amountPaid}</td>
+      <td>{scheduleType}</td>
       <td>{principal}</td>
       <td>{interest}</td>
     </tr>
