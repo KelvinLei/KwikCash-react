@@ -81,6 +81,8 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
 
   const styleClassName = getClassNameForLoanStatus(loanData.loanCode)
 
+  const isLoanPaidOff = loanData.loanStatus == 'PAID'
+
   const refinanceOption =
     shouldDisplayRefinance ?
       <div className="panel-footer text-left">
@@ -125,15 +127,20 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
             <div className="text-bold">Current balance:</div>
           </div>
 
-          <div className="list-group-item">
-            <span className="pull-right">{loanData.paymentSchedule}</span>
-            <div className="text-bold">Payment schedule:</div>
-          </div>
+          {
+            !isLoanPaidOff &&
+            <div>
+              <div className="list-group-item">
+                <span className="pull-right">{loanData.paymentSchedule}</span>
+                <div className="text-bold">Payment schedule:</div>
+              </div>
 
-          <div className="list-group-item">
-            <span className="pull-right">{loanData.nextPaymentDate}</span>
-            <div className="text-bold">Next payment:</div>
-          </div>
+              <div className="list-group-item">
+                <span className="pull-right">{loanData.nextPaymentDate}</span>
+                <div className="text-bold">Next payment:</div>
+              </div>
+            </div>
+          }
         </div>
 
         { refinanceOption }
