@@ -4,7 +4,7 @@ import Sidebar from '../../../themeJsx/Layout/Sidebar'
 import { MY_PROFILE_PAGE_STATE, LOGOUT_PAGE_STATE, MY_LOANS_PAGE_STATE }
   from "../../../components/member/shared/Constants"
 
-export default class SidebarContainer extends Component {
+class SidebarContainer extends Component {
   render() {
     const { location } = this.props;
 
