@@ -4,7 +4,7 @@ import { LoanSelectionContent } from '../../../components/member/loanSelection/L
 import { fetchLoanListAction } from '../../../redux/actions/member/fetchLoanList'
 import {fetchGetUserDataAction} from "../../../redux/actions/member/fetchUserData";
 
-export default class LoanSelection extends Component {
+class LoanSelection extends Component {
 
   constructor(props) {
     super(props)
@@ -20,7 +20,7 @@ export default class LoanSelection extends Component {
     const { isFetching, fetchLoansFailed, loans, userDataState } = this.props;
 
     const firstName = userDataState.isFetching || userDataState.isFailed ? '' : userDataState.userData.firstName
-    
+
     return (
       <div>
         <LoanSelectionContent isFetching={isFetching}
