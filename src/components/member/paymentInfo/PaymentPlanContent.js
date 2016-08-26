@@ -4,6 +4,7 @@ import { Grid, Row, Col, Panel, Button, Dropdown, MenuItem } from 'react-bootstr
 import { PaymentPlanTable } from './PaymentPlanTable'
 import { PaymentStatusTabs } from './PaymentStatusTabs'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+import {sendCounterMetrics, METRICS_NAME_PAYOFF_BTN_COUNT} from "../../../api/index";
 
 require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")
@@ -58,6 +59,11 @@ export const PaymentPlanContent = ({
         }
       });
   }
+  
+  const payoffOnClick = (e) => {
+    showPayoffModal2(e)
+    sendCounterMetrics(METRICS_NAME_PAYOFF_BTN_COUNT, [])
+  }
 
   return (
     <Panel className="panel-default" header="Payments schedule">
@@ -80,7 +86,7 @@ export const PaymentPlanContent = ({
         {
           shouldDisplayPayoff &&
           <Col sm={6} xs={12}>
-            <Button onClick={showPayoffModal2} bsStyle="info" className="mb-sm">Payoff Loan</Button>
+            <Button onClick={payoffOnClick} bsStyle="info" className="mb-sm">Payoff Loan</Button>
           </Col>
         }
       </Row>

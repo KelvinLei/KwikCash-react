@@ -5,6 +5,7 @@ import { RefinanceValueOptions } from './RefinanceValueOptions'
 import { EstimateTable } from './EstimateTable'
 import { sendRefinanceRequest } from '../../../api'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+import {sendCounterMetrics, METRICS_NAME_REFINANCE_BTN_COUNT} from "../../../api/index";
 import stylings from './refinanceStylings.scss'
 
 require("sweetalert/dist/sweetalert.min")
@@ -84,6 +85,11 @@ const RefinanceContentBody = ({
         }
       });
   }
+  
+  const refinanceBtnOnclick = () => {
+    showRefinanceModal()
+    sendCounterMetrics(METRICS_NAME_REFINANCE_BTN_COUNT, [])
+  }
 
   const isSelectedRefinanceValueValid = parseInt(selectedRefinanceValue) >= currentBalance
 
@@ -124,7 +130,7 @@ const RefinanceContentBody = ({
           <Panel>
             <button type="button" class="btn btn-info"
                     disabled={!isSelectedRefinanceValueValid ? 'disabled' : ''}
-                    onClick={showRefinanceModal}>
+                    onClick={refinanceBtnOnclick}>
                     Proceed to refinance
             </button>
           </Panel>
