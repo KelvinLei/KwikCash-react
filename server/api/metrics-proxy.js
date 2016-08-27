@@ -7,20 +7,20 @@ const cloudWatch = new aws.CloudWatch({apiVersion: '2010-08-01'});
 
 const NAME_SPACE_METRICS = 'KwikcashMetrics'
 
-export const emitCounterMetrics = ({metricsName, user, dimensions}) => {
+export const emitCounterMetrics = ({metricsName, user}) => {
   return new Promise((resolve, reject) => {
     debug(`emitting counter metrics ${metricsName} for userId ${JSON.stringify(user)}`);
 
-    dimensions.push({
-      Name: 'userId',
-      Value: user.id.toString()
-    })
+    // dimensions.push({
+    //   Name: 'userId',
+    //   Value: user.id.toString()
+    // })
 
     const params = {
       MetricData: [ /* required */
         {
           MetricName: metricsName, /* required */
-          Dimensions: dimensions,
+          // Dimensions: dimensions,
           Timestamp: new Date(),
           Unit: 'Count',
           Value: 1

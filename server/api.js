@@ -173,7 +173,7 @@ export function init(server) {
       var result = await emitCounterMetrics({
         user: req.user,
         metricsName: req.body.metricsName,
-        dimensions: req.body.dimensions
+        // dimensions: req.body.dimensions
       });
 
       res.format({

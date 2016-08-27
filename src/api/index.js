@@ -89,10 +89,9 @@ export const sendReferalRequest = (referalEmail) => {
  * whenever you add a unique name/value pair to one of your metrics, you are creating a new metric.
  */
 export const sendCounterMetrics = (metricsName, dimensions) => {
-  console.log(`emitting metrics ${metricsName} ${dimensions}`)
+  console.log(`emitting metrics ${metricsName}`)
   return authenticatedPost('/api/metrics/counter', {
-    metricsName,
-    dimensions
+    metricsName
   })
 }
 
