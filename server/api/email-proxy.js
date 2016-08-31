@@ -51,7 +51,7 @@ export async function sendPayoffEmail({user, loanId}) {
   const userData = await getUserDataAsync(user.id);
 
   const message = `
-    Customer has requested to payoff his loan.
+    Customer has requested to payoff their loan.
     
     Infomation:
     loan id: ${loanId}
