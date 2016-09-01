@@ -33,6 +33,7 @@ export async function getLoans(userId) {
     return loan.reduce((prevLoan, currentLoan) => {
       var result = {
         loanId : currentLoan.loan_id,
+        loanNumber : currentLoan.loan_number,
         loanFundAmount: formatToCurrency(currentLoan.loan_amount),
         loanFundDate : currentLoan.loan_funddate,
         loanRate: currentLoan.loan_rate,
