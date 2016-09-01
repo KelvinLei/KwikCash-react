@@ -33,7 +33,7 @@ export async function getLoans(userId) {
     return loan.reduce((prevLoan, currentLoan) => {
       var result = {
         loanId : currentLoan.loan_id,
-        loanFundAmount: formatToCurrency(currentLoan.loan_fundamount),
+        loanFundAmount: formatToCurrency(currentLoan.loan_amount),
         loanFundDate : currentLoan.loan_funddate,
         loanRate: currentLoan.loan_rate,
         loanTerm: currentLoan.loan_term,
@@ -43,7 +43,7 @@ export async function getLoans(userId) {
       };
 
       if (prevLoan.balance === undefined) {
-        result.balance = formatToCurrency(currentLoan.loan_fundamount - currentLoan.loanpayment_principal)
+        result.balance = formatToCurrency(currentLoan.loan_amount - currentLoan.loanpayment_principal)
       }
 
       if (prevLoan.balance !== undefined && currentLoan.loanpayment_amount > 0) {
