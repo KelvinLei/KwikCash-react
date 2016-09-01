@@ -143,7 +143,7 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
           }
         </div>
 
-        { refinanceOption }
+        { /* refinanceOption */ }
       </div>
     </Panel>
   )
