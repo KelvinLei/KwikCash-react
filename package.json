@@ -7,6 +7,7 @@
     "start": "npm run build && npm run start-prod",
     "start-prod": "better-npm-run start-server-prod",
     "dev": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server",
+    "dev-disable-auth": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-disable-auth",
     "clean": "rimraf dist build lib",
     "build": "npm run build-server && npm run build-webpack-config && better-npm-run create-app-vendor-bundle",
     "build-server": "babel server -d lib/server",
@@ -26,6 +27,13 @@
       "command": "node lib/server/server.js",
       "env": {
         "DEBUG": "app:*"
+      }
+    },
+    "start-server-disable-auth": {
+      "command": "node lib/server/server.js",
+      "env": {
+        "DEBUG": "app:*",
+	    "DISABLE_AUTH": 1
       }
     },
     "start-server-prod": {

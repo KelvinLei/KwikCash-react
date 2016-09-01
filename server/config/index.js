@@ -152,4 +152,7 @@ if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !pro
   process.env.AWS_REGION = config.credentials.aws.awsRegion;
 }
 
+config.disableAuth = process.env.DISABLE_AUTH || 0
+
+
 export default config
