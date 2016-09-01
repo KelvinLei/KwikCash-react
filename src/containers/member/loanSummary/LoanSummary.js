@@ -65,6 +65,7 @@ class LoanSummary extends Component {
     const { loanId } = this.props.params
 
     const loanData = loans.find( (loan) => loan.loanId == loanId)
+    const loanNumber = loanData ? loanData.loanNumber : ''
 
     // only ACTIVE loans can refinance
     const shouldDisplayRefinance = loanData && loanData.loanCode === 'A'
@@ -94,6 +95,7 @@ class LoanSummary extends Component {
       isFetching: paymentState.isFetching,
       fetchPaymentsFailed: paymentState.fetchPaymentsFailed,
       loanId: loanId,
+      loanNumber: loanNumber,
       paymentSchedule: paymentDataForSelectedLoan.paymentSchedule,
       paymentList: paymentsToDisplay,
       selectedPaymentYear: paymentDataForSelectedLoan.selectedPaymentYear,

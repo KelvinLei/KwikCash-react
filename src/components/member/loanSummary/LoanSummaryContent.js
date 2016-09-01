@@ -40,7 +40,7 @@ export default class LoanSummaryContent extends Component {
       <ContentWrapper>
         <div className="content-heading">
           Loan Summary
-          <small data-localize="dashboard.WELCOME">Selected loan ID: { loanData && loanData.loanId}</small>
+          <small data-localize="dashboard.WELCOME">Selected loan ID: { loanData && loanData.loanNumber}</small>
         </div>
 
         <Row>

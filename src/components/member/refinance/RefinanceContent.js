@@ -77,7 +77,7 @@ const RefinanceContentBody = ({
         closeOnCancel: true },
       (isConfirm) => {
         if (isConfirm) {
-          sendRefinanceRequest(loanId, currentBalance, selectedRefinanceValue).then(() => {
+          sendRefinanceRequest(loanData.loanNumber, currentBalance, selectedRefinanceValue).then(() => {
             swal("Got it!", "Your refinance request is being processed. We will email you when your application has completed", "success");
           }).catch(() => {
             sweetAlert("Oops...", "Something went wrong! Please try again", "error");

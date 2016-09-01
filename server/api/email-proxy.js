@@ -3,7 +3,7 @@ import { sendEmail } from '../shared/EmailExecutor'
 import { getUserDataAsync } from './get-user-data'
 
 export async function sendRefinanceEmail({user, loanInput}) {
-  const subject = '[System] Customer request for refinance'
+  const subject = `[System] Customer request for refinance loan id ${loanInput.loanId}`
   const userData = await getUserDataAsync(user.id);
 
   const name = user.name;
@@ -15,8 +15,9 @@ export async function sendRefinanceEmail({user, loanInput}) {
     Customer information:
     name: ${name}
     username: ${username}
-    id: ${id}
+    user id: ${id}
     phone: ${phone}
+    loan id: ${loanInput.loanId}
     currentBalance: ${loanInput.currentBalance}
     refinanceAmount: ${loanInput.refinanceAmount}
   `
@@ -37,7 +38,7 @@ export async function sendReferalEmail({user, referalEmail}) {
     Customer information:
     name: ${name}
     username: ${username}
-    id: ${id}
+    user id: ${id}
     phone: ${phone}
 
     email of referal: ${referalEmail}
@@ -57,7 +58,7 @@ export async function sendPayoffEmail({user, loanId}) {
     loan id: ${loanId}
     name: ${user.name}
     username: ${user.username}
-    id: ${user.id}
+    user id: ${user.id}
     phone: ${userData.homePhone}
   `
 

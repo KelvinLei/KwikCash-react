@@ -115,6 +115,7 @@ export function init(server) {
       var result = await sendRefinanceEmail({
         user: req.user,
         loanInput: {
+          loanId: req.body.loanId,
           currentBalance: req.body.currentBalance,
           refinanceAmount: req.body.refinanceAmount,
         }

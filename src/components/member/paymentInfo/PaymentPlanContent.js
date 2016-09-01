@@ -21,6 +21,7 @@ export const PaymentPlanContent = ({
   const { isFetching,
     fetchPaymentsFailed,
     loanId,
+    loanNumber,
     paymentSchedule,
     paymentList,
     selectedPaymentYear,
@@ -51,7 +52,7 @@ export const PaymentPlanContent = ({
         animation: "slide-from-top", },
       (isConfirm) => {
         if (isConfirm) {
-          onClickPayoff(loanId).then(() => {
+          onClickPayoff(loanNumber).then(() => {
             swal("Got it!", "Your payoff request is being processed. Our staff will contact your shortly", "success");
           }).catch(() => {
             sweetAlert("Oops...", "Something went wrong! Please try again", "error");

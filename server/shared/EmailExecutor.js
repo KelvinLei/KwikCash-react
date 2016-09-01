@@ -11,7 +11,7 @@ export const sendEmail = (subject, message) => {
     debug("sending email");
     ses.sendEmail({
         Source: 'info@kwikcashonline.com',
-        Destination: { ToAddresses: ['info@kwikcashonline.com'] },
+        Destination: { ToAddresses: ['info@kwikcashonline.com', 'thalia@kwikcashonline.com'] },
         Message: {
           Subject: {
             Data: (config.env === 'development' || config.env ===  'test') ? `[Test] ${subject}` : subject,

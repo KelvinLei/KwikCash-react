@@ -48,7 +48,7 @@ export const LoanSelectionContent = ({
 const LoanSelectionWidget = ({loanList}) => {
   let hasLatePayment = false
   const loanListDisplay = loanList.map( loan => {
-    const { loanId, loanStatus, loanCode, balance, loanRate, loanTerm } = loan
+    const { loanId, loanNumber, loanStatus, loanCode, balance, loanRate, loanTerm } = loan
     const nextPaymentDateDisplay = loan.nextPaymentDate || "NONE"
     if (loanCode == "L") {
       hasLatePayment = true
@@ -57,6 +57,7 @@ const LoanSelectionWidget = ({loanList}) => {
     return (
       <LoanEntry key={loanId}
                  id={loanId}
+                 loanNumber={loanNumber}
                  status={loanStatus}
                  statusCode={loanCode}
                  APR={loanRate}
@@ -95,7 +96,7 @@ const LoanSelectionWidget = ({loanList}) => {
 /*
  Renders each loan entry in the loan selection
  */
-const LoanEntry = ({id, status, statusCode, currentBalance, APR, nextPaymentDate, term}) => {
+const LoanEntry = ({id, loanNumber, status, statusCode, currentBalance, APR, nextPaymentDate, term}) => {
   const className = getClassNameForLoanStatus(statusCode)
 
   const loanSummaryUrl = '/myLoans/loanSummary/' + id
@@ -114,8 +115,8 @@ const LoanEntry = ({id, status, statusCode, currentBalance, APR, nextPaymentDate
             </td>
             <td className="wd-lg">
               <div className="ph">
-                <h4 className="media-box-heading hidden-xs">Loan ID: {id}</h4>
-                <h4 className="media-box-heading visible-xs">Loan {id}</h4>
+                <h4 className="media-box-heading hidden-xs">Loan ID: {loanNumber}</h4>
+                <h4 className="media-box-heading visible-xs">Loan {loanNumber}</h4>
                 <small className="text-muted hidden-xs">Click for details</small>
                 <small className="text-muted visible-xs">Click</small>
               </div>
