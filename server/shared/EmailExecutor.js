@@ -6,12 +6,17 @@ const debug = _debug('app:server:shared:EmailExecutor')
 const aws = require('aws-sdk');
 const ses = new aws.SES({apiVersion: '2010-12-01'});
 
-export const sendEmail = (subject, message) => {
+export const sendEmail = ({subject, message, sendToThalia}) => {
   return new Promise((resolve, reject) => {
     debug("sending email");
+    const sendToAnddress = ['info@kwikcashonline.com']
+    if (sendToThalia) {
+      sendToAnddress.push('thalia@kwikcashonline.com')
+    }
+
     ses.sendEmail({
         Source: 'info@kwikcashonline.com',
-        Destination: { ToAddresses: ['info@kwikcashonline.com', 'thalia@kwikcashonline.com'] },
+        Destination: { ToAddresses: sendToAnddress },
         Message: {
           Subject: {
             Data: (config.env === 'development' || config.env ===  'test') ? `[Test] ${subject}` : subject,

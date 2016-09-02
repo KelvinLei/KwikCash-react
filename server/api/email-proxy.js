@@ -22,7 +22,11 @@ export async function sendRefinanceEmail({user, loanInput}) {
     refinanceAmount: ${loanInput.refinanceAmount}
   `
 
-  return await sendEmail(subject, message)
+  return await sendEmail({
+    subject,
+    message,
+    sendToThalia: false
+  })
 }
 
 export async function sendReferalEmail({user, referalEmail}) {
@@ -44,7 +48,11 @@ export async function sendReferalEmail({user, referalEmail}) {
     email of referal: ${referalEmail}
   `
 
-  return await sendEmail(subject, message)
+  return await sendEmail({
+    subject,
+    message,
+    sendToThalia: false
+  })
 }
 
 export async function sendPayoffEmail({user, loanId}) {
@@ -62,5 +70,9 @@ export async function sendPayoffEmail({user, loanId}) {
     phone: ${userData.homePhone}
   `
 
-  return await sendEmail(subject, message)
+  return await sendEmail({
+    subject,
+    message,
+    sendToThalia: true
+  })
 }
