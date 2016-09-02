@@ -51,27 +51,16 @@ class LoanSummary extends Component {
   }
 
   generatePaymentsProgressData(loanData) {
-    const amountPayed = loanData.loanFundAmount - loanData.balance;
-    const amountRemaining = loanData.loanFundAmount - amountPayed;
+    const amountPaid = (loanData.loanFundAmount - loanData.balance).toFixed(2)
+    const amountRemaining = (loanData.loanFundAmount - amountPaid).toFixed(2)
     return {
-      completePercentage: ((amountPayed/loanData.loanFundAmount) * 100).toFixed(2),
+      completePercentage: ((amountPaid/loanData.loanFundAmount) * 100).toFixed(2),
       amountRemaining,
-      amountPayed
+      amountPaid
     }
   }
 
-  render() {
-    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, userDataState } = this.props
-    const { loanId } = this.props.params
-
-    const loanData = loans.find( (loan) => loan.loanId == loanId)
-    const loanNumber = loanData ? loanData.loanNumber : ''
-
-    // only ACTIVE loans can refinance
-    const shouldDisplayRefinance = loanData && loanData.loanCode === 'A'
-
-    const shouldDisplayPayoff = loanData && this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
-
+  getPaymentRenderData(loanId, loanData, paymentState) {
     let paymentDataForSelectedLoan
     let paymentsToDisplay
     let paymentsProgressData
@@ -90,6 +79,69 @@ class LoanSummary extends Component {
       paymentsToDisplay = []
       paymentsProgressData = {completePercentage : 'N/A'}
     }
+
+    return {
+      paymentDataForSelectedLoan,
+      paymentsToDisplay,
+      paymentsProgressData
+    }
+  }
+
+  /**
+   * For clients that have 24 payments - 12 payments remaining we can show refinance button
+   * but only clients who have 36%-59% rates and are in California
+   *
+   * For clients that have 12 payments or less remaining
+   * we can show refinance button for all rates. CA only
+   */
+  shouldDisplayRefinanceButton(loanData, paymentList, userData) {
+    // only ACTIVE loans and CA users can refinance
+    if (!loanData || !paymentList || !userData ||
+        loanData.loanCode != 'A' || userData.state != 'CA') {
+      return false
+    }
+
+    const remainingPaymentsCount = this.getRemainingPaymentsCount(paymentList)
+    const rate = parseInt(loanData.loanRate)
+
+    if (remainingPaymentsCount > 24) {
+      return false
+    }
+    else if (remainingPaymentsCount > 12) {
+      return rate > 35 && rate < 60
+    }
+    else {
+      return true
+    }
+  }
+
+  getRemainingPaymentsCount(paymentList) {
+    const remainingPayments = paymentList.filter( (payment) => {
+      const paymentDate = new Date(payment.paymentDate)
+      // future payments that are unpaid
+      return paymentDate > Date.now() && !payment.isPaid
+    })
+    return remainingPayments.length
+  }
+
+  render() {
+    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, userDataState } = this.props
+    const { loanId } = this.props.params
+
+    const loanData = loans.find( (loan) => loan.loanId == loanId)
+    const loanNumber = loanData ? loanData.loanNumber : ''
+
+    const shouldDisplayPayoff = loanData && this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
+
+    const { paymentDataForSelectedLoan,
+            paymentsToDisplay,
+            paymentsProgressData } = this.getPaymentRenderData(loanId, loanData, paymentState)
+
+    const shouldDisplayRefinance = this.shouldDisplayRefinanceButton(
+      loanData,
+      paymentDataForSelectedLoan.paymentList,
+      userDataState.userData
+    )
 
     const paymentsData = {
       isFetching: paymentState.isFetching,

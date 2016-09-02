@@ -63,9 +63,9 @@ Chart.pluginService.register({
 
 var doughnutChart;
 
-export default function(completePercentage, amountPayed, amountRemaining) {
+export default function(completePercentage, amountPaid, amountRemaining) {
 
-  if (completePercentage === undefined || amountPayed  === undefined || amountRemaining === undefined) {
+  if (completePercentage === undefined || amountPaid  === undefined || amountRemaining === undefined) {
     return;
   }
 
@@ -75,7 +75,7 @@ export default function(completePercentage, amountPayed, amountRemaining) {
       `Remaining balance`,
     ],
     datasets: [{
-      data: [amountPayed, amountRemaining],
+      data: [amountPaid, amountRemaining],
       backgroundColor: [
         "#23b7e5",
         "#fad732"

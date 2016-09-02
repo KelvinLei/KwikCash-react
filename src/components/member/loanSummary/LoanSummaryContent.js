@@ -12,15 +12,15 @@ import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 export default class LoanSummaryContent extends Component {
 
   componentDidMount() {
-    const { completePercentage, amountPayed, amountRemaining } = this.props.paymentsProgressData
-    ProgressChart(completePercentage, amountPayed, amountRemaining);
+    const { completePercentage, amountPaid, amountRemaining } = this.props.paymentsProgressData
+    ProgressChart(completePercentage, amountPaid, amountRemaining);
   }
 
   componentWillReceiveProps(nextProps) {
     // once we have payments info available, rerender payments progress bar if data is different
-    const { completePercentage, amountPayed, amountRemaining } = nextProps.paymentsProgressData
+    const { completePercentage, amountPaid, amountRemaining } = nextProps.paymentsProgressData
     if (completePercentage !== this.props.paymentsProgressData.completePercentage) {
-      ProgressChart(completePercentage, amountPayed, amountRemaining);
+      ProgressChart(completePercentage, amountPaid, amountRemaining);
     }
   }
 
@@ -90,7 +90,7 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
       </div>
       :
       <div className="panel-footer text-left text-info">
-        <span> {loanData.loanStatus} loan is not eligible for refinance </span>
+        <span> Not eligible for refinance </span>
       </div>
 
   return (
@@ -143,7 +143,7 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
           }
         </div>
 
-        { /* refinanceOption */ }
+        { refinanceOption }
       </div>
     </Panel>
   )
