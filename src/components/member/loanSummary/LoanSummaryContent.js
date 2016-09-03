@@ -31,7 +31,6 @@ export default class LoanSummaryContent extends Component {
       customerName,
       shouldDisplayRefinance,
       shouldDisplayPayoff,
-      canReapply,
       tabList,
       onClickPaymentTab,
       onClickPaymentYear,
@@ -55,8 +54,7 @@ export default class LoanSummaryContent extends Component {
             {
               loanData
                 ? <LoanSummaryOverview loanData={loanData}
-                                       shouldDisplayRefinance={shouldDisplayRefinance}
-                                       canReapply={canReapply}/>
+                                       shouldDisplayRefinance={shouldDisplayRefinance}/>
                 : <LoadingSpinner/>
             }
           </Col>
@@ -80,7 +78,7 @@ export default class LoanSummaryContent extends Component {
   }
 }
 
-const LoanSummaryOverview = ({loanData, shouldDisplayRefinance, canReapply}) => {
+const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
 
   const reapplyOnClick = (e) => {
     sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
@@ -95,12 +93,6 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance, canReapply}) => 
     <div className="text-left">
       <Link to={"/myLoans/refinance/" + loanData.loanId} className="btn btn-info btn-sm">Refinance</Link>
     </div>
-
-  const reapplyOption =
-    canReapply &&
-    <a href="https://www.kwikcashonline.com/members/memberReApply.php" onClick={reapplyOnClick.bind(this)} className="btn btn-info btn-sm">
-      Re-apply
-    </a>
 
   return (
     <Panel className="panel-default" header="Overview">
@@ -152,12 +144,9 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance, canReapply}) => 
           }
         </div>
 
-        <div className="panel-footer ">
-          <span className="pull-right">
-            { refinanceOption }
-          </span>
+        <div className="panel-footer">
           <div className="text-bold">
-            { reapplyOption }
+            { refinanceOption }
           </div>
         </div>
       </div>

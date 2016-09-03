@@ -159,8 +159,6 @@ class LoanSummary extends Component {
       ? ''
       : userDataState.userData.firstName + ' ' + userDataState.userData.lastName
 
-    const canReapply = true
-    
     return (
       <div>
         <LoanSummaryContent loanData={loanData}
@@ -169,7 +167,6 @@ class LoanSummary extends Component {
                             paymentsProgressData={paymentsProgressData}
                             shouldDisplayRefinance={shouldDisplayRefinance}
                             shouldDisplayPayoff={shouldDisplayPayoff}
-                            canReapply={canReapply}
                             tabList={this.tabList}
                             onClickPaymentTab={handleSelectPaymentTab}
                             onClickPaymentYear={handleSelectPaymentYear}
