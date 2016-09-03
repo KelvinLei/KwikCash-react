@@ -78,13 +78,23 @@ const getLoanLevelData = (loanPayments) => {
  * To calculate nextPaymentDate, we assumed that all payments for a given loan are sorted by
  * payments date acsending (done in sql queries). So all need to do is find the first payment date
  * that is greater than current date and its payment is unpaid.
- * 
+ *
  * @param loanPayments
  * @returns {*}
  */
 const generateLoanDataFromPayments = (loanPayments) => {
   if (loanPayments.length == 0) {
     return {}
+  }
+  // short-term fix for a bug that there are payments with positive amount due and 0 amount paid for
+  // PAID loans (loan most likely paid off with manual payments). Ideally, this bug should be fixed
+  // in admin pages so that amount due for all future payments should be set to 0 when a loan
+  // is manually paid off
+  if (loanPayments[0].loan_status == "P") {
+    return {
+      balance: 0,
+      nextPaymentDate: null,
+    }
   }
 
   const initialState = {
