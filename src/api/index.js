@@ -4,6 +4,7 @@ export const METRICS_NAME_PROMO_CODE = 'promotionCodeLinkCount'
 export const METRICS_NAME_MEMBER_LOGIN_SUCCESS = 'successMemberLoginCount'
 export const METRICS_NAME_PAYOFF_BTN_COUNT = 'payoffButtonClickCount'
 export const METRICS_NAME_REFINANCE_BTN_COUNT = 'refinanceButtonClickCount'
+export const METRICS_NAME_REAPPLY_BTN_COUNT = 'reapplyButtonClickCount'
 
 const authenticatedPost = (url, input) => {
   var token = localStorage.getItem('user_token')
