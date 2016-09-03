@@ -13,7 +13,7 @@ export async function getPayments(loanId) {
         paymentDate: row.loanpayment_date,
         amountDue: row.loanpayment_due,
         amountPaid: row.loanpayment_amount,
-        isPaid: parseFloat(row.loanpayment_amount) >= row.loanpayment_due,
+        isPaid: isPaymentPaid(parseFloat(row.loanpayment_amount), row.loanpayment_due),
         interest: row.loanpayment_interest,
         principal: row.loanpayment_principal,
         scheduled: row.loanpayment_scheduled,
@@ -31,3 +31,6 @@ export async function getPayments(loanId) {
   return result;
 }
 
+export const isPaymentPaid = (amountPaid, amountDue) => {
+  return amountPaid >= amountDue
+}
