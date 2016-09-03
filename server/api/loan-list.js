@@ -71,6 +71,17 @@ const getLoanLevelData = (loanPayments) => {
   }
 }
 
+/**
+ * To calculate balance, we first start with the initial loan amount, and go thru each payment.
+ * If the payment is paid, then we use the payment's principal and subtract that from balance.
+ *
+ * To calculate nextPaymentDate, we assumed that all payments for a given loan are sorted by
+ * payments date acsending (done in sql queries). So all need to do is find the first payment date
+ * that is greater than current date and its payment is unpaid.
+ * 
+ * @param loanPayments
+ * @returns {*}
+ */
 const generateLoanDataFromPayments = (loanPayments) => {
   if (loanPayments.length == 0) {
     return {}
@@ -81,21 +92,21 @@ const generateLoanDataFromPayments = (loanPayments) => {
     nextPaymentDate: null,
   }
 
-  return loanPayments.reduce( (prevLoan, currLoan) => {
+  return loanPayments.reduce( (prevDataMap, currLoan) => {
     const isPaid = isPaymentPaid(currLoan.loanpayment_amount, currLoan.loanpayment_due)
 
     if (isPaid) {
-      prevLoan.balance = formatToCurrency(prevLoan.balance - currLoan.loanpayment_principal)
+      prevDataMap.balance = formatToCurrency(prevDataMap.balance - currLoan.loanpayment_principal)
     }
 
     const currentLoanDate = new Date(currLoan.loanpayment_date)
-    if (!prevLoan.nextPaymentDate && !isPaid && currentLoanDate > Date.now()) {
-      prevLoan.nextPaymentDate = currLoan.loanpayment_date
+    if (!prevDataMap.nextPaymentDate && !isPaid && currentLoanDate > Date.now()) {
+      prevDataMap.nextPaymentDate = currLoan.loanpayment_date
     }
 
     return {
-      balance: prevLoan.balance,
-      nextPaymentDate: prevLoan.nextPaymentDate,
+      balance: prevDataMap.balance,
+      nextPaymentDate: prevDataMap.nextPaymentDate,
     }
   }, initialState)
 }
