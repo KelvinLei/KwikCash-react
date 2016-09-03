@@ -7,7 +7,6 @@ import styles from './styles.scss'
 import { PaymentPlanContent } from '../paymentInfo/PaymentPlanContent'
 import {getClassNameForLoanStatus} from "../shared/LoanStyles";
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
-import {sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT} from "../../../api/index";
 
 export default class LoanSummaryContent extends Component {
 
@@ -79,10 +78,6 @@ export default class LoanSummaryContent extends Component {
 }
 
 const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
-
-  const reapplyOnClick = (e) => {
-    sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
-  }
 
   const styleClassName = getClassNameForLoanStatus(loanData.loanCode)
 
