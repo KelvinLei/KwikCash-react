@@ -45,7 +45,7 @@ export default class LoanSummaryContent extends Component {
         <Row>
           <Col md={ 6 } className="text-left">
             <Panel id="loan-progress-panel" className="panel-default" header="Loan progress">
-              <canvas height="365px" id="chartjs-doughnutchart"></canvas>
+              <canvas width="300px" height="300px" id="chartjs-doughnutchart"></canvas>
             </Panel>
           </Col>
 
@@ -85,8 +85,12 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
 
   const refinanceOption =
     shouldDisplayRefinance &&
-    <div className="text-left">
-      <Link to={"/myLoans/refinance/" + loanData.loanId} className="btn btn-info btn-sm">Refinance</Link>
+    <div className="panel-footer">
+      <div className="text-bold">
+        <div className="text-left">
+          <Link to={"/myLoans/refinance/" + loanData.loanId} className="btn btn-info btn-sm">Refinance</Link>
+        </div>
+      </div>
     </div>
 
   return (
@@ -139,11 +143,7 @@ const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
           }
         </div>
 
-        <div className="panel-footer">
-          <div className="text-bold">
-            { refinanceOption }
-          </div>
-        </div>
+        { refinanceOption }
       </div>
     </Panel>
   )
