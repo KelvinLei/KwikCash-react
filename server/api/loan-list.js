@@ -23,7 +23,8 @@ export async function getLoans(userId) {
   debug(JSON.stringify(rows))
 
   // create a map that keys on loan id and values on an array that has all payments and loan-level data
-  const loansMap = rows.reduce( (prevLoanMap, currPayment) => {
+  // note that the return value is an object, but a map
+  const loansMapObj = rows.reduce( (prevLoanMap, currPayment) => {
     if (!prevLoanMap[currPayment.loan_id]) {
       prevLoanMap[currPayment.loan_id] = []
     }
@@ -32,10 +33,7 @@ export async function getLoans(userId) {
     return prevLoanMap;
   }, {})
 
-  const loanListResult = []
-  for (const loanId of Object.keys(loansMap)) {
-    const loanPayments = loansMap[loanId]
-
+  const loanListResult = Object.values(loansMapObj).map( (loanPayments) => {
     // go thru all payments for a loan, and generate an object that contains
     // loan-level data, like loan amount, loan date and etc
     const loanLevelData = getLoanLevelData(loanPayments)
@@ -43,10 +41,8 @@ export async function getLoans(userId) {
     // calculate loan level data from current payments state, like balance and next payment date
     const loanLevelDataFromPayments = generateLoanDataFromPayments(loanPayments)
 
-    const loanResult = {...loanLevelData, ...loanLevelDataFromPayments}
-
-    loanListResult.push(loanResult)
-  }
+    return {...loanLevelData, ...loanLevelDataFromPayments}
+  })
 
   // debug('getLoans' + result)
   return loanListResult
