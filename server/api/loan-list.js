@@ -23,7 +23,7 @@ export async function getLoans(userId) {
   debug(JSON.stringify(rows))
 
   // create a map that keys on loan id and values on an array that has all payments and loan-level data
-  // note that the return value is an object, but a map
+  // note that the return value is an object, but not a map
   const loansMapObj = rows.reduce( (prevLoanMap, currPayment) => {
     if (!prevLoanMap[currPayment.loan_id]) {
       prevLoanMap[currPayment.loan_id] = []
