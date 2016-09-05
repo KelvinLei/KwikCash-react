@@ -12,9 +12,6 @@ class LoanSummary extends Component {
   constructor(props) {
     super(props)
 
-    // only ACTIVE, MANUAL, PLAN loans can payoff
-    this.CAN_PAYOFF_STATUS_SET = new Set(['A', 'M', 'F'])
-
     this.tabList = ["All", "Complete", "Pending"];
   }
 
@@ -124,6 +121,22 @@ class LoanSummary extends Component {
     return remainingPayments.length
   }
 
+  /**
+   * show payoff for MANUAL, PLAN loans for all rates.
+   * show payoff for ACTIVE loans whose rate is within 36-59%
+   * @param loanData
+   */
+  shouldDisplayPayoff(loanData) {
+    if (!loanData) {
+      return false
+    }
+
+    const rate = parseInt(loanData.loanRate)
+    const isManualOrPlan = loanData.loanCode == 'M' || loanData.loanCode == 'F'
+    const isActiveAndProperRate = loanData.loanCode == 'A' && 35 < rate && rate < 60
+    return isManualOrPlan || isActiveAndProperRate
+  }
+
   render() {
     const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, userDataState } = this.props
     const { loanId } = this.props.params
@@ -131,7 +144,7 @@ class LoanSummary extends Component {
     const loanData = loans.find( (loan) => loan.loanId == loanId)
     const loanNumber = loanData ? loanData.loanNumber : ''
 
-    const shouldDisplayPayoff = loanData && this.CAN_PAYOFF_STATUS_SET.has(loanData.loanCode)
+    const shouldDisplayPayoff = this.shouldDisplayPayoff(loanData)
 
     const { paymentDataForSelectedLoan,
             paymentsToDisplay,
