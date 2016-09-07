@@ -1,12 +1,12 @@
-import { authenticateUser } from './api/members/authenticate'
-import { getLoans } from './api/members/loan-list'
-import { getPayments } from './api/members/payments'
-import { getUserDataAsync } from './api/members/get-user-data'
-import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail } from './api/members/email-proxy'
-import { emitCounterMetrics } from './api/members/metrics-proxy'
+import { authenticateUser } from './authenticate'
+import { getLoans } from './loan-list'
+import { getPayments } from './payments'
+import { getUserDataAsync } from './get-user-data'
+import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail } from './email-proxy'
+import { emitCounterMetrics } from './metrics-proxy'
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
-import config from './config'
+import config from '../../config'
 import isEmail from 'validator/lib/isEmail';
 
 const debug = _debug('app:server:api')
