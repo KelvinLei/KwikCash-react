@@ -1,6 +1,6 @@
 import { getLoanList } from './database-proxy'
 import _debug from 'debug'
-import { PAYMENT_SCHEDULE_MAPPING } from '../shared/payments-schedule-mapping'
+import { PAYMENT_SCHEDULE_MAPPING } from './shared/payments-schedule-mapping'
 import {isPaymentPaid} from "./payments";
 
 const debug = _debug('app:server:api:loan-list')

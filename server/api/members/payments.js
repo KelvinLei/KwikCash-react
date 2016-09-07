@@ -1,6 +1,6 @@
 
 import { getPaymentsForLoan } from './database-proxy'
-import { PAYMENT_SCHEDULE_MAPPING } from '../shared/payments-schedule-mapping'
+import { PAYMENT_SCHEDULE_MAPPING } from './shared/payments-schedule-mapping'
 import _debug from 'debug'
 
 const debug = _debug('app:server:api:payments')

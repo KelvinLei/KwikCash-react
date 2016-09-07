@@ -3,7 +3,7 @@ import sha1 from 'locutus/php/strings/sha1'
 import pack from 'locutus/php/misc/pack'
 import { getUser } from './database-proxy'
 import _debug from 'debug'
-import config from '../config'
+import config from '../../config'
 
 const debug = _debug('app:server:api:authenticate')
 

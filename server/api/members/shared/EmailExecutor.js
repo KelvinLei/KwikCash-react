@@ -1,4 +1,4 @@
-import config from '../config'
+import config from '../../../config'
 import _debug from 'debug'
 
 const debug = _debug('app:server:shared:EmailExecutor')

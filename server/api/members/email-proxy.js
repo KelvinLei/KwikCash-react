@@ -1,5 +1,5 @@
 import _debug from 'debug'
-import { sendEmail } from '../shared/EmailExecutor'
+import { sendEmail } from './shared/EmailExecutor'
 import { getUserDataAsync } from './get-user-data'
 
 export async function sendRefinanceEmail({user, loanInput}) {
@@ -61,7 +61,7 @@ export async function sendPayoffEmail({user, loanId}) {
 
   const message = `
     Customer has requested to payoff their loan.
-    
+
     Infomation:
     loan id: ${loanId}
     name: ${user.name}
