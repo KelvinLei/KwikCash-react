@@ -1,13 +1,7 @@
-import mysql from 'mysql'
 import _debug from 'debug'
-const debug = _debug('app:server:api:databaseproxy')
+import pool from '../database'
+const debug = _debug('app:server:memebrs:api:databaseproxy')
 
-var pool = mysql.createPool({
-  host     : 'kwikcashonline.net',
-  user     : 'kwikca5_wp',
-  password : 'fhXm9BnPx3', // TODO: find a better way to store password
-  database : 'kwikca5_wp'
-})
 
 export function getUser(userId) {
   debug('getUser' + userId);
@@ -76,9 +70,9 @@ export function getLoanList(userId) {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
         connection.query(`
-            select a.loan_member, a.loan_id, a.loan_number, a.loan_date, a.loan_status, a.loan_amount, 
-                   a.loan_funddate, a.loan_rate, a.loan_term, a.loan_amount, b.loanpayment_date, 
-                   b.loanpayment_amount, b.loanpayment_due, b.loanpayment_principal, b.loanpayment_interest, 
+            select a.loan_member, a.loan_id, a.loan_number, a.loan_date, a.loan_status, a.loan_amount,
+                   a.loan_funddate, a.loan_rate, a.loan_term, a.loan_amount, b.loanpayment_date,
+                   b.loanpayment_amount, b.loanpayment_due, b.loanpayment_principal, b.loanpayment_interest,
                    b.loanpayment_scheduled, b.loanpayment_paymentschedule
             from tbl_loans a
             join tbl_loanpayments b
