@@ -23,15 +23,22 @@ const webpackConfig = {
 // ------------------------------------
 // Entry Points
 // ------------------------------------
-const APP_ENTRY_PATHS = [
+const MEMBERS_APP_ENTRY_PATHS = [
   'babel-polyfill',
-  paths.client('client.js')
+  paths.client('members.js')
+]
+const ADMIN_APP_ENTRY_PATHS = [
+  'babel-polyfill',
+  paths.client('admin.js')
 ]
 
 webpackConfig.entry = {
   app: __DEV__
-    ? APP_ENTRY_PATHS.concat(`webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`)
-    : APP_ENTRY_PATHS,
+    ? MEMBERS_APP_ENTRY_PATHS.concat(`webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`)
+    : MEMBERS_APP_ENTRY_PATHS,
+  adminApp: __DEV__
+    ? ADMIN_APP_ENTRY_PATHS.concat(`webpack-hot-middleware/client?path=${config.compiler_public_path}__webpack_hmr`)
+    : ADMIN_APP_ENTRY_PATHS,
   vendor: config.compiler_vendor
 }
 
@@ -49,16 +56,7 @@ webpackConfig.output = {
 // ------------------------------------
 webpackConfig.plugins = [
   new webpack.DefinePlugin(config.globals),
-  new HtmlWebpackPlugin({
-    template: paths.client('index.html'),
-    hash: false,
-    filename: 'index.html',
-    favicon: paths.client('static/favicon.ico'),
-    inject: 'body',
-    minify: {
-      collapseWhitespace: true
-    }
-  }),
+
   new webpack.ProvidePlugin({
     $: "jquery",
     jQuery: "jquery"
@@ -67,13 +65,59 @@ webpackConfig.plugins = [
 
 if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
+  // based on what page to load, figure out what bundles to load and what template to use for index
+  let template, chunks
+  if (config.targetPage == "members") {
+    template = paths.index('index.html')
+    chunks = ['app', 'vendor']
+  }
+  else { // admin
+    template = paths.index('adminIndex.html')
+    chunks = ['adminApp', 'vendor']
+  }
+
   webpackConfig.plugins.push(
+    new HtmlWebpackPlugin({
+      template: template,
+      chunks: chunks,
+      hash: false,
+      filename: 'index.html',
+      favicon: paths.client('static/favicon.ico'),
+      inject: 'body',
+      minify: {
+        collapseWhitespace: true
+      }
+    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   )
 } else if (__PROD__) {
   debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
   webpackConfig.plugins.push(
+    // for members HTML file that serves bundles
+    new HtmlWebpackPlugin({
+      template: paths.index('index.html'),
+      chunks: ['app', 'vendor'],
+      hash: false,
+      filename: 'index.html',
+      favicon: paths.client('static/favicon.ico'),
+      inject: 'body',
+      minify: {
+        collapseWhitespace: true
+      }
+    }),
+    // for admin HTML file that serves bundles
+    new HtmlWebpackPlugin({
+      template: paths.index('adminIndex.html'),
+      chunks: ['adminApp', 'vendor'],
+      hash: false,
+      filename: 'adminIndex.html',
+      favicon: paths.client('static/favicon.ico'),
+      inject: 'body',
+      minify: {
+        collapseWhitespace: true
+      }
+    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({

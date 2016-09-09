@@ -19,6 +19,7 @@ const config = {
   path_base  : path.resolve(__dirname, '../../..'),
   dir_client : 'src',
   dir_dist   : 'dist',
+  dir_index  : 'src/index',
   dir_server : 'lib/server',
   dir_test   : 'tests',
 
@@ -111,13 +112,13 @@ config.compiler_vendor = config.compiler_vendor
 // Utilities
 // ------------------------------------
 const resolve = path.resolve
-const base = (...args) =>
-  Reflect.apply(resolve, null, [config.path_base, ...args])
+const base = (...args) => Reflect.apply(resolve, null, [config.path_base, ...args])
 
 config.utils_paths = {
   base   : base,
   client : base.bind(null, config.dir_client),
-  dist   : base.bind(null, config.dir_dist)
+  dist   : base.bind(null, config.dir_dist),
+  index  : base.bind(null, config.dir_index),
 }
 
 // ========================================================
@@ -154,5 +155,6 @@ if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !pro
 
 config.disableAuth = process.env.DISABLE_AUTH || 0
 
+config.targetPage = process.env.PAGE
 
 export default config
