@@ -57,12 +57,9 @@ if (config.env === 'development') {
   // Serving ~/dist by default. Ideally these files should be served by
   // the web server and not the app server, but this helps to demo the
   // server in production.
+  // This also serves generated bundles
   app.use(Express.static(paths.dist()))
 }
-
-app.get('/admin', function(req, res){
-  res.sendFile('adminIndex.html', { root: paths.dist() });
-});
 
 // This rewrites all routes requests to the root /index.html file
 // (ignoring file requests). If you want to implement isomorphic

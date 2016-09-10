@@ -156,5 +156,5 @@ if (!process.env.AWS_ACCESS_KEY_ID || !process.env.AWS_SECRET_ACCESS_KEY || !pro
 config.disableAuth = process.env.DISABLE_AUTH || 0
 
 config.targetPage = process.env.PAGE
-
+debug('config page is ' + config.targetPage)
 export default config

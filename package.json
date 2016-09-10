@@ -4,8 +4,8 @@
   "description": "",
   "main": "members.js",
   "scripts": {
-    "start": "npm run build && npm run start-prod",
-    "start-prod": "better-npm-run start-server-prod",
+    "start": "npm run build && better-npm-run start-server-prod",
+    "start-admin": "npm run build-admin && better-npm-run start-server-prod",
 
     "dev": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-members",
     "dev-admin": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-admin",
@@ -13,6 +13,8 @@
 
     "clean": "rimraf dist build lib",
     "build": "npm run build-server && npm run build-webpack-config && better-npm-run create-app-vendor-bundle",
+    "build-admin": "npm run build-server && npm run build-webpack-config && better-npm-run create-app-vendor-bundle-admin",
+
     "build-server": "babel server -d lib/server",
     "build-webpack-config": "babel webpack -d lib/webpack",
 
@@ -24,7 +26,16 @@
       "command": "babel-node lib/webpack/compile.js",
       "env": {
         "NODE_ENV": "production",
-        "DEBUG": "app:*"
+        "DEBUG": "app:*",
+        "PAGE": "members"
+      }
+    },
+    "create-app-vendor-bundle-admin": {
+      "command": "babel-node lib/webpack/compile.js",
+      "env": {
+        "NODE_ENV": "production",
+        "DEBUG": "app:*",
+        "PAGE": "admin"
       }
     },
     "start-server-members": {
