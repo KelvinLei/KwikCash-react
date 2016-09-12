@@ -85,7 +85,7 @@ app.get('*', function(req, res){
   res.sendFile('index.html', { root: paths.dist() });
 });
 
-app.use('/api', expressJwt({secret: config.jwt_secret}).unless({path: ['/api/authenticate']}));
+app.use('/api', expressJwt({secret: config.jwt_secret}).unless({path: ['/api/authenticate', '/api/admin/authenticate']}));
 app.use(bodyParser.json());
 
 export default app

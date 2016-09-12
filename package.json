@@ -8,6 +8,7 @@
     "start-prod": "better-npm-run start-server-prod",
     "dev": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-dev",
     "dev-disable-auth": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-disable-auth",
+    "dev-server": "npm run clean && npm run build-server && npm run build-webpack-config && npm run start-prod",
     "clean": "rimraf dist build lib",
     "build": "npm run build-server && npm run build-webpack-config && better-npm-run create-app-vendor-bundle",
     "build-server": "babel server -d lib/server",

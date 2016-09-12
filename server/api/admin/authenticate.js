@@ -6,7 +6,8 @@ import _debug from 'debug'
 import config from '../../config'
 import { salted_compare } from '../shared/password'
 
-const debug = _debug('app:server:api:authenticate')
+const debug = _debug('app:server:api:admin:authenticate')
+
 
 export async function authenticateUser(userName, password) {
   try {
@@ -16,14 +17,14 @@ export async function authenticateUser(userName, password) {
     if (config.disableAuth) {
       isValidPassword = true;
     }
+    debug('isValidPassword: ' + isValidPassword);
     return {
       id: user.id,
-      username: user.userId,
+      username: user.username,
       isValidPassword: isValidPassword,
-      name: user.name,
+      email: user.email,
     }
   } catch(e) {
     throw new Error('invalid user');
   }
 }
-
