@@ -8,6 +8,7 @@ import webpackHMRMiddleware from './middleware/webpack-hmr'
 import fallback from 'express-history-api-fallback'
 import expressJwt from 'express-jwt'
 import bodyParser from 'body-parser'
+import path from 'path'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
@@ -30,6 +31,18 @@ if (config.env === 'development') {
   // of development since this directory will be copied into ~/dist
   // when the application is compiled.
   app.use(Express.static('static'))
+
+  app.get('/admin', function(req, res){
+    var filename = path.join(compiler.outputPath,'adminIndex.html');
+    compiler.outputFileSystem.readFile(filename, function(err, result){
+      if (err) {
+        return next(err);
+      }
+      res.set('content-type','text/html');
+      res.send(result);
+      res.end();
+    });
+  })
 } else {
   debug(
     'Server is being run outside of live development mode, meaning it will ' +
@@ -45,7 +58,7 @@ if (config.env === 'development') {
 
    AWS ELB adds a X-Forwarded-Proto header that you can capture to know what was
    the protocol used before the load balancer (http or https)
-   */
+  */
   app.get('*', function(req, res, next) {
     if(!req.secure && req.get('X-Forwarded-Proto') !== 'https') {
       res.redirect('https://' + req.get('Host') + req.url);

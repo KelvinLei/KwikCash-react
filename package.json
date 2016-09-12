@@ -6,16 +6,12 @@
   "scripts": {
     "start": "npm run build && npm run start-prod",
     "start-prod": "better-npm-run start-server-prod",
-
-    "dev": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-members",
-    "dev-admin": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-admin",
+    "dev": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-dev",
     "dev-disable-auth": "npm run clean && npm run build-server && npm run build-webpack-config && better-npm-run start-server-disable-auth",
-
     "clean": "rimraf dist build lib",
     "build": "npm run build-server && npm run build-webpack-config && better-npm-run create-app-vendor-bundle",
     "build-server": "babel server -d lib/server",
     "build-webpack-config": "babel webpack -d lib/webpack",
-
     "test": "mocha --compilers js:babel-core/register --recursive",
     "test:watch": "npm run test -- --watch"
   },
@@ -27,25 +23,17 @@
         "DEBUG": "app:*"
       }
     },
-    "start-server-members": {
+    "start-server-dev": {
       "command": "node lib/server/server.js",
       "env": {
-        "DEBUG": "app:*",
-        "PAGE": "members"
-      }
-    },
-    "start-server-admin": {
-      "command": "node lib/server/server.js",
-      "env": {
-        "DEBUG": "app:*",
-        "PAGE": "admin"
+        "DEBUG": "app:*"
       }
     },
     "start-server-disable-auth": {
       "command": "node lib/server/server.js",
       "env": {
         "DEBUG": "app:*",
-	    "DISABLE_AUTH": 1
+        "DISABLE_AUTH": 1
       }
     },
     "start-server-prod": {

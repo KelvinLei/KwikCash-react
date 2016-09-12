@@ -65,23 +65,23 @@ webpackConfig.plugins = [
 
 if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
-  // based on what page to load, figure out what bundles to load and what template to use for index
-  let template, chunks
-  if (config.targetPage == "members") {
-    template = paths.index('index.html')
-    chunks = ['app', 'vendor']
-  }
-  else { // admin
-    template = paths.index('adminIndex.html')
-    chunks = ['adminApp', 'vendor']
-  }
-
   webpackConfig.plugins.push(
     new HtmlWebpackPlugin({
-      template: template,
-      chunks: chunks,
+      template: paths.index('index.html'),
+      chunks: ['app', 'vendor'],
       hash: false,
       filename: 'index.html',
+      favicon: paths.client('static/favicon.ico'),
+      inject: 'body',
+      minify: {
+        collapseWhitespace: true
+      }
+    }),
+    new HtmlWebpackPlugin({
+      template: paths.index('adminIndex.html'),
+      chunks: ['adminApp', 'vendor'],
+      hash: false,
+      filename: 'adminIndex.html',
       favicon: paths.client('static/favicon.ico'),
       inject: 'body',
       minify: {
