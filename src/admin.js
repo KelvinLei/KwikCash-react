@@ -53,7 +53,7 @@ const requireAuth = (nextState, replace, callback) => {
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={App} >
+      <Route path="/admin" component={App} >
         {/* Default route*/}
         <IndexRoute component={ExportLoans}/>
 
