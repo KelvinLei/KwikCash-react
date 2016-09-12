@@ -60,64 +60,42 @@ webpackConfig.plugins = [
   new webpack.ProvidePlugin({
     $: "jquery",
     jQuery: "jquery"
+  }),
+  // for members HTML file that serves bundles
+  new HtmlWebpackPlugin({
+    template: paths.index('index.html'),
+    chunks: ['app', 'vendor'],
+    hash: false,
+    filename: 'index.html',
+    favicon: paths.client('static/favicon.ico'),
+    inject: 'body',
+    minify: {
+      collapseWhitespace: true
+    }
+  }),
+  // for admin HTML file that serves bundles
+  new HtmlWebpackPlugin({
+    template: paths.index('adminIndex.html'),
+    chunks: ['adminApp', 'vendor'],
+    hash: false,
+    filename: 'adminIndex.html',
+    favicon: paths.client('static/favicon.ico'),
+    inject: 'body',
+    minify: {
+      collapseWhitespace: true
+    }
   })
 ]
 
 if (__DEV__) {
   debug('Enable plugins for live development (HMR, NoErrors).')
   webpackConfig.plugins.push(
-    new HtmlWebpackPlugin({
-      template: paths.index('index.html'),
-      chunks: ['app', 'vendor'],
-      hash: false,
-      filename: 'index.html',
-      favicon: paths.client('static/favicon.ico'),
-      inject: 'body',
-      minify: {
-        collapseWhitespace: true
-      }
-    }),
-    new HtmlWebpackPlugin({
-      template: paths.index('adminIndex.html'),
-      chunks: ['adminApp', 'vendor'],
-      hash: false,
-      filename: 'adminIndex.html',
-      favicon: paths.client('static/favicon.ico'),
-      inject: 'body',
-      minify: {
-        collapseWhitespace: true
-      }
-    }),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin()
   )
 } else if (__PROD__) {
   debug('Enable plugins for production (OccurenceOrder, Dedupe & UglifyJS).')
   webpackConfig.plugins.push(
-    // for members HTML file that serves bundles
-    new HtmlWebpackPlugin({
-      template: paths.index('index.html'),
-      chunks: ['app', 'vendor'],
-      hash: false,
-      filename: 'index.html',
-      favicon: paths.client('static/favicon.ico'),
-      inject: 'body',
-      minify: {
-        collapseWhitespace: true
-      }
-    }),
-    // for admin HTML file that serves bundles
-    new HtmlWebpackPlugin({
-      template: paths.index('adminIndex.html'),
-      chunks: ['adminApp', 'vendor'],
-      hash: false,
-      filename: 'adminIndex.html',
-      favicon: paths.client('static/favicon.ico'),
-      inject: 'body',
-      minify: {
-        collapseWhitespace: true
-      }
-    }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.optimize.UglifyJsPlugin({
