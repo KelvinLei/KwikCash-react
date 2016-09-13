@@ -20,7 +20,7 @@
 table.dataTable {
   tfoot > tr > th {
     color: #a1a2a3;
-    background: #f1f2f3;    
+    background: #f1f2f3;
   }
 }
 
@@ -35,9 +35,9 @@ table.dataTable {
 }
 
 
-// 
+//
 // Custom ColVis extensions styles
-// 
+//
 
 // The main button
 .ColVis {
@@ -80,7 +80,7 @@ ul.ColVis_collection {
             color: #555;
           }
         }
-        input[type=checkbox]:checked + span, 
+        input[type=checkbox]:checked + span,
         input[type=radio]:checked + span {
           background-color: transparent;
         }

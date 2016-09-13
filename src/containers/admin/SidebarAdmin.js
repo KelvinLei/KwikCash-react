@@ -5,7 +5,9 @@ export default class SidebarAdmin extends Component {
   render() {
     const { location } = this.props;
 
-    const currentPage = location.pathname.replace('/', '')
+    // replace all occurences of '/' and remove it.
+    // javascript doesn't have a replaceAll function
+    const currentPage = location.pathname.split('/').join('')
 
     // icons provided by bower_components/simple-line-icons/css/simple-line-icons.css
     const tabList = [
