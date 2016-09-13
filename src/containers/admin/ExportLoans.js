@@ -1,5 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import ContentWrapper from '../../themeJsx/Layout/ContentWrapper';
+import ExportLoansContent from "../../components/admin/exportLoans/ExportLoansContent";
 
 export default class ExportLoans extends Component {
 
@@ -13,7 +15,7 @@ export default class ExportLoans extends Component {
   render() {
     return (
       <div>
-        hello world
+        <ExportLoansContent/>
       </div>
     )
   }

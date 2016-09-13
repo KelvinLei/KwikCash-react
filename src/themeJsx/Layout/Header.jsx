@@ -16,6 +16,7 @@ class Header extends React.Component {
   }
 
   render() {
+    const { isAdminPage } = this.props
     const currentLog = require('../../styles/img/current_logo_white.png');
     const collapseLogo = require('../../styles/img/collapse_kc_logo.png');
 
@@ -53,11 +54,14 @@ class Header extends React.Component {
             { /* END Left navbar */ }
 
             { /* START Refer friends */ }
-            <ul className="nav navbar-nav navbar">
-              <li>
-                <a href="" onClick={showReferAFriendModal}>Refer a friend</a>
-              </li>
-            </ul>
+            {
+              !isAdminPage &&
+              <ul className="nav navbar-nav navbar">
+                <li>
+                  <a href="" onClick={showReferAFriendModal}>Refer a friend</a>
+                </li>
+              </ul>
+            }
 
             { /* START my account
              <ul className="nav navbar-nav navbar-right">

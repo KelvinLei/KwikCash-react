@@ -4,6 +4,7 @@ import ReactCSSTransitionGroup from 'react-addons-css-transition-group';
 import Footer from '../themeJsx/Layout/Footer'
 
 import SidebarContainer from './member/sidebar/SidebarContainer';
+import SidebarAdmin from './admin/SidebarAdmin';
 import TopHeader from './member/header/TopHeader';
 import {sendCounterMetrics, METRICS_NAME_PROMO_CODE} from "../api/index";
 
@@ -45,13 +46,17 @@ export default class App extends Component {
   render() {
     const { location } = this.props;
 
+    const isAdminPage = location.pathname && location.pathname.includes("admin")
+
+    const sidebar = isAdminPage ? <SidebarAdmin location={location}/> : <SidebarContainer location={location}/>
+
     const animationName = 'rag-fadeInRight'
 
     return (
       <div className="wrapper">
-        <TopHeader />
+        <TopHeader isAdminPage={isAdminPage}/>
 
-        <SidebarContainer location={location}/>
+        {sidebar}
 
         <ReactCSSTransitionGroup
           component="section"

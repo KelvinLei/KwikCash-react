@@ -57,6 +57,9 @@ ReactDOM.render(
         {/* Default route*/}
         <IndexRoute component={ExportLoans}/>
 
+        {/* if no loadId is specified, redirect back to loan selection page */}
+        <Route path="/admin/exportLoans" component={ExportLoans}/>
+
       </Route>
 
       <Route path="/login" component={Login}/>
