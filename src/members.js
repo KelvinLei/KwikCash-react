@@ -18,7 +18,6 @@ import LoanSelection from './containers/member/loanSelection/LoanSelection'
 import LoanSummary from './containers/member/loanSummary/LoanSummary'
 import Refinance from './containers/member/refinance/Refinance'
 import MyProfile from './containers/member/myProfile/MyProfile'
-import Reapply from './containers/member/reapply/Reapply'
 import Login from './containers/login/Login'
 import Logout from './components/login/logout'
 import { getUser } from './api'
@@ -74,7 +73,6 @@ ReactDOM.render(
 
       <Route path="/login" component={Login}/>
       <Route path="/logout" component={Logout}/>
-      <Route path="/reapply" component={Reapply}/>
     </Router>
   </Provider>,
   document.getElementById('app')
