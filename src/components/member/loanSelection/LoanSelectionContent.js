@@ -1,9 +1,10 @@
 import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Row, Col, Panel, Alert } from 'react-bootstrap';
+import { Row, Col, Panel, Alert, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {getClassNameForLoanStatus} from "../shared/LoanStyles";
+import {sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT} from "../../../api/index";
 
 export const LoanSelectionContent = ({
   isFetching,
@@ -68,6 +69,16 @@ const LoanSelectionWidget = ({loanList}) => {
     )
   })
 
+  // eligible to reapply only if all loans satifify reapply
+  const canReapply = loanList.reduce( (prevData, currLoan) => {
+    return prevData && currLoan.canReapply
+  }, true)
+
+  const reapplyOnClick = () => {
+    sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
+    window.location = "https://www.kwikcashonline.com/members/memberReApply.php"
+  }
+
   return (
     <Panel className="panel-default" header="Please select a loan for details">
       {/* shows a warning if there's a late payment */}
@@ -89,6 +100,15 @@ const LoanSelectionWidget = ({loanList}) => {
           { /* END List group */ }
         </Col>
       </Row>
+
+      {
+        canReapply &&
+        <Row>
+          <Col md={ 12 } className="center">
+            <Button onClick={reapplyOnClick} bsClass="btn btn-oval btn-info" className="mb-sm">Re-apply</Button>
+          </Col>
+        </Row>
+      }
     </Panel>
   )
 }

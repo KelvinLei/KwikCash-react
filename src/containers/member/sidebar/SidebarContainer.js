@@ -13,7 +13,6 @@ class SidebarContainer extends Component {
     // icons provided by bower_components/simple-line-icons/css/simple-line-icons.css
     const tabList = [
       {tabName: 'My Loans',     toLink: '/' + MY_LOANS_PAGE_STATE,      icon: "icon-home",    className: currentPage.includes(MY_LOANS_PAGE_STATE) || currentPage === '' ? "active" : ""},
-      {tabName: 'Re-apply',   toLink: '/' + REAPPLY_PAGE_STATE,    icon: "icon-note",    className: currentPage === REAPPLY_PAGE_STATE ? "active" : ""},
       {tabName: 'My Profile',   toLink: '/' + MY_PROFILE_PAGE_STATE,    icon: "icon-user",    className: currentPage === MY_PROFILE_PAGE_STATE ? "active" : ""},
       {tabName: 'Logout',       toLink: '/' + LOGOUT_PAGE_STATE,        icon: "icon-logout",  className: currentPage === LOGOUT_PAGE_STATE ? "active" : ""}
     ]

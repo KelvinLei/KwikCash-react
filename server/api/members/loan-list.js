@@ -41,7 +41,14 @@ export async function getLoans(userId) {
     // calculate loan level data from current payments state, like balance and next payment date
     const loanLevelDataFromPayments = generateLoanDataFromPayments(loanPayments)
 
-    return {...loanLevelData, ...loanLevelDataFromPayments}
+    // eligible to re-apply if loan is paid or 12 payments left or less
+    const canReapply = loanLevelData.loanCode == "P" || loanLevelDataFromPayments.remainingPayments <= 12
+
+    return {
+      ...loanLevelData,
+      ...loanLevelDataFromPayments,
+      canReapply
+    }
   })
 
   // debug('getLoans' + result)
@@ -90,29 +97,36 @@ const generateLoanDataFromPayments = (loanPayments) => {
     return {
       balance: 0,
       nextPaymentDate: null,
+      remainingPayments: 0,
     }
   }
 
   const initialState = {
     balance: loanPayments[0].loan_amount,
     nextPaymentDate: null,
+    remainingPayments: 0,
   }
 
   return loanPayments.reduce( (prevDataMap, currLoan) => {
     const isPaid = isPaymentPaid(currLoan.loanpayment_amount, currLoan.loanpayment_due)
+    const currentLoanDate = new Date(currLoan.loanpayment_date)
+    const isFuturePayment = currentLoanDate > Date.now()
 
     if (isPaid) {
       prevDataMap.balance = formatToCurrency(prevDataMap.balance - currLoan.loanpayment_principal)
     }
+    else if (isFuturePayment) { // future payments that are unpaid
+      prevDataMap.remainingPayments++
+    }
 
-    const currentLoanDate = new Date(currLoan.loanpayment_date)
-    if (!prevDataMap.nextPaymentDate && !isPaid && currentLoanDate > Date.now()) {
+    if (!prevDataMap.nextPaymentDate && !isPaid && isFuturePayment) {
       prevDataMap.nextPaymentDate = currLoan.loanpayment_date
     }
 
     return {
       balance: prevDataMap.balance,
       nextPaymentDate: prevDataMap.nextPaymentDate,
+      remainingPayments: prevDataMap.remainingPayments,
     }
   }, initialState)
 }
