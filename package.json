@@ -112,6 +112,7 @@
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "pg": "^5.1.0",
+    "pikaday": "^1.4.0",
     "piping": "^1.0.0-rc.1",
     "postcss-loader": "^0.9.1",
     "pretty-error": "^2.0.0",
