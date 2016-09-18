@@ -42,11 +42,11 @@ export default class ExportLoansContent extends Component {
                 <fieldset>
                   <div className="form-group">
                     <label className="col-lg-2 control-label">Fund date range</label>
-                    <Col lg={ 5 }>
+                    <Col lg={ 3 }>
                       <input type="text" id="start" className="form-control"/>
                       <span className="help-block m-b-none">Fund start date</span>
                     </Col>
-                    <Col lg={ 5 }>
+                    <Col lg={ 3 }>
                       <input type="text" id="end" className="form-control"/>
                       <span className="help-block m-b-none">Fund end date</span>
                     </Col>
