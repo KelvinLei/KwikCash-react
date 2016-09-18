@@ -43,7 +43,7 @@ export default () => {
       endPicker.setEndRange(endDate);
     },
     startPicker = new Pikaday({
-      field: document.getElementById('start'),
+      field: document.getElementById('fundStartDate'),
       maxDate: new Date(),
       onSelect: function() {
         startDate = this.getDate();
@@ -51,7 +51,7 @@ export default () => {
       }
     }),
     endPicker = new Pikaday({
-      field: document.getElementById('end'),
+      field: document.getElementById('fundEndDate'),
       maxDate: new Date(),
       onSelect: function() {
         endDate = this.getDate();

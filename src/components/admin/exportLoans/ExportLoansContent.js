@@ -19,14 +19,45 @@ export default class ExportLoansContent extends Component {
     Calender()
   }
 
+  LOAN_STATUS_MAP = {
+    A: 'Active',
+    L: 'Late',
+    M: 'Manual',
+    P: 'Paid',
+    D: 'Charged off',
+    F: 'Plan'
+  }
+
   render() {
     const {} = this.props;
 
     const statesDropdown = states.map( (state, id) => {
       return (
-        <option key={id}>{state.abbreviation} - {state.name}</option>
+        <option key={id} defaultValue={state.abbreviation}>
+          {state.abbreviation} - {state.name}
+        </option>
       )
     })
+
+    const loanStatusRadioButtons = Object.keys(this.LOAN_STATUS_MAP).map( (statusCode) => {
+      const defaultChecked = statusCode == 'A' ? 'defaultChecked' : ''
+      const id = "loanStatus-" + statusCode
+      return (
+        <label key={"label"+id} className="radio-inline c-radio">
+          <input id={id} type="radio" defaultValue={statusCode} name="loanStatusRadio" defaultChecked={defaultChecked}/>
+          <em className="fa fa-circle"/>{this.LOAN_STATUS_MAP[statusCode]}
+        </label>
+      )
+    })
+
+    const filterOnClick = (e) => {
+      const fundStartDate = $('#fundStartDate').value
+      const fundEndDate = $('#fundEndDate').value
+      const loanStatus = $('input[name=loanStatusRadio]:checked').val()
+      const state = $('#stateOption').val().split('-')[0].trim()
+      const excludeLoansUnder1001 = $('#excludeLoansUnder1001').is(":checked")
+
+    }
 
     return (
       <ContentWrapper>
@@ -43,11 +74,11 @@ export default class ExportLoansContent extends Component {
                   <div className="form-group">
                     <label className="col-lg-2 control-label">Fund date range</label>
                     <Col lg={ 3 }>
-                      <input type="text" id="start" className="form-control"/>
+                      <input type="text" id="fundStartDate" className="form-control"/>
                       <span className="help-block m-b-none">Fund start date</span>
                     </Col>
                     <Col lg={ 3 }>
-                      <input type="text" id="end" className="form-control"/>
+                      <input type="text" id="fundEndDate" className="form-control"/>
                       <span className="help-block m-b-none">Fund end date</span>
                     </Col>
                   </div>
@@ -57,30 +88,7 @@ export default class ExportLoansContent extends Component {
                   <div className="form-group">
                     <label className="col-lg-2 control-label">Loan status</label>
                     <Col sm={ 10 }>
-                      <label className="radio-inline c-radio">
-                        <input id="inlineradio1" type="radio" name="i-radio" value="option1" defaultChecked />
-                        <em className="fa fa-circle"></em>Active
-                      </label>
-                      <label className="radio-inline c-radio">
-                        <input id="inlineradio2" type="radio" name="i-radio" value="option2" />
-                        <em className="fa fa-circle"></em>Charged off
-                      </label>
-                      <label className="radio-inline c-radio">
-                        <input id="inlineradio3" type="radio" name="i-radio" value="option3" />
-                        <em className="fa fa-circle"></em>Late
-                      </label>
-                      <label className="radio-inline c-radio">
-                        <input id="inlineradio3" type="radio" name="i-radio" value="option3" />
-                        <em className="fa fa-circle"></em>Manual
-                      </label>
-                      <label className="radio-inline c-radio">
-                        <input id="inlineradio3" type="radio" name="i-radio" value="option3" />
-                        <em className="fa fa-circle"></em>Paid
-                      </label>
-                      <label className="radio-inline c-radio">
-                        <input id="inlineradio3" type="radio" name="i-radio" value="option3" />
-                        <em className="fa fa-circle"></em>Plan
-                      </label>
+                      { loanStatusRadioButtons }
                     </Col>
                   </div>
                 </fieldset>
@@ -91,7 +99,7 @@ export default class ExportLoansContent extends Component {
                     <Col sm={ 10 }>
                       <Row>
                         <div className="col-lg-4">
-                          <select className="form-control">
+                          <select id="stateOption" className="form-control">
                             { statesDropdown }
                           </select>
                         </div>
@@ -106,8 +114,9 @@ export default class ExportLoansContent extends Component {
                     <Col sm={ 10 }>
                       <div className="checkbox c-checkbox needsclick">
                         <label className="needsclick">
-                          <input standalone type="checkbox" defaultChecked value="" className="needsclick" />
-                          <em className="fa fa-check"></em>Exclude Loans Under 1001</label>
+                          <input id="excludeLoansUnder1001" type="checkbox" defaultChecked className="needsclick"/>
+                          <em className="fa fa-check"/>Exclude Loans Under 1001
+                        </label>
                       </div>
                     </Col>
                   </div>
@@ -115,7 +124,7 @@ export default class ExportLoansContent extends Component {
 
                 <div className="form-group">
                   <Col lgOffset={ 2 } lg={ 10 }>
-                    <Button type="submit" bsStyle="default" bsSize="small">Sign in</Button>
+                    <Button onClick={filterOnClick.bind(this)} bsStyle="info">Filter</Button>
                   </Col>
                 </div>
               </form>
