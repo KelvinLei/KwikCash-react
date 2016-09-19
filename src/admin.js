@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, browserHistory, Route, IndexRoute, Redirect } from 'react-router'
 import { Provider } from 'react-redux'
-import { getReducers } from './redux/reducers'
+import { getReducersForAdmin, getReducersForMember } from './redux/reducers'
 import configureStore from './redux/store/configureStore'
 import initTranslation from './themeJsx/Common/localize';
 import initLoadCss from './themeJsx/Common/load-css';
@@ -24,7 +24,7 @@ initTranslation();
 // Init css loader (for themes)
 initLoadCss();
 
-let store = configureStore(getReducers(true));
+let store = configureStore(getReducersForAdmin());
 
 const ENABLE_AUTH = true;
 const requireAuth = (nextState, replace, callback) => {

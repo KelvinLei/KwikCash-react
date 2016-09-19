@@ -9,12 +9,12 @@ const logo = require('../../styles/img/current_logo_white.png');
 export default class Login extends React.Component {
 
   componentWillReceiveProps(nextProps) {
-    const { isAuthenticated, router, location } = nextProps
+    const { isAuthenticated, router, location, isAdmin } = nextProps
 
     const redirectUrl = location.query.redirectUrl || '/'
 
     if (isAuthenticated) {
-      sendCounterMetrics(METRICS_NAME_MEMBER_LOGIN_SUCCESS, [])
+      !isAdmin && sendCounterMetrics(METRICS_NAME_MEMBER_LOGIN_SUCCESS, [])
       router.push(redirectUrl)
     }
   }
