@@ -1,18 +1,8 @@
 import { getLoanList } from './database-proxy'
 import _debug from 'debug'
 import { PAYMENT_SCHEDULE_MAPPING } from './shared/payments-schedule-mapping'
-import {isPaymentPaid} from "./payments";
-
+import { LOAN_STATUS_MAP } from '../shared/loansConstants'
 const debug = _debug('app:server:api:loan-list')
-
-var LOAN_STATUS_MAP = {
-  A: 'ACTIVE',
-  L: 'LATE',
-  M: 'MANUAL',
-  P: 'PAID',
-  D: 'Charged off',
-  F: 'PLAN'
-}
 
 const formatToCurrency = (num) => {
   return Number(num).toFixed(2)
@@ -22,111 +12,22 @@ export async function getLoans(userId) {
   var rows = await getLoanList(userId)
   debug(JSON.stringify(rows))
 
-  // create a map that keys on loan id and values on an array that has all payments and loan-level data
-  // note that the return value is an object, but not a map
-  const loansMapObj = rows.reduce( (prevLoanMap, currPayment) => {
-    if (!prevLoanMap[currPayment.loan_id]) {
-      prevLoanMap[currPayment.loan_id] = []
-    }
-
-    prevLoanMap[currPayment.loan_id].push(currPayment);
-    return prevLoanMap;
-  }, {})
-
-  const loanListResult = Object.values(loansMapObj).map( (loanPayments) => {
-    // go thru all payments for a loan, and generate an object that contains
-    // loan-level data, like loan amount, loan date and etc
-    const loanLevelData = getLoanLevelData(loanPayments)
-
-    // calculate loan level data from current payments state, like balance and next payment date
-    const loanLevelDataFromPayments = generateLoanDataFromPayments(loanPayments)
-
-    // eligible to re-apply if loan is paid or 12 payments left or less
-    const canReapply = loanLevelData.loanCode == "P" || loanLevelDataFromPayments.remainingPayments <= 12
-
+  const loanListResult = rows.map( (row) => {
     return {
-      ...loanLevelData,
-      ...loanLevelDataFromPayments,
-      canReapply
+      loanId : row.loan_id,
+      loanNumber : row.loan_number,
+      loanFundAmount: formatToCurrency(row.loan_amount),
+      loanFundDate : row.loan_funddate,
+      loanRate: row.loan_rate,
+      loanTerm: row.loan_term,
+      loanStatus : LOAN_STATUS_MAP[row.loan_status],
+      loanCode: row.loan_status,
+      paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
+      balance: row.remainingBalance,
+      nextPaymentDate: row.nextPaymentDate,
+      remainingPayments: row.remainingPaymentsCount,
     }
   })
 
-  // debug('getLoans' + result)
   return loanListResult
-}
-
-const getLoanLevelData = (loanPayments) => {
-  if (loanPayments.length == 0) {
-    return {}
-  }
-  // loan level data should be the same for all entries
-  const currLoan = loanPayments[0]
-  return {
-    loanId : currLoan.loan_id,
-    loanNumber : currLoan.loan_number,
-    loanFundAmount: formatToCurrency(currLoan.loan_amount),
-    loanFundDate : currLoan.loan_funddate,
-    loanRate: currLoan.loan_rate,
-    loanTerm: currLoan.loan_term,
-    loanStatus : LOAN_STATUS_MAP[currLoan.loan_status],
-    loanCode: currLoan.loan_status,
-    paymentSchedule: PAYMENT_SCHEDULE_MAPPING[currLoan.loanpayment_paymentschedule],
-  }
-}
-
-/**
- * To calculate balance, we first start with the initial loan amount, and go thru each payment.
- * If the payment is paid, then we use the payment's principal and subtract that from balance.
- *
- * To calculate nextPaymentDate, we assumed that all payments for a given loan are sorted by
- * payments date acsending (done in sql queries). So all need to do is find the first payment date
- * that is greater than current date and its payment is unpaid.
- *
- * @param loanPayments
- * @returns {*}
- */
-const generateLoanDataFromPayments = (loanPayments) => {
-  if (loanPayments.length == 0) {
-    return {}
-  }
-  // short-term fix for a bug that there are payments with positive amount due and 0 amount paid for
-  // PAID loans (loan most likely paid off with manual payments). Ideally, this bug should be fixed
-  // in admin pages so that amount due for all future payments should be set to 0 when a loan
-  // is manually paid off
-  if (loanPayments[0].loan_status == "P") {
-    return {
-      balance: 0,
-      nextPaymentDate: null,
-      remainingPayments: 0,
-    }
-  }
-
-  const initialState = {
-    balance: loanPayments[0].loan_amount,
-    nextPaymentDate: null,
-    remainingPayments: 0,
-  }
-
-  return loanPayments.reduce( (prevDataMap, currLoan) => {
-    const isPaid = isPaymentPaid(currLoan.loanpayment_amount, currLoan.loanpayment_due)
-    const currentLoanDate = new Date(currLoan.loanpayment_date)
-    const isFuturePayment = currentLoanDate > Date.now()
-
-    if (isPaid) {
-      prevDataMap.balance = formatToCurrency(prevDataMap.balance - currLoan.loanpayment_principal)
-    }
-    else if (isFuturePayment) { // future payments that are unpaid
-      prevDataMap.remainingPayments++
-    }
-
-    if (!prevDataMap.nextPaymentDate && !isPaid && isFuturePayment) {
-      prevDataMap.nextPaymentDate = currLoan.loanpayment_date
-    }
-
-    return {
-      balance: prevDataMap.balance,
-      nextPaymentDate: prevDataMap.nextPaymentDate,
-      remainingPayments: prevDataMap.remainingPayments,
-    }
-  }, initialState)
 }

@@ -32,6 +32,24 @@ export function init(server) {
       });
     })()
   });
+
+  server.post('/api/admin/filterLoans', (req, res) => {
+    debug("calling admin filter loans");
+
+    (async () => {
+
+      debug("filtering loans for " + req.user);
+      var loans = await getLoans(req.user.id);
+      debug("loans: " + JSON.stringify(loans));
+      res.format({
+        'application/json': () => {
+          res.send({
+            loans: loans
+          });
+        }
+      });
+    })();
+  });
 };
 
 

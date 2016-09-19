@@ -1,4 +1,3 @@
-
 import { getPaymentsForLoan } from './database-proxy'
 import { PAYMENT_SCHEDULE_MAPPING } from './shared/payments-schedule-mapping'
 import _debug from 'debug'

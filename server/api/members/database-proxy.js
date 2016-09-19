@@ -60,7 +60,14 @@ export function getUserData(userId) {
 }
 
 /**
- * This returns all loans and all payments for a given user
+ * This returns all loans and calculates remainingPaymentsCount, remainingBalance and next payment date.
+ *
+ * The query first fetches all the loans for the user, then fetches all the payments for loans.
+ *    If the loan is unpaid,
+ *      find all unpaid payments, group by loan id, and calculate balance, remaining payments and next payment date
+ *    If the loan is paid,
+ *      find all payments, group by loan id, and set 0 to both balance and remaining payments.
+ *      
  * @param userId
  * @returns {Promise}
  */
@@ -70,14 +77,26 @@ export function getLoanList(userId) {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
         connection.query(`
-            select a.loan_member, a.loan_id, a.loan_number, a.loan_date, a.loan_status, a.loan_amount,
-                   a.loan_funddate, a.loan_rate, a.loan_term, a.loan_amount, b.loanpayment_date,
-                   b.loanpayment_amount, b.loanpayment_due, b.loanpayment_principal, b.loanpayment_interest,
-                   b.loanpayment_scheduled, b.loanpayment_paymentschedule
-            from tbl_loans a
-            join tbl_loanpayments b
-            where a.loan_id = b.loanpayment_loan and a.loan_member = ?
-            order by a.loan_funddate desc, loanpayment_date asc`, [userId],
+            SELECT
+              IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount, 
+              IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance, 
+              IF(loan_result.loan_status = 'P', NULL, MIN(p.loanpayment_date)) as nextPaymentDate, 
+              loan_result.*
+            FROM tbl_loanpayments p
+            INNER JOIN
+            (
+              SELECT 
+                 a.loan_member, a.loan_id, a.loan_number, a.loan_date, a.loan_status, a.loan_amount,
+                     a.loan_funddate, a.loan_rate, a.loan_term
+              FROM 
+                tbl_loans a
+              WHERE a.loan_member = 384
+              ORDER BY a.loan_funddate DESC
+            ) AS loan_result
+            ON loan_result.loan_id = p.loanpayment_loan 
+            AND (loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)
+            GROUP BY p.loanpayment_loan
+            `, [userId],
         (err, rows) => {
           if (rows) {
             // debug('getLoanList database response ' + rows)
