@@ -33,6 +33,7 @@ const config = {
   // jwt configuration
   // ----------------------------------
   jwt_secret : 'kweekca$h98f%xlmnpm',
+  admin_jwt_secret : 'kweekca$h9admin8f%xlmnpm',
 
   // ----------------------------------
   // Compiler Configuration

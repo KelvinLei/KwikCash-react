@@ -25,7 +25,7 @@ export function init(server) {
         res.status(401).send("wrong user or password");
       }
 
-      const token = jwt.sign(user, config.jwt_secret, { expiresIn: "2hr" });
+      const token = jwt.sign(user, config.admin_jwt_secret, { expiresIn: "2hr" });
       debug("token: " + JSON.stringify(token));
       res.format({
         'application/json': () => {
@@ -33,6 +33,17 @@ export function init(server) {
         }
       });
     })()
+  });
+
+  // no input/service call needed here. user is deduced from the jwt token stored in local storage
+  server.post('/api/admin/user', (req, res) => {
+    debug("calling api/user");
+
+    res.format({
+      'application/json': () => {
+        res.send({ 'user': req.user });
+      }
+    });
   });
 
   server.post('/api/admin/filterLoans', (req, res) => {
@@ -52,6 +63,7 @@ export function init(server) {
       });
     })();
   });
+
 };
 
 

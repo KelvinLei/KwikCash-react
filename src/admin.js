@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, browserHistory, Route, IndexRoute, Redirect } from 'react-router'
 import { Provider } from 'react-redux'
-import RootReducer from './redux/reducers'
+import { getReducers } from './redux/reducers'
 import configureStore from './redux/store/configureStore'
 import initTranslation from './themeJsx/Common/localize';
 import initLoadCss from './themeJsx/Common/load-css';
@@ -16,15 +16,15 @@ import fontAwesome from './themeJsx/bower_components/fontawesome/css/font-awesom
 import App from './containers/App'
 import ExportLoans from './containers/admin/ExportLoans'
 import Login from './containers/login/Login'
-import Logout from './components/login/logout'
-import { getUser } from './api'
+import Logout from './containers/login/Logout'
+import { getUser } from './api/admin'
 
 // Init translation system
 initTranslation();
 // Init css loader (for themes)
 initLoadCss();
 
-let store = configureStore(RootReducer);
+let store = configureStore(getReducers(true));
 
 const ENABLE_AUTH = true;
 const requireAuth = (nextState, replace, callback) => {
@@ -42,7 +42,7 @@ const requireAuth = (nextState, replace, callback) => {
     // redirect to login page when the user isnt authenticated
     const redirectUrl = location.href
     replace({
-      pathname: `/login`,
+      pathname: `/admin/login`,
       query: { redirectUrl: redirectUrl },
       state: { nextPathname: nextState.location.pathname }
     })
@@ -53,7 +53,7 @@ const requireAuth = (nextState, replace, callback) => {
 ReactDOM.render(
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/admin" component={App} >
+      <Route path="/admin" component={App} onEnter={requireAuth}>
         {/* Default route*/}
         <IndexRoute component={ExportLoans}/>
 
@@ -62,8 +62,8 @@ ReactDOM.render(
 
       </Route>
 
-      <Route path="/login" component={Login}/>
-      <Route path="/logout" component={Logout}/>
+      <Route path="/admin/login" component={Login}/>
+      <Route path="/admin/logout" component={Logout}/>
     </Router>
   </Provider>,
   document.getElementById('adminApp')

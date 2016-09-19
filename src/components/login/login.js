@@ -23,6 +23,20 @@ export default class Login extends React.Component {
     let username;
     let password;
 
+    const Signup = () => {
+      if (!this.props.isAdmin) {
+        return (
+          <p className="pt-lg text-center">
+            Need to Signup?<br/>
+            Please contact our office at 1-800-478-6230
+          </p>
+        )
+      }
+      return (
+        <div/>
+      )
+    }
+
     return (
       <div className="block-center mt-xl wd-xl">
         { /* START panel */ }
@@ -31,6 +45,15 @@ export default class Login extends React.Component {
             <a href="#">
               <img src={logo} alt="Image" className="block-center" />
             </a>
+              {(() => {
+                if (this.props.isAdmin) {
+                  return (
+                    <div>
+                      Admin
+                    </div>
+                  )
+                }
+              })()}
           </div>
           <div className="panel-body">
             <p className="text-center pv">SIGN IN TO CONTINUE.</p>
@@ -40,12 +63,12 @@ export default class Login extends React.Component {
                   className="mb-lg"
                   onSubmit={ e => {
               e.preventDefault();
-              this.props.onLoginSubmit(username.value, password.value);
+              this.props.onLoginSubmit(username.value, password.value, this.props.isAdmin);
             }}>
               <div className="form-group has-feedback">
                 <input id="inputEmail"
                        type="email"
-                       placeholder="Enter email"
+                       placeholder={this.props.isAdmin ? "Enter username" : "Enter email"}
                        autoComplete="on"
                        required="required"
                        className={ "form-control " + (this.props.loginFailed ? 'parsley-error' : '') }
@@ -61,7 +84,7 @@ export default class Login extends React.Component {
                        ref = { p => password = p} />
                 <span className="fa fa-lock form-control-feedback text-muted"></span>
                 {(() => {
-                  return this.props.loginFailed ? <ErrorMessage/> : ''
+                  return this.props.loginFailed ? <ErrorMessage {...this.props} /> : ''
                 })()}
               </div>
               <div className="clearfix">
@@ -81,10 +104,7 @@ export default class Login extends React.Component {
                 Login
               </button>
             </form>
-            <p className="pt-lg text-center">
-              Need to Signup?<br/>
-              Please contact our office at 1-800-478-6230
-            </p>
+            <Signup/>
             {/*
              <a href="register" className="btn btn-block btn-default">
              Register Now

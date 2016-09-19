@@ -1,16 +1,19 @@
 import { authenticate } from '../../../api'
+import { adminAuthenticate } from '../../../api/admin'
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
 
-export const login = (userName, password) => {
+export const login = (userName, password, isAdmin) => {
   return (dispatch) => {
     dispatch(loginRequest())
-    
-    authenticate(userName, password)
+
+    const authFn = isAdmin ? adminAuthenticate : authenticate
+    const tokenKey = isAdmin ? 'admin_user_token' : 'user_token'
+    authFn(userName, password)
       .then(user => {
-        localStorage.setItem('user_token', user.token)
+        localStorage.setItem(tokenKey, user.token)
         dispatch(loginSuccess())
       })
       .catch(() => {

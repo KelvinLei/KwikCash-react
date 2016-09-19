@@ -4,7 +4,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import { Router, browserHistory, Route, IndexRoute, Redirect } from 'react-router'
 import { Provider } from 'react-redux'
-import RootReducer from './redux/reducers'
+import { getReducers } from './redux/reducers'
 import configureStore from './redux/store/configureStore'
 import initTranslation from './themeJsx/Common/localize';
 import initLoadCss from './themeJsx/Common/load-css';
@@ -19,7 +19,7 @@ import LoanSummary from './containers/member/loanSummary/LoanSummary'
 import Refinance from './containers/member/refinance/Refinance'
 import MyProfile from './containers/member/myProfile/MyProfile'
 import Login from './containers/login/Login'
-import Logout from './components/login/logout'
+import Logout from './containers/login/Logout'
 import { getUser } from './api'
 
 // Init translation system
@@ -27,7 +27,7 @@ initTranslation();
 // Init css loader (for themes)
 initLoadCss();
 
-let store = configureStore(RootReducer);
+let store = configureStore(getReducers());
 
 const ENABLE_AUTH = true;
 const requireAuth = (nextState, replace, callback) => {

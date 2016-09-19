@@ -85,7 +85,27 @@ app.get('*', function(req, res){
   res.sendFile('index.html', { root: paths.dist() });
 });
 
-app.use('/api', expressJwt({secret: config.jwt_secret}).unless({path: ['/api/authenticate', '/api/admin/authenticate']}));
+app.use('/api/admin', expressJwt({secret: config.admin_jwt_secret}).unless((req) => {
+  if (req.originalUrl.startsWith('/api/admin/authenticate')) {
+    return true;
+  }
+  if (req.originalUrl.startsWith('/api/admin')) {
+    return false;
+  }
+
+}));
+app.use('/api', expressJwt({secret: config.jwt_secret}).unless((req) => {
+  if (req.originalUrl.startsWith('/api/admin')) {
+    return true;
+  }
+  if (req.originalUrl.startsWith('/api/authenticate')) {
+    return true;
+  }
+  if (req.originalUrl.startsWith('/api')) {
+    return false;
+  }
+
+}));
 app.use(bodyParser.json());
 
 export default app
