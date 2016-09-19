@@ -2,6 +2,8 @@ import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from '../../config'
 import { authenticateUser } from './authenticate'
+import { filterLoans } from './filterLoans'
+
 
 const debug = _debug('app:server:admin:api')
 
@@ -39,7 +41,7 @@ export function init(server) {
     (async () => {
 
       debug("filtering loans for " + req.user);
-      var loans = await getLoans(req.user.id);
+      var loans = await filterLoans();
       debug("loans: " + JSON.stringify(loans));
       res.format({
         'application/json': () => {
