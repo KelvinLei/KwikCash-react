@@ -67,7 +67,7 @@ export function getUserData(userId) {
  *      find all unpaid payments, group by loan id, and calculate balance, remaining payments and next payment date
  *    If the loan is paid,
  *      find all payments, group by loan id, and set 0 to both balance and remaining payments.
- *      
+ *
  * @param userId
  * @returns {Promise}
  */
@@ -90,7 +90,7 @@ export function getLoanList(userId) {
                      a.loan_funddate, a.loan_rate, a.loan_term
               FROM 
                 tbl_loans a
-              WHERE a.loan_member = 384
+              WHERE a.loan_member = ?
               ORDER BY a.loan_funddate DESC
             ) AS loan_result
             ON loan_result.loan_id = p.loanpayment_loan 

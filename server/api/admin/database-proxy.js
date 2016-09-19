@@ -30,11 +30,11 @@ export function getUser(userId) {
 }
 
 /**
- * This returns all loans and calculates remainingPaymentsCount, remainingBalance and next payment date.
+ * This returns all loans and calculates payment-level data like remainingPaymentsCount, remainingBalance
  *
  * The query first fetches all the loans for the user, then fetches all the payments for loans.
  *    If the loan is unpaid,
- *      find all unpaid payments, group by loan id, and calculate balance, remaining payments and next payment date
+ *      find all unpaid payments, group by loan id, and calculate balance and remaining payments
  *    If the loan is paid,
  *      find all payments, group by loan id, and set 0 to both balance and remaining payments.
  *
