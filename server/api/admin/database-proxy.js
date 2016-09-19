@@ -62,7 +62,7 @@ export function filterLoansQuery() {
                 tbl_loans l
               WHERE e.application_member = l.loan_member
               ORDER BY l.loan_funddate DESC
-              LIMIT 10
+              LIMIT 20
             ) AS loan_result
             ON loan_result.loan_id = p.loanpayment_loan 
             AND (loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)
