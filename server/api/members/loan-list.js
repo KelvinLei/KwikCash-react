@@ -13,6 +13,9 @@ export async function getLoans(userId) {
   debug(JSON.stringify(rows))
 
   const loanListResult = rows.map( (row) => {
+    // eligible to re-apply if loan is paid or 12 payments left or less
+    const canReapply = row.loan_status == "P" || row.remainingPaymentsCount <= 12
+    
     return {
       loanId : row.loan_id,
       loanNumber : row.loan_number,
@@ -26,6 +29,7 @@ export async function getLoans(userId) {
       balance: row.remainingBalance,
       nextPaymentDate: row.nextPaymentDate,
       remainingPayments: row.remainingPaymentsCount,
+      canReapply
     }
   })
 
