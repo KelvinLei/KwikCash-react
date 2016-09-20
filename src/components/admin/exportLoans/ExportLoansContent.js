@@ -28,7 +28,10 @@ export default class ExportLoansContent extends Component {
           <td>{loan.firstName}</td>
           <td>{loan.lastName}</td>
           <td>${loan.loanFundAmount}</td>
+          <td>${loan.balance}</td>
+          <td>{loan.remainingPayments}</td>
           <td>{loan.loanRate}%</td>
+          <td>{loan.state}</td>
           <td>{loan.loanNoteDate}</td>
           <td>{loan.loanFundDate}</td>
         </tr>
@@ -54,14 +57,17 @@ export default class ExportLoansContent extends Component {
                 <Table id="datatable1" responsive striped hover>
                   <thead>
                   <tr>
-                    <th>Loan ID</th>
+                    <th>LoanID</th>
                     <th>Status</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Loan Amount</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>LoanAmount</th>
+                    <th>Balance</th>
+                    <th>PaymentsLeft</th>
                     <th>Interest</th>
-                    <th>Note Date</th>
-                    <th>Fund Date</th>
+                    <th>State</th>
+                    <th>NoteDate</th>
+                    <th>FundDate</th>
                   </tr>
                   </thead>
                   <tbody>
