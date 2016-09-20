@@ -98,8 +98,12 @@ export const LoanFilterWidget = () => {
         </fieldset>
 
         <div className="form-group">
-          <Col lgOffset={ 2 } lg={ 10 }>
+          <Col lgOffset={ 2 } lg={ 2 }>
             <Button onClick={filterOnClick.bind(this)} bsStyle="primary">Filter</Button>
+          </Col>
+
+          <Col lgOffset={ 1 } lg={ 2 }>
+            <Button bsStyle="primary">Export</Button>
           </Col>
         </div>
       </form>
