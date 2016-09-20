@@ -98,12 +98,14 @@ export const LoanFilterWidget = () => {
         </fieldset>
 
         <div className="form-group">
-          <Col lgOffset={ 2 } lg={ 2 }>
+          <Col lgOffset={ 2 } lg={ 3 }>
             <Button onClick={filterOnClick.bind(this)} bsStyle="primary">Filter</Button>
+            <span className="help-block m-b-none">Filter loans and see results in table below</span>
           </Col>
 
-          <Col lgOffset={ 1 } lg={ 2 }>
+          <Col lgOffset={ 1 } lg={ 3 }>
             <Button bsStyle="primary">Export</Button>
+            <span className="help-block m-b-none">Filter loans and see results in PDF</span>
           </Col>
         </div>
       </form>
