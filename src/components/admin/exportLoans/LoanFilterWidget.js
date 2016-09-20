@@ -62,7 +62,7 @@ export const LoanFilterWidget = () => {
         <fieldset>
           <div className="form-group">
             <label className="col-lg-2 control-label">Loan status</label>
-            <Col sm={ 10 }>
+            <Col lg={ 10 }>
               { loanStatusRadioButtons }
             </Col>
           </div>
