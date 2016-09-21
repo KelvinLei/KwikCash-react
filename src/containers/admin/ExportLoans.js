@@ -1,8 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import ContentWrapper from '../../themeJsx/Layout/ContentWrapper';
 import { filterLoansAction } from '../../redux/actions/admin/filterLoans'
-import ExportLoansContent from "../../components/admin/exportLoans/ExportLoansContent";
+import ExportLoansTable from "../../components/admin/exportLoans/ExportLoansContent";
+import { LoanFilterWidget } from "../../components/admin/exportLoans/LoanFilterWidget";
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
+import { Row, Col, Panel, Table, Grid, Button } from 'react-bootstrap';
 
 class ExportLoans extends Component {
 
@@ -16,8 +19,10 @@ class ExportLoans extends Component {
   }
 
   render() {
-    const { isFetching, fetchLoansFailed, loans } = this.props;
+    const { isFetching, fetchLoansFailed, loans, filterLoans } = this.props;
 
+    const limit = Math.floor(Math.random() * 3) + 1
+    
     let exportLoansDisplay
     if (isFetching) {
       exportLoansDisplay = <LoadingSpinner/>
@@ -26,16 +31,29 @@ class ExportLoans extends Component {
       exportLoansDisplay = <div>Failure</div>
     }
     else {
-      exportLoansDisplay = <ExportLoansContent isFetching={isFetching}
+      exportLoansDisplay = <ExportLoansTable isFetching={isFetching}
                                              fetchLoansFailed={fetchLoansFailed}
                                              loans={loans}
+                                             filterLoans={filterLoans}
+                                             limit={limit}
       />
     }
 
     return (
-      <div>
+      <ContentWrapper>
+        <div className="content-heading">
+          Export Loans
+        </div>
+
+        <Row>
+          <Col md={ 12 }>
+            <LoanFilterWidget filterLoans={filterLoans} />
+          </Col>
+        </Row>
+
         { exportLoansDisplay }
-      </div>
+
+      </ContentWrapper>
     )
   }
 }

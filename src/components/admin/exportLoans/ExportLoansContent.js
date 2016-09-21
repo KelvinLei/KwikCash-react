@@ -10,7 +10,7 @@ require('pikaday/pikaday.js')
 require('pikaday/plugins/pikaday.jquery.js')
 require('pikaday/css/pikaday.css')
 
-export default class ExportLoansContent extends Component {
+export default class ExportLoansTable extends Component {
 
   componentDidMount() {
     LoansDataTableScript()
@@ -18,7 +18,7 @@ export default class ExportLoansContent extends Component {
   }
 
   render() {
-    const { loans } = this.props;
+    const { loans, filterLoans, limit } = this.props;
 
     const loanRow = loans.map( (loan) => {
       return (
@@ -29,7 +29,11 @@ export default class ExportLoansContent extends Component {
           <td>{loan.lastName}</td>
           <td>${loan.loanFundAmount}</td>
           <td>${loan.balance}</td>
-          <td>{loan.remainingPayments}</td>
+          {
+            limit == 1 &&
+            <td>{loan.remainingPayments}</td>
+          }
+
           <td>{loan.loanRate}%</td>
           <td>{loan.state}</td>
           <td>{loan.loanNoteDate}</td>
@@ -39,47 +43,38 @@ export default class ExportLoansContent extends Component {
     })
 
     return (
-      <ContentWrapper>
-        <div className="content-heading">
-          Export Loans
-        </div>
-
+      <Grid fluid>
         <Row>
-          <Col md={ 12 }>
-            <LoanFilterWidget />
+          <Col lg={ 12 }>
+            <Panel header={"Loan Data Table - Total matched rows: " + loans.length}>
+              <Table id="datatable1" responsive striped hover>
+                <thead>
+                <tr>
+                  <th>LoanID</th>
+                  <th>Status</th>
+                  <th>FirstName</th>
+                  <th>LastName</th>
+                  <th>LoanAmount</th>
+                  <th>Balance</th>
+                  {
+                    limit == 1 &&
+                    <th>PaymentsLeft</th>
+                  }
+                  
+                  <th>Interest</th>
+                  <th>State</th>
+                  <th>NoteDate</th>
+                  <th>FundDate</th>
+                </tr>
+                </thead>
+                <tbody>
+                { loanRow }
+                </tbody>
+              </Table>
+            </Panel>
           </Col>
         </Row>
-
-        <Grid fluid>
-          <Row>
-            <Col lg={ 12 }>
-              <Panel header={"Loan Data Table - Total matched rows: " + loans.length}>
-                <Table id="datatable1" responsive striped hover>
-                  <thead>
-                  <tr>
-                    <th>LoanID</th>
-                    <th>Status</th>
-                    <th>FirstName</th>
-                    <th>LastName</th>
-                    <th>LoanAmount</th>
-                    <th>Balance</th>
-                    <th>PaymentsLeft</th>
-                    <th>Interest</th>
-                    <th>State</th>
-                    <th>NoteDate</th>
-                    <th>FundDate</th>
-                  </tr>
-                  </thead>
-                  <tbody>
-                  { loanRow }
-                  </tbody>
-                </Table>
-              </Panel>
-            </Col>
-          </Row>
-        </Grid>
-
-      </ContentWrapper>
+      </Grid>
     )
   }
 }

@@ -2,9 +2,10 @@ import React from 'react'
 import states from './states_info'
 import { Row, Col, Panel, Button } from 'react-bootstrap';
 
-export const LoanFilterWidget = () => {
+export const LoanFilterWidget = ( {filterLoans} ) => {
 
   var LOAN_STATUS_MAP = {
+    ALL: 'All',
     A: 'Active',
     L: 'Late',
     M: 'Manual',
@@ -12,6 +13,21 @@ export const LoanFilterWidget = () => {
     D: 'Charged off',
     F: 'Plan'
   }
+
+  var CONFIGURABLE_COLUMNS = [
+    'Address', 'Email', 'State', 'RemainingPayments', 'Balance', 'DefaultDate', 'PayoffDate'
+  ]
+
+  const configurableColumnsCheckbox = CONFIGURABLE_COLUMNS.map( (column) => {
+    return (
+      <div className="checkbox c-checkbox needsclick">
+        <label className="needsclick">
+          <input id={'checkbox' + column} type="checkbox" className="needsclick"/>
+          <em className="fa fa-check"/>{column}
+        </label>
+      </div>
+    )
+  })
 
   const statesDropdown = states.map( (state, id) => {
     return (
@@ -21,8 +37,8 @@ export const LoanFilterWidget = () => {
     )
   })
 
-  const loanStatusRadioButtons = Object.keys(LOAN_STATUS_MAP).map( (statusCode) => {
-    const defaultChecked = statusCode == 'A' ? 'defaultChecked' : ''
+  const loanStatusRadioButtons = Object.keys(LOAN_STATUS_MAP).map( (statusCode, i) => {
+    const defaultChecked = i == 0 ? 'defaultChecked' : ''
     const id = "loanStatus-" + statusCode
     return (
       <label key={"label"+id} className="radio-inline c-radio">
@@ -39,6 +55,7 @@ export const LoanFilterWidget = () => {
     const state = $('#stateOption').val().split('-')[0].trim()
     const excludeLoansUnder1001 = $('#excludeLoansUnder1001').is(":checked")
 
+    filterLoans()
   }
 
   return (
@@ -85,14 +102,9 @@ export const LoanFilterWidget = () => {
 
         <fieldset>
           <div className="form-group">
-            <label className="col-sm-2 control-label">More options</label>
+            <label className="col-sm-2 control-label">Configurable columns</label>
             <Col sm={ 10 }>
-              <div className="checkbox c-checkbox needsclick">
-                <label className="needsclick">
-                  <input id="excludeLoansUnder1001" type="checkbox" defaultChecked className="needsclick"/>
-                  <em className="fa fa-check"/>Exclude Loans Under 1001
-                </label>
-              </div>
+              { configurableColumnsCheckbox }
             </Col>
           </div>
         </fieldset>

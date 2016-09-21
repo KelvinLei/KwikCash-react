@@ -1,5 +1,6 @@
 import _debug from 'debug'
 import pool from '../database'
+import queryBuilder from '../database/queryBuilder'
 const debug = _debug('app:server:admin:api:databaseproxy')
 
 export function getUser(userId) {
@@ -44,6 +45,16 @@ export function getUser(userId) {
 export function filterLoansQuery() {
   debug('filter loans ');
 
+  const limit = Math.floor(Math.random() * 30) + 20
+
+  const inner =
+    queryBuilder.select
+    ('fname', 'lname', 'hstate', 'loan_id', 'loan_number', 'loan_funddate',
+      'loan_rate', 'loan_amount', 'loan_notedate', 'loan_status')
+    .from('books').toString()
+
+  debug()
+
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       connection.query(`
@@ -62,12 +73,12 @@ export function filterLoansQuery() {
                 tbl_loans l
               WHERE e.application_member = l.loan_member
               ORDER BY l.loan_funddate DESC
-              LIMIT 20
+              LIMIT ?
             ) AS loan_result
             ON loan_result.loan_id = p.loanpayment_loan 
             AND (loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)
             GROUP BY p.loanpayment_loan
-            `,
+            `, [limit],
         (err, rows) => {
           if (rows) {
             // debug('getLoanList database response ' + rows)
