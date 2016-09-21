@@ -24,7 +24,7 @@ export function getUser(userId) {
             debug('coudnlt validate user')
             reject(new Error("couldnt validate user"));
           }
-      })
+        })
       connection.release()
     })
   });
@@ -39,7 +39,27 @@ export function getUser(userId) {
  *    If the loan is paid,
  *      find all payments, group by loan id, and set 0 to both balance and remaining payments.
  *
- * @param userId
+ * Sample query that fetches balance
+ *   SELECT
+       IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount,
+       IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance,
+       loan_result.*
+     FROM tbl_loanpayments p
+     INNER JOIN
+     (
+       SELECT
+       distinct e.fname, e.lname, e.hstate, l.loan_id, l.loan_number, l.loan_funddate,
+       l.loan_rate, l.loan_amount, l.loan_notedate, l.loan_status
+       FROM
+       e_applications e,
+       tbl_loans l
+       WHERE e.application_member = l.loan_member
+       ORDER BY l.loan_funddate DESC
+       LIMIT 40
+     ) AS loan_result
+     ON loan_result.loan_id = p.loanpayment_loan
+     AND (loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)
+     GROUP BY p.loanpayment_loan
  * @returns {Promise}
  */
 export function filterLoansQuery() {
@@ -48,37 +68,33 @@ export function filterLoansQuery() {
   const limit = Math.floor(Math.random() * 30) + 20
 
   const inner =
-    queryBuilder.select
-    ('fname', 'lname', 'hstate', 'loan_id', 'loan_number', 'loan_funddate',
-      'loan_rate', 'loan_amount', 'loan_notedate', 'loan_status')
-    .from('books').toString()
+    queryBuilder
+      .distinct('e.fname', 'e.lname', 'e.hstate', 'l.loan_id', 'l.loan_number', 'l.loan_funddate',
+        'l.loan_rate', 'l.loan_amount', 'l.loan_notedate', 'l.loan_status')
+      .select()
+      .from('e_applications as e')
+      .join('tbl_loans as l', 'e.application_member', '=', 'l.loan_member')
+      .orderBy('l.loan_funddate', 'desc')
+      .limit(limit)
+      .as('loan_result')
 
-  debug()
+  const query =
+    queryBuilder
+      .select(queryBuilder.raw("IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount"),
+        queryBuilder.raw("IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance"),
+        "loan_result.*")
+      .from('tbl_loanpayments as p')
+      .join(inner, function() {
+        this.on('loan_result.loan_id', '=', 'p.loanpayment_loan')
+          .andOn(queryBuilder.raw("(loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)"))
+      })
+      .groupBy('p.loanpayment_loan')
+
+  debug(query.toString())
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query(`
-            SELECT
-              IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount, 
-              IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance, 
-              loan_result.*
-            FROM tbl_loanpayments p
-            INNER JOIN
-            (
-              SELECT 
-                distinct e.fname, e.lname, e.hstate, l.loan_id, l.loan_number, l.loan_funddate, 
-                l.loan_rate, l.loan_amount, l.loan_notedate, l.loan_status
-              FROM 
-                e_applications e,
-                tbl_loans l
-              WHERE e.application_member = l.loan_member
-              ORDER BY l.loan_funddate DESC
-              LIMIT ?
-            ) AS loan_result
-            ON loan_result.loan_id = p.loanpayment_loan 
-            AND (loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)
-            GROUP BY p.loanpayment_loan
-            `, [limit],
+      connection.query(query.toString(),
         (err, rows) => {
           if (rows) {
             // debug('getLoanList database response ' + rows)

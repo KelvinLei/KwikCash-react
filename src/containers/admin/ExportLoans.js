@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import ContentWrapper from '../../themeJsx/Layout/ContentWrapper';
 import { filterLoansAction } from '../../redux/actions/admin/filterLoans'
-import ExportLoansTable from "../../components/admin/exportLoans/ExportLoansContent";
+import ExportLoansTable from "../../components/admin/exportLoans/ExportLoansTable";
 import { LoanFilterWidget } from "../../components/admin/exportLoans/LoanFilterWidget";
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
 import { Row, Col, Panel, Table, Grid, Button } from 'react-bootstrap';
