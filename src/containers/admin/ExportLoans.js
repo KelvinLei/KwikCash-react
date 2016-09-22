@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import ContentWrapper from '../../themeJsx/Layout/ContentWrapper';
 import { filterLoansAction } from '../../redux/actions/admin/filterLoans'
 import ExportLoansTable from "../../components/admin/exportLoans/ExportLoansTable";
-import { LoanFilterWidget } from "../../components/admin/exportLoans/LoanFilterWidget";
+import LoanFilterWidget from "../../components/admin/exportLoans/LoanFilterWidget";
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
 import { Row, Col, Panel, Table, Grid, Button } from 'react-bootstrap';
 
@@ -15,14 +15,13 @@ class ExportLoans extends Component {
 
   componentDidMount() {
     const { filterLoans } = this.props
-    filterLoans()
+    filterLoans({})
   }
 
   render() {
-    const { isFetching, fetchLoansFailed, loans, filterLoans } = this.props;
+    const { isFetching, fetchLoansFailed, loans, filterContext, filterLoans } = this.props;
 
-    const limit = Math.floor(Math.random() * 3) + 1
-    
+
     let exportLoansDisplay
     if (isFetching) {
       exportLoansDisplay = <LoadingSpinner/>
@@ -31,11 +30,8 @@ class ExportLoans extends Component {
       exportLoansDisplay = <div>Failure</div>
     }
     else {
-      exportLoansDisplay = <ExportLoansTable isFetching={isFetching}
-                                             fetchLoansFailed={fetchLoansFailed}
-                                             loans={loans}
-                                             filterLoans={filterLoans}
-                                             limit={limit}
+      exportLoansDisplay = <ExportLoansTable loans={loans}
+                                             filterContext={filterContext}
       />
     }
 
@@ -67,7 +63,7 @@ ExportLoans.propTypes = {
 
 const mapDispatchToProps = dispatch => {
   return {
-    filterLoans: () => dispatch(filterLoansAction()),
+    filterLoans: (filterContext) => dispatch(filterLoansAction(filterContext)),
   }
 }
 
@@ -78,6 +74,7 @@ function mapStateToProps(state) {
     isFetching: loanList.isFetching,
     fetchLoansFailed: loanList.fetchLoansFailed,
     loans: loanList.loans,
+    filterContext: loanList.filterContext,
   }
 }
 

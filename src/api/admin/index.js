@@ -62,7 +62,7 @@ export const getUser = () => {
   return authenticatedPost('/api/admin/user')
 }
 
-export const filterLoans = () => {
-  return authenticatedPost('/api/admin/filterLoans')
+export const filterLoans = (filterContext) => {
+  return authenticatedPost('/api/admin/filterLoans', {filterContext})
 }
 

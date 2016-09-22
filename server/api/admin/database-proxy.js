@@ -60,35 +60,78 @@ export function getUser(userId) {
      ON loan_result.loan_id = p.loanpayment_loan
      AND (loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)
      GROUP BY p.loanpayment_loan
+
+    Values in filterContext
+        fundStartDate,
+        fundEndDate,
+        loanStatus,
+        state,
+        addressWanted,
+        emailWanted,
+        stateWanted,
+        remainingPaymentsWanted,
+        balanceWanted,
+        defaultDateWanted,
+        payoffDateWanted
+
  * @returns {Promise}
  */
-export function filterLoansQuery() {
-  debug('filter loans ');
+export function filterLoansQuery(filterContext) {
+  debug('filter loans ' + JSON.stringify(filterContext));
 
-  const limit = Math.floor(Math.random() * 30) + 20
-
-  const inner =
+  // create query to fetch loan list
+  const loanInner =
     queryBuilder
-      .distinct('e.fname', 'e.lname', 'e.hstate', 'l.loan_id', 'l.loan_number', 'l.loan_funddate',
+      .distinct('e.fname', 'e.lname', 'e.hstate', 'e.email', 'l.loan_id', 'l.loan_number', 'l.loan_funddate',
         'l.loan_rate', 'l.loan_amount', 'l.loan_notedate', 'l.loan_status')
       .select()
       .from('e_applications as e')
-      .join('tbl_loans as l', 'e.application_member', '=', 'l.loan_member')
+      .join('tbl_loans as l', function() {
+        this.on('e.application_member', '=', 'l.loan_member')
+        if (filterContext.fundStartDate) {
+          this.andOn(queryBuilder.raw(`l.loan_funddate > '${filterContext.fundStartDate}'`))
+        }
+        else {
+          var twoMonthsAgo = new Date();
+          twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
+          this.andOn(queryBuilder.raw(`l.loan_funddate > '${twoMonthsAgo.toISOString().slice(0, 10)}'`))
+        }
+
+        if (filterContext.fundEndDate) {
+          this.andOn(queryBuilder.raw(`l.loan_funddate < '${filterContext.fundEndDate}'`))
+        }
+        if (filterContext.loanStatus && filterContext.loanStatus != 'ALL') {
+          this.andOn(queryBuilder.raw(`l.loan_status = '${filterContext.loanStatus}'`))
+        }
+        if (filterContext.state && filterContext.state != 'All') {
+          this.andOn(queryBuilder.raw(`e.hstate = '${filterContext.state}'`))
+        }
+      })
       .orderBy('l.loan_funddate', 'desc')
-      .limit(limit)
       .as('loan_result')
 
-  const query =
+  if (filterContext.addressWanted == true) {
+    loanInner.distinct('e.hstnum', 'e.hstname', 'e.haptnum', 'e.hcity', 'e.hzip')
+  }
+
+  // for each loan in list, fetch all payments and calculate balance and remaining payments count
+  const paymentOuter =
     queryBuilder
       .select(queryBuilder.raw("IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount"),
         queryBuilder.raw("IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance"),
         "loan_result.*")
       .from('tbl_loanpayments as p')
-      .join(inner, function() {
+      .join(loanInner, function() {
         this.on('loan_result.loan_id', '=', 'p.loanpayment_loan')
           .andOn(queryBuilder.raw("(loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)"))
       })
+      .orderBy('loan_result.loan_funddate', 'desc')
       .groupBy('p.loanpayment_loan')
+
+  // only use the query that joins payments table when balance or remaining payments is needed
+  const query = filterContext.balanceWanted == true || filterContext.remainingPaymentsWanted == true
+                ? paymentOuter
+                : loanInner
 
   debug(query.toString())
 

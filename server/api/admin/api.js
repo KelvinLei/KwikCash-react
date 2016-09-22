@@ -51,9 +51,9 @@ export function init(server) {
 
     (async () => {
 
-      debug("filtering loans for " + req.user);
-      var loans = await filterLoans();
-      debug("loans: " + JSON.stringify(loans));
+      debug("filtering loans for " + JSON.stringify(req.body.filterContext));
+      var loans = await filterLoans(req.body.filterContext);
+      // debug("loans: " + JSON.stringify(loans));
       res.format({
         'application/json': () => {
           res.send({

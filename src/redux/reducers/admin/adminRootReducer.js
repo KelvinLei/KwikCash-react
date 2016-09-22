@@ -6,7 +6,8 @@ import {
 const loanList = (state = {
   isFetching: false,
   fetchLoansFailed: false,
-  loans: []
+  loans: [],
+  filterContext: {},
 }, action) => {
   switch (action.type) {
     case FILTER_LOANS_REQUEST:
@@ -14,7 +15,8 @@ const loanList = (state = {
         ...state,
         isFetching: true,
         fetchLoansFailed: false,
-        loans: []
+        loans: [],
+        filterContext: {}
       }
     case FILTER_LOANS_SUCCESS:
       // convert raw data from database to application data format
@@ -35,14 +37,16 @@ const loanList = (state = {
         ...state,
         isFetching: false,
         fetchLoansFailed: false,
-        loans: loanList
+        loans: loanList,
+        filterContext: action.filterContext
       }
     case FILTER_LOANS_ERROR:
       return {
         ...state,
         isFetching: false,
         fetchLoansFailed: true,
-        loans: []
+        loans: [],
+        filterContext: {}
       }
 
     default:

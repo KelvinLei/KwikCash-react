@@ -7,15 +7,15 @@ export const FILTER_LOANS_ERROR = 'FILTER_LOANS_ERROR'
 /*
  Fetch loan list data if no data has been cached
  */
-export const filterLoansAction = () => {
+export const filterLoansAction = (filterContext) => {
   return (dispatch, getState) => {
     const state = getState()
 
     dispatch(filterLoansRequest())
 
-    filterLoans()
+    filterLoans(filterContext)
       .then(response => {
-        dispatch(filterLoansSuccess(response.loans))
+        dispatch(filterLoansSuccess(response.loans, filterContext))
       })
       .catch(() => {
         console.log("fetch loan list failed")
@@ -30,10 +30,11 @@ export const filterLoansRequest = () => {
   }
 }
 
-export const filterLoansSuccess = (loanList) => {
+export const filterLoansSuccess = (loanList, filterContext) => {
   return {
     type: FILTER_LOANS_SUCCESS,
-    loans: loanList
+    loans: loanList,
+    filterContext
   }
 }
 

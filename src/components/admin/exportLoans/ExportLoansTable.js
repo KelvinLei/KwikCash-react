@@ -1,9 +1,6 @@
 import React, { Component } from 'react'
-import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel, Table, Grid, Button } from 'react-bootstrap';
 import LoansDataTableScript from './LoansDataTableScript'
-import Calender from './Calendar'
-import { LoanFilterWidget } from './LoanFilterWidget'
 import styles from './LoansDataTable.scss'
 
 require('pikaday/pikaday.js')
@@ -14,30 +11,29 @@ export default class ExportLoansTable extends Component {
 
   componentDidMount() {
     LoansDataTableScript()
-    Calender()
   }
 
   render() {
-    const { loans, filterLoans, limit } = this.props;
+    const { loans, filterContext } = this.props;
 
-    const loanRow = loans.map( (loan) => {
+    const loanRow = loans.map( (loan, i) => {
       return (
-        <tr key={loan.loanNumber} className="gradeX">
+        <tr key={i} className="gradeX">
           <td>{loan.loanNumber}</td>
           <td>{loan.loanStatus}</td>
           <td>{loan.firstName}</td>
           <td>{loan.lastName}</td>
           <td>${loan.loanFundAmount}</td>
-          <td>${loan.balance}</td>
-          {
-            limit == 1 &&
-            <td>{loan.remainingPayments}</td>
-          }
-
           <td>{loan.loanRate}%</td>
-          <td>{loan.state}</td>
           <td>{loan.loanNoteDate}</td>
           <td>{loan.loanFundDate}</td>
+          { filterContext.balanceWanted && <td>${loan.balance}</td> }
+          { filterContext.remainingPaymentsWanted && <td>{loan.remainingPayments}</td> }
+          { filterContext.stateWanted && <td>{loan.state}</td> }
+          { filterContext.payoffDateWanted && <td>{loan.payoffDate}</td> }
+          { filterContext.defaultDateWanted && <td>{loan.defaultDate}</td> }
+          { filterContext.emailWanted && <td>{loan.email}</td> }
+          { filterContext.addressWanted && <td>{loan.address}</td> }
         </tr>
       )
     })
@@ -55,16 +51,16 @@ export default class ExportLoansTable extends Component {
                   <th>FirstName</th>
                   <th>LastName</th>
                   <th>LoanAmount</th>
-                  <th>Balance</th>
-                  {
-                    limit == 1 &&
-                    <th>PaymentsLeft</th>
-                  }
-                  
                   <th>Interest</th>
-                  <th>State</th>
                   <th>NoteDate</th>
                   <th>FundDate</th>
+                  { filterContext.balanceWanted && <th>Balance</th> }
+                  { filterContext.remainingPaymentsWanted && <th>RemainingPayments</th> }
+                  { filterContext.stateWanted && <th>State</th> }
+                  { filterContext.payoffDateWanted && <th>PayoffDate</th> }
+                  { filterContext.defaultDateWanted && <th>DefaultDate</th> }
+                  { filterContext.emailWanted && <th>Email</th> }
+                  { filterContext.addressWanted && <th>Address</th> }
                 </tr>
                 </thead>
                 <tbody>
