@@ -63,6 +63,15 @@ class Header extends React.Component {
               </ul>
             }
 
+            {
+              isAdminPage &&
+              <ul className="nav navbar-nav navbar">
+                <li>
+                  <a>Admin</a>
+                </li>
+              </ul>
+            }
+
             { /* START my account
              <ul className="nav navbar-nav navbar-right">
              <NavDropdown eventKey={ 4 } title="My account" id="basic-nav-dropdown" >

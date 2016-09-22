@@ -39,6 +39,7 @@ class ExportLoans extends Component {
       <ContentWrapper>
         <div className="content-heading">
           Export Loans
+          <small data-localize="dashboard.WELCOME">Loans filtering & reporting</small>
         </div>
 
         <Row>
