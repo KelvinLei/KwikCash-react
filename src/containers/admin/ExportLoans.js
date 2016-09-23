@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import ContentWrapper from '../../themeJsx/Layout/ContentWrapper';
 import { filterLoansAction } from '../../redux/actions/admin/filterLoans'
+import { exportLoansAction } from '../../redux/actions/admin/exportLoans'
 import ExportLoansTable from "../../components/admin/exportLoans/ExportLoansTable";
 import LoanFilterWidget from "../../components/admin/exportLoans/LoanFilterWidget";
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
@@ -19,7 +20,7 @@ class ExportLoans extends Component {
   }
 
   render() {
-    const { isFetching, fetchLoansFailed, loans, filterContext, filterLoans } = this.props;
+    const { isFetching, fetchLoansFailed, loans, filterContext, filterLoans, exportLoans } = this.props;
 
 
     let exportLoansDisplay
@@ -44,7 +45,7 @@ class ExportLoans extends Component {
 
         <Row>
           <Col md={ 12 }>
-            <LoanFilterWidget filterLoans={filterLoans} />
+            <LoanFilterWidget filterLoans={filterLoans} exportLoans={exportLoans} />
           </Col>
         </Row>
 
@@ -59,23 +60,28 @@ ExportLoans.propTypes = {
   isFetching: PropTypes.bool.isRequired,
   fetchLoansFailed: PropTypes.bool.isRequired,
   loans: PropTypes.array.isRequired,
-  filterLoans: PropTypes.func.isRequired
+  filterLoans: PropTypes.func.isRequired,
+  exportLoans: PropTypes.func.isRequired,
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     filterLoans: (filterContext) => dispatch(filterLoansAction(filterContext)),
+    exportLoans: (filterContext) => dispatch(exportLoansAction(filterContext)),
   }
 }
 
 function mapStateToProps(state) {
-  const { loanList } = state
+  const { loanList, exportLoans } = state
 
   return {
     isFetching: loanList.isFetching,
     fetchLoansFailed: loanList.fetchLoansFailed,
     loans: loanList.loans,
     filterContext: loanList.filterContext,
+
+    isExportLoansFetching: exportLoans.isFetching,
+    exportLoansFailed: exportLoans.fetchLoansFailed,
   }
 }
 

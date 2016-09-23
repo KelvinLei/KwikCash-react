@@ -24,7 +24,7 @@ export default class LoanFilterWidget extends Component {
   ]
 
   render() {
-    const { filterLoans } = this.props
+    const { filterLoans, exportLoans } = this.props
 
     const configurableColumnsCheckbox = this.CONFIGURABLE_COLUMNS.map( (column, i) => {
       return (
@@ -56,7 +56,7 @@ export default class LoanFilterWidget extends Component {
       )
     })
 
-    const filterOnClick = () => {
+    const getFilters = () => {
       const fundStartDate = $('#fundStartDate').val()
       const fundEndDate = $('#fundEndDate').val()
       const loanStatus = $('input[name=loanStatusRadio]:checked').val()
@@ -71,7 +71,7 @@ export default class LoanFilterWidget extends Component {
       const defaultDateWanted = $('#checkboxDefaultDate').is(":checked")
       const payoffDateWanted = $('#checkboxPayoffDate').is(":checked")
 
-      filterLoans({
+      return {
         fundStartDate,
         fundEndDate,
         loanStatus,
@@ -83,7 +83,15 @@ export default class LoanFilterWidget extends Component {
         balanceWanted,
         defaultDateWanted,
         payoffDateWanted
-      })
+      }
+    }
+
+    const filterOnClick = () => {
+      filterLoans(getFilters())
+    }
+
+    const exportOnClick = () => {
+      exportLoans(getFilters())
     }
 
     return (
@@ -146,7 +154,7 @@ export default class LoanFilterWidget extends Component {
             </Col>
 
             <Col lgOffset={ 1 } lg={ 3 }>
-              <Button bsStyle="primary">Export</Button>
+              <Button onClick={exportOnClick.bind(this)} bsStyle="primary">Export</Button>
               <span className="help-block m-b-none">Filter loans and see results in PDF</span>
             </Col>
           </div>

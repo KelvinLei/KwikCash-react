@@ -9,6 +9,7 @@ import fallback from 'express-history-api-fallback'
 import expressJwt from 'express-jwt'
 import bodyParser from 'body-parser'
 import path from 'path'
+import json2xls from 'json2xls'
 
 const debug = _debug('app:server')
 const paths = config.utils_paths
@@ -107,5 +108,8 @@ app.use('/api', expressJwt({secret: config.jwt_secret}).unless((req) => {
 
 }));
 app.use(bodyParser.json());
+
+// enable the ability to return an excel file response
+app.use(json2xls.middleware);
 
 export default app
