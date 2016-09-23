@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import states from './states_info'
 import Calender from './Calendar'
+import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import { Row, Col, Panel, Button } from 'react-bootstrap';
 
 export default class LoanFilterWidget extends Component {
@@ -24,7 +25,7 @@ export default class LoanFilterWidget extends Component {
   ]
 
   render() {
-    const { filterLoans, exportLoans } = this.props
+    const { isExportLoansFetching, exportLoansFailed, filterLoans, exportLoans } = this.props
 
     const configurableColumnsCheckbox = this.CONFIGURABLE_COLUMNS.map( (column, i) => {
       return (
@@ -94,6 +95,17 @@ export default class LoanFilterWidget extends Component {
       exportLoans(getFilters())
     }
 
+    let exportButton
+    if (isExportLoansFetching) {
+      exportButton = <div>Loading</div>
+    }
+    else if (exportLoansFailed) {
+      exportButton = <div>Errors</div>
+    }
+    else {
+      exportButton = <Button onClick={exportOnClick.bind(this)} bsStyle="primary">Export</Button>
+    }
+
     return (
       <Panel header="Loan Filtering Widget">
 
@@ -154,7 +166,7 @@ export default class LoanFilterWidget extends Component {
             </Col>
 
             <Col lgOffset={ 1 } lg={ 3 }>
-              <Button onClick={exportOnClick.bind(this)} bsStyle="primary">Export</Button>
+              { exportButton }
               <span className="help-block m-b-none">Filter loans and see results in PDF</span>
             </Col>
           </div>

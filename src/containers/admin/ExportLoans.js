@@ -20,7 +20,14 @@ class ExportLoans extends Component {
   }
 
   render() {
-    const { isFetching, fetchLoansFailed, loans, filterContext, filterLoans, exportLoans } = this.props;
+    const { isFetching, 
+            fetchLoansFailed, 
+            loans, 
+            filterContext, 
+            isExportLoansFetching, 
+            exportLoansFailed, 
+            filterLoans, 
+            exportLoans } = this.props;
 
 
     let exportLoansDisplay
@@ -45,7 +52,10 @@ class ExportLoans extends Component {
 
         <Row>
           <Col md={ 12 }>
-            <LoanFilterWidget filterLoans={filterLoans} exportLoans={exportLoans} />
+            <LoanFilterWidget isExportLoansFetching={isExportLoansFetching}
+                              exportLoansFailed={exportLoansFailed}
+                              filterLoans={filterLoans} 
+                              exportLoans={exportLoans} />
           </Col>
         </Row>
 

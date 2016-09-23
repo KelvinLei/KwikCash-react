@@ -2,6 +2,7 @@ import { exportLoans } from '../../../api/admin'
 import downloadjs from 'downloadjs'
 
 export const EXPORT_LOANS_REQUEST = 'EXPORT_LOANS_REQUEST'
+export const EXPORT_LOANS_SUCCESS = 'EXPORT_LOANS_SUCCESS'
 export const EXPORT_LOANS_ERROR = 'EXPORT_LOANS_ERROR'
 
 /*
@@ -15,6 +16,7 @@ export const exportLoansAction = (filterContext) => {
 
     exportLoans(filterContext)
       .then(response => {
+        dispatch(exportLoansSuccess())
         downloadjs(response, "exportedLoan.xlsx", "application/vnd.ms-excel")
       })
       .catch(() => {
@@ -27,6 +29,12 @@ export const exportLoansAction = (filterContext) => {
 export const exportLoansRequest = () => {
   return {
     type: EXPORT_LOANS_REQUEST
+  }
+}
+
+export const exportLoansSuccess = () => {
+  return {
+    type: EXPORT_LOANS_SUCCESS
   }
 }
 

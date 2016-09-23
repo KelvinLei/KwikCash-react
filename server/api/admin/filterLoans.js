@@ -24,7 +24,12 @@ export async function filterLoans(filterContext) {
       address = `${streetNum} ${streetName} ${aptNum} ${city} ${row.hstate}, ${zip}`
     }
 
-    const defaultDate = new Date(row.loan_defaultdate) > new Date('2002') ? row.loan_defaultdate : ''
+    const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
+    const loanNoteDate = row.loan_notedate && new Date(row.loan_notedate).toISOString().slice(0, 10)
+    const defaultDate = row.loan_defaultdate && (new Date(row.loan_defaultdate) > new Date('2002'))
+                        ? row.loan_defaultdate
+                        : ''
+
     return {
       loanId : row.loan_id,
       loanNumber : row.loan_number,
@@ -32,9 +37,9 @@ export async function filterLoans(filterContext) {
       firstName : row.fname,
       lastName : row.lname,
       state : row.hstate,
-      loanFundDate : row.loan_funddate,
-      loanNoteDate : row.loan_notedate,
-      loanRate: row.loan_rate,
+      loanFundDate,
+      loanNoteDate,
+      loanRate: row.loan_rate.toFixed(2),
       loanStatus : LOAN_STATUS_MAP[row.loan_status],
       loanCode: row.loan_status,
       balance: row.remainingBalance,
