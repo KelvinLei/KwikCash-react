@@ -24,6 +24,7 @@ export async function filterLoans(filterContext) {
       address = `${streetNum} ${streetName} ${aptNum} ${city} ${row.hstate}, ${zip}`
     }
 
+    const defaultDate = new Date(row.loan_defaultdate) > new Date('2002') ? row.loan_defaultdate : ''
     return {
       loanId : row.loan_id,
       loanNumber : row.loan_number,
@@ -40,8 +41,8 @@ export async function filterLoans(filterContext) {
       remainingPayments: row.remainingPaymentsCount,
       address: address,
       email: row.email,
-      defaultDate: row.defaultDate,
-      payoffDate: row.payoffDate
+      defaultDate,
+      payoffDate: row.lastPaymentDateForPaidLoan
     }
   })
 

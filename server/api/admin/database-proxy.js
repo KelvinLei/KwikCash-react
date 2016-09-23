@@ -40,28 +40,37 @@ export function getUser(userId) {
  *      find all payments, group by loan id, and set 0 to both balance and remaining payments.
  *
  * Sample query that fetches balance
- *   SELECT
-       IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount,
-       IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance,
-       loan_result.*
-     FROM tbl_loanpayments p
-     INNER JOIN
-     (
-       SELECT
-       distinct e.fname, e.lname, e.hstate, l.loan_id, l.loan_number, l.loan_funddate,
-       l.loan_rate, l.loan_amount, l.loan_notedate, l.loan_status
-       FROM
-       e_applications e,
-       tbl_loans l
-       WHERE e.application_member = l.loan_member
-       ORDER BY l.loan_funddate DESC
-       LIMIT 40
-     ) AS loan_result
-     ON loan_result.loan_id = p.loanpayment_loan
-     AND (loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)
-     GROUP BY p.loanpayment_loan
+ *
 
-    Values in filterContext
+ SELECT
+     IF(paymentLoans.loan_status = 'P', MAX(p.loanpayment_date), "") as lastPaymentDateForPaidLoan,
+     paymentLoans.*
+ FROM
+ (
+     SELECT
+         IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount,
+         IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance,
+         loan_result.*
+     FROM
+     (
+         SELECT e.fname, e.lname, e.hstate, l.loan_id, l.loan_number, l.loan_funddate,
+                l.loan_rate, l.loan_amount, l.loan_notedate, l.loan_status
+         FROM e_applications e
+         JOIN tbl_loans as l
+         ON e.id = l.loan_application AND l.loan_funddate > DATE_SUB(NOW(), INTERVAL 2 MONTH)
+         ORDER BY l.loan_funddate DESC
+     ) AS loan_result
+     LEFT JOIN tbl_loanpayments p
+     ON loan_result.loan_id = p.loanpayment_loan AND p.loanpayment_due > p.loanpayment_amount
+     GROUP BY loan_result.loan_id
+ ) as paymentLoans
+ LEFT JOIN tbl_loanpayments p
+ ON p.loanpayment_loan = paymentLoans.loan_id AND p.loanpayment_amount > p.loanpayment_due
+ AND paymentLoans.loan_status = 'P'
+ GROUP BY paymentLoans.loan_id
+
+
+ Values in filterContext
         fundStartDate,
         fundEndDate,
         loanStatus,
@@ -82,19 +91,16 @@ export function filterLoansQuery(filterContext) {
   // create query to fetch loan list
   const loanInner =
     queryBuilder
-      .distinct('e.fname', 'e.lname', 'e.hstate', 'e.email', 'l.loan_id', 'l.loan_number', 'l.loan_funddate',
-        'l.loan_rate', 'l.loan_amount', 'l.loan_notedate', 'l.loan_status')
-      .select()
+      .select('e.fname', 'e.lname', 'e.hstate', 'e.email', 'l.loan_id', 'l.loan_number', 'l.loan_funddate',
+        'l.loan_rate', 'l.loan_amount', 'l.loan_notedate', 'l.loan_status', 'l.loan_defaultdate')
       .from('e_applications as e')
       .join('tbl_loans as l', function() {
-        this.on('e.application_member', '=', 'l.loan_member')
+        this.on('e.id', '=', 'l.loan_application')
         if (filterContext.fundStartDate) {
           this.andOn(queryBuilder.raw(`l.loan_funddate > '${filterContext.fundStartDate}'`))
         }
         else {
-          var twoMonthsAgo = new Date();
-          twoMonthsAgo.setMonth(twoMonthsAgo.getMonth() - 2);
-          this.andOn(queryBuilder.raw(`l.loan_funddate > '${twoMonthsAgo.toISOString().slice(0, 10)}'`))
+          this.andOn(queryBuilder.raw(`l.loan_funddate > DATE_SUB(NOW(), INTERVAL 2 MONTH)`))
         }
 
         if (filterContext.fundEndDate) {
@@ -111,7 +117,7 @@ export function filterLoansQuery(filterContext) {
       .as('loan_result')
 
   if (filterContext.addressWanted == true) {
-    loanInner.distinct('e.hstnum', 'e.hstname', 'e.haptnum', 'e.hcity', 'e.hzip')
+    loanInner.select('e.hstnum', 'e.hstname', 'e.haptnum', 'e.hcity', 'e.hzip')
   }
 
   // for each loan in list, fetch all payments and calculate balance and remaining payments count
@@ -120,18 +126,35 @@ export function filterLoansQuery(filterContext) {
       .select(queryBuilder.raw("IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount"),
         queryBuilder.raw("IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance"),
         "loan_result.*")
-      .from('tbl_loanpayments as p')
-      .join(loanInner, function() {
+      .from(loanInner)
+      .leftJoin('tbl_loanpayments as p', function() {
         this.on('loan_result.loan_id', '=', 'p.loanpayment_loan')
-          .andOn(queryBuilder.raw("(loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)"))
+            .andOn(queryBuilder.raw("p.loanpayment_due > p.loanpayment_amount"))
       })
-      .orderBy('loan_result.loan_funddate', 'desc')
-      .groupBy('p.loanpayment_loan')
+      .groupBy('loan_result.loan_id').as('paymentLoans')
 
-  // only use the query that joins payments table when balance or remaining payments is needed
-  const query = filterContext.balanceWanted == true || filterContext.remainingPaymentsWanted == true
-                ? paymentOuter
-                : loanInner
+  const payoffDateQuery =
+    queryBuilder
+      .select(queryBuilder.raw("IF(paymentLoans.loan_status = 'P', MAX(p.loanpayment_date), '') as lastPaymentDateForPaidLoan"),
+        "paymentLoans.*")
+      .from(paymentOuter)
+      .leftJoin('tbl_loanpayments as p', function() {
+        this.on('p.loanpayment_loan', '=', 'paymentLoans.loan_id')
+          .andOn('p.loanpayment_amount', '>', 'p.loanpayment_due ')
+          .andOn(queryBuilder.raw("paymentLoans.loan_status = 'P'"))
+      })
+      .groupBy('paymentLoans.loan_id')
+
+  let query
+  if (filterContext.payoffDateWanted == true) {
+    query = payoffDateQuery
+  }
+  else if (filterContext.balanceWanted == true || filterContext.remainingPaymentsWanted == true) {
+    query = paymentOuter
+  }
+  else {
+    query = loanInner
+  }
 
   debug(query.toString())
 

@@ -28,12 +28,14 @@ const loanList = (state = {
         // date format should be YYYY-MM-DD
         const fundDate = loan.loanFundDate && new Date(loan.loanFundDate).toISOString().slice(0, 10)
         const noteDate = loan.loanNoteDate && new Date(loan.loanNoteDate).toISOString().slice(0, 10)
+        const defaultDate = loan.defaultDate && new Date(loan.defaultDate).toISOString().slice(0, 10)
 
         return {
           ...loan,
           loanRate: loan.loanRate.toFixed(2), // two decimals for APR
           loanFundDate: fundDate,
-          loanNoteDate: noteDate
+          loanNoteDate: noteDate,
+          defaultDate: defaultDate,
         }
       })
 
