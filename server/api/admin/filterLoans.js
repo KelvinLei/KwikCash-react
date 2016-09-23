@@ -27,7 +27,7 @@ export async function filterLoans(filterContext) {
     const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
     const loanNoteDate = row.loan_notedate && new Date(row.loan_notedate).toISOString().slice(0, 10)
     const defaultDate = row.loan_defaultdate && (new Date(row.loan_defaultdate) > new Date('2002'))
-                        ? row.loan_defaultdate
+                        ? new Date(row.loan_defaultdate).toISOString().slice(0, 10)
                         : ''
 
     return {

@@ -55,12 +55,12 @@ export default class ExportLoansTable extends Component {
                   <th>NoteDate</th>
                   <th>FundDate</th>
                   { filterContext.balanceWanted && <th>Balance</th> }
-                  { filterContext.remainingPaymentsWanted && <th>RemainingPayments</th> }
+                  { filterContext.remainingPaymentsWanted && <th>R.Payments</th> }
                   { filterContext.stateWanted && <th>State</th> }
                   { filterContext.payoffDateWanted && <th>PayoffDate</th> }
                   { filterContext.defaultDateWanted && <th>DefaultDate</th> }
                   { filterContext.emailWanted && <th>Email</th> }
-                  { filterContext.addressWanted && <th>Address</th> }
+                  { filterContext.addressWanted && <th>Full Addresses</th> }
                 </tr>
                 </thead>
                 <tbody>
