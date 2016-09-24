@@ -4,7 +4,7 @@ import { Grid, Row, Col, Panel, Button, Dropdown, MenuItem } from 'react-bootstr
 import { PaymentPlanTable } from './PaymentPlanTable'
 import { PaymentStatusTabs } from './PaymentStatusTabs'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
-import {sendCounterMetrics, METRICS_NAME_PAYOFF_BTN_COUNT} from "../../../api/index";
+import {sendCounterMetrics, METRICS_NAME_PAYOFF_BTN_COUNT} from "../../../api/memberApiClient";
 
 require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")

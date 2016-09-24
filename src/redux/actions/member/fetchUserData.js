@@ -1,4 +1,4 @@
-import { getUserData } from '../../../api'
+import { getUserData } from '../../../api/memberApiClient'
 
 export const FETCH_GET_USER_DATA_REQUEST = 'FETCH_GET_USER_DATA_REQUEST'
 export const FETCH_GET_USER_DATA_SUCCESS = 'FETCH_GET_USER_DATA_SUCCESS'

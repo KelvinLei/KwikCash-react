@@ -1,4 +1,4 @@
-import { getPayments } from '../../../api'
+import { getPayments } from '../../../api/memberApiClient'
 
 export const FETCH_PAYMENTS_REQUEST = 'FETCH_PAYMENTS_REQUEST'
 export const FETCH_PAYMENTS_SUCCESS = 'FETCH_PAYMENTS_SUCCESS'

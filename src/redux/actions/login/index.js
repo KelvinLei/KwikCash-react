@@ -1,5 +1,5 @@
-import { authenticate } from '../../../api'
-import { adminAuthenticate } from '../../../api/admin'
+import { authenticate } from '../../../api/memberApiClient'
+import { adminAuthenticate } from '../../../api/adminApiClient'
 
 export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';

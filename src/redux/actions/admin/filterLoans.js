@@ -1,4 +1,4 @@
-import { filterLoans } from '../../../api/admin'
+import { filterLoans } from '../../../api/adminApiClient'
 
 export const FILTER_LOANS_REQUEST = 'FILTER_LOANS_REQUEST'
 export const FILTER_LOANS_SUCCESS = 'FILTER_LOANS_SUCCESS'

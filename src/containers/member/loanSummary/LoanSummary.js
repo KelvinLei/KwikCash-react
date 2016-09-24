@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { selectPaymentStatus, selectPaymentYear } from '../../../redux/actions/member/memberAction'
 import LoanSummaryContent from '../../../components/member/loanSummary/LoanSummaryContent'
 import { fetchPaymentsAction } from "../../../redux/actions/member/fetchPayments"
-import { sendPayoffRequest } from "../../../../src/api"
+import { sendPayoffRequest } from "../../../../src/api/memberApiClient"
 import {fetchGetUserDataAction} from "../../../redux/actions/member/fetchUserData";
 import {fetchLoanListAction} from "../../../redux/actions/member/fetchLoanList";
 

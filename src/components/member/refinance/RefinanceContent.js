@@ -3,9 +3,9 @@ import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel } from 'react-bootstrap';
 import { RefinanceValueOptions } from './RefinanceValueOptions'
 import { EstimateTable } from './EstimateTable'
-import { sendRefinanceRequest } from '../../../api'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
-import {sendCounterMetrics, METRICS_NAME_REFINANCE_BTN_COUNT} from "../../../api/index";
+import {sendCounterMetrics, sendRefinanceRequest, METRICS_NAME_REFINANCE_BTN_COUNT} 
+  from "../../../api/memberApiClient";
 import stylings from './refinanceStylings.scss'
 
 require("sweetalert/dist/sweetalert.min")

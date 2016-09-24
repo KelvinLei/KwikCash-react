@@ -1,4 +1,4 @@
-import { sendReferalRequest } from '../../api'
+import { sendReferalRequest } from '../../api/memberApiClient'
 
 require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")

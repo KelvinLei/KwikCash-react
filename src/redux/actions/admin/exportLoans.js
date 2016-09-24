@@ -1,4 +1,4 @@
-import { exportLoans } from '../../../api/admin'
+import { exportLoans } from '../../../api/adminApiClient'
 import downloadjs from 'downloadjs'
 
 export const EXPORT_LOANS_REQUEST = 'EXPORT_LOANS_REQUEST'

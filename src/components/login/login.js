@@ -1,7 +1,7 @@
 import React from 'react';
 import { Grid, Row, Col, Panel, Button } from 'react-bootstrap'
 import ErrorMessage from './loginErrorMessage'
-import {sendCounterMetrics, METRICS_NAME_MEMBER_LOGIN_SUCCESS} from "../../api/index";
+import {sendCounterMetrics, METRICS_NAME_MEMBER_LOGIN_SUCCESS} from "../../api/memberApiClient";
 
 require('./login.scss');
 const logo = require('../../styles/img/current_logo_white.png');

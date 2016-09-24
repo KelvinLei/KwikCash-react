@@ -4,7 +4,7 @@ import { Row, Col, Panel, Alert, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {getClassNameForLoanStatus} from "../shared/LoanStyles";
-import {sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT} from "../../../api/index";
+import {sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT} from "../../../api/memberApiClient";
 
 export const LoanSelectionContent = ({
   isFetching,

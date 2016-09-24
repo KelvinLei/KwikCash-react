@@ -20,7 +20,7 @@ import Refinance from './containers/member/refinance/Refinance'
 import MyProfile from './containers/member/myProfile/MyProfile'
 import Login from './containers/login/Login'
 import Logout from './containers/login/Logout'
-import { getUser } from './api'
+import { getUser } from './api/memberApiClient'
 
 // Init translation system
 initTranslation();

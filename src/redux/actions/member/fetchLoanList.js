@@ -1,4 +1,4 @@
-import { getLoanList } from '../../../api'
+import { getLoanList } from '../../../api/memberApiClient'
 
 export const FETCH_LOAN_LIST_REQUEST = 'FETCH_LOAN_LIST_REQUEST'
 export const FETCH_LOAN_LIST_SUCCESS = 'FETCH_LOAN_LIST_SUCCESS'

@@ -1,6 +1,6 @@
 import React from 'react';
-import { adminLogout } from '../../api/admin'
-import { logout } from '../../api'
+import { adminLogout } from '../../api/adminApiClient'
+import { logout } from '../../api/memberApiClient'
 
 export default class Logout extends React.Component {
 

@@ -6,7 +6,7 @@ import Footer from '../themeJsx/Layout/Footer'
 import SidebarContainer from './member/sidebar/SidebarContainer';
 import SidebarAdmin from './admin/SidebarAdmin';
 import TopHeader from './member/header/TopHeader';
-import {sendCounterMetrics, METRICS_NAME_PROMO_CODE} from "../api/index";
+import {sendCounterMetrics, METRICS_NAME_PROMO_CODE} from "../api/memberApiClient";
 
 /*
  This is a clone version of Base.jsx in themeJsx.

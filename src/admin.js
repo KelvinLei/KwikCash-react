@@ -17,7 +17,7 @@ import App from './containers/App'
 import ExportLoans from './containers/admin/ExportLoans'
 import Login from './containers/login/Login'
 import Logout from './containers/login/Logout'
-import { getUser } from './api/admin'
+import { getUser } from './api/adminApiClient'
 
 // Init translation system
 initTranslation();
