@@ -21,7 +21,9 @@ export default class LoanFilterWidget extends Component {
   }
 
   CONFIGURABLE_COLUMNS = [
-    'Address', 'Email', 'State', 'RemainingPayments', 'Balance', 'DefaultDate', 'PayoffDate'
+    'Address', 'Email', 'State', 'RemainingPayments', 'Balance',
+    'DefaultDate', 'PayoffDate', 'RecoveryDate', 'RecoveryBalance',
+    'Judgement'
   ]
 
   render() {
@@ -29,12 +31,14 @@ export default class LoanFilterWidget extends Component {
 
     const configurableColumnsCheckbox = this.CONFIGURABLE_COLUMNS.map( (column, i) => {
       return (
-        <div key={i} className="checkbox c-checkbox needsclick">
-          <label className="needsclick">
-            <input id={'checkbox' + column} type="checkbox" className="needsclick"/>
-            <em className="fa fa-check"/>{column}
-          </label>
-        </div>
+        <Col sm={ 5 } key={i} >
+          <div className="checkbox c-checkbox needsclick">
+            <label className="needsclick">
+              <input id={'checkbox' + column} type="checkbox" className="needsclick"/>
+              <em className="fa fa-check"/>{column}
+            </label>
+          </div>
+        </Col>
       )
     })
 
@@ -64,6 +68,10 @@ export default class LoanFilterWidget extends Component {
       const state = $('#stateOption').val().split('-')[0].trim()
 
       // checkbox
+      const recoveryLoans = $('#checkboxRecoveryLoans').is(":checked")
+      const recoveryBalanceWanted = $('#checkboxRecoveryBalance').is(":checked")
+      const recoveryDateWanted = $('#checkboxRecoveryDate').is(":checked")
+      const judgementWanted = $('#checkboxJudgement').is(":checked")
       const addressWanted = $('#checkboxAddress').is(":checked")
       const emailWanted = $('#checkboxEmail').is(":checked")
       const stateWanted = $('#checkboxState').is(":checked")
@@ -83,7 +91,11 @@ export default class LoanFilterWidget extends Component {
         remainingPaymentsWanted,
         balanceWanted,
         defaultDateWanted,
-        payoffDateWanted
+        payoffDateWanted,
+        recoveryLoans,
+        recoveryBalanceWanted,
+        recoveryDateWanted,
+        judgementWanted,
       }
     }
 
@@ -146,6 +158,21 @@ export default class LoanFilterWidget extends Component {
                     </select>
                   </div>
                 </Row>
+              </Col>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <div className="form-group">
+              <label className="col-sm-2 control-label">More filters</label>
+              <Col sm={ 10 }>
+                <div className="checkbox c-checkbox needsclick">
+                  <label className="needsclick">
+                    <input id={'checkboxRecoveryLoans'} type="checkbox" className="needsclick"/>
+                    <em className="fa fa-check"/>RecoveryLoans
+                  </label>
+                  <span className="help-block m-b-none">Only matched loans will get populated in table and report</span>
+                </div>
               </Col>
             </div>
           </fieldset>

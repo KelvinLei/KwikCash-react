@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Row, Col, Panel, Table, Grid, Button } from 'react-bootstrap';
 import LoansDataTableScript from './LoansDataTableScript'
 import styles from './LoansDataTable.scss'
+import {getTextClassNameForLoanStatus} from "../../member/shared/LoanStyles";
 
 require('pikaday/pikaday.js')
 require('pikaday/plugins/pikaday.jquery.js')
@@ -17,10 +18,11 @@ export default class ExportLoansTable extends Component {
     const { loans, filterContext } = this.props;
 
     const loanRow = loans.map( (loan, i) => {
+      const statusClassName = getTextClassNameForLoanStatus(loan.loanCode)
       return (
         <tr key={i} className="gradeX">
           <td>{loan.loanNumber}</td>
-          <td>{loan.loanStatus}</td>
+          <td><div className={statusClassName}>{loan.loanStatus}</div></td>
           <td>{loan.firstName}</td>
           <td>{loan.lastName}</td>
           <td>${loan.loanFundAmount}</td>
@@ -32,6 +34,9 @@ export default class ExportLoansTable extends Component {
           { filterContext.stateWanted && <td>{loan.state}</td> }
           { filterContext.payoffDateWanted && <td>{loan.payoffDate}</td> }
           { filterContext.defaultDateWanted && <td>{loan.defaultDate}</td> }
+          { filterContext.recoveryDateWanted && <td>{loan.recoveryDate}</td> }
+          { filterContext.recoveryBalanceWanted && <td>${loan.recoveryBalance}</td> }
+          { filterContext.judgementWanted && <td>{loan.judgement}</td> }
           { filterContext.emailWanted && <td>{loan.email}</td> }
           { filterContext.addressWanted && <td>{loan.address}</td> }
         </tr>
@@ -46,8 +51,8 @@ export default class ExportLoansTable extends Component {
               <Table id="datatable1" responsive striped hover>
                 <thead>
                 <tr>
-                  <th>LoanID</th>
-                  <th>Status</th>
+                  <th>LoanNum</th>
+                  <th>LoanStatus</th>
                   <th>FirstName</th>
                   <th>LastName</th>
                   <th>LoanAmount</th>
@@ -59,6 +64,9 @@ export default class ExportLoansTable extends Component {
                   { filterContext.stateWanted && <th>State</th> }
                   { filterContext.payoffDateWanted && <th>PayoffDate</th> }
                   { filterContext.defaultDateWanted && <th>DefaultDate</th> }
+                  { filterContext.recoveryDateWanted && <th>RecoveryDate</th> }
+                  { filterContext.recoveryBalanceWanted && <th>RecoveryBalance</th> }
+                  { filterContext.judgementWanted && <th>Judgement</th> }
                   { filterContext.emailWanted && <th>Email</th> }
                   { filterContext.addressWanted && <th>Full Addresses</th> }
                 </tr>

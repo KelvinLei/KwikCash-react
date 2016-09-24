@@ -26,6 +26,12 @@ export async function filterLoans(filterContext) {
 
     const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
     const loanNoteDate = row.loan_notedate && new Date(row.loan_notedate).toISOString().slice(0, 10)
+    const payoffDate = row.lastPaymentDateForPaidLoan && (new Date(row.lastPaymentDateForPaidLoan) > new Date('2002'))
+                        ? new Date(row.lastPaymentDateForPaidLoan).toISOString().slice(0, 10)
+                        : ''
+    const recoveryDate = row.loan_recoveryDate && (new Date(row.loan_recoveryDate) > new Date('2002'))
+                          ? new Date(row.loan_recoveryDate).toISOString().slice(0, 10)
+                          : ''
     const defaultDate = row.loan_defaultdate && (new Date(row.loan_defaultdate) > new Date('2002'))
                         ? new Date(row.loan_defaultdate).toISOString().slice(0, 10)
                         : ''
@@ -47,7 +53,10 @@ export async function filterLoans(filterContext) {
       address: address,
       email: row.email,
       defaultDate,
-      payoffDate: row.lastPaymentDateForPaidLoan
+      payoffDate,
+      recoveryDate,
+      recoveryBalance: row.loan_recoveryBalance,
+      judgement: row.loan_judgement,
     }
   })
 

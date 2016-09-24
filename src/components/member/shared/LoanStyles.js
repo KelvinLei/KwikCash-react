@@ -14,3 +14,20 @@ export const getClassNameForLoanStatus = (loanCode) => {
   }
   return className
 }
+
+export const getTextClassNameForLoanStatus = (loanCode) => {
+  let className
+  switch (loanCode) {
+    case "A":
+    case "M":
+    case "F":
+      className = "text-info"
+      break;
+    case "P":
+      className = "text-success"
+      break;
+    default:
+      className = "text-danger"
+  }
+  return className
+}

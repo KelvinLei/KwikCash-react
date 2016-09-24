@@ -92,7 +92,8 @@ export function filterLoansQuery(filterContext) {
   const loanInner =
     queryBuilder
       .select('e.fname', 'e.lname', 'e.hstate', 'e.email', 'l.loan_id', 'l.loan_number', 'l.loan_funddate',
-        'l.loan_rate', 'l.loan_amount', 'l.loan_notedate', 'l.loan_status', 'l.loan_defaultdate')
+        'l.loan_rate', 'l.loan_amount', 'l.loan_notedate', 'l.loan_status', 'l.loan_defaultdate',
+        'l.loan_recoveryDate', 'l.loan_recoveryBalance', 'l.loan_judgement')
       .from('e_applications as e')
       .join('tbl_loans as l', function() {
         this.on('e.id', '=', 'l.loan_application')
@@ -111,6 +112,9 @@ export function filterLoansQuery(filterContext) {
         }
         if (filterContext.state && filterContext.state != 'All') {
           this.andOn(queryBuilder.raw(`e.hstate = '${filterContext.state}'`))
+        }
+        if (filterContext.recoveryLoans == true) {
+          this.andOn(queryBuilder.raw('l.loan_recovery = "Y"'))
         }
       })
       .orderBy('l.loan_funddate', 'desc')
