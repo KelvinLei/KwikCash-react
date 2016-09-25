@@ -78,6 +78,10 @@ app.get('/admin', function(req, res){
   res.sendFile('adminIndex.html', { root: paths.dist() });
 });
 
+app.get('/admin/*', function(req, res){
+  res.sendFile('adminIndex.html', { root: paths.dist() });
+});
+
 // This rewrites all routes requests to the root /index.html file
 // (ignoring file requests). If you want to implement isomorphic
 // rendering, you'll want to remove this middleware.
