@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Row, Col, Panel, Table, Grid, Button } from 'react-bootstrap';
-import LoansDataTableScript from './LoansDataTableScript'
-import styles from './LoansDataTable.scss'
+import DataTableScript from '../dataTable/DataTableScript'
+import styles from '../dataTable/LoansDataTable.scss'
 import {getTextClassNameForLoanStatus} from "../../member/shared/LoanStyles";
 
 require('pikaday/pikaday.js')
@@ -10,8 +10,10 @@ require('pikaday/css/pikaday.css')
 
 export default class ExportLoansTable extends Component {
 
+  LOANS_TABLE_DIV_ID = 'loansDataTable'
+  
   componentDidMount() {
-    LoansDataTableScript()
+    DataTableScript(this.LOANS_TABLE_DIV_ID)
   }
 
   render() {
@@ -48,7 +50,7 @@ export default class ExportLoansTable extends Component {
         <Row>
           <Col lg={ 12 }>
             <Panel header={"Loan Data Table - Total matched rows: " + loans.length}>
-              <Table id="datatable1" responsive striped hover>
+              <Table id={this.LOANS_TABLE_DIV_ID} responsive striped hover>
                 <thead>
                 <tr>
                   <th>LoanNum</th>

@@ -3,10 +3,12 @@ import {
 } from '../../actions/admin/filterLoans'
 
 import {
-  EXPORT_LOANS_ERROR, EXPORT_LOANS_REQUEST
+  EXPORT_LOANS_ERROR, EXPORT_LOANS_REQUEST, EXPORT_LOANS_SUCCESS
 } from '../../actions/admin/exportLoans'
-import {EXPORT_LOANS_SUCCESS} from "../../actions/admin/exportLoans";
 
+import {
+  FETCH_MEMBERS_FAILURE, FETCH_MEMBERS_REQUEST, FETCH_MEMBERS_SUCCESS
+} from '../../actions/admin/fetchMembers'
 
 const loanList = (state = {
   isFetching: false,
@@ -74,7 +76,41 @@ const exportLoans = (state = {
   }
 }
 
+const members = (state = {
+  isFetching: false,
+  isFetchFailed: false,
+  members: [],
+}, action) => {
+  switch (action.type) {
+    case FETCH_MEMBERS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFetchFailed: false,
+        members: [],
+      }
+    case FETCH_MEMBERS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: false,
+        members: action.members,
+      }
+    case FETCH_MEMBERS_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: true,
+        members: [],
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   loanList,
-  exportLoans
+  exportLoans,
+  members,
 }

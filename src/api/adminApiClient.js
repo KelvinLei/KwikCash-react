@@ -1,6 +1,5 @@
 import 'whatwg-fetch'
 
-
 const authenticatedPost = (url, input) => {
   var token = localStorage.getItem('admin_user_token')
   return fetch(url, {
@@ -93,3 +92,6 @@ export const exportLoans = (filterContext) => {
   return authenticatedPostForExcel('/api/admin/exportLoans', {filterContext})
 }
 
+export const fetchMembers = (memberName) => {
+  return authenticatedPost('/api/admin/fetchMembers', {memberName})
+}

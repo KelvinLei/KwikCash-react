@@ -101,7 +101,7 @@ export function filterLoansQuery(filterContext) {
           this.andOn(queryBuilder.raw(`l.loan_funddate > '${filterContext.fundStartDate}'`))
         }
         else {
-          this.andOn(queryBuilder.raw(`l.loan_funddate > DATE_SUB(NOW(), INTERVAL 2 MONTH)`))
+          this.andOn(queryBuilder.raw(`l.loan_funddate > DATE_SUB(NOW(), INTERVAL 1 MONTH)`))
         }
 
         if (filterContext.fundEndDate) {
@@ -172,6 +172,30 @@ export function filterLoansQuery(filterContext) {
           } else {
             debug('couldnt filter loans')
             reject(new Error("couldnt filter loans from user"));
+          }
+        })
+      connection.release()
+    })
+  });
+}
+
+export function fetchMembersQuery(memberName) {
+  var query = `select * from e_tbl_members WHERE member_name LIKE "%${memberName}%" ORDER BY member_id DESC`
+  if (!memberName) {
+    query += ' LIMIT 50'
+  }
+
+  debug(query)
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(query,
+        (err, rows) => {
+          if (rows) {
+            // debug('getLoanList database response ' + rows)
+            resolve(rows);
+          } else {
+            debug('couldnt fetch members')
+            reject(new Error("couldnt fetch members for name " + memberName));
           }
         })
       connection.release()

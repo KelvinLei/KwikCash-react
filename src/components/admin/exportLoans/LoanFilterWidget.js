@@ -128,7 +128,7 @@ export default class LoanFilterWidget extends Component {
               <Col lg={ 3 }>
                 <input type="text" id="fundStartDate" className="form-control"/>
                 <span className="help-block m-b-none">Fund start date</span>
-                <span className="help-block m-b-none">Defaults to 2 months ago if not provided</span>
+                <span className="help-block m-b-none">Defaults to 1 month ago if not provided</span>
               </Col>
               <Col lg={ 3 }>
                 <input type="text" id="fundEndDate" className="form-control"/>

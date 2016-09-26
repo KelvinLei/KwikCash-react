@@ -16,15 +16,15 @@ export default class SidebarAdmin extends Component {
         icon: "icon-home",
         className: currentPage.includes("exportLoans") || currentPage === 'admin' ? "active" : ""
       },
-      { tabName: 'Export Clients',
-        toLink: '/admin/exportClients',
-        icon: "icon-note",
-        className: currentPage === "exportClients" ? "active" : ""
+      { tabName: 'Members',
+        toLink: '/admin/members',
+        icon: "icon-user",
+        className: currentPage === "adminmembers" ? "active" : ""
       },
       { tabName: 'Logout',
         toLink: '/admin/logout',
         icon: "icon-logout",
-        className: currentPage === "logout" ? "active" : ""
+        className: currentPage === "adminlogout" ? "active" : ""
       }
     ]
 

@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken'
 import config from '../../config'
 import { authenticateUser } from './authenticate'
 import { filterLoans } from './filterLoans'
+import { fetchMembers } from './fetchMembers'
 import json2xls from 'json2xls'
-
 
 const debug = _debug('app:server:admin:api')
 
@@ -73,6 +73,19 @@ export function init(server) {
       debug("filtering loans for " + JSON.stringify(req.body.filterContext));
       var loans = await filterLoans(req.body.filterContext);
       res.xls('loans.xlsx', loans);
+    })();
+  });
+
+  server.post('/api/admin/fetchMembers', (req, res) => {
+    (async () => {
+      var members = await fetchMembers(req.body.memberName);
+      res.format({
+        'application/json': () => {
+          res.send({
+            members
+          });
+        }
+      });
     })();
   });
 

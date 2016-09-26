@@ -15,6 +15,7 @@ import fontAwesome from './themeJsx/bower_components/fontawesome/css/font-awesom
 
 import App from './containers/App'
 import ExportLoans from './containers/admin/ExportLoans'
+import MembersAdmin from './containers/admin/MembersAdmin'
 import Login from './containers/login/Login'
 import Logout from './containers/login/Logout'
 import { getUser } from './api/adminApiClient'
@@ -59,7 +60,7 @@ ReactDOM.render(
 
         {/* if no loadId is specified, redirect back to loan selection page */}
         <Route path="/admin/exportLoans" component={ExportLoans}/>
-
+        <Route path="/admin/members" component={MembersAdmin}/>
       </Route>
 
       <Route path="/admin/login" component={Login}/>

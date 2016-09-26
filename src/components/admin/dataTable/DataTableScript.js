@@ -1,5 +1,4 @@
-
-export default () => {
+export default (tableDivId) => {
 
   if (!$.fn.dataTable) return;
 
@@ -7,7 +6,7 @@ export default () => {
   // Zero configuration
   //
 
-  $('#datatable1').dataTable({
+  $('#' + tableDivId).dataTable({
     'paging': true, // Table pagination
     'ordering': true, // Column ordering
     'info': true, // Bottom left status text
