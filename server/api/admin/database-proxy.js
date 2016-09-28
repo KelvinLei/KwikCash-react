@@ -180,7 +180,7 @@ export function filterLoansQuery(filterContext) {
 }
 
 export function fetchMembersQuery(memberName) {
-  var query = `select * from e_tbl_members WHERE member_name LIKE "%${memberName}%" ORDER BY member_id DESC`
+  var query = `select * from e_tbl_members WHERE member_name LIKE "${memberName}%" ORDER BY member_id DESC`
   if (!memberName) {
     query += ' LIMIT 50'
   }

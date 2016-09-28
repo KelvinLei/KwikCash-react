@@ -18,7 +18,7 @@ export const fetchMembersAction = (memberName) => {
         dispatch(fetchMembersSuccess(response.members))
       })
       .catch(() => {
-        console.log("fetch loan list failed")
+        console.log("fetch members list failed name: " + memberName)
         dispatch(fetchMembersError())
       })
   }

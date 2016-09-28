@@ -95,3 +95,7 @@ export const exportLoans = (filterContext) => {
 export const fetchMembers = (memberName) => {
   return authenticatedPost('/api/admin/fetchMembers', {memberName})
 }
+
+export const fetchMemberLoans = (memberId) => {
+  return authenticatedPost('/api/admin/fetchMemberLoans', {memberId})
+}

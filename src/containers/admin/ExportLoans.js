@@ -82,16 +82,16 @@ const mapDispatchToProps = dispatch => {
 }
 
 function mapStateToProps(state) {
-  const { loanList, exportLoans } = state
+  const { loanListState, exportLoansState } = state
 
   return {
-    isFetching: loanList.isFetching,
-    fetchLoansFailed: loanList.fetchLoansFailed,
-    loans: loanList.loans,
-    filterContext: loanList.filterContext,
+    isFetching: loanListState.isFetching,
+    fetchLoansFailed: loanListState.fetchLoansFailed,
+    loans: loanListState.loans,
+    filterContext: loanListState.filterContext,
 
-    isExportLoansFetching: exportLoans.isFetching,
-    exportLoansFailed: exportLoans.fetchLoansFailed,
+    isExportLoansFetching: exportLoansState.isFetching,
+    exportLoansFailed: exportLoansState.fetchLoansFailed,
   }
 }
 

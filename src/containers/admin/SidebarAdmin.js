@@ -19,7 +19,7 @@ export default class SidebarAdmin extends Component {
       { tabName: 'Members',
         toLink: '/admin/members',
         icon: "icon-user",
-        className: currentPage === "adminmembers" ? "active" : ""
+        className: currentPage.includes("adminmembers") ? "active" : ""
       },
       { tabName: 'Logout',
         toLink: '/admin/logout',

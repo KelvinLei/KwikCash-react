@@ -4,6 +4,7 @@ import config from '../../config'
 import { authenticateUser } from './authenticate'
 import { filterLoans } from './filterLoans'
 import { fetchMembers } from './fetchMembers'
+import { getLoans } from '../members/loan-list'
 import json2xls from 'json2xls'
 
 const debug = _debug('app:server:admin:api')
@@ -79,10 +80,24 @@ export function init(server) {
   server.post('/api/admin/fetchMembers', (req, res) => {
     (async () => {
       var members = await fetchMembers(req.body.memberName);
+      
       res.format({
         'application/json': () => {
           res.send({
             members
+          });
+        }
+      });
+    })();
+  });
+
+  server.post('/api/admin/fetchMemberLoans', (req, res) => {
+    (async () => {
+      var memberLoans = await getLoans(req.body.memberId);
+      res.format({
+        'application/json': () => {
+          res.send({
+            memberLoans
           });
         }
       });

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Row, Col, Panel, Table, Grid, Button } from 'react-bootstrap';
+import { Link } from 'react-router';
 import DataTableScript from '../dataTable/DataTableScript'
 import styles from '../dataTable/LoansDataTable.scss'
 
@@ -15,11 +16,17 @@ export default class MembersDataTable extends Component {
     const { members } = this.props;
 
     const memberRows = members.map( (member, i) => {
+      const memberLoansUrl = '/admin/members/memberLoans/' + member.memberId
+
       return (
         <tr key={i} className="gradeX">
           <td>{member.memberName}</td>
           <td>{member.memberEmail}</td>
-          <td><Button bsStyle="primary">Loans</Button></td>
+          <td>
+            <Link to={memberLoansUrl} >
+              <Button bsStyle="primary">Loans</Button>
+            </Link>
+          </td>
         </tr>
       )
     })

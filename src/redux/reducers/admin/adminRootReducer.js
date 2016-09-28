@@ -10,7 +10,10 @@ import {
   FETCH_MEMBERS_FAILURE, FETCH_MEMBERS_REQUEST, FETCH_MEMBERS_SUCCESS
 } from '../../actions/admin/fetchMembers'
 
-const loanList = (state = {
+import {FETCH_MEMBER_LOANS_REQUEST, FETCH_MEMBER_LOANS_SUCCESS, FETCH_MEMBER_LOANS_FAILURE
+} from "../../actions/admin/fetchMemberLoans";
+
+const loanListState = (state = {
   isFetching: false,
   fetchLoansFailed: false,
   loans: [],
@@ -47,7 +50,7 @@ const loanList = (state = {
   }
 }
 
-const exportLoans = (state = {
+const exportLoansState = (state = {
   isFetching: false,
   fetchLoansFailed: false,
 }, action) => {
@@ -76,7 +79,7 @@ const exportLoans = (state = {
   }
 }
 
-const members = (state = {
+const membersState = (state = {
   isFetching: false,
   isFetchFailed: false,
   members: [],
@@ -109,8 +112,42 @@ const members = (state = {
   }
 }
 
+const memberLoansState = (state = {
+  isFetching: false,
+  isFetchFailed: false,
+  memberLoans: [],
+}, action) => {
+  switch (action.type) {
+    case FETCH_MEMBER_LOANS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFetchFailed: false,
+        memberLoans: [],
+      }
+    case FETCH_MEMBER_LOANS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: false,
+        memberLoans: action.memberLoans,
+      }
+    case FETCH_MEMBER_LOANS_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: true,
+        memberLoans: [],
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
-  loanList,
-  exportLoans,
-  members,
+  loanListState,
+  exportLoansState,
+  membersState,
+  memberLoansState,
 }

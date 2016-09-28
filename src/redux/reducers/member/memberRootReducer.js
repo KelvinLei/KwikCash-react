@@ -70,27 +70,11 @@ const loanList = (state = {
         loans: []
       }
     case FETCH_LOAN_LIST_SUCCESS:
-      // convert raw data from database to application data format
-      const loanList = action.loans.map( (loan) => {
-          // date format should be YYYY-MM-DD
-          const nextPayDate =
-            loan.nextPaymentDate && new Date(loan.nextPaymentDate).toISOString().slice(0, 10)
-
-          const fundDate = loan.loanFundDate && new Date(loan.loanFundDate).toISOString().slice(0, 10)
-
-          return {
-            ...loan,
-            loanRate: loan.loanRate.toFixed(2), // two decimals for APR
-            nextPaymentDate: nextPayDate,
-            loanFundDate: fundDate
-          }
-        })
-
       return {
         ...state,
         isFetching: false,
         fetchLoansFailed: false,
-        loans: loanList
+        loans: action.loans
       }
     case FETCH_LOAN_LIST_ERROR:
       return {

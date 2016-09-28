@@ -72,12 +72,12 @@ const mapDispatchToProps = dispatch => {
 }
 
 function mapStateToProps(state) {
-  const { members } = state
+  const { membersState } = state
 
   return {
-    isFetching: members.isFetching,
-    isFetchFailed: members.isFetchFailed,
-    members: members.members,
+    isFetching: membersState.isFetching,
+    isFetchFailed: membersState.isFetchFailed,
+    members: membersState.members,
   }
 }
 

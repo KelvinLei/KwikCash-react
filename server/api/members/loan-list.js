@@ -15,19 +15,23 @@ export async function getLoans(userId) {
   const loanListResult = rows.map( (row) => {
     // eligible to re-apply if loan is paid or 12 payments left or less
     const canReapply = row.loan_status == "P" || row.remainingPaymentsCount <= 12
+
+    const nextPaymentDate = row.nextPaymentDate && new Date(row.nextPaymentDate).toISOString().slice(0, 10)
+    const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
+    const loanRate = row.loan_rate.toFixed(2)
     
     return {
       loanId : row.loan_id,
       loanNumber : row.loan_number,
       loanFundAmount: formatToCurrency(row.loan_amount),
-      loanFundDate : row.loan_funddate,
-      loanRate: row.loan_rate,
+      loanFundDate,
+      loanRate,
       loanTerm: row.loan_term,
       loanStatus : LOAN_STATUS_MAP[row.loan_status],
       loanCode: row.loan_status,
       paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
       balance: row.remainingBalance,
-      nextPaymentDate: row.nextPaymentDate,
+      nextPaymentDate,
       remainingPayments: row.remainingPaymentsCount,
       canReapply
     }
