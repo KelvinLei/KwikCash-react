@@ -1,6 +1,6 @@
 import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Row, Col, Panel, Alert, Button } from 'react-bootstrap';
+import { Row, Col, Panel, Alert, ButtonGroup, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {getClassNameForLoanStatus} from "../../member/shared/LoanStyles";
@@ -42,45 +42,33 @@ export const MemberLoansContent = ({
 const LoanSelectionWidget = ({loanList}) => {
   let hasLatePayment = false
   const loanListDisplay = loanList.map( loan => {
-    const { loanId, loanNumber, loanStatus, loanCode, balance, loanRate, loanTerm } = loan
-    const nextPaymentDateDisplay = loan.nextPaymentDate || "NONE"
-    if (loanCode == "L") {
-      hasLatePayment = true
-    }
-
     return (
-      <LoanEntry key={loanId}
-                 id={loanId}
-                 loanNumber={loanNumber}
-                 status={loanStatus}
-                 statusCode={loanCode}
-                 APR={loanRate}
-                 currentBalance={balance}
-                 nextPaymentDate={nextPaymentDateDisplay}
-                 term={loanTerm}
-      />
+      <LoanEntry key={loan.loanId} loan={loan} />
     )
   })
 
   return (
-    <Panel className="panel-default" header="Please select a loan for details">
-      {/* shows a warning if there's a late payment */}
-      {
-        hasLatePayment &&
-        <Row>
-          <Alert bsStyle="warning">
-            <em className="fa fa-exclamation-circle fa-lg fa-fw"/>Your account is currently past due, please contact our office.
-          </Alert>
-        </Row>
-      }
-
+    <Panel className="panel-default" header="Member's loans">
       <Row>
         <Col md={ 12 }>
-          { /* START List group */ }
-          <ul className="list-group">
-            {loanListDisplay}
-          </ul>
-          { /* END List group */ }
+          <Table responsive striped bordered hover>
+            <thead>
+            <tr>
+              <th>ID</th>
+              <th>LoanStatus</th>
+              <th>FundDate</th>
+              <th>LoanAmount</th>
+              <th>Balance</th>
+              <th>Term</th>
+              <th>Interest</th>
+              <th>NextPayDate</th>
+              <th>Options</th>
+            </tr>
+            </thead>
+            <tbody>
+            { loanListDisplay }
+            </tbody>
+          </Table>
         </Col>
       </Row>
     </Panel>
@@ -90,60 +78,41 @@ const LoanSelectionWidget = ({loanList}) => {
 /*
  Renders each loan entry in the loan selection
  */
-const LoanEntry = ({id, loanNumber, status, statusCode, currentBalance, APR, nextPaymentDate, term}) => {
-  const className = getClassNameForLoanStatus(statusCode)
-
-  const loanSummaryUrl = '' // '/myLoans/loanSummary/' + id
+const LoanEntry = ({loan}) => {
+  const className = getClassNameForLoanStatus(loan.loanCode)
 
   return (
-    <div className="list-group">
-      <Link to={loanSummaryUrl} className="list-group-item">
-        <table className="wd-wide">
-          <tbody>
-          <tr>
-            <td className="wd-xs">
-              <div className="ph">
-                <div className={className + " hidden-xs"}> {status} </div>
-                <div className={className + " visible-xs"}> {statusCode} </div>
-              </div>
-            </td>
-            <td className="wd-lg">
-              <div className="ph">
-                <h4 className="media-box-heading hidden-xs">Loan ID: {loanNumber}</h4>
-                <h4 className="media-box-heading visible-xs">Loan {loanNumber}</h4>
-                <small className="text-muted hidden-xs">Click for details</small>
-                <small className="text-muted visible-xs">Click</small>
-              </div>
-            </td>
-            <td className="wd-sm">
-              <div className="ph">
-                <p className="m0">Balance</p>
-                <small className="text-muted">${currentBalance}</small>
-              </div>
-            </td>
-            <td className="wd-xs hidden-xs hidden-sm">
-              <div className="ph">
-                <p className="m0">Term</p>
-                <small className="text-muted">{term} mo</small>
-              </div>
-            </td>
-            <td className="wd-xs hidden-xs hidden-sm">
-              <div className="ph">
-                <p className="m0">APR</p>
-                <small className="text-muted">{APR}%</small>
-              </div>
-            </td>
-            <td className="wd-xs">
-              <div className="ph">
-                <p className="m0">Next payment</p>
-                <small className="text-muted">{nextPaymentDate}</small>
-              </div>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </Link>
-    </div>
+    <tr>
+      <td className="wd-xs">
+        {loan.loanNumber}
+      </td>
+      <td className="wd-xs">
+        <div className={className}>{loan.loanStatus}</div>
+      </td>
+      <td className="wd-xs">
+        {loan.loanFundDate}
+      </td>
+      <td className="wd-xs">
+        ${loan.loanFundAmount}
+      </td>
+      <td className="wd-xs">
+        ${loan.balance}
+      </td>
+      <td className="wd-xs">
+        {loan.loanTerm} mo
+      </td>
+      <td className="wd-xs">
+        {loan.loanRate}%
+      </td>
+      <td className="wd-xs">
+        { loan.nextPaymentDate || "NONE" }
+      </td>
+      <td className="">
+        <Button bsClass="btn btn-oval btn-primary">Overview</Button>
+        <Button bsClass="btn btn-oval btn-info">Edit</Button>
+        <Button bsClass="btn btn-oval btn-success">Payoff</Button>
+      </td>
+    </tr>
   )
 }
 
