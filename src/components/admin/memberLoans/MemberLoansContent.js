@@ -81,6 +81,8 @@ const LoanSelectionWidget = ({loanList}) => {
 const LoanEntry = ({loan}) => {
   const className = getClassNameForLoanStatus(loan.loanCode)
 
+  const loanOverviewUrl = '/admin/members/loanSummary/' + loan.loanId
+  
   return (
     <tr>
       <td className="wd-xs">
@@ -108,7 +110,9 @@ const LoanEntry = ({loan}) => {
         { loan.nextPaymentDate || "NONE" }
       </td>
       <td className="">
-        <Button bsClass="btn btn-oval btn-primary">Overview</Button>
+        <Link to={loanOverviewUrl} >
+          <Button bsClass="btn btn-oval btn-primary">Summary</Button>
+        </Link>
         <Button bsClass="btn btn-oval btn-info">Edit</Button>
         <Button bsClass="btn btn-oval btn-success">Payoff</Button>
       </td>

@@ -82,9 +82,7 @@ export function getLoanList(userId) {
               IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance, 
               IF(loan_result.loan_status = 'P', NULL, MIN(p.loanpayment_date)) as nextPaymentDate, 
               loan_result.*
-            FROM tbl_loanpayments p
-            INNER JOIN
-            (
+            FROM (
               SELECT 
                  a.loan_member, a.loan_id, a.loan_number, a.loan_date, a.loan_status, a.loan_amount,
                      a.loan_funddate, a.loan_rate, a.loan_term
@@ -93,9 +91,9 @@ export function getLoanList(userId) {
               WHERE a.loan_member = ?
               ORDER BY a.loan_funddate DESC
             ) AS loan_result
-            ON loan_result.loan_id = p.loanpayment_loan 
-            AND (loan_result.loan_status = 'P' OR p.loanpayment_amount < p.loanpayment_due)
-            GROUP BY p.loanpayment_loan
+            LEFT JOIN tbl_loanpayments p
+            ON loan_result.loan_id = p.loanpayment_loan AND p.loanpayment_due > p.loanpayment_amount
+            GROUP BY loan_result.loan_id
             `, [userId],
         (err, rows) => {
           if (rows) {

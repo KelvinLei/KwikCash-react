@@ -17,6 +17,7 @@ import App from './containers/App'
 import ExportLoans from './containers/admin/ExportLoans'
 import MembersAdmin from './containers/admin/MembersAdmin'
 import MemberLoans from './containers/admin/MemberLoans'
+import LoanSummaryAdmin from './containers/admin/LoanSummaryAdmin'
 import Login from './containers/login/Login'
 import Logout from './containers/login/Logout'
 import { getUser } from './api/adminApiClient'
@@ -63,6 +64,7 @@ ReactDOM.render(
         <Route path="/admin/exportLoans" component={ExportLoans}/>
         <Route path="/admin/members" component={MembersAdmin}/>
         <Route path="/admin/members/memberLoans/:memberId" component={MemberLoans}/>
+        <Route path="/admin/members/loanSummary/:loanId" component={LoanSummaryAdmin}/>
       </Route>
 
       <Route path="/admin/login" component={Login}/>

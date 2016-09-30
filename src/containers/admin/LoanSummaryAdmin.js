@@ -1,13 +1,8 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { selectPaymentStatus, selectPaymentYear } from '../../../redux/actions/member/memberAction'
-import LoanSummaryContent from '../../../components/member/loanSummary/LoanSummaryContent'
-import { fetchPaymentsAction } from "../../../redux/actions/member/fetchPayments"
-import { sendPayoffRequest } from "../../../../src/api/memberApiClient"
-import {fetchGetUserDataAction} from "../../../redux/actions/member/fetchUserData";
-import {fetchLoanListAction} from "../../../redux/actions/member/fetchLoanList";
+import { selectPaymentStatus, selectPaymentYear } from '../../redux/actions/member/memberAction'
 
-class LoanSummary extends Component {
+class LoanSummaryAdmin extends Component {
 
   constructor(props) {
     super(props)
@@ -94,7 +89,7 @@ class LoanSummary extends Component {
   shouldDisplayRefinanceButton(loanData, paymentList, userData) {
     // only ACTIVE loans and CA users can refinance
     if (!loanData || !paymentList || !userData ||
-        loanData.loanCode != 'A' || userData.state != 'CA') {
+      loanData.loanCode != 'A' || userData.state != 'CA') {
       return false
     }
 
@@ -127,61 +122,51 @@ class LoanSummary extends Component {
   }
 
   render() {
-    const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, userDataState } = this.props
-    const { loanId } = this.props.params
-
-    const loanData = loans.find( (loan) => loan.loanId == loanId)
-    const loanNumber = loanData ? loanData.loanNumber : ''
-
-    const shouldDisplayPayoff = this.shouldDisplayPayoff(loanData)
-
-    const { paymentDataForSelectedLoan,
-            paymentsToDisplay,
-            paymentsProgressData } = this.getPaymentRenderData(loanId, loanData, paymentState)
-
-    const shouldDisplayRefinance = this.shouldDisplayRefinanceButton(
-      loanData,
-      paymentDataForSelectedLoan.paymentList,
-      userDataState.userData
-    )
-
-    const paymentsData = {
-      isFetching: paymentState.isFetching,
-      fetchPaymentsFailed: paymentState.fetchPaymentsFailed,
-      loanId: loanId,
-      loanNumber: loanNumber,
-      paymentSchedule: paymentDataForSelectedLoan.paymentSchedule,
-      paymentList: paymentsToDisplay,
-      selectedPaymentYear: paymentDataForSelectedLoan.selectedPaymentYear,
-      paymentYearsList: paymentDataForSelectedLoan.paymentYearsList || [],
-      selectedPaymentStatus: paymentState.selectedPaymentStatus
-    }
-
-    const customerName = userDataState.isFetching || userDataState.isFailed
-      ? ''
-      : userDataState.userData.firstName + ' ' + userDataState.userData.lastName
+    // const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, userDataState } = this.props
+    // const { loanId } = this.props.params
+    //
+    // const loanData = loans.find( (loan) => loan.loanId == loanId)
+    // const loanNumber = loanData ? loanData.loanNumber : ''
+    //
+    // const shouldDisplayPayoff = this.shouldDisplayPayoff(loanData)
+    //
+    // const { paymentDataForSelectedLoan,
+    //   paymentsToDisplay,
+    //   paymentsProgressData } = this.getPaymentRenderData(loanId, loanData, paymentState)
+    //
+    // const shouldDisplayRefinance = this.shouldDisplayRefinanceButton(
+    //   loanData,
+    //   paymentDataForSelectedLoan.paymentList,
+    //   userDataState.userData
+    // )
+    //
+    // const paymentsData = {
+    //   isFetching: paymentState.isFetching,
+    //   fetchPaymentsFailed: paymentState.fetchPaymentsFailed,
+    //   loanId: loanId,
+    //   loanNumber: loanNumber,
+    //   paymentSchedule: paymentDataForSelectedLoan.paymentSchedule,
+    //   paymentList: paymentsToDisplay,
+    //   selectedPaymentYear: paymentDataForSelectedLoan.selectedPaymentYear,
+    //   paymentYearsList: paymentDataForSelectedLoan.paymentYearsList || [],
+    //   selectedPaymentStatus: paymentState.selectedPaymentStatus
+    // }
+    //
+    // const customerName = userDataState.isFetching || userDataState.isFailed
+    //   ? ''
+    //   : userDataState.userData.firstName + ' ' + userDataState.userData.lastName
 
     return (
       <div>
-        <LoanSummaryContent loanData={loanData}
-                            paymentsData={paymentsData}
-                            customerName={customerName}
-                            paymentsProgressData={paymentsProgressData}
-                            shouldDisplayRefinance={shouldDisplayRefinance}
-                            shouldDisplayPayoff={shouldDisplayPayoff}
-                            tabList={this.tabList}
-                            onClickPaymentTab={handleSelectPaymentTab}
-                            onClickPaymentYear={handleSelectPaymentYear}
-                            onClickPayoff={sendPayoffRequest}
-        />
+        hello world
       </div>
     )
   }
 }
 
-LoanSummary.propTypes = {
-  loans: PropTypes.array.isRequired,
-  paymentState: PropTypes.object.isRequired
+LoanSummaryAdmin.propTypes = {
+  // loans: PropTypes.array.isRequired,
+  // paymentState: PropTypes.object.isRequired
 }
 
 const mapDispatchToProps = (dispatch) => {
@@ -213,6 +198,6 @@ function mapStateToProps(state) {
 }
 
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(LoanSummary)
+  // mapStateToProps,
+  // mapDispatchToProps
+)(LoanSummaryAdmin)
