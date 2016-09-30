@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectPaymentStatus, selectPaymentYear } from '../../redux/actions/member/memberAction'
+import {fetchLoanSummaryAction} from "../../redux/actions/admin/fetchLoanSummary";
 
 class LoanSummaryAdmin extends Component {
 
@@ -11,11 +12,9 @@ class LoanSummaryAdmin extends Component {
   }
 
   componentDidMount() {
-    const { fetchPayments, fetchUserData, fetchLoanList } = this.props
+    const { fetchLoanSummary } = this.props
     const { loanId } = this.props.params
-    fetchPayments(loanId)
-    fetchUserData()
-    fetchLoanList()
+    fetchLoanSummary(loanId)
   }
 
   filterPaymentsForDisplay(paymentList, paymentYear, paymentStatus) {
@@ -79,66 +78,14 @@ class LoanSummaryAdmin extends Component {
     }
   }
 
-  /**
-   * For clients that have 24 payments - 12 payments remaining we can show refinance button
-   * but only clients who have 36%-59% rates and are in California
-   *
-   * For clients that have 12 payments or less remaining
-   * we can show refinance button for all rates. CA only
-   */
-  shouldDisplayRefinanceButton(loanData, paymentList, userData) {
-    // only ACTIVE loans and CA users can refinance
-    if (!loanData || !paymentList || !userData ||
-      loanData.loanCode != 'A' || userData.state != 'CA') {
-      return false
-    }
-
-    const rate = parseInt(loanData.loanRate)
-    if (loanData.remainingPayments > 24) {
-      return false
-    }
-    else if (loanData.remainingPayments > 12) {
-      return rate > 35 && rate < 60
-    }
-    else {
-      return true
-    }
-  }
-
-  /**
-   * show payoff for MANUAL, PLAN loans for all rates.
-   * show payoff for ACTIVE loans whose rate is within 36-59%
-   * @param loanData
-   */
-  shouldDisplayPayoff(loanData) {
-    if (!loanData) {
-      return false
-    }
-
-    const rate = parseInt(loanData.loanRate)
-    const isManualOrPlan = loanData.loanCode == 'M' || loanData.loanCode == 'F'
-    const isActiveAndProperRate = loanData.loanCode == 'A' && 35 < rate && rate < 60
-    return isManualOrPlan || isActiveAndProperRate
-  }
-
   render() {
-    // const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, userDataState } = this.props
-    // const { loanId } = this.props.params
-    //
-    // const loanData = loans.find( (loan) => loan.loanId == loanId)
-    // const loanNumber = loanData ? loanData.loanNumber : ''
-    //
-    // const shouldDisplayPayoff = this.shouldDisplayPayoff(loanData)
-    //
+    const { loanSummaryState } = this.props
+    const { loanId } = this.props.params
+
+
     // const { paymentDataForSelectedLoan,
     //   paymentsToDisplay,
-    //   paymentsProgressData } = this.getPaymentRenderData(loanId, loanData, paymentState)
-    //
-    // const shouldDisplayRefinance = this.shouldDisplayRefinanceButton(
-    //   loanData,
-    //   paymentDataForSelectedLoan.paymentList,
-    //   userDataState.userData
-    // )
+    //    } = this.getPaymentRenderData(loanId, loanData, paymentState)
     //
     // const paymentsData = {
     //   isFetching: paymentState.isFetching,
@@ -151,10 +98,6 @@ class LoanSummaryAdmin extends Component {
     //   paymentYearsList: paymentDataForSelectedLoan.paymentYearsList || [],
     //   selectedPaymentStatus: paymentState.selectedPaymentStatus
     // }
-    //
-    // const customerName = userDataState.isFetching || userDataState.isFailed
-    //   ? ''
-    //   : userDataState.userData.firstName + ' ' + userDataState.userData.lastName
 
     return (
       <div>
@@ -165,39 +108,24 @@ class LoanSummaryAdmin extends Component {
 }
 
 LoanSummaryAdmin.propTypes = {
-  // loans: PropTypes.array.isRequired,
-  // paymentState: PropTypes.object.isRequired
+  loanSummaryState: PropTypes.object.isRequired
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchLoanList: () => dispatch(fetchLoanListAction()),
-
-    // triggered when loan summary component is rendered
-    fetchPayments: (loanId) => dispatch(fetchPaymentsAction(loanId)),
-
-    // triggered when payment status tab is clicked
-    handleSelectPaymentTab: (selectedTab) => dispatch(selectPaymentStatus(selectedTab)),
-
-    // triggered when payment year dropdown is selected
-    handleSelectPaymentYear: (year, loanId) => dispatch(selectPaymentYear(year, loanId)),
-
-    fetchUserData: () => dispatch(fetchGetUserDataAction()),
+    fetchLoanSummary: (loanId) => dispatch(fetchLoanSummaryAction(loanId)),
   }
 }
 
 function mapStateToProps(state) {
-  const { paymentState, userDataState } = state
-  const loans = state.loanList.loans
+  const { loanSummaryState } = state
 
   return {
-    loans,
-    paymentState,
-    userDataState
+    loanSummaryState,
   }
 }
 
 export default connect(
-  // mapStateToProps,
-  // mapDispatchToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(LoanSummaryAdmin)

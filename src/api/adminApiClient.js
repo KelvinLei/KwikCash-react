@@ -99,3 +99,7 @@ export const fetchMembers = (memberName) => {
 export const fetchMemberLoans = (memberId) => {
   return authenticatedPost('/api/admin/fetchMemberLoans', {memberId})
 }
+
+export const fetchLoanSummary = (loanId) => {
+  return authenticatedPost('/api/admin/fetchLoanSummary', {loanId})
+}

@@ -13,6 +13,9 @@ import {
 import {FETCH_MEMBER_LOANS_REQUEST, FETCH_MEMBER_LOANS_SUCCESS, FETCH_MEMBER_LOANS_FAILURE
 } from "../../actions/admin/fetchMemberLoans";
 
+import {FETCH_LOAN_SUMMARY_REQUEST,FETCH_LOAN_SUMMARY_SUCCESS, FETCH_LOAN_SUMMARY_FAILURE
+} from "../../actions/admin/fetchLoanSummary";
+
 const loanListState = (state = {
   isFetching: false,
   fetchLoansFailed: false,
@@ -145,9 +148,43 @@ const memberLoansState = (state = {
   }
 }
 
+const loanSummaryState = (state = {
+  isFetching: false,
+  isFetchFailed: false,
+  loanSummary: {},
+}, action) => {
+  switch (action.type) {
+    case FETCH_LOAN_SUMMARY_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFetchFailed: false,
+        loanSummary: {},
+      }
+    case FETCH_LOAN_SUMMARY_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: false,
+        loanSummary: action.loanSummary,
+      }
+    case FETCH_LOAN_SUMMARY_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: true,
+        loanSummary: {},
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   loanListState,
   exportLoansState,
   membersState,
   memberLoansState,
+  loanSummaryState,
 }

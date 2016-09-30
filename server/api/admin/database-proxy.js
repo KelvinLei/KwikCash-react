@@ -48,13 +48,15 @@ export function getUser(userId) {
  FROM
  (
      SELECT
-         IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount,
-         IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance,
-         loan_result.*
+        IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount,
+        IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance,
+        IF(loan_result.loan_status = 'P', NULL, MIN(p.loanpayment_date)) as nextPaymentDate,
+        loan_result.*
      FROM
      (
-         SELECT e.fname, e.lname, e.hstate, l.loan_id, l.loan_number, l.loan_funddate,
-                l.loan_rate, l.loan_amount, l.loan_notedate, l.loan_status
+         SELECT e.fname, e.lname, e.hstate, e.email, l.loan_id, l.loan_number, l.loan_funddate,
+                l.loan_rate, l.loan_amount, l.loan_notedate, l.loan_status, l.loan_defaultdate,
+                l.loan_recoveryDate, l.loan_recoveryBalance, l.loan_judgement
          FROM e_applications e
          JOIN tbl_loans as l
          ON e.id = l.loan_application AND l.loan_funddate > DATE_SUB(NOW(), INTERVAL 2 MONTH)
@@ -198,6 +200,44 @@ export function fetchMembersQuery(memberName) {
           } else {
             debug('couldnt fetch members')
             reject(new Error("couldnt fetch members for name " + memberName));
+          }
+        })
+      connection.release()
+    })
+  });
+}
+
+export function fetchLoanSummaryQuery(loanId) {
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(`
+          SELECT
+            IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount,
+            IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance,
+            IF(loan_result.loan_status = 'P', NULL, MIN(p.loanpayment_date)) as nextPaymentDate,
+            loan_result.*
+         FROM
+         (
+             SELECT e.fname, e.lname, e.hstate, e.email, e.hstnum, e.hstname, e.haptnum, e.hcity, e.hzip,
+                    l.loan_id, l.loan_number, l.loan_funddate,
+                    l.loan_rate, l.loan_amount, l.loan_notedate, l.loan_status, l.loan_defaultdate,
+                    l.loan_recoveryDate, l.loan_recoveryBalance, l.loan_judgement
+             FROM e_applications e
+             JOIN tbl_loans as l
+             ON e.id = l.loan_application AND l.loan_id = ?
+             ORDER BY l.loan_funddate DESC
+         ) AS loan_result
+         LEFT JOIN tbl_loanpayments p
+         ON loan_result.loan_id = p.loanpayment_loan AND p.loanpayment_due > p.loanpayment_amount
+         GROUP BY loan_result.loan_id`
+        , [loanId],
+        (err, rows) => {
+          if (rows) {
+            // debug('getLoanList database response ' + rows)
+            resolve(rows);
+          } else {
+            debug('couldnt fetchLoanSummaryQuery')
+            reject(new Error("couldnt fetchLoanSummaryQuery for id " + loanId));
           }
         })
       connection.release()

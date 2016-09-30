@@ -6,6 +6,7 @@ import { filterLoans } from './filterLoans'
 import { fetchMembers } from './fetchMembers'
 import { getLoans } from '../members/loan-list'
 import json2xls from 'json2xls'
+import {fetchLoanSummary} from "./fetchLoanSummary";
 
 const debug = _debug('app:server:admin:api')
 
@@ -80,7 +81,7 @@ export function init(server) {
   server.post('/api/admin/fetchMembers', (req, res) => {
     (async () => {
       var members = await fetchMembers(req.body.memberName);
-      
+
       res.format({
         'application/json': () => {
           res.send({
@@ -98,6 +99,19 @@ export function init(server) {
         'application/json': () => {
           res.send({
             memberLoans
+          });
+        }
+      });
+    })();
+  });
+
+  server.post('/api/admin/fetchLoanSummary', (req, res) => {
+    (async () => {
+      var loanSummary = await fetchLoanSummary(req.body.loanId);
+      res.format({
+        'application/json': () => {
+          res.send({
+            loanSummary
           });
         }
       });
