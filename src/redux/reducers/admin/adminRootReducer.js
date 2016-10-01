@@ -149,7 +149,7 @@ const memberLoansState = (state = {
 }
 
 const loanSummaryState = (state = {
-  isFetching: false,
+  isFetching: true,
   isFetchFailed: false,
   loanSummary: {},
 }, action) => {

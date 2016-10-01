@@ -10,6 +10,7 @@ export const PaymentPlanTable = ({paymentList}) => {
             amountPaid,
             scheduled,
             principal,
+            paymentSchedule,
             interest } = payment
 
     const scheduleType = scheduled == 'Y' ? 'Scheduled' : 'Manual'
@@ -24,6 +25,7 @@ export const PaymentPlanTable = ({paymentList}) => {
                       scheduleType={scheduleType}
                       principal={principal}
                       interest={interest}
+                      paymentSchedule={paymentSchedule}
       />
     )
   })
@@ -37,9 +39,10 @@ export const PaymentPlanTable = ({paymentList}) => {
         <th className="sort-numeric">Due Date</th>
         <th className="sort-numeric">Due</th>
         <th className="sort-numeric">Paid</th>
-        <th className="sort-numeric">Schedule</th>
         <th className="sort-numeric">Principal</th>
         <th className="sort-numeric">Interest</th>
+        <th className="sort-numeric">Schedule</th>
+        <th className="sort-numeric">PaymentSchedule</th>
       </tr>
       </thead>
 
@@ -58,6 +61,7 @@ const PaymentPlanRow = ({
   amountPaid,
   scheduleType,
   principal,
+  paymentSchedule,
   interest
 }) => {
   var className = status === "Complete" ? "label label-success" : "label label-warning"
@@ -71,9 +75,10 @@ const PaymentPlanRow = ({
       <td>{dueDate}</td>
       <td>{'$' + amountDue}</td>
       <td>{'$' + amountPaid}</td>
-      <td>{scheduleType}</td>
       <td>{'$' + principal}</td>
       <td>{'$' + interest}</td>
+      <td>{scheduleType}</td>
+      <td>{paymentSchedule}</td>
     </tr>
   )
 }

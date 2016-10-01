@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { selectPaymentStatus, selectPaymentYear } from '../../redux/actions/member/memberAction'
+import { LoanSummaryContent } from '../../components/admin/loanSummary/LoanSummaryContent'
 import {fetchLoanSummaryAction} from "../../redux/actions/admin/fetchLoanSummary";
 
 class LoanSummaryAdmin extends Component {
@@ -101,7 +102,10 @@ class LoanSummaryAdmin extends Component {
 
     return (
       <div>
-        hello world
+        <LoanSummaryContent isFetching={loanSummaryState.isFetching}
+                            isFetchFailed={loanSummaryState.isFetchFailed}
+                            loanSummary={loanSummaryState.loanSummary}
+        />
       </div>
     )
   }

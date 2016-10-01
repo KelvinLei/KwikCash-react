@@ -218,13 +218,13 @@ export function fetchLoanSummaryQuery(loanId) {
             loan_result.*
          FROM
          (
-             SELECT e.fname, e.lname, e.hstate, e.email, e.hstnum, e.hstname, e.haptnum, e.hcity, e.hzip,
+             SELECT m.*,
                     l.loan_id, l.loan_number, l.loan_funddate,
                     l.loan_rate, l.loan_amount, l.loan_notedate, l.loan_status, l.loan_defaultdate,
-                    l.loan_recoveryDate, l.loan_recoveryBalance, l.loan_judgement
-             FROM e_applications e
+                    l.loan_recoveryDate, l.loan_recoveryBalance, l.loan_judgement, l.loan_term
+             FROM e_tbl_members m
              JOIN tbl_loans as l
-             ON e.id = l.loan_application AND l.loan_id = ?
+             ON m.member_id = l.loan_member AND l.loan_id = ?
              ORDER BY l.loan_funddate DESC
          ) AS loan_result
          LEFT JOIN tbl_loanpayments p

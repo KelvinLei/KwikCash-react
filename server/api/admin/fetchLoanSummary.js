@@ -24,12 +24,7 @@ async function getLoanSummaryData(loanId) {
   const loanLevelDataRows = await fetchLoanSummaryQuery(loanId)
 
   const loanLevelResult = loanLevelDataRows.map( (row) => {
-    const streetNum = decrypt(row.hstnum.toString())
-    const streetName = decrypt(row.hstname.toString())
-    const aptNum = decrypt(row.haptnum.toString())
-    const zip = decrypt(row.hzip.toString())
-    const city = decrypt(row.hcity.toString())
-    const address = `${streetNum} ${streetName} ${aptNum} ${city} ${row.hstate}, ${zip}`
+    const memberSsn = decrypt(row.member_ssn.toString())
 
     const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
     const loanNoteDate = row.loan_notedate && new Date(row.loan_notedate).toISOString().slice(0, 10)
@@ -47,9 +42,9 @@ async function getLoanSummaryData(loanId) {
       loanId : row.loan_id,
       loanNumber : row.loan_number,
       loanFundAmount: formatToCurrency(row.loan_amount),
-      firstName : row.fname,
-      lastName : row.lname,
-      state : row.hstate,
+      memberName : row.member_name,
+      memberSsn,
+      loanTerm: row.loan_term,
       loanFundDate,
       loanNoteDate,
       nextPaymentDate,
@@ -58,8 +53,7 @@ async function getLoanSummaryData(loanId) {
       loanCode: row.loan_status,
       balance: row.remainingBalance,
       remainingPayments: row.remainingPaymentsCount,
-      address: address,
-      email: row.email,
+      email: row.member_email,
       defaultDate,
       recoveryDate,
       recoveryBalance: row.loan_recoveryBalance,

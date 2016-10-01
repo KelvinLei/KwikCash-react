@@ -99,29 +99,16 @@ const generateUniquePaymentDueYear = (payments) => {
 }
 
 const createPaymentData = (paymentsList, paymentSchedule, interestRate) => {
-  // create a list of payments
-  const newPaymentList = paymentsList.map( (payment) => {
-    // date format should be YYYY-MM-DD
-    const paymentDueDate =
-      payment.paymentDate && new Date(payment.paymentDate).toISOString().slice(0, 10)
-
-    return {
-      ...payment,
-      // interestRate: payment.interestRate.toFixed(2), // two decimals for APR,
-      paymentDate: paymentDueDate
-    }
-  })
-
   // create a list of unique payment due years
   const paymentYearsList = generateUniquePaymentDueYear(paymentsList)
   const selectedPaymentYear = paymentYearsList.length > 0 ? paymentYearsList[0] : 'All'
 
   return {
-    paymentList: newPaymentList,
+    paymentList: paymentsList,
     paymentYearsList: paymentYearsList,
     selectedPaymentYear: selectedPaymentYear,
     paymentSchedule: paymentSchedule,
-    interestRate: interestRate.toFixed(2), // two decimals for APR,
+    interestRate: interestRate, // two decimals for APR,
   }
 }
 

@@ -7,26 +7,28 @@ const debug = _debug('app:server:api:payments')
 export async function getPayments(loanId) {
   const rows = await getPaymentsForLoan(loanId)
   const payments = rows.map((row) => {
+    const paymentDate = new Date(row.loanpayment_date).toISOString().slice(0, 10)
+    
     return {
         id: row.loanpayment_id,
-        paymentDate: row.loanpayment_date,
+        paymentDate,
         amountDue: row.loanpayment_due,
         amountPaid: row.loanpayment_amount,
         isPaid: isPaymentPaid(parseFloat(row.loanpayment_amount), row.loanpayment_due),
         interest: row.loanpayment_interest,
         principal: row.loanpayment_principal,
         scheduled: row.loanpayment_scheduled,
+        paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
     }
   })
   const firstRow = rows[0];
   const result = {
     payments: payments,
     loanId: firstRow.loanpayment_loan,
-    interestRate: firstRow.loanpayment_rate,
+    interestRate: firstRow.loanpayment_rate.toFixed(2),
     paymentSchedule: PAYMENT_SCHEDULE_MAPPING[firstRow.loanpayment_paymentschedule],
   }
 
-  debug(JSON.stringify(result))
   return result;
 }
 
