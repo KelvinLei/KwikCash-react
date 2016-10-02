@@ -1,47 +1,52 @@
-import React from 'react'
+import React, { Component } from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel, Alert, ButtonGroup, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import { FailureWidget } from '../../../components/shared/FailureWidget'
 import { PAYMENT_SCHEDULE_MAPPING } from './PaymentScheduleMap'
+import Calender from './Calendar'
 
-export const LoanEditContent = ({
-  loanLevelData,
-}) => {
+require('pikaday/pikaday.js')
+require('pikaday/plugins/pikaday.jquery.js')
+require('pikaday/css/pikaday.css')
 
-  return (
-    <ContentWrapper>
-      <Row>
-        <Col lg={ 6 }>
-          <LoanEditWidget loanLevelData={loanLevelData} />
-        </Col>
+export default class LoanEditContent extends Component {
 
-        <Col lg={ 6 }>
+  componentDidMount() {
+    Calender()
+  }
 
-          <FundEditWidget loanLevelData={loanLevelData} />
+  render() {
+    const { loanLevelData } = this.props
 
-          <Panel header="Misc Info">
-            hello
-          </Panel>
+    return (
+      <ContentWrapper>
+        <Row>
+          <Col lg={ 6 }>
+            <LoanEditWidget loanLevelData={loanLevelData}/>
+          </Col>
 
-          <Panel header="Recovery Info">
-            hello
-          </Panel>
-        </Col>
-      </Row>
+          <Col lg={ 6 }>
+            <FundEditWidget loanLevelData={loanLevelData}/>
 
-      <Row>
-        <Col md={ 2 } mdOffset={ 5 }>
-          <Button bsStyle="primary" bsSize="large">Save Changes</Button>
-        </Col>
-      </Row>
+            <MiscInfoWidget loanLevelData={loanLevelData}/>
 
-    </ContentWrapper>
-  )
+            <RecoveryInfoWidget loanLevelData={loanLevelData}/>
+          </Col>
+        </Row>
+
+        <Panel>
+          <div className="panel-footer text-center">
+            <button className="btn btn-info" bsSize="large">Save Changes</button>
+          </div>
+        </Panel>
+      </ContentWrapper>
+    )
+  }
 }
 
-export const LoanEditWidget = ( {loanLevelData} ) => {
+const LoanEditWidget = ( {loanLevelData} ) => {
 
   const LOAN_STATUS_MAP = {
     A: 'Active',
@@ -97,6 +102,8 @@ export const LoanEditWidget = ( {loanLevelData} ) => {
     )
   })
 
+  const isRepeatLoan = loanLevelData.isRepeatLoan == 'Y'
+
   return (
     <Panel header="Loan Info">
       <form className="form-horizontal">
@@ -134,11 +141,11 @@ export const LoanEditWidget = ( {loanLevelData} ) => {
             <label className="col-lg-4 control-label">Repeat Loan</label>
             <Col lg={ 8 }>
               <label className="radio-inline c-radio">
-                <input id="repeatLoanYes" type="radio" name="repeatLoanRadio"/>
+                <input id="repeatLoanYes" type="radio" name="repeatLoanRadio" defaultChecked={isRepeatLoan ? 'defaultChecked' : ''}/>
                 <em className="fa fa-circle"/>Yes
               </label>
               <label className="radio-inline c-radio">
-                <input id="repeatLoanNo" type="radio" name="repeatLoanRadio" defaultChecked/>
+                <input id="repeatLoanNo" type="radio" name="repeatLoanRadio" defaultChecked={!isRepeatLoan ? 'defaultChecked' : ''}/>
                 <em className="fa fa-circle"/>No
               </label>
             </Col>
@@ -174,7 +181,7 @@ const FundEditWidget = ( {loanLevelData} ) => {
     const defaultChecked = i == 0 ? 'defaultChecked' : ''
     const id = "fundMethod-" + method
     return (
-      <Col lg={12} >
+      <Col lg={12} key={i}>
         <label key={"label"+id} className="radio-inline c-radio">
           <input id={id} type="radio" defaultValue={method} name="fundMethodRadio" defaultChecked={defaultChecked}/>
           <em className="fa fa-circle"/>{method}
@@ -205,6 +212,100 @@ const FundEditWidget = ( {loanLevelData} ) => {
             </Col>
           </div>
         </fieldset>
+      </form>
+    </Panel>
+  )
+}
+
+const MiscInfoWidget = ( {loanLevelData} ) => {
+  const DATE_LIST = [
+    { dateType: 'ChargeOff', fieldName: 'defaultDate'},
+    { dateType: 'Late', fieldName: 'lateDate'},
+    { dateType: 'Manual', fieldName: 'manualDate'},
+  ]
+
+  const dateInput = DATE_LIST.map( (date, i) => {
+    const defaultValue = loanLevelData[date.fieldName]
+    return (
+      <fieldset key={i}>
+        <div className="form-group">
+          <label className="col-lg-4 control-label">{`${date.dateType} Date`}</label>
+          <Col lg={ 8 }>
+            <input type="text" id={`input${date.fieldName}`} defaultValue={defaultValue} className="form-control"/>
+          </Col>
+        </div>
+      </fieldset>
+    )
+  })
+
+  const isJudgement = loanLevelData.judgement == 'Y'
+  return (
+    <Panel header="Misc Info">
+      <form className="form-horizontal">
+        <fieldset>
+          <div className="form-group">
+            <label className="col-lg-4 control-label">Judgement</label>
+            <Col lg={ 8 }>
+              <label className="radio-inline c-radio">
+                <input id="judgementYes" type="radio" name="judgementRadio" defaultChecked={isJudgement ? 'defaultChecked' : ''}/>
+                <em className="fa fa-circle"/>Yes
+              </label>
+              <label className="radio-inline c-radio">
+                <input id="judgementNo" type="radio" name="judgementRadio" defaultChecked={!isJudgement ? 'defaultChecked' : ''}/>
+                <em className="fa fa-circle"/>No
+              </label>
+            </Col>
+          </div>
+        </fieldset>
+
+        { dateInput }
+      </form>
+    </Panel>
+  )
+}
+
+const RecoveryInfoWidget = ( {loanLevelData} ) => {
+  const recoveryInput = [
+    { dateType: 'Recovery Balance', fieldName: 'recoveryBalance'},
+    { dateType: 'Recovery Start Date', fieldName: 'recoveryDate'},
+    { dateType: 'Recovery End Date', fieldName: 'recoveryEndDate'},
+  ]
+
+  const recoveryInputFields = recoveryInput.map( (input, i) => {
+    const defaultValue = loanLevelData[input.fieldName]
+    return (
+      <fieldset key={i}>
+        <div className="form-group">
+          <label className="col-lg-4 control-label">{input.dateType}</label>
+          <Col lg={ 8 }>
+            <input type="text" id={`input${input.fieldName}`} defaultValue={defaultValue} className="form-control"/>
+          </Col>
+        </div>
+      </fieldset>
+    )
+  })
+
+  const isRecoveryIncome = loanLevelData.recovery == 'Y'
+  return (
+    <Panel header="Recovery Info">
+      <form className="form-horizontal">
+        <fieldset>
+          <div className="form-group">
+            <label className="col-lg-4 control-label">Recovery Income</label>
+            <Col lg={ 8 }>
+              <label className="radio-inline c-radio">
+                <input id="recoveryIncomeYes" type="radio" name="recoveryRadio" defaultChecked={isRecoveryIncome ? 'defaultChecked' : ''}/>
+                <em className="fa fa-circle"/>Yes
+              </label>
+              <label className="radio-inline c-radio">
+                <input id="recoveryIncomeNo" type="radio" name="recoveryRadio" defaultChecked={!isRecoveryIncome ? 'defaultChecked' : ''}/>
+                <em className="fa fa-circle"/>No
+              </label>
+            </Col>
+          </div>
+        </fieldset>
+
+        { recoveryInputFields }
       </form>
     </Panel>
   )

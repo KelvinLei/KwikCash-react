@@ -30,11 +30,20 @@ async function getLoanSummaryData(loanId) {
     const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
     const loanNoteDate = row.loan_notedate && new Date(row.loan_notedate).toISOString().slice(0, 10)
     const firstPaymentDate = row.loan_paymentdate && new Date(row.loan_paymentdate).toISOString().slice(0, 10)
-    const recoveryDate = row.loan_recoveryDate && (new Date(row.loan_recoveryDate) > new Date('2002'))
-      ? new Date(row.loan_recoveryDate).toISOString().slice(0, 10)
+    const recoveryDate = row.loan_recoverydate && (new Date(row.loan_recoverydate) > new Date('2002'))
+      ? new Date(row.loan_recoverydate).toISOString().slice(0, 10)
+      : ''
+    const recoveryEndDate = row.loan_recoverystop && (new Date(row.loan_recoverystop) > new Date('2002'))
+      ? new Date(row.loan_recoverystop).toISOString().slice(0, 10)
       : ''
     const defaultDate = row.loan_defaultdate && (new Date(row.loan_defaultdate) > new Date('2002'))
       ? new Date(row.loan_defaultdate).toISOString().slice(0, 10)
+      : ''
+    const manualDate = row.loan_manualdate && (new Date(row.loan_manualdate) > new Date('2002'))
+      ? new Date(row.loan_manualdate).toISOString().slice(0, 10)
+      : ''
+    const lateDate = row.loan_latedate && (new Date(row.loan_latedate) > new Date('2002'))
+      ? new Date(row.loan_latedate).toISOString().slice(0, 10)
       : ''
     const nextPaymentDate = row.nextPaymentDate && (new Date(row.nextPaymentDate) > new Date('2002'))
       ? new Date(row.nextPaymentDate).toISOString().slice(0, 10)
@@ -43,6 +52,7 @@ async function getLoanSummaryData(loanId) {
     return {
       loanId : row.loan_id,
       loanNumber : row.loan_number,
+      isRepeatLoan: row.loan_repeat,
       loanFundAmount: formatToCurrency(row.loan_amount),
       memberName : row.member_name,
       firstPaymentDate,
@@ -60,8 +70,12 @@ async function getLoanSummaryData(loanId) {
       remainingPayments: row.remainingPaymentsCount,
       email: row.member_email,
       defaultDate,
+      manualDate,
+      lateDate,
       recoveryDate,
-      recoveryBalance: row.loan_recoveryBalance,
+      recoveryEndDate,
+      recovery: row.loan_recovery,
+      recoveryBalance: row.loan_recoverybalance,
       judgement: row.loan_judgement,
     }
   })

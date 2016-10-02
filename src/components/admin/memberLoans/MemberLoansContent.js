@@ -54,7 +54,7 @@ const LoanSelectionWidget = ({loanList}) => {
           <Table responsive striped bordered hover>
             <thead>
             <tr>
-              <th>ID</th>
+              <th>LoanNum</th>
               <th>LoanStatus</th>
               <th>FundDate</th>
               <th>LoanAmount</th>

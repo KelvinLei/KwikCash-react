@@ -6,6 +6,10 @@ import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {PaymentTableAdmin} from "./PaymentTableAdmin";
 import {getClassNameForLoanStatus} from "../../member/shared/LoanStyles";
 
+require('pikaday/pikaday.js')
+require('pikaday/plugins/pikaday.jquery.js')
+require('pikaday/css/pikaday.css')
+
 export const LoanSummaryContent = ({
   isFetching,
   isFetchFailed,
@@ -39,14 +43,14 @@ const LoanSummaryWidget = ({loanSummary}) => {
     <div>
       <Row>
         <Col md={ 6 } className="text-left">
-          <Panel id="loanSummaryPanel" className="panel-default" header="Loan Summary">
+          <Panel id="loanSummaryPanel" className="panel-default" header="Loan Info">
             <LoanSummaryTable loanLevelData={loanSummary.loanLevelData} />
           </Panel>
         </Col>
 
         <Col md={ 6 } className="text-left">
-          <Panel id="memberProfilePanel" className="panel-default" header="Member Profile">
-            <MemberProfile loanLevelData={loanSummary.loanLevelData} />
+          <Panel id="memberProfilePanel" className="panel-default" header="Misc Info">
+            <MiscInfoWidget loanLevelData={loanSummary.loanLevelData} />
           </Panel>
         </Col>
       </Row>
@@ -103,7 +107,12 @@ const LoanSummaryTable = ({loanLevelData}) => {
 
         <div className="list-group-item">
           <span className="pull-right">${loanLevelData.loanFundAmount}</span>
-          <div className="text-bold">Fund amount:</div>
+          <div className="text-bold">Loan amount:</div>
+        </div>
+
+        <div className="list-group-item">
+          <span className="pull-right">${loanLevelData.fundAmount}</span>
+          <div className="text-bold">Client fund amount:</div>
         </div>
 
         <div className="list-group-item">
@@ -127,37 +136,60 @@ const LoanSummaryTable = ({loanLevelData}) => {
         </div>
 
         <div className="list-group-item">
+          <span className="pull-right">{loanLevelData.fundMethod}</span>
+          <div className="text-bold">Fund method:</div>
+        </div>
+
+        <div className="list-group-item">
           <span className="pull-right">{loanLevelData.remainingPayments}</span>
           <div className="text-bold">Remaining payments:</div>
         </div>
 
-        {
-          !isLoanPaidOff &&
-          <div>
-            <div className="list-group-item">
-              <span className="pull-right">{loanLevelData.nextPaymentDate}</span>
-              <div className="text-bold">Next payment:</div>
-            </div>
+        <div>
+          <div className="list-group-item">
+            <span className="pull-right">{loanLevelData.nextPaymentDate}</span>
+            <div className="text-bold">Next payment:</div>
           </div>
-        }
+        </div>
+      </div>
+    </div>
+  )
+}
 
-        {
-          isChargedOff &&
-          <div>
-            <div className="list-group-item">
-              <span className="pull-right">{loanLevelData.recoveryDate}</span>
-              <div className="text-bold">Recovery date:</div>
-            </div>
-            <div className="list-group-item">
-              <span className="pull-right">${loanLevelData.recoveryBalance}</span>
-              <div className="text-bold">Recovery balance:</div>
-            </div>
-            <div className="list-group-item">
-              <span className="pull-right">{loanLevelData.judgement}</span>
-              <div className="text-bold">judgement:</div>
-            </div>
-          </div>
-        }
+const MiscInfoWidget = ( {loanLevelData} ) => {
+  return (
+    <div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.loanNoteDate}</span>
+        <div className="text-bold">Note date:</div>
+      </div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.firstPaymentDate}</span>
+        <div className="text-bold">First payment date:</div>
+      </div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.defaultDate}</span>
+        <div className="text-bold">ChargeOff date:</div>
+      </div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.manualDate}</span>
+        <div className="text-bold">Manual date:</div>
+      </div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.lateDate}</span>
+        <div className="text-bold">Late date:</div>
+      </div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.recoveryDate}</span>
+        <div className="text-bold">Recovery date:</div>
+      </div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.recoveryBalance}</span>
+        <div className="text-bold">Recovery balance:</div>
+      </div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.judgement}</span>
+        <div className="text-bold">Judgement:</div>
       </div>
     </div>
   )

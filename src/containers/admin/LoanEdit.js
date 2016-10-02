@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { LoanEditContent } from '../../components/admin/loanEdit/LoanEditContent'
+import LoanEditContent from '../../components/admin/loanEdit/LoanEditContent'
 import {fetchLoanSummaryAction} from "../../redux/actions/admin/fetchLoanSummary"
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
 import { FailureWidget } from '../../components/shared/FailureWidget'
@@ -20,7 +20,7 @@ class LoanEdit extends Component {
   render() {
     const { loanSummaryState } = this.props
     const { isFetching, isFetchFailed, loanSummary} = loanSummaryState
-    
+
     let displayContent
     if (isFetching) {
       displayContent = <LoadingSpinner/>
