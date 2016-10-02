@@ -45,6 +45,9 @@ async function getLoanSummaryData(loanId) {
     const lateDate = row.loan_latedate && (new Date(row.loan_latedate) > new Date('2002'))
       ? new Date(row.loan_latedate).toISOString().slice(0, 10)
       : ''
+    const refiDate = row.loan_refidate && (new Date(row.loan_refidate) > new Date('2002'))
+      ? new Date(row.loan_refidate).toISOString().slice(0, 10)
+      : ''
     const nextPaymentDate = row.nextPaymentDate && (new Date(row.nextPaymentDate) > new Date('2002'))
       ? new Date(row.nextPaymentDate).toISOString().slice(0, 10)
       : ''
@@ -63,6 +66,7 @@ async function getLoanSummaryData(loanId) {
       loanFundDate,
       loanNoteDate,
       nextPaymentDate,
+      refiDate,
       loanRate: row.loan_rate.toFixed(2),
       loanStatus : LOAN_STATUS_MAP[row.loan_status],
       loanCode: row.loan_status,

@@ -41,4 +41,9 @@ export default () => {
     field: document.getElementById('inputrecoveryEndDate'),
     maxDate: new Date()
   })
+
+  new Pikaday({
+    field: document.getElementById('inputrefiDate'),
+    maxDate: new Date()
+  })
 }

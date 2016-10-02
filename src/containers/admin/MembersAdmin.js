@@ -38,11 +38,6 @@ class MembersAdmin extends Component {
 
     return (
       <ContentWrapper>
-        <div className="content-heading">
-          Member List
-          <small data-localize="dashboard.WELCOME">Member listing & editing</small>
-        </div>
-
         <Row>
           <Col md={ 12 }>
             <MembersFilter fetchMembers={fetchMembers}/>

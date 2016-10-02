@@ -2,7 +2,6 @@ import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel, Alert, ButtonGroup, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router';
-import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {PaymentTableAdmin} from "./PaymentTableAdmin";
 import {getClassNameForLoanStatus} from "../../member/shared/LoanStyles";
 
@@ -11,36 +10,11 @@ require('pikaday/plugins/pikaday.jquery.js')
 require('pikaday/css/pikaday.css')
 
 export const LoanSummaryContent = ({
-  isFetching,
-  isFetchFailed,
   loanSummary,
 }) => {
-  // display different components based on the status of getLoanList api call
-  let displayContent
-  if (isFetching) {
-    displayContent = <LoadingSpinner/>
-  }
-  else if (isFetchFailed) {
-    displayContent = <FailureWidget/>
-  }
-  else {
-    displayContent = <LoanSummaryWidget loanSummary={loanSummary}/>
-  }
 
   return (
     <ContentWrapper>
-      { displayContent }
-    </ContentWrapper>
-  )
-}
-
-
-/*
- Renders the loan selection widget if loan list data is available
- */
-const LoanSummaryWidget = ({loanSummary}) => {
-  return (
-    <div>
       <Row>
         <Col md={ 6 } className="text-left">
           <Panel id="loanSummaryPanel" className="panel-default" header="Loan Info">
@@ -60,7 +34,7 @@ const LoanSummaryWidget = ({loanSummary}) => {
           <PaymentTableAdmin paymentLevelData={loanSummary.paymentLevelData}/>
         </Col>
       </Row>
-    </div>
+    </ContentWrapper>
   )
 }
 
@@ -94,6 +68,7 @@ const MemberProfile = ( {loanLevelData} ) => {
 const LoanSummaryTable = ({loanLevelData}) => {
 
   const styleClassName = getClassNameForLoanStatus(loanLevelData.loanCode)
+  const loanEditUrl = '/admin/members/loanEdit/' + loanLevelData.loanId
 
   const isLoanPaidOff = loanLevelData.loanStatus == 'PAID'
   const isChargedOff = loanLevelData.loanCode == 'D'
@@ -113,11 +88,6 @@ const LoanSummaryTable = ({loanLevelData}) => {
         <div className="list-group-item">
           <span className="pull-right">${loanLevelData.fundAmount}</span>
           <div className="text-bold">Client fund amount:</div>
-        </div>
-
-        <div className="list-group-item">
-          <span className="pull-right">{loanLevelData.loanFundDate}</span>
-          <div className="text-bold">Fund date:</div>
         </div>
 
         <div className="list-group-item">
@@ -151,6 +121,12 @@ const LoanSummaryTable = ({loanLevelData}) => {
             <div className="text-bold">Next payment:</div>
           </div>
         </div>
+
+        <div className="panel-footer text-center">
+          <Link to={loanEditUrl} >
+            <button className="btn btn-oval btn-info" bsSize="large">Edit</button>
+          </Link>
+        </div>
       </div>
     </div>
   )
@@ -159,6 +135,11 @@ const LoanSummaryTable = ({loanLevelData}) => {
 const MiscInfoWidget = ( {loanLevelData} ) => {
   return (
     <div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.loanFundDate}</span>
+        <div className="text-bold">Fund date:</div>
+      </div>
+
       <div className="list-group-item">
         <span className="pull-right">{loanLevelData.loanNoteDate}</span>
         <div className="text-bold">Note date:</div>
@@ -182,6 +163,10 @@ const MiscInfoWidget = ( {loanLevelData} ) => {
       <div className="list-group-item">
         <span className="pull-right">{loanLevelData.recoveryDate}</span>
         <div className="text-bold">Recovery date:</div>
+      </div>
+      <div className="list-group-item">
+        <span className="pull-right">{loanLevelData.recoveryEndDate}</span>
+        <div className="text-bold">Recovery end date:</div>
       </div>
       <div className="list-group-item">
         <span className="pull-right">{loanLevelData.recoveryBalance}</span>

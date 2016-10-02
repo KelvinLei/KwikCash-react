@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { LoanSummaryContent } from '../../components/admin/loanSummary/LoanSummaryContent'
 import {fetchLoanSummaryAction} from "../../redux/actions/admin/fetchLoanSummary";
+import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
+import { FailureWidget } from '../../components/shared/FailureWidget'
 
 class LoanSummaryAdmin extends Component {
 
@@ -18,12 +20,20 @@ class LoanSummaryAdmin extends Component {
   render() {
     const { loanSummaryState } = this.props
 
+    let displayContent
+    if (loanSummaryState.isFetching) {
+      displayContent = <LoadingSpinner/>
+    }
+    else if (loanSummaryState.isFetchFailed) {
+      displayContent = <FailureWidget/>
+    }
+    else {
+      displayContent = <LoanSummaryContent loanSummary={loanSummaryState.loanSummary}/>
+    }
+
     return (
       <div>
-        <LoanSummaryContent isFetching={loanSummaryState.isFetching}
-                            isFetchFailed={loanSummaryState.isFetchFailed}
-                            loanSummary={loanSummaryState.loanSummary}
-        />
+        { displayContent }
       </div>
     )
   }

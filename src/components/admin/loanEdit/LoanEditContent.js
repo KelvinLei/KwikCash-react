@@ -83,6 +83,7 @@ const LoanEditWidget = ( {loanLevelData} ) => {
     { label: "First Payment Date", fieldName: "firstPaymentDate"},
     { label: "Loan Fund Date", fieldName: "loanFundDate"},
     { label: "Loan Note Date", fieldName: "loanNoteDate"},
+    { label: "Refi Date", fieldName: "refiDate"},
     { label: "Loan Interest", fieldName: "loanRate"},
     { label: "Term (Periods)", fieldName: "loanTerm"},
   ]
@@ -105,7 +106,7 @@ const LoanEditWidget = ( {loanLevelData} ) => {
   const isRepeatLoan = loanLevelData.isRepeatLoan == 'Y'
 
   return (
-    <Panel header="Loan Info">
+    <Panel header="Loan Info" className="panel-info">
       <form className="form-horizontal">
         <fieldset>
           <div className="form-group">
@@ -191,7 +192,7 @@ const FundEditWidget = ( {loanLevelData} ) => {
   })
 
   return (
-    <Panel header="Funding Info">
+    <Panel header="Funding Info" className="panel-primary">
       <form className="form-horizontal">
         <fieldset>
           <div className="form-group">
@@ -240,7 +241,7 @@ const MiscInfoWidget = ( {loanLevelData} ) => {
 
   const isJudgement = loanLevelData.judgement == 'Y'
   return (
-    <Panel header="Misc Info">
+    <Panel header="Misc Info" className="panel-danger">
       <form className="form-horizontal">
         <fieldset>
           <div className="form-group">
@@ -287,7 +288,7 @@ const RecoveryInfoWidget = ( {loanLevelData} ) => {
 
   const isRecoveryIncome = loanLevelData.recovery == 'Y'
   return (
-    <Panel header="Recovery Info">
+    <Panel header="Recovery Info" className="panel-success">
       <form className="form-horizontal">
         <fieldset>
           <div className="form-group">
