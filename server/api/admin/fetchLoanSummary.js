@@ -21,6 +21,7 @@ export async function fetchLoanSummary(loanId) {
 }
 
 async function getLoanSummaryData(loanId) {
+  debug(`calling getLoanSummaryData for loan id ${loanId}`)
   const loanLevelDataRows = await fetchLoanSummaryQuery(loanId)
 
   const loanLevelResult = loanLevelDataRows.map( (row) => {
@@ -28,6 +29,7 @@ async function getLoanSummaryData(loanId) {
 
     const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
     const loanNoteDate = row.loan_notedate && new Date(row.loan_notedate).toISOString().slice(0, 10)
+    const firstPaymentDate = row.loan_paymentdate && new Date(row.loan_paymentdate).toISOString().slice(0, 10)
     const recoveryDate = row.loan_recoveryDate && (new Date(row.loan_recoveryDate) > new Date('2002'))
       ? new Date(row.loan_recoveryDate).toISOString().slice(0, 10)
       : ''
@@ -43,6 +45,9 @@ async function getLoanSummaryData(loanId) {
       loanNumber : row.loan_number,
       loanFundAmount: formatToCurrency(row.loan_amount),
       memberName : row.member_name,
+      firstPaymentDate,
+      fundAmount: row.loan_fundamount,
+      fundMethod: row.loan_fundmethod,
       memberSsn,
       loanTerm: row.loan_term,
       loanFundDate,

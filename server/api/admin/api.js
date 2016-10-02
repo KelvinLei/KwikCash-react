@@ -108,6 +108,7 @@ export function init(server) {
   server.post('/api/admin/fetchLoanSummary', (req, res) => {
     (async () => {
       var loanSummary = await fetchLoanSummary(req.body.loanId);
+      
       res.format({
         'application/json': () => {
           res.send({

@@ -8,7 +8,7 @@ export async function getPayments(loanId) {
   const rows = await getPaymentsForLoan(loanId)
   const payments = rows.map((row) => {
     const paymentDate = new Date(row.loanpayment_date).toISOString().slice(0, 10)
-    
+
     return {
         id: row.loanpayment_id,
         paymentDate,
@@ -21,15 +21,14 @@ export async function getPayments(loanId) {
         paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
     }
   })
+
   const firstRow = rows[0];
-  const result = {
+
+  return {
     payments: payments,
     loanId: firstRow.loanpayment_loan,
     interestRate: firstRow.loanpayment_rate.toFixed(2),
-    paymentSchedule: PAYMENT_SCHEDULE_MAPPING[firstRow.loanpayment_paymentschedule],
   }
-
-  return result;
 }
 
 export const isPaymentPaid = (amountPaid, amountDue) => {

@@ -25,12 +25,7 @@ export const LoanSummaryContent = ({
 
   return (
     <ContentWrapper>
-      <div className="content-heading">
-        Loan Summary
-      </div>
-
       { displayContent }
-
     </ContentWrapper>
   )
 }

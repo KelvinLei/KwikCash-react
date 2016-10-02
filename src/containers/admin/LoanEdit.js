@@ -1,9 +1,11 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { LoanSummaryContent } from '../../components/admin/loanSummary/LoanSummaryContent'
-import {fetchLoanSummaryAction} from "../../redux/actions/admin/fetchLoanSummary";
+import { LoanEditContent } from '../../components/admin/loanEdit/LoanEditContent'
+import {fetchLoanSummaryAction} from "../../redux/actions/admin/fetchLoanSummary"
+import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
+import { FailureWidget } from '../../components/shared/FailureWidget'
 
-class LoanSummaryAdmin extends Component {
+class LoanEdit extends Component {
 
   constructor(props) {
     super(props)
@@ -17,19 +19,28 @@ class LoanSummaryAdmin extends Component {
 
   render() {
     const { loanSummaryState } = this.props
+    const { isFetching, isFetchFailed, loanSummary} = loanSummaryState
+    
+    let displayContent
+    if (isFetching) {
+      displayContent = <LoadingSpinner/>
+    }
+    else if (isFetchFailed) {
+      displayContent = <FailureWidget/>
+    }
+    else {
+      displayContent = <LoanEditContent loanLevelData={loanSummary.loanLevelData}/>
+    }
 
     return (
       <div>
-        <LoanSummaryContent isFetching={loanSummaryState.isFetching}
-                            isFetchFailed={loanSummaryState.isFetchFailed}
-                            loanSummary={loanSummaryState.loanSummary}
-        />
+        { displayContent }
       </div>
     )
   }
 }
 
-LoanSummaryAdmin.propTypes = {
+LoanEdit.propTypes = {
   loanSummaryState: PropTypes.object.isRequired
 }
 
@@ -50,4 +61,4 @@ function mapStateToProps(state) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoanSummaryAdmin)
+)(LoanEdit)

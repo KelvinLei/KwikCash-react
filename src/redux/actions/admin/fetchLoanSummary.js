@@ -15,7 +15,7 @@ export const fetchLoanSummaryAction = (loanId) => {
         dispatch(fetchLoanSummarySuccess(response.loanSummary))
       })
       .catch(() => {
-        console.log("fetch fetchLoanSummaryQuery, loan id " + loanId)
+        console.log("failed to fetch fetchLoanSummaryQuery, loan id " + loanId)
         dispatch(fetchLoanSummaryError())
       })
   }
