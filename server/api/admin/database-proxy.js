@@ -241,3 +241,21 @@ export function fetchLoanSummaryQuery(loanId) {
     })
   });
 }
+
+export function fetchLoanChanges(loanId) {
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(`select * from tbl_loanchanges where loanchange_loan = ?`, [loanId],
+        (err, rows) => {
+          if (rows) {
+            // debug('getLoanList database response ' + rows)
+            resolve(rows);
+          } else {
+            debug('couldnt fetchLoanChanges')
+            reject(new Error("couldnt fetchLoanChanges for id " + loanId));
+          }
+        })
+      connection.release()
+    })
+  });
+}

@@ -1,8 +1,9 @@
-import { fetchLoanSummaryQuery } from './database-proxy'
+import { fetchLoanSummaryQuery, fetchLoanChanges } from './database-proxy'
 import _debug from 'debug'
 import { LOAN_STATUS_MAP } from '../shared/loansConstants'
 import {decrypt} from "../shared/decrypter";
 import {getPayments} from "../members/payments";
+import {PAYMENT_SCHEDULE_MAPPING} from "../members/shared/payments-schedule-mapping";
 
 const debug = _debug('app:server:admin:api:fetchLoanSummary')
 
@@ -13,10 +14,12 @@ const formatToCurrency = (num) => {
 export async function fetchLoanSummary(loanId) {
   const loanLevelData = await getLoanSummaryData(loanId)
   const paymentLevelData = await getPayments(loanId)
+  const loanChangesData = await getLoanChanges(loanId)
 
   return {
     loanLevelData,
     paymentLevelData,
+    loanChangesData,
   }
 }
 
@@ -84,4 +87,27 @@ async function getLoanSummaryData(loanId) {
     }
   })
   return loanLevelResult.length > 0 ? loanLevelResult[0] : {}
+}
+
+async function getLoanChanges(loanId) {
+  debug(`calling getLoanChanges for loan id ${loanId}`)
+  const loanChangesRows = await fetchLoanChanges(loanId)
+
+  return loanChangesRows.map( (row) => {
+    const changeDate = row.loanchange_date && new Date(row.loanchange_date).toISOString().slice(0, 10)
+    const paymentDate = row.loanchange_paymentdate && new Date(row.loanchange_paymentdate).toISOString().slice(0, 10)
+
+    return {
+      loanId: row.loanchange_loan,
+      changeDate,
+      loanCode: row.loanchange_status,
+      loanStatus : LOAN_STATUS_MAP[row.loanchange_status],
+      paymentDate,
+      paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanchange_paymentschedule],
+      balance: row.loanchange_balance,
+      interestRate: row.loanchange_rate.toFixed(2),
+      payment: row.loanchange_payment,
+      term: row.loanchange_term,
+    }
+  })
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Row, Col, Panel, Alert, ButtonGroup, Button, Table } from 'react-bootstrap';
+import { Row, Col, Panel, Grid, ButtonGroup, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router';
 import {PaymentTableAdmin} from "./PaymentTableAdmin";
 import {getClassNameForLoanStatus} from "../../member/shared/LoanStyles";
@@ -16,8 +16,16 @@ export const LoanSummaryContent = ({
   return (
     <ContentWrapper>
       <Row>
+        <Col md={ 12 } className="text-left">
+          <Panel id="loanChangePanel" className="panel-default" header="Loan Changes History">
+            <LoanChangesTable loanChangesData={loanSummary.loanChangesData} />
+          </Panel>
+        </Col>
+      </Row>
+
+      <Row>
         <Col md={ 6 } className="text-left">
-          <Panel id="loanSummaryPanel" className="panel-default" header="Loan Info">
+          <Panel id="loanSummaryPanel" className="panel-default" header="Loan Overview">
             <LoanSummaryTable loanLevelData={loanSummary.loanLevelData} />
           </Panel>
         </Col>
@@ -64,6 +72,57 @@ const MemberProfile = ( {loanLevelData} ) => {
     </div>
   )
 }
+
+const LoanChangesTable = ( {loanChangesData} ) => {
+  const loanChangeEntries = loanChangesData.map( (loanChange, i) => {
+    const styleClassName = getClassNameForLoanStatus(loanChange.loanCode)
+
+    return (
+      <tr key={i}>
+        <td>{loanChange.changeDate}</td>
+        <td>
+          <div className={styleClassName}>{loanChange.loanStatus}</div>
+        </td>
+        <td>{loanChange.paymentDate}</td>
+        <td>{loanChange.paymentSchedule}</td>
+        <td>{'$' + loanChange.balance}</td>
+        <td>{loanChange.interestRate + '%'}</td>
+        <td>{loanChange.payment}</td>
+        <td>{loanChange.term}</td>
+      </tr>
+    )
+  })
+  return (
+    <Grid fluid>
+      <Row>
+        <Col md={12}>
+          { /* payment table */ }
+          <Row>
+            <Table id="loanChangesTable" responsive striped hover>
+              <thead>
+              <tr>
+                <th>Change Date</th>
+                <th>Loan Status</th>
+                <th>Payment Date</th>
+                <th>Payment Schedule</th>
+                <th>Balance</th>
+                <th>Interest</th>
+                <th>Payment</th>
+                <th>Term</th>
+              </tr>
+              </thead>
+
+              <tbody>
+              { loanChangeEntries }
+              </tbody>
+            </Table>
+          </Row>
+        </Col>
+      </Row>
+    </Grid>
+  )
+}
+
 
 const LoanSummaryTable = ({loanLevelData}) => {
 
@@ -179,16 +238,3 @@ const MiscInfoWidget = ( {loanLevelData} ) => {
     </div>
   )
 }
-
-/*
- Renders error messagings
- */
-const FailureWidget = () => (
-  <Panel className="panel-default" header="Error">
-    <Row>
-      <Col md={ 12 }>
-        Sorry, we failed to retrieve your data. Please try again or contact us.
-      </Col>
-    </Row>
-  </Panel>
-)

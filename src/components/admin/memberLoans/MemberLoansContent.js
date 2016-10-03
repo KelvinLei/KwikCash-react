@@ -51,7 +51,7 @@ const LoanSelectionWidget = ({loanList}) => {
     <Panel className="panel-default" header="Member's loans">
       <Row>
         <Col md={ 12 }>
-          <Table responsive striped bordered hover>
+          <Table responsive striped hover>
             <thead>
             <tr>
               <th>LoanNum</th>

@@ -6,3 +6,9 @@ export const LOAN_STATUS_MAP = {
   D: 'Charged off',
   F: 'PLAN'
 }
+
+export const SCHEDULE_TYPE = {
+  Y: 'Yes',
+  N: 'No',
+  W: 'Waived'
+}

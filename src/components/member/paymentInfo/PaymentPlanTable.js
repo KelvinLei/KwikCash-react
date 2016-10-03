@@ -65,7 +65,7 @@ const PaymentPlanRow = ({
   interest
 }) => {
   var className = status === "Complete" ? "label label-success" : "label label-warning"
-
+  
   return (
     <tr>
       <td>{index}</td>

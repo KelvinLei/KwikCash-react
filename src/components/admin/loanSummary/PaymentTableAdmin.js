@@ -31,7 +31,7 @@ export const PaymentTableAdmin = ({
   })
 
   return (
-    <Panel className="panel-default" header="Payments schedule">
+    <Panel className="panel-default" header="Payments Schedule">
       <Grid fluid>
         <Row>
           <Col md={12}>
