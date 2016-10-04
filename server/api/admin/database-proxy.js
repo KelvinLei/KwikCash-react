@@ -259,3 +259,27 @@ export function fetchLoanChanges(loanId) {
     })
   });
 }
+
+export function fetchPayoffQuery(loanId) {
+  debug('fetchPayoffQuery ' + loanId);
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(`
+        SELECT p.*, l.*
+        FROM tbl_loanpayments as p, tbl_loans as l
+        WHERE p.loanpayment_loan = l.loan_id AND loanpayment_loan = ?
+        ORDER BY p.loanpayment_date ASC`, [loanId],
+        (err, rows) => {
+          if (rows) {
+            // debug('getPaymentsForLoan database response ' + rows)
+            resolve(rows);
+          } else {
+            debug('couldnt fetchPayoffQuery')
+            reject(new Error("couldnt fetchPayoffQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}

@@ -83,6 +83,7 @@ const LoanEntry = ({loan}) => {
 
   const loanOverviewUrl = '/admin/members/loanSummary/' + loan.loanId
   const loanEditUrl = '/admin/members/loanEdit/' + loan.loanId
+  const payoffUrl = '/admin/members/payoff/' + loan.loanId
 
   return (
     <tr>
@@ -117,7 +118,9 @@ const LoanEntry = ({loan}) => {
         <Link to={loanEditUrl} >
           <Button bsClass="btn btn-oval btn-info">Edit</Button>
         </Link>
-        <Button bsClass="btn btn-oval btn-success">Payoff</Button>
+        <Link to={payoffUrl} >
+          <Button bsClass="btn btn-oval btn-success">Payoff</Button>
+        </Link>
       </td>
     </tr>
   )

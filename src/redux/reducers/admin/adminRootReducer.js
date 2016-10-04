@@ -15,6 +15,9 @@ import {FETCH_MEMBER_LOANS_REQUEST, FETCH_MEMBER_LOANS_SUCCESS, FETCH_MEMBER_LOA
 
 import {FETCH_LOAN_SUMMARY_REQUEST,FETCH_LOAN_SUMMARY_SUCCESS, FETCH_LOAN_SUMMARY_FAILURE
 } from "../../actions/admin/fetchLoanSummary";
+import {
+  FETCH_PAYOFF_REQUEST, FETCH_PAYOFF_SUCCESS, FETCH_PAYOFF_FAILURE
+} from "../../actions/admin/fetchPayoff";
 
 const loanListState = (state = {
   isFetching: false,
@@ -181,10 +184,42 @@ const loanSummaryState = (state = {
   }
 }
 
+const payoffState = (state = {
+  isFetching: true,
+  isFailed: false,
+  payoff: {}
+}, action) => {
+
+  switch (action.type) {
+    case FETCH_PAYOFF_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+      }
+    case FETCH_PAYOFF_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        payoff: action.payoff
+      }
+    case FETCH_PAYOFF_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+      }
+    default:
+      return state
+  }
+}
+
 export default {
   loanListState,
   exportLoansState,
   membersState,
   memberLoansState,
   loanSummaryState,
+  payoffState,
 }

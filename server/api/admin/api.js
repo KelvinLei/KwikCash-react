@@ -7,6 +7,7 @@ import { fetchMembers } from './fetchMembers'
 import { getLoans } from '../members/loan-list'
 import json2xls from 'json2xls'
 import {fetchLoanSummary} from "./fetchLoanSummary";
+import {fetchPayoff} from "./fetchPayoff";
 
 const debug = _debug('app:server:admin:api')
 
@@ -119,6 +120,19 @@ export function init(server) {
     })();
   });
 
+  server.post('/api/admin/fetchPayoff', (req, res) => {
+    (async () => {
+      var payoff = await fetchPayoff(req.body.loanId);
+
+      res.format({
+        'application/json': () => {
+          res.send({
+            payoff
+          });
+        }
+      });
+    })();
+  });
 };
 
 
