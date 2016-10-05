@@ -54,6 +54,7 @@ export async function fetchPayoff(loanId) {
 }
 
 const getPayoffData = ( rows ) => {
+  // if loan is paid or charged off
   if (rows[0].loan_status == 'P' || rows[0].loan_status == 'D') {
     return {
       balanceFromLastPayment: 0,
@@ -63,13 +64,23 @@ const getPayoffData = ( rows ) => {
   }
 
   let balanceFromLastPayment = rows[0].loan_fundamount
+  const currentDate = new Date()
+  // if loan is newly taken and has no paid payment yet
+  if (rows[0].loanpayment_date >= currentDate && rows[0].loanpayment_due > rows[0].loanpayment_amount) {
+    return {
+      balanceFromLastPayment,
+      lastPaymentDate: rows[0].loan_funddate, // use the initial fund date
+      interestFromNextPayment: rows[0].loanpayment_rate
+    }
+  }
+
   let lastPaymentDate = new Date()
   let interestFromNextPayment = 0
   for (var i = 0; i < rows.length; i++) {
     // substract paid principal from loan amount
     const paymentDate = new Date(rows[i].loanpayment_date)
-    const currentDate = new Date()
-    if (rows[i].loanpayment_due <= rows[i].loanpayment_amount && paymentDate < currentDate) {
+
+    if (rows[i].loanpayment_due <= rows[i].loanpayment_amount && paymentDate <= currentDate) {
       balanceFromLastPayment -= rows[i].loanpayment_principal
       lastPaymentDate = paymentDate
     }
