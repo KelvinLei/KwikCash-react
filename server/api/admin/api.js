@@ -8,6 +8,8 @@ import { getLoans } from '../members/loan-list'
 import json2xls from 'json2xls'
 import {fetchLoanSummary} from "./fetchLoanSummary";
 import {fetchPayoff} from "./fetchPayoff";
+import fs from 'fs'
+import {payoffAuthorization} from "./payoffAuthorization";
 
 const debug = _debug('app:server:admin:api')
 
@@ -109,7 +111,7 @@ export function init(server) {
   server.post('/api/admin/fetchLoanSummary', (req, res) => {
     (async () => {
       var loanSummary = await fetchLoanSummary(req.body.loanId);
-      
+
       res.format({
         'application/json': () => {
           res.send({
@@ -131,6 +133,32 @@ export function init(server) {
           });
         }
       });
+    })();
+  });
+
+  server.post('/api/admin/payoffAuthorization', (req, res) => {
+    (async () => {
+      debug('hitting payoffAuthorization')
+      // var doc = await payoffAuthorization(req.body.memberId);
+
+      // var out = fs.createWriteStream ( 'out.docx' );
+      // res.set ({
+      //   "Content-Type": "application/vnd.ms-word",
+      //   'Content-disposition': 'attachment; filename=payoffAuthorization.docx'
+      // });
+      //
+      // doc.generate ( out, {
+      //   'finalize': function ( written ) {
+      //     console.log ( 'Finish to create a payoffAuthorization file.\nTotal bytes created: ' + written + '\n' );
+      //   },
+      //   'error': function ( err ) {
+      //     console.log ( err );
+      //   }
+      // });
+
+      // doc.generate ( out );
+      res.download('out.docx')
+
     })();
   });
 };

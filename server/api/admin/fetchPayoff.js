@@ -32,7 +32,6 @@ export async function fetchPayoff(loanId) {
       payoffInterest = balanceFromLastPayment * (interestFromNextPayment/100) * daysToAcountForPayoff / 365
       payoffAmount = balanceFromLastPayment + payoffInterest
 
-      payoffInterest = payoffInterest.toFixed(2)
       payoffAmount = payoffAmount.toFixed(2)
     }
 
@@ -47,7 +46,7 @@ export async function fetchPayoff(loanId) {
     payoffData: {
       balanceFromLastPayment,
       lastPaymentDate: lastPaymentDate && lastPaymentDate.toISOString().slice(0, 10),
-      interestFromNextPayment: interestFromNextPayment.toFixed(2)
+      interestFromNextPayment: interestFromNextPayment
     },
     payoffAmountList,
   }

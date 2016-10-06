@@ -70,7 +70,7 @@ async function getLoanSummaryData(loanId) {
       loanNoteDate,
       nextPaymentDate,
       refiDate,
-      loanRate: row.loan_rate.toFixed(2),
+      loanRate: row.loan_rate,
       loanStatus : LOAN_STATUS_MAP[row.loan_status],
       loanCode: row.loan_status,
       balance: row.remainingBalance,
@@ -105,7 +105,7 @@ async function getLoanChanges(loanId) {
       paymentDate,
       paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanchange_paymentschedule],
       balance: row.loanchange_balance,
-      interestRate: row.loanchange_rate.toFixed(2),
+      interestRate: row.loanchange_rate,
       payment: row.loanchange_payment,
       term: row.loanchange_term,
     }

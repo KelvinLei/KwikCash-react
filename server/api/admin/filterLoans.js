@@ -45,7 +45,7 @@ export async function filterLoans(filterContext) {
       state : row.hstate,
       loanFundDate,
       loanNoteDate,
-      loanRate: row.loan_rate.toFixed(2),
+      loanRate: row.loan_rate,
       loanStatus : LOAN_STATUS_MAP[row.loan_status],
       loanCode: row.loan_status,
       balance: row.remainingBalance,

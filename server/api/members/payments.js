@@ -28,7 +28,7 @@ export async function getPayments(loanId) {
   return {
     payments: payments,
     loanId: firstRow.loanpayment_loan,
-    interestRate: firstRow.loanpayment_rate.toFixed(2),
+    interestRate: firstRow.loanpayment_rate,
   }
 }
 

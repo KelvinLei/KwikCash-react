@@ -18,7 +18,7 @@ export async function getLoans(userId) {
 
     const nextPaymentDate = row.nextPaymentDate && new Date(row.nextPaymentDate).toISOString().slice(0, 10)
     const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
-    const loanRate = row.loan_rate.toFixed(2)
+    const loanRate = row.loan_rate // .toFixed(2)
     
     return {
       loanId : row.loan_id,
