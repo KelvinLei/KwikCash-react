@@ -40,11 +40,9 @@ export const PayoffContent = ({
   }
   else {
     getPayoffFormButton =
-      <div className="panel-footer text-center">
-        <button className="btn btn-info" bsSize="large" onClick={getPayoffFormOnclick.bind(this)}>
-          One time payoff authorization form
-        </button>
-      </div>
+      <button className="btn btn-info" bsSize="large" onClick={getPayoffFormOnclick.bind(this)}>
+        One time payoff authorization form
+      </button>
   }
 
   return (
@@ -88,7 +86,9 @@ export const PayoffContent = ({
               <div className="text-bold">Payoff interest rate:</div>
             </div>
 
-            { getPayoffFormButton }
+            <div className="panel-footer text-center">
+              { getPayoffFormButton }
+            </div>
           </Panel>
         </Col>
       </Row>
