@@ -4,6 +4,7 @@ import { PayoffContent } from '../../components/admin/payoff/PayoffContent'
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
 import { FailureWidget } from '../../components/shared/FailureWidget'
 import {fetchPayoffAction} from "../../redux/actions/admin/fetchPayoff";
+import {getPayoffFormAction} from "../../redux/actions/admin/getPayoffAuth";
 
 class PayoffAmount extends Component {
 
@@ -18,8 +19,9 @@ class PayoffAmount extends Component {
   }
 
   render() {
-    const { payoffState } = this.props
-
+    const { payoffState, getPayoffFormState, getPayoffForm } = this.props
+    const { loanId } = this.props.params
+    
     let displayContent
     if (payoffState.isFetching) {
       displayContent = <LoadingSpinner/>
@@ -28,7 +30,11 @@ class PayoffAmount extends Component {
       displayContent = <FailureWidget/>
     }
     else {
-      displayContent = <PayoffContent payoff={payoffState.payoff}/>
+      displayContent = <PayoffContent loanId={loanId}
+                                      payoff={payoffState.payoff} 
+                                      getPayoffFormState={getPayoffFormState}
+                                      getPayoffForm={getPayoffForm}
+      />
     }
 
     return (
@@ -46,14 +52,16 @@ PayoffAmount.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchPayoff: (loanId) => dispatch(fetchPayoffAction(loanId)),
+    getPayoffForm: (loanId) => dispatch(getPayoffFormAction(loanId)),
   }
 }
 
 function mapStateToProps(state) {
-  const { payoffState } = state
+  const { payoffState, getPayoffFormState } = state
 
   return {
     payoffState,
+    getPayoffFormState,
   }
 }
 

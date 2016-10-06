@@ -1,34 +1,23 @@
 import 'whatwg-fetch'
 
-const authenticatedPost = (url, input) => {
-  var token = localStorage.getItem('admin_user_token')
-  return fetch(url, {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Authorization' : `Bearer ${token}`
-    },
-    body: JSON.stringify(input)
-  }).then((response) => {
-    if (response.status == 200) {
-      return response;
-    } else {
-      var error = new Error(response.statusText)
-      error.response = response
-      throw error
-    }
-  }).then((response) => {
-    return response.json()
-  })
+var JSON_TYPE = 'json'
+var WORD = 'word'
+var EXCEL = 'excel'
+
+var ACCEPT_TYPE_MAP = {
+  'json' : 'application/json',
+  'word' : 'application/vnd.ms-word',
+  'excel' : 'application/vnd.openxmlformats',
 }
 
-const authenticatedPostForExcel = (url, input) => {
+const authenticatedPost = (url, input, acceptType = JSON_TYPE) => {
   var token = localStorage.getItem('admin_user_token')
+  var acceptTypePost = ACCEPT_TYPE_MAP[acceptType]
+
   return fetch(url, {
     method: 'POST',
     headers: {
-      'Accept': 'application/vnd.openxmlformats',
+      'Accept': acceptTypePost,
       'Content-Type': 'application/json',
       'Authorization' : `Bearer ${token}`
     },
@@ -42,7 +31,11 @@ const authenticatedPostForExcel = (url, input) => {
       throw error
     }
   }).then((response) => {
-    return response.blob()
+    if (acceptType == WORD || acceptType == EXCEL) {
+      return response.blob()
+    } else {
+      return response.json()
+    }
   })
 }
 
@@ -89,7 +82,7 @@ export const filterLoans = (filterContext) => {
 }
 
 export const exportLoans = (filterContext) => {
-  return authenticatedPostForExcel('/api/admin/exportLoans', {filterContext})
+  return authenticatedPost('/api/admin/exportLoans', {filterContext}, EXCEL)
 }
 
 export const fetchMembers = (memberName) => {
@@ -106,4 +99,8 @@ export const fetchLoanSummary = (loanId) => {
 
 export const fetchPayoffAmount = (loanId) => {
   return authenticatedPost('/api/admin/fetchPayoff', {loanId})
+}
+
+export const getPayoffAuthorization = (loanId) => {
+  return authenticatedPost('/api/admin/payoffAuthorization', {loanId}, WORD)
 }

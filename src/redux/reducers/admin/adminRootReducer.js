@@ -18,6 +18,9 @@ import {FETCH_LOAN_SUMMARY_REQUEST,FETCH_LOAN_SUMMARY_SUCCESS, FETCH_LOAN_SUMMAR
 import {
   FETCH_PAYOFF_REQUEST, FETCH_PAYOFF_SUCCESS, FETCH_PAYOFF_FAILURE
 } from "../../actions/admin/fetchPayoff";
+import {
+  GET_PAYOFF_FORM_FAILURE, GET_PAYOFF_FORM_SUCCESS, GET_PAYOFF_FORM_REQUEST
+} from "../../actions/admin/getPayoffAuth";
 
 const loanListState = (state = {
   isFetching: false,
@@ -215,6 +218,35 @@ const payoffState = (state = {
   }
 }
 
+const getPayoffFormState = (state = {
+  isFetching: false,
+  isFailed: false,
+}, action) => {
+  switch (action.type) {
+    case GET_PAYOFF_FORM_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+      }
+    case GET_PAYOFF_FORM_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+      }
+    case GET_PAYOFF_FORM_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   loanListState,
   exportLoansState,
@@ -222,4 +254,5 @@ export default {
   memberLoansState,
   loanSummaryState,
   payoffState,
+  getPayoffFormState,
 }

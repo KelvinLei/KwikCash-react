@@ -283,3 +283,26 @@ export function fetchPayoffQuery(loanId) {
     })
   });
 }
+
+export function fetchPayoffAuthQuery(loanId) {
+  debug('fetchPayoffAuthQuery ' + loanId);
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(`
+        select e.*
+        from e_applications as e,
+        tbl_loans as l
+        where e.id = l.loan_application and l.loan_id = ?`, [loanId],
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug('couldnt fetchPayoffAuthQuery')
+            reject(new Error("couldnt fetchPayoffAuthQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}
