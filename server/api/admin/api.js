@@ -142,7 +142,7 @@ export function init(server) {
 
       res.set ({
         "Content-Type": "application/vnd.ms-word",
-        'Content-disposition': `attachment; filename=payoff_authorization_${req.body.loanId}.docx`
+        'Content-disposition': `attachment; filename=payoff_authorization_${req.body.loanId}.doc`
       });
       res.send(doc)
     })();

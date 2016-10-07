@@ -11,7 +11,7 @@ export const getPayoffFormAction = (loanId) => {
     getPayoffAuthorization(loanId)
       .then(response => {
         dispatch(getPayoffFormSuccess())
-        downloadjs(response, `payoff_form_${loanId}.docx`, "application/vnd.ms-word'")
+        downloadjs(response, `payoff_form_${loanId}.doc`, "application/vnd.ms-word'")
       })
       .catch(() => {
         console.log("getPayoffFormAction")
