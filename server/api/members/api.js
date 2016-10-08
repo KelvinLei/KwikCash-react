@@ -136,10 +136,15 @@ export function init(server) {
       res.status(400).send("invalid email address");
       return;
     }
+    if (!req.body.referalName) {
+      res.status(400).send("missing name");
+      return;
+    }
     (async () => {
       var result = await sendReferalEmail({
         user: req.user,
         referalEmail: req.body.referalEmail,
+        referalName: req.body.referalName,
       });
 
       res.format({

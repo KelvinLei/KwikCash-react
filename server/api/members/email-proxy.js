@@ -29,7 +29,7 @@ export async function sendRefinanceEmail({user, loanInput}) {
   })
 }
 
-export async function sendReferalEmail({user, referalEmail}) {
+export async function sendReferalEmail({user, referalEmail, referalName}) {
   const subject = '[System] Customer request for referal'
   const userData = await getUserDataAsync(user.id);
 
@@ -46,6 +46,7 @@ export async function sendReferalEmail({user, referalEmail}) {
     phone: ${phone}
 
     email of referal: ${referalEmail}
+    name of referal: ${referalName}
   `
 
   return await sendEmail({
