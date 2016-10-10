@@ -2,13 +2,14 @@ import { getPaymentsForLoan } from './database-proxy'
 import { PAYMENT_SCHEDULE_MAPPING } from './shared/payments-schedule-mapping'
 import _debug from 'debug'
 import {SCHEDULE_TYPE} from "../shared/loansConstants";
+import {convertDateFormat} from "../shared/dateHelper";
 
 const debug = _debug('app:server:api:payments')
 
 export async function getPayments(loanId) {
   const rows = await getPaymentsForLoan(loanId)
   const payments = rows.map((row) => {
-    const paymentDate = new Date(row.loanpayment_date).toISOString().slice(0, 10)
+    const paymentDate = convertDateFormat(row.loanpayment_date)
     const scheduleType = SCHEDULE_TYPE[row.loanpayment_scheduled]
     return {
         id: row.loanpayment_id,

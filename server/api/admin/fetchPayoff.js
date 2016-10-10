@@ -1,5 +1,6 @@
 import { fetchPayoffQuery } from './database-proxy'
 import _debug from 'debug'
+import {convertDateFormat} from "../shared/dateHelper";
 
 const debug = _debug('app:server:admin:api:fetchPayoff')
 
@@ -11,9 +12,10 @@ export async function fetchPayoff(loanId) {
   const { balanceFromLastPayment, lastPaymentDate, interestFromNextPayment } = payoffData
 
   const payoffAmountList = []
+  const daysBetweenNowAndLastPayment = getDaysDiff(new Date(), lastPaymentDate)
   for (var i = 0; i < 31; i++) {
     let payoffInterest, payoffAmount = 0
-    const payoffDate = addDaysToDate(new Date(), i).toISOString().slice(0, 10)
+    const payoffDate = addDaysToDate(new Date(), i)
 
     if (rows[0].loan_status == 'P' || rows[0].loan_status == 'D') {
       payoffInterest = 0
@@ -26,26 +28,26 @@ export async function fetchPayoff(loanId) {
 
        payoff amount = {remaining balance for last payment} + {payoff payment interest}
        */
-      const daysBetweenNowAndLastPayment = getDaysDiff(new Date(), lastPaymentDate)
       const daysToAcountForPayoff = daysBetweenNowAndLastPayment + i
+
+      debug(`last payment date ${lastPaymentDate}, days diff ${daysBetweenNowAndLastPayment}`)
+      debug(`daysToAcountForPayoff ${daysToAcountForPayoff}`)
 
       payoffInterest = balanceFromLastPayment * (interestFromNextPayment/100) * daysToAcountForPayoff / 365
       payoffAmount = balanceFromLastPayment + payoffInterest
-
-      payoffAmount = payoffAmount.toFixed(2)
     }
 
     payoffAmountList.push({
-      payoffDate,
-      payoffInterest,
-      payoffAmount,
+      payoffDate: convertDateFormat(payoffDate),
+      payoffInterest: payoffInterest.toFixed(2),
+      payoffAmount: payoffAmount.toFixed(2)
     })
   }
 
   return {
     payoffData: {
-      balanceFromLastPayment,
-      lastPaymentDate: lastPaymentDate && lastPaymentDate.toISOString().slice(0, 10),
+      balanceFromLastPayment: balanceFromLastPayment.toFixed(2),
+      lastPaymentDate: convertDateFormat(lastPaymentDate),
       interestFromNextPayment: interestFromNextPayment
     },
     payoffAmountList,
@@ -97,13 +99,19 @@ const getPayoffData = ( rows ) => {
 }
 
 const getDaysDiff = (day1, day2) => {
-  var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
+  var _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
-  return Math.round(Math.abs((day1.getTime() - day2.getTime())/(oneDay)));
+  // Discard the time and time-zone information.
+  var utc1 = Date.UTC(day1.getFullYear(), day1.getMonth(), day1.getDate());
+  var utc2 = Date.UTC(day2.getFullYear(), day2.getMonth(), day2.getDate());
+
+  return Math.abs(Math.floor((utc2 - utc1) / _MS_PER_DAY));
 }
 
 const addDaysToDate = ( date, days ) => {
   let result = new Date()
-  result.setDate(result.getDate() + days)
+  debug(`result ${result}`)
+  result.setDate(date.getDate() + days)
+  debug(`final result ${result}`)
   return result
 }

@@ -4,6 +4,7 @@ import { LOAN_STATUS_MAP } from '../shared/loansConstants'
 import {decrypt} from "../shared/decrypter";
 import {getPayments} from "../members/payments";
 import {PAYMENT_SCHEDULE_MAPPING} from "../members/shared/payments-schedule-mapping";
+import {convertDateFormat} from "../shared/dateHelper";
 
 const debug = _debug('app:server:admin:api:fetchLoanSummary')
 
@@ -30,30 +31,16 @@ async function getLoanSummaryData(loanId) {
   const loanLevelResult = loanLevelDataRows.map( (row) => {
     const memberSsn = decrypt(row.member_ssn.toString())
 
-    const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
-    const loanNoteDate = row.loan_notedate && new Date(row.loan_notedate).toISOString().slice(0, 10)
-    const firstPaymentDate = row.loan_paymentdate && new Date(row.loan_paymentdate).toISOString().slice(0, 10)
-    const recoveryDate = row.loan_recoverydate && (new Date(row.loan_recoverydate) > new Date('2002'))
-      ? new Date(row.loan_recoverydate).toISOString().slice(0, 10)
-      : ''
-    const recoveryEndDate = row.loan_recoverystop && (new Date(row.loan_recoverystop) > new Date('2002'))
-      ? new Date(row.loan_recoverystop).toISOString().slice(0, 10)
-      : ''
-    const defaultDate = row.loan_defaultdate && (new Date(row.loan_defaultdate) > new Date('2002'))
-      ? new Date(row.loan_defaultdate).toISOString().slice(0, 10)
-      : ''
-    const manualDate = row.loan_manualdate && (new Date(row.loan_manualdate) > new Date('2002'))
-      ? new Date(row.loan_manualdate).toISOString().slice(0, 10)
-      : ''
-    const lateDate = row.loan_latedate && (new Date(row.loan_latedate) > new Date('2002'))
-      ? new Date(row.loan_latedate).toISOString().slice(0, 10)
-      : ''
-    const refiDate = row.loan_refidate && (new Date(row.loan_refidate) > new Date('2002'))
-      ? new Date(row.loan_refidate).toISOString().slice(0, 10)
-      : ''
-    const nextPaymentDate = row.nextPaymentDate && (new Date(row.nextPaymentDate) > new Date('2002'))
-      ? new Date(row.nextPaymentDate).toISOString().slice(0, 10)
-      : ''
+    const loanFundDate = convertDateFormat(row.loan_funddate)
+    const loanNoteDate = convertDateFormat(row.loan_notedate)
+    const firstPaymentDate = convertDateFormat(row.loan_paymentdate)
+    const recoveryDate = convertDateFormat(row.loan_recoverydate)
+    const recoveryEndDate = convertDateFormat(row.loan_recoverystop)
+    const defaultDate = convertDateFormat(row.loan_defaultdate)
+    const manualDate = convertDateFormat(row.loan_manualdate)
+    const lateDate = convertDateFormat(row.loan_latedate)
+    const refiDate = convertDateFormat(row.loan_refidate)
+    const nextPaymentDate = convertDateFormat(row.nextPaymentDate)
 
     return {
       loanId : row.loan_id,
@@ -73,7 +60,7 @@ async function getLoanSummaryData(loanId) {
       loanRate: row.loan_rate,
       loanStatus : LOAN_STATUS_MAP[row.loan_status],
       loanCode: row.loan_status,
-      balance: row.remainingBalance,
+      balance: row.remainingBalance.toFixed(2),
       remainingPayments: row.remainingPaymentsCount,
       email: row.member_email,
       defaultDate,
@@ -94,8 +81,8 @@ async function getLoanChanges(loanId) {
   const loanChangesRows = await fetchLoanChanges(loanId)
 
   return loanChangesRows.map( (row) => {
-    const changeDate = row.loanchange_date && new Date(row.loanchange_date).toISOString().slice(0, 10)
-    const paymentDate = row.loanchange_paymentdate && new Date(row.loanchange_paymentdate).toISOString().slice(0, 10)
+    const changeDate = convertDateFormat(row.loanchange_date)
+    const paymentDate = convertDateFormat(row.loanchange_paymentdate)
 
     return {
       loanId: row.loanchange_loan,
@@ -104,7 +91,7 @@ async function getLoanChanges(loanId) {
       loanStatus : LOAN_STATUS_MAP[row.loanchange_status],
       paymentDate,
       paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanchange_paymentschedule],
-      balance: row.loanchange_balance,
+      balance: row.loanchange_balance.toFixed(2),
       interestRate: row.loanchange_rate,
       payment: row.loanchange_payment,
       term: row.loanchange_term,

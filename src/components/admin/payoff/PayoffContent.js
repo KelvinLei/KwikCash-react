@@ -18,7 +18,7 @@ export const PayoffContent = ({
           {payoffEntry.payoffDate}
         </td>
         <td className="wd-xs">
-          {payoffEntry.payoffInterest}
+          ${payoffEntry.payoffInterest}
         </td>
         <td className="wd-xs">
           ${payoffEntry.payoffAmount}

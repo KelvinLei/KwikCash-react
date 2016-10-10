@@ -2,6 +2,7 @@ import { filterLoansQuery } from './database-proxy'
 import _debug from 'debug'
 import { LOAN_STATUS_MAP } from '../shared/loansConstants'
 import {decrypt} from "../shared/decrypter";
+import {convertDateFormat} from "../shared/dateHelper";
 
 const debug = _debug('app:server:admin:api:filterLoans')
 
@@ -24,17 +25,11 @@ export async function filterLoans(filterContext) {
       address = `${streetNum} ${streetName} ${aptNum} ${city} ${row.hstate}, ${zip}`
     }
 
-    const loanFundDate = row.loan_funddate && new Date(row.loan_funddate).toISOString().slice(0, 10)
-    const loanNoteDate = row.loan_notedate && new Date(row.loan_notedate).toISOString().slice(0, 10)
-    const payoffDate = row.lastPaymentDateForPaidLoan && (new Date(row.lastPaymentDateForPaidLoan) > new Date('2002'))
-                        ? new Date(row.lastPaymentDateForPaidLoan).toISOString().slice(0, 10)
-                        : ''
-    const recoveryDate = row.loan_recoveryDate && (new Date(row.loan_recoveryDate) > new Date('2002'))
-                          ? new Date(row.loan_recoveryDate).toISOString().slice(0, 10)
-                          : ''
-    const defaultDate = row.loan_defaultdate && (new Date(row.loan_defaultdate) > new Date('2002'))
-                        ? new Date(row.loan_defaultdate).toISOString().slice(0, 10)
-                        : ''
+    const loanFundDate = convertDateFormat(row.loan_funddate)
+    const loanNoteDate = convertDateFormat(row.loan_notedate)
+    const payoffDate = convertDateFormat(row.lastPaymentDateForPaidLoan)
+    const recoveryDate = convertDateFormat(row.loan_recoveryDate)
+    const defaultDate = convertDateFormat(row.loan_defaultdate)
 
     return {
       loanId : row.loan_id,
@@ -48,7 +43,7 @@ export async function filterLoans(filterContext) {
       loanRate: row.loan_rate,
       loanStatus : LOAN_STATUS_MAP[row.loan_status],
       loanCode: row.loan_status,
-      balance: row.remainingBalance,
+      balance: row.remainingBalance && row.remainingBalance.toFixed(2),
       remainingPayments: row.remainingPaymentsCount,
       address: address,
       email: row.email,
