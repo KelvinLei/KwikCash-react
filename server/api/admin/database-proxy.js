@@ -306,3 +306,27 @@ export function fetchPayoffAuthQuery(loanId) {
     })
   });
 }
+
+export function getRepeatLoanCustomers() {
+  debug('getRepeatLoanCustomers');
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(`
+        SELECT COUNT(loan_id) AS loan_count, loan_member, member_name, member_email
+         FROM tbl_loans, tbl_members
+         WHERE loan_member = member_id
+         GROUP BY loan_member
+         HAVING count(loan_id) > 1`,
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug('couldnt getRepeatLoanCustomers')
+            reject(new Error("couldnt getRepeatLoanCustomers"));
+          }
+        })
+      connection.release()
+    })
+  });
+}

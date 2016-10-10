@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken'
 import config from '../../config'
 import { authenticateUser } from './authenticate'
 import { filterLoans } from './filterLoans'
+import { getRepeatCustomers } from './exportRepeats'
 import { fetchMembers } from './fetchMembers'
 import { getLoans } from '../members/loan-list'
 import json2xls from 'json2xls'
@@ -77,6 +78,15 @@ export function init(server) {
       debug("filtering loans for " + JSON.stringify(req.body.filterContext));
       var loans = await filterLoans(req.body.filterContext);
       res.xls('loans.xlsx', loans);
+    })();
+  });
+
+  server.post('/api/admin/exportRepeats', (req, res) => {
+    debug("calling admin export repeats");
+
+    (async () => {
+      var repeats = await getRepeatCustomers();
+      res.xls('repeats.xlsx', repeats);
     })();
   });
 
