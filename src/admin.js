@@ -15,6 +15,7 @@ import fontAwesome from './themeJsx/bower_components/fontawesome/css/font-awesom
 
 import App from './containers/App'
 import ExportLoans from './containers/admin/ExportLoans'
+import ExportAnalytics from './containers/admin/ExportAnalytics'
 import MembersAdmin from './containers/admin/MembersAdmin'
 import MemberLoans from './containers/admin/MemberLoans'
 import PayoffAmount from './containers/admin/PayoffAmount'
@@ -69,6 +70,7 @@ ReactDOM.render(
         <Route path="/admin/members/loanSummary/:loanId" component={LoanSummaryAdmin}/>
         <Route path="/admin/members/loanEdit/:loanId" component={LoanEdit}/>
         <Route path="/admin/members/payoff/:loanId" component={PayoffAmount}/>
+        <Route path="/admin/exportAnalytics" component={ExportAnalytics}/>
       </Route>
 
       <Route path="/admin/login" component={Login}/>
