@@ -30,9 +30,6 @@ export async function fetchPayoff(loanId) {
        */
       const daysToAcountForPayoff = daysBetweenNowAndLastPayment + i
 
-      debug(`last payment date ${lastPaymentDate}, days diff ${daysBetweenNowAndLastPayment}`)
-      debug(`daysToAcountForPayoff ${daysToAcountForPayoff}`)
-
       payoffInterest = balanceFromLastPayment * (interestFromNextPayment/100) * daysToAcountForPayoff / 365
       payoffAmount = balanceFromLastPayment + payoffInterest
     }
@@ -110,8 +107,6 @@ const getDaysDiff = (day1, day2) => {
 
 const addDaysToDate = ( date, days ) => {
   let result = new Date()
-  debug(`result ${result}`)
   result.setDate(date.getDate() + days)
-  debug(`final result ${result}`)
   return result
 }
