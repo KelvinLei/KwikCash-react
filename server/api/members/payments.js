@@ -16,7 +16,7 @@ export async function getPayments(loanId) {
         paymentDate,
         amountDue: row.loanpayment_due,
         amountPaid: row.loanpayment_amount,
-        isPaid: isPaymentPaid(parseFloat(row.loanpayment_amount), row.loanpayment_due),
+        isPaid: isPaymentPaid(row.loanpayment_amount, row.loanpayment_due, row.loanpayment_scheduled),
         interest: row.loanpayment_interest,
         principal: row.loanpayment_principal,
         scheduled: scheduleType,
@@ -33,6 +33,9 @@ export async function getPayments(loanId) {
   }
 }
 
-export const isPaymentPaid = (amountPaid, amountDue) => {
-  return amountPaid >= amountDue
+export const isPaymentPaid = (amountPaidInput, amountDueInput, paymentScheduled) => {
+  const amountPaid = parseFloat(amountPaidInput)
+  const amountDue = parseFloat(amountDueInput)
+
+  return paymentScheduled == 'W' || amountPaid >= amountDue
 }

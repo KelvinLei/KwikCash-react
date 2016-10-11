@@ -23,7 +23,7 @@ export async function fetchPayoff(loanId) {
     }
     else {
       /*
-       payoff payment interest =
+       payoff interest =
        {remaining balance for last payment} * interest rate * {number of days until payoff since last payment} / 365
 
        payoff amount = {remaining balance for last payment} + {payoff payment interest}
@@ -61,7 +61,7 @@ const getPayoffData = ( rows ) => {
     }
   }
 
-  let balanceFromLastPayment = rows[0].loan_fundamount
+  let balanceFromLastPayment = rows[0].loan_amount
   const currentDate = new Date()
   // if loan is newly taken and has no paid payment yet
   if (rows[0].loanpayment_date >= currentDate && rows[0].loanpayment_due > rows[0].loanpayment_amount) {
@@ -78,7 +78,11 @@ const getPayoffData = ( rows ) => {
     // substract paid principal from loan amount
     const paymentDate = new Date(rows[i].loanpayment_date)
 
-    if (rows[i].loanpayment_due <= rows[i].loanpayment_amount && paymentDate <= currentDate) {
+    // ensure amount due <= amount paid AND payment date <= current date AND payment is not a waived payment
+    if (rows[i].loanpayment_due <= rows[i].loanpayment_amount
+        && paymentDate <= currentDate
+        && rows[i].loanpayment_scheduled != 'W'
+    ) {
       balanceFromLastPayment -= rows[i].loanpayment_principal
       lastPaymentDate = paymentDate
     }
