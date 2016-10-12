@@ -330,3 +330,23 @@ export function getRepeatLoanCustomers() {
     })
   });
 }
+
+export function fetchMemberProfileQuery(memberId) {
+  debug('fetchMemberProfileQuery');
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(`
+        select * from e_tbl_members where member_id = ?`, [memberId],
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug('couldnt fetchMemberProfileQuery')
+            reject(new Error("couldnt fetchMemberProfileQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}

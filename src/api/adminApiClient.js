@@ -104,3 +104,7 @@ export const fetchPayoffAmount = (loanId) => {
 export const getPayoffAuthorization = (loanId) => {
   return authenticatedPost('/api/admin/payoffAuthorization', {loanId}, WORD)
 }
+
+export const fetchMemberProfile = (memberId) => {
+  return authenticatedPost('/api/admin/fetchMemberProfile', {memberId})
+}

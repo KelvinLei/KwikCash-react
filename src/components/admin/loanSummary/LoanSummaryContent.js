@@ -46,33 +46,6 @@ export const LoanSummaryContent = ({
   )
 }
 
-const MemberProfile = ( {loanLevelData} ) => {
-  return (
-    <div>
-      <div>
-        <div className="list-group mb0">
-          <div className="list-group-item">
-            <span className="pull-right">{loanLevelData.memberName}</span>
-            <div className="text-bold">Name:</div>
-          </div>
-
-          <div className="list-group-item">
-            <span className="pull-right">{loanLevelData.email}</span>
-            <div className="text-bold">Email:</div>
-          </div>
-
-          <div className="list-group-item">
-            <span className="pull-right">{loanLevelData.memberSsn}</span>
-            <div className="text-bold">SSN:</div>
-          </div>
-        </div>
-
-        <Button bsClass="btn btn-info">Edit</Button>
-      </div>
-    </div>
-  )
-}
-
 const LoanChangesTable = ( {loanChangesData} ) => {
   const loanChangeEntries = loanChangesData.map( (loanChange, i) => {
     const styleClassName = getClassNameForLoanStatus(loanChange.loanCode)

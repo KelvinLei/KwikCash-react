@@ -10,6 +10,7 @@ import json2xls from 'json2xls'
 import {fetchLoanSummary} from "./fetchLoanSummary";
 import {fetchPayoff} from "./fetchPayoff";
 import {payoffAuthorization} from "./payoffAuthorization";
+import {fetchMemberProfile} from "./fetchMemberProfile";
 
 const debug = _debug('app:server:admin:api')
 
@@ -157,6 +158,22 @@ export function init(server) {
       res.send(doc)
     })();
   });
+
+  server.post('/api/admin/fetchMemberProfile', (req, res) => {
+    (async () => {
+      debug('hitting fetchMemberProfile')
+      const memberProfile = await fetchMemberProfile(req.body.memberId);
+
+      res.format({
+        'application/json': () => {
+          res.send({
+            memberProfile
+          });
+        }
+      });
+    })();
+  });
+
 };
 
 

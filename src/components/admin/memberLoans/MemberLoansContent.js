@@ -9,6 +9,7 @@ export const MemberLoansContent = ({
   isFetching,
   isFetchFailed,
   memberLoans,
+  memberProfileState
 }) => {
   // display different components based on the status of getLoanList api call
   let displayContent
@@ -24,13 +25,18 @@ export const MemberLoansContent = ({
 
   return (
     <ContentWrapper>
-      <div className="content-heading">
-        Loan Selection
-        <small data-localize="dashboard.WELCOME">Loan editing</small>
-      </div>
+      <Row>
+        <Col md={ 6 }>
+          <Panel className="panel-default" header="Member Profile">
+            {
+              !memberProfileState.isFetching && !memberProfileState.isFetchFailed &&
+              <MemberProfile memberProfile={memberProfileState.memberProfile}/>
+            }
+          </Panel>
+        </Col>
+      </Row>
 
       { displayContent }
-
     </ContentWrapper>
   )
 }
@@ -123,6 +129,36 @@ const LoanEntry = ({loan}) => {
         </Link>
       </td>
     </tr>
+  )
+}
+
+const MemberProfile = ( {memberProfile} ) => {
+
+  return (
+    <div>
+      <div>
+        <div className="list-group mb0">
+          <div className="list-group-item">
+            <span className="pull-right">{memberProfile.memberName}</span>
+            <div className="text-bold">Name:</div>
+          </div>
+
+          <div className="list-group-item">
+            <span className="pull-right">{memberProfile.memberEmail}</span>
+            <div className="text-bold">Email:</div>
+          </div>
+
+          <div className="list-group-item">
+            <span className="pull-right">{memberProfile.memberSsn}</span>
+            <div className="text-bold">SSN:</div>
+          </div>
+        </div>
+
+        <div className="panel-footer text-center">
+          <Button bsClass="btn btn-info">Edit</Button>
+        </div>
+      </div>
+    </div>
   )
 }
 
