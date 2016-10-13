@@ -4,46 +4,46 @@ export default () => {
 
   new Pikaday({
     field: document.getElementById('input-loanFundDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({
     field: document.getElementById('input-firstPaymentDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({
     field: document.getElementById('input-loanNoteDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({
     field: document.getElementById('input-defaultDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({
     field: document.getElementById('input-lateDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({
     field: document.getElementById('input-manualDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({
     field: document.getElementById('input-recoveryDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({
     field: document.getElementById('input-recoveryEndDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({
     field: document.getElementById('input-refiDate'),
-    maxDate: new Date()
+    maxDate: new Date(2025, 12, 31)
   })
 }
