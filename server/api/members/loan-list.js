@@ -22,18 +22,19 @@ export async function getLoans(userId) {
     const loanRate = row.loan_rate // .toFixed(2)
     
     return {
-      loanId : row.loan_id,
-      loanNumber : row.loan_number,
-      loanFundAmount: formatToCurrency(row.loan_amount),
+      loanId                : row.loan_id,
+      loanNumber            : row.loan_number,
+      loanFundAmount        : formatToCurrency(row.loan_amount),
+      loanTerm              : row.loan_term,
+      loanStatus            : LOAN_STATUS_MAP[row.loan_status],
+      loanCode              : row.loan_status,
+      paymentSchedule       : PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
+      paymentScheduleCode   : row.loanpayment_paymentschedule,
+      balance               : row.remainingBalance.toFixed(2),
+      remainingPayments     : row.remainingPaymentsCount,
+      nextPaymentDate,
       loanFundDate,
       loanRate,
-      loanTerm: row.loan_term,
-      loanStatus : LOAN_STATUS_MAP[row.loan_status],
-      loanCode: row.loan_status,
-      paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
-      balance: row.remainingBalance.toFixed(2),
-      nextPaymentDate,
-      remainingPayments: row.remainingPaymentsCount,
       canReapply
     }
   })

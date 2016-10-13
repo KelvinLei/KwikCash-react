@@ -26,7 +26,7 @@ export const MemberLoansContent = ({
   return (
     <ContentWrapper>
       <Row>
-        <Col md={ 6 }>
+        <Col md={ 6 } mdOffset={ 3 }>
           <Panel className="panel-default" header="Member Profile">
             {
               !memberProfileState.isFetching && !memberProfileState.isFetchFailed &&

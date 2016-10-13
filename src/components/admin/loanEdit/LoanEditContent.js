@@ -20,6 +20,62 @@ export default class LoanEditContent extends Component {
   render() {
     const { loanLevelData } = this.props
 
+    const loanEditOnClick = () => {
+      // LoanEditWidget
+      const loanStatus = $('input[name=loanStatusRadio]:checked').val()
+      const repeatLoan = $('input[name=repeatLoanRadio]:checked').val()
+      const paymentSchedule = $('#paymentScheduleSelect').val()
+      const loanFundAmount = $('#input-loanFundAmount').val()
+      const firstPaymentDate = $('#input-firstPaymentDate').val()
+      const loanFundDate = $('#input-loanFundDate').val()
+      const loanNoteDate = $('#input-loanNoteDate').val()
+      const refiDate = $('#input-refiDate').val()
+      const loanRate = $('#input-loanRate').val()
+      const loanTerm = $('#input-loanTerm').val()
+
+      // FundEditWidget
+      const clientFundAmount = $('#inputClientFundAmount').val()
+      const fundMethodRadio = $('input[name=fundMethodRadio]:checked').val()
+
+      // MiscInfoWidget
+      const isJudgement = $('input[name=judgementRadio]:checked').val()
+      const defaultDate = $('#input-defaultDate').val()
+      const lateDate = $('#input-lateDate').val()
+      const manualDate = $('#input-manualDate').val()
+
+      // RecoveryInfoWidget
+      const isRecovery = $('input[name=recoveryRadio]:checked').val()
+      const recoveryBalance = $('#input-recoveryBalance').val()
+      const recoveryDate = $('#input-recoveryDate').val()
+      const recoveryEndDate = $('#input-recoveryEndDate').val()
+
+
+      console.log(`loanStatus ${loanStatus}`)
+      console.log(`repeatLoan ${repeatLoan}`)
+      console.log(`paymentSchedule ${paymentSchedule}`)
+      console.log(`loanFundAmount ${loanFundAmount}`)
+      console.log(`firstPaymentDate ${firstPaymentDate}`)
+      console.log(`loanFundDate ${loanFundDate}`)
+      console.log(`loanNoteDate ${loanNoteDate}`)
+      console.log(`refiDate ${refiDate}`)
+      console.log(`loanRate ${loanRate}`)
+      console.log(`loanTerm ${loanTerm}`)
+
+      console.log(`clientFundAmount ${clientFundAmount}`)
+      console.log(`fundMethodRadio ${fundMethodRadio}`)
+
+      console.log(`isJudgement ${isJudgement}`)
+      console.log(`defaultDate ${defaultDate}`)
+      console.log(`lateDate ${lateDate}`)
+      console.log(`manualDate ${manualDate}`)
+
+      console.log(`isRecovery ${isRecovery}`)
+      console.log(`recoveryBalance ${recoveryBalance}`)
+      console.log(`recoveryDate ${recoveryDate}`)
+      console.log(`recoveryEndDate ${recoveryEndDate}`)
+
+    }
+
     return (
       <ContentWrapper>
         <Row>
@@ -38,7 +94,7 @@ export default class LoanEditContent extends Component {
 
         <Panel>
           <div className="panel-footer text-center">
-            <button className="btn btn-info" bsSize="large">Save Changes</button>
+            <button onClick={loanEditOnClick.bind(this)} className="btn btn-info" bsSize="large">Save Changes</button>
           </div>
         </Panel>
       </ContentWrapper>
@@ -72,7 +128,7 @@ const LoanEditWidget = ( {loanLevelData} ) => {
 
   const paymentScheduleDropdown = PAYMENT_SCHEDULE_MAPPING.map( (schedule, id) => {
     return (
-      <option key={id} defaultValue={schedule.schedule}>
+      <option key={id} value={schedule.code}>
         {schedule.schedule}
       </option>
     )
@@ -96,7 +152,7 @@ const LoanEditWidget = ( {loanLevelData} ) => {
         <div className="form-group">
           <label className="col-lg-4 control-label">{input.label}</label>
           <Col lg={ 8 }>
-            <input type="text" id={"input"+input.fieldName} defaultValue={defaultValue} className="form-control"/>
+            <input type="text" id={"input-"+input.fieldName} defaultValue={defaultValue} className="form-control"/>
           </Col>
         </div>
       </fieldset>
@@ -142,11 +198,11 @@ const LoanEditWidget = ( {loanLevelData} ) => {
             <label className="col-lg-4 control-label">Repeat Loan</label>
             <Col lg={ 8 }>
               <label className="radio-inline c-radio">
-                <input id="repeatLoanYes" type="radio" name="repeatLoanRadio" defaultChecked={isRepeatLoan ? 'defaultChecked' : ''}/>
+                <input id="repeatLoanYes" type="radio" defaultValue="Y" name="repeatLoanRadio" defaultChecked={isRepeatLoan ? 'defaultChecked' : ''}/>
                 <em className="fa fa-circle"/>Yes
               </label>
               <label className="radio-inline c-radio">
-                <input id="repeatLoanNo" type="radio" name="repeatLoanRadio" defaultChecked={!isRepeatLoan ? 'defaultChecked' : ''}/>
+                <input id="repeatLoanNo" type="radio" defaultValue="N" name="repeatLoanRadio" defaultChecked={!isRepeatLoan ? 'defaultChecked' : ''}/>
                 <em className="fa fa-circle"/>No
               </label>
             </Col>
@@ -157,7 +213,7 @@ const LoanEditWidget = ( {loanLevelData} ) => {
           <div className="form-group">
             <label className="col-lg-4 control-label">Payment Schedule</label>
             <Col lg={ 8 }>
-              <select id="stateOption" className="form-control">
+              <select id="paymentScheduleSelect" className="form-control">
                 { paymentScheduleDropdown }
               </select>
             </Col>
@@ -198,7 +254,7 @@ const FundEditWidget = ( {loanLevelData} ) => {
           <div className="form-group">
             <label className="col-lg-4 control-label">Client Fund Amount</label>
             <Col lg={ 8 }>
-              <input type="text" id="inputLoanFundAmount" defaultValue={loanLevelData.fundAmount} className="form-control"/>
+              <input type="text" id="inputClientFundAmount" defaultValue={loanLevelData.fundAmount} className="form-control"/>
             </Col>
           </div>
         </fieldset>
@@ -232,7 +288,7 @@ const MiscInfoWidget = ( {loanLevelData} ) => {
         <div className="form-group">
           <label className="col-lg-4 control-label">{`${date.dateType} Date`}</label>
           <Col lg={ 8 }>
-            <input type="text" id={`input${date.fieldName}`} defaultValue={defaultValue} className="form-control"/>
+            <input type="text" id={`input-${date.fieldName}`} defaultValue={defaultValue} className="form-control"/>
           </Col>
         </div>
       </fieldset>
@@ -248,11 +304,11 @@ const MiscInfoWidget = ( {loanLevelData} ) => {
             <label className="col-lg-4 control-label">Judgement</label>
             <Col lg={ 8 }>
               <label className="radio-inline c-radio">
-                <input id="judgementYes" type="radio" name="judgementRadio" defaultChecked={isJudgement ? 'defaultChecked' : ''}/>
+                <input id="judgementYes" type="radio" defaultValue="Y" name="judgementRadio" defaultChecked={isJudgement ? 'defaultChecked' : ''}/>
                 <em className="fa fa-circle"/>Yes
               </label>
               <label className="radio-inline c-radio">
-                <input id="judgementNo" type="radio" name="judgementRadio" defaultChecked={!isJudgement ? 'defaultChecked' : ''}/>
+                <input id="judgementNo" type="radio" defaultValue="N" name="judgementRadio" defaultChecked={!isJudgement ? 'defaultChecked' : ''}/>
                 <em className="fa fa-circle"/>No
               </label>
             </Col>
@@ -279,7 +335,7 @@ const RecoveryInfoWidget = ( {loanLevelData} ) => {
         <div className="form-group">
           <label className="col-lg-4 control-label">{input.dateType}</label>
           <Col lg={ 8 }>
-            <input type="text" id={`input${input.fieldName}`} defaultValue={defaultValue} className="form-control"/>
+            <input type="text" id={`input-${input.fieldName}`} defaultValue={defaultValue} className="form-control"/>
           </Col>
         </div>
       </fieldset>
@@ -295,11 +351,11 @@ const RecoveryInfoWidget = ( {loanLevelData} ) => {
             <label className="col-lg-4 control-label">Recovery Income</label>
             <Col lg={ 8 }>
               <label className="radio-inline c-radio">
-                <input id="recoveryIncomeYes" type="radio" name="recoveryRadio" defaultChecked={isRecoveryIncome ? 'defaultChecked' : ''}/>
+                <input id="recoveryIncomeYes" type="radio" defaultValue="Y" name="recoveryRadio" defaultChecked={isRecoveryIncome ? 'defaultChecked' : ''}/>
                 <em className="fa fa-circle"/>Yes
               </label>
               <label className="radio-inline c-radio">
-                <input id="recoveryIncomeNo" type="radio" name="recoveryRadio" defaultChecked={!isRecoveryIncome ? 'defaultChecked' : ''}/>
+                <input id="recoveryIncomeNo" type="radio" defaultValue="N" name="recoveryRadio" defaultChecked={!isRecoveryIncome ? 'defaultChecked' : ''}/>
                 <em className="fa fa-circle"/>No
               </label>
             </Col>

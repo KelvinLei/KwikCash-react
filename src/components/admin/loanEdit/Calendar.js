@@ -3,47 +3,47 @@ import Pikaday from 'pikaday/pikaday.js'
 export default () => {
 
   new Pikaday({
-    field: document.getElementById('inputloanFundDate'),
+    field: document.getElementById('input-loanFundDate'),
     maxDate: new Date()
   })
 
   new Pikaday({
-    field: document.getElementById('inputfirstPaymentDate'),
+    field: document.getElementById('input-firstPaymentDate'),
     maxDate: new Date()
   })
 
   new Pikaday({
-    field: document.getElementById('inputloanNoteDate'),
+    field: document.getElementById('input-loanNoteDate'),
     maxDate: new Date()
   })
 
   new Pikaday({
-    field: document.getElementById('inputdefaultDate'),
+    field: document.getElementById('input-defaultDate'),
     maxDate: new Date()
   })
 
   new Pikaday({
-    field: document.getElementById('inputlateDate'),
+    field: document.getElementById('input-lateDate'),
     maxDate: new Date()
   })
 
   new Pikaday({
-    field: document.getElementById('inputmanualDate'),
+    field: document.getElementById('input-manualDate'),
     maxDate: new Date()
   })
 
   new Pikaday({
-    field: document.getElementById('inputrecoveryDate'),
+    field: document.getElementById('input-recoveryDate'),
     maxDate: new Date()
   })
 
   new Pikaday({
-    field: document.getElementById('inputrecoveryEndDate'),
+    field: document.getElementById('input-recoveryEndDate'),
     maxDate: new Date()
   })
 
   new Pikaday({
-    field: document.getElementById('inputrefiDate'),
+    field: document.getElementById('input-refiDate'),
     maxDate: new Date()
   })
 }
