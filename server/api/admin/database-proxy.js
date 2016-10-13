@@ -350,3 +350,24 @@ export function fetchMemberProfileQuery(memberId) {
     })
   });
 }
+
+export function editLoanQuery(memberId) {
+  debug('editLoanQuery');
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(`
+        select * from e_tbl_members where member_id = ?`, [memberId],
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug('couldnt editLoanQuery')
+            reject(new Error("couldnt editLoanQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}
+

@@ -11,6 +11,7 @@ import {fetchLoanSummary} from "./fetchLoanSummary";
 import {fetchPayoff} from "./fetchPayoff";
 import {payoffAuthorization} from "./payoffAuthorization";
 import {fetchMemberProfile} from "./fetchMemberProfile";
+import {editLoan} from "./editLoanExecutor";
 
 const debug = _debug('app:server:admin:api')
 
@@ -168,6 +169,21 @@ export function init(server) {
         'application/json': () => {
           res.send({
             memberProfile
+          });
+        }
+      });
+    })();
+  });
+
+  server.post('/api/admin/editLoan', (req, res) => {
+    (async () => {
+      debug('hitting editLoan')
+      const results = await editLoan(req.body.editLoanContext);
+
+      res.format({
+        'application/json': () => {
+          res.send({
+            results
           });
         }
       });

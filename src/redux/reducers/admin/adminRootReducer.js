@@ -24,6 +24,9 @@ import {
 import {
   FETCH_MEMBER_PROFILE_REQUEST, FETCH_MEMBER_PROFILE_SUCCESS, FETCH_MEMBER_PROFILE_FAILURE
 } from "../../actions/admin/fetchMemberProfile";
+import {
+  EDIT_LOAN_REQUEST, EDIT_LOAN_SUCCESS, EDIT_LOAN_FAILURE, RESET_EDIT_LOAN_ALERT
+} from "../../actions/admin/editLoan";
 
 const loanListState = (state = {
   isFetching: false,
@@ -281,6 +284,46 @@ const memberProfileState = (state = {
   }
 }
 
+const editLoanActionState = (state = {
+  isFetching: false,
+  isFailed: false,
+  editSuccess: false,
+}, action) => {
+  switch (action.type) {
+    case EDIT_LOAN_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+        editSuccess: false,
+      }
+    case EDIT_LOAN_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        editSuccess: true,
+      }
+    case RESET_EDIT_LOAN_ALERT:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        editSuccess: false,
+      }
+    case EDIT_LOAN_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+        editSuccess: false,
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   loanListState,
   exportLoansState,
@@ -290,4 +333,5 @@ export default {
   payoffState,
   getPayoffFormState,
   memberProfileState,
+  editLoanActionState,
 }

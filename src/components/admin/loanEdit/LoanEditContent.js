@@ -18,7 +18,7 @@ export default class LoanEditContent extends Component {
   }
 
   render() {
-    const { loanLevelData } = this.props
+    const { loanLevelData, editLoanActionState, editLoanOnclick } = this.props
 
     const loanEditOnClick = () => {
       // LoanEditWidget
@@ -49,31 +49,28 @@ export default class LoanEditContent extends Component {
       const recoveryDate = $('#input-recoveryDate').val()
       const recoveryEndDate = $('#input-recoveryEndDate').val()
 
-
-      console.log(`loanStatus ${loanStatus}`)
-      console.log(`repeatLoan ${repeatLoan}`)
-      console.log(`paymentSchedule ${paymentSchedule}`)
-      console.log(`loanFundAmount ${loanFundAmount}`)
-      console.log(`firstPaymentDate ${firstPaymentDate}`)
-      console.log(`loanFundDate ${loanFundDate}`)
-      console.log(`loanNoteDate ${loanNoteDate}`)
-      console.log(`refiDate ${refiDate}`)
-      console.log(`loanRate ${loanRate}`)
-      console.log(`loanTerm ${loanTerm}`)
-
-      console.log(`clientFundAmount ${clientFundAmount}`)
-      console.log(`fundMethodRadio ${fundMethodRadio}`)
-
-      console.log(`isJudgement ${isJudgement}`)
-      console.log(`defaultDate ${defaultDate}`)
-      console.log(`lateDate ${lateDate}`)
-      console.log(`manualDate ${manualDate}`)
-
-      console.log(`isRecovery ${isRecovery}`)
-      console.log(`recoveryBalance ${recoveryBalance}`)
-      console.log(`recoveryDate ${recoveryDate}`)
-      console.log(`recoveryEndDate ${recoveryEndDate}`)
-
+      editLoanOnclick({
+        loanStatus,
+        repeatLoan,
+        paymentSchedule,
+        loanFundAmount,
+        firstPaymentDate,
+        loanFundDate,
+        loanNoteDate,
+        refiDate,
+        loanRate,
+        loanTerm,
+        clientFundAmount,
+        fundMethodRadio,
+        isJudgement,
+        defaultDate,
+        lateDate,
+        manualDate,
+        isRecovery,
+        recoveryBalance,
+        recoveryDate,
+        recoveryEndDate,
+      })
     }
 
     return (
@@ -94,9 +91,33 @@ export default class LoanEditContent extends Component {
 
         <Panel>
           <div className="panel-footer text-center">
-            <button onClick={loanEditOnClick.bind(this)} className="btn btn-info" bsSize="large">Save Changes</button>
+            {
+              editLoanActionState.isFetching &&
+              <div>Loading......</div>
+            }
+            {
+              !editLoanActionState.isFetching && !editLoanActionState.isFailed &&
+              <button onClick={loanEditOnClick.bind(this)} className="btn btn-info" bsSize="large">Save Changes</button>
+            }
           </div>
         </Panel>
+
+        <Row>
+          <Col lg={ 12 } >
+            {
+              editLoanActionState.editSuccess &&
+              <Alert bsStyle="success" className="text-center">
+                <strong>Success - </strong> Loan has been updated!
+              </Alert>
+            }
+            {
+              editLoanActionState.isFailed &&
+              <Alert bsStyle="danger" className="text-center">
+                <strong>Error - </strong> Loan failed to get updated! Please refresh the page and try agian.
+              </Alert>
+            }
+          </Col>
+        </Row>
       </ContentWrapper>
     )
   }

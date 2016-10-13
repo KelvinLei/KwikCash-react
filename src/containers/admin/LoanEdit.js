@@ -4,6 +4,7 @@ import LoanEditContent from '../../components/admin/loanEdit/LoanEditContent'
 import {fetchLoanSummaryAction} from "../../redux/actions/admin/fetchLoanSummary"
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
 import { FailureWidget } from '../../components/shared/FailureWidget'
+import {editLoanAction, resetEditLoanAlertAction} from "../../redux/actions/admin/editLoan";
 
 class LoanEdit extends Component {
 
@@ -12,13 +13,14 @@ class LoanEdit extends Component {
   }
 
   componentDidMount() {
-    const { fetchLoanSummary } = this.props
+    const { fetchLoanSummary, resetEditLoanAlert } = this.props
     const { loanId } = this.props.params
     fetchLoanSummary(loanId)
+    resetEditLoanAlert()
   }
 
   render() {
-    const { loanSummaryState } = this.props
+    const { loanSummaryState, editLoanActionState, editLoanOnclick } = this.props
     const { isFetching, isFetchFailed, loanSummary} = loanSummaryState
 
     let displayContent
@@ -29,7 +31,11 @@ class LoanEdit extends Component {
       displayContent = <FailureWidget/>
     }
     else {
-      displayContent = <LoanEditContent loanLevelData={loanSummary.loanLevelData}/>
+      displayContent = <LoanEditContent loanLevelData={loanSummary.loanLevelData}
+                                        editLoanActionState={editLoanActionState}
+                                        editLoanOnclick={editLoanOnclick}
+
+                      />
     }
 
     return (
@@ -47,14 +53,17 @@ LoanEdit.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchLoanSummary: (loanId) => dispatch(fetchLoanSummaryAction(loanId)),
+    editLoanOnclick: (editLoanContext) => dispatch(editLoanAction(editLoanContext)),
+    resetEditLoanAlert: () => dispatch(resetEditLoanAlertAction()),
   }
 }
 
 function mapStateToProps(state) {
-  const { loanSummaryState } = state
+  const { loanSummaryState, editLoanActionState } = state
 
   return {
     loanSummaryState,
+    editLoanActionState,
   }
 }
 
