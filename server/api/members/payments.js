@@ -8,7 +8,8 @@ const debug = _debug('app:server:api:payments')
 
 export async function getPayments(loanId) {
   const rows = await getPaymentsForLoan(loanId)
-  const payments = rows.map((row) => {
+
+  const payments = rows.filter(filterPayments).map((row) => {
     const paymentDate = convertDateFormat(row.loanpayment_date)
     const scheduleType = SCHEDULE_TYPE[row.loanpayment_scheduled]
     return {
@@ -31,6 +32,17 @@ export async function getPayments(loanId) {
     loanId: firstRow.loanpayment_loan,
     interestRate: firstRow.loanpayment_rate,
   }
+}
+
+/**
+ * If loan is paid, we only display payments that are paid previously and the manually paid payment.
+ * The ones that in the future and get cancelled (amount due set to 0) due to paying off early
+ * don't need to be displayed
+ */
+const filterPayments = ( paymentRow ) => {
+  return !(paymentRow.loan_status == 'P'
+            && paymentRow.loanpayment_due == 0
+            && paymentRow.loanpayment_scheduled == 'Y')
 }
 
 export const isPaymentPaid = (amountPaidInput, amountDueInput, paymentScheduled) => {

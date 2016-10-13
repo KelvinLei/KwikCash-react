@@ -114,7 +114,11 @@ export function getPaymentsForLoan(loanId) {
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query('select * from tbl_loanpayments where loanpayment_loan = ?', [loanId],
+      connection.query(`
+        select p.*, l.loan_status
+        from tbl_loanpayments as p, tbl_loans as l
+        where p.loanpayment_loan = ? AND l.loan_id = p.loanpayment_loan`
+        , [loanId],
         (err, rows) => {
           if (rows) {
             // debug('getPaymentsForLoan database response ' + rows)
