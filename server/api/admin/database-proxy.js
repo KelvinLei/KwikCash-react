@@ -102,7 +102,7 @@ export function filterLoansQuery(filterContext) {
         if (filterContext.fundStartDate) {
           this.andOn(queryBuilder.raw(`l.loan_funddate > '${filterContext.fundStartDate}'`))
         }
-        else {
+        else if (!filterContext.payoffStartDate) { // if payoff date is specified, don't default anything
           this.andOn(queryBuilder.raw(`l.loan_funddate > DATE_SUB(NOW(), INTERVAL 1 MONTH)`))
         }
 
@@ -149,10 +149,22 @@ export function filterLoansQuery(filterContext) {
           .andOn('p.loanpayment_amount', '>', 'p.loanpayment_due ')
           .andOn(queryBuilder.raw("paymentLoans.loan_status = 'P'"))
       })
-      .groupBy('paymentLoans.loan_id')
+      .groupBy('paymentLoans.loan_id').as('payoffLoans')
+
+  const payoffDateFilterQuery =
+    queryBuilder
+      .select(queryBuilder.raw("payoffLoans.*"))
+      .from(payoffDateQuery)
+      .where(queryBuilder.raw(`payoffLoans.lastPaymentDateForPaidLoan > '${filterContext.payoffStartDate}'`))
+  if (filterContext.payoffEndDate) {
+    payoffDateFilterQuery.andWhere(queryBuilder.raw(`payoffLoans.lastPaymentDateForPaidLoan < '${filterContext.payoffEndDate}'`))
+  }
 
   let query
-  if (filterContext.payoffDateWanted == true) {
+  if (filterContext.payoffStartDate) {
+    query = payoffDateFilterQuery
+  }
+  else if (filterContext.payoffDateWanted == true) {
     query = payoffDateQuery
   }
   else if (filterContext.balanceWanted == true || filterContext.remainingPaymentsWanted == true) {

@@ -30,44 +30,87 @@ export default () => {
   // chain a few methods for the first datepicker, jQuery style!
   // d.pikaday('show').pikaday('nextMonth');
 
-  var startDate,
-    endDate,
-    updateStartDate = function() {
-      startPicker.setStartRange(startDate);
-      endPicker.setStartRange(startDate);
-      endPicker.setMinDate(startDate);
+  // fund date range
+  var fundStartDate,
+    fundEndDate,
+    updateFundStartDate = function() {
+      fundStartPicker.setStartRange(fundStartDate);
+      fundEndPicker.setStartRange(fundStartDate);
+      fundEndPicker.setMinDate(fundStartDate);
     },
-    updateEndDate = function() {
-      startPicker.setEndRange(endDate);
-      startPicker.setMaxDate(endDate);
-      endPicker.setEndRange(endDate);
+    updateFundEndDate = function() {
+      fundStartPicker.setEndRange(fundEndDate);
+      fundStartPicker.setMaxDate(fundEndDate);
+      fundEndPicker.setEndRange(fundEndDate);
     },
-    startPicker = new Pikaday({
+    fundStartPicker = new Pikaday({
       field: document.getElementById('fundStartDate'),
       maxDate: new Date(),
       onSelect: function() {
-        startDate = this.getDate();
-        updateStartDate();
+        fundStartDate = this.getDate();
+        updateFundStartDate();
       }
     }),
-    endPicker = new Pikaday({
+    fundEndPicker = new Pikaday({
       field: document.getElementById('fundEndDate'),
       maxDate: new Date(),
       onSelect: function() {
-        endDate = this.getDate();
-        updateEndDate();
+        fundEndDate = this.getDate();
+        updateFundEndDate();
       }
     }),
-    _startDate = startPicker.getDate(),
-    _endDate = endPicker.getDate();
+    _fundStartDate = fundStartPicker.getDate(),
+    _fundEndDate = fundEndPicker.getDate();
 
-  if (_startDate) {
-    startDate = _startDate;
-    updateStartDate();
+  if (_fundStartDate) {
+    fundStartDate = _fundStartDate;
+    updateFundStartDate();
   }
 
-  if (_endDate) {
-    endDate = _endDate;
-    updateEndDate();
+  if (_fundEndDate) {
+    fundEndDate = _fundEndDate;
+    updateFundEndDate();
+  }
+
+  // payoff date range
+  var payoffStartDate,
+    payoffEndDate,
+    updatePayoffStartDate = function() {
+      payoffStartPicker.setStartRange(payoffStartDate);
+      payoffEndPicker.setStartRange(payoffStartDate);
+      payoffEndPicker.setMinDate(payoffStartDate);
+    },
+    updatePayoffEndDate = function() {
+      payoffStartPicker.setEndRange(payoffEndDate);
+      payoffStartPicker.setMaxDate(payoffEndDate);
+      payoffEndPicker.setEndRange(payoffEndDate);
+    },
+    payoffStartPicker = new Pikaday({
+      field: document.getElementById('payoffStartDate'),
+      maxDate: new Date(),
+      onSelect: function() {
+        payoffStartDate = this.getDate();
+        updatePayoffStartDate();
+      }
+    }),
+    payoffEndPicker = new Pikaday({
+      field: document.getElementById('payoffEndDate'),
+      maxDate: new Date(),
+      onSelect: function() {
+        payoffEndDate = this.getDate();
+        updatePayoffEndDate();
+      }
+    }),
+    _payoffStartDate = payoffStartPicker.getDate(),
+    _payoffEndDate = payoffEndPicker.getDate();
+
+  if (_payoffStartDate) {
+    payoffStartDate = _payoffStartDate;
+    updatePayoffStartDate();
+  }
+
+  if (_payoffEndDate) {
+    payoffEndDate = _payoffEndDate;
+    updatePayoffEndDate();
   }
 }

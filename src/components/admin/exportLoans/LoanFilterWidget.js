@@ -64,6 +64,8 @@ export default class LoanFilterWidget extends Component {
     const getFilters = () => {
       const fundStartDate = $('#fundStartDate').val()
       const fundEndDate = $('#fundEndDate').val()
+      const payoffStartDate = $('#payoffStartDate').val()
+      const payoffEndDate = $('#payoffEndDate').val()
       const loanStatus = $('input[name=loanStatusRadio]:checked').val()
       const state = $('#stateOption').val().split('-')[0].trim()
 
@@ -83,6 +85,8 @@ export default class LoanFilterWidget extends Component {
       return {
         fundStartDate,
         fundEndDate,
+        payoffStartDate,
+        payoffEndDate,
         loanStatus,
         state,
         addressWanted,
@@ -134,6 +138,20 @@ export default class LoanFilterWidget extends Component {
                 <input type="text" id="fundEndDate" className="form-control"/>
                 <span className="help-block m-b-none">Fund end date</span>
                 <span className="help-block m-b-none">Defaults to current date if not provided</span>
+              </Col>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <div className="form-group">
+              <label className="col-lg-2 control-label">Payoff date range</label>
+              <Col lg={ 3 }>
+                <input type="text" id="payoffStartDate" className="form-control"/>
+                <span className="help-block m-b-none">Payoff start date</span>
+              </Col>
+              <Col lg={ 3 }>
+                <input type="text" id="payoffEndDate" className="form-control"/>
+                <span className="help-block m-b-none">Payoff end date</span>
               </Col>
             </div>
           </fieldset>
