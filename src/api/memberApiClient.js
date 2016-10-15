@@ -59,6 +59,13 @@ export const authenticate = (username, password) => {
   })
 }
 
+export const changePasswordApi = (currentPassword, newPassword) => {
+  return authenticatedPost('/api/changePassword', {
+    currentPassword,
+    newPassword,
+  })
+}
+
 // just clear the token
 export const logout = () => {
   localStorage.user_token = ""

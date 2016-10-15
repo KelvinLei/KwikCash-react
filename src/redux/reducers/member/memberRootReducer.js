@@ -10,6 +10,10 @@ import {
 import {
   FETCH_GET_USER_DATA_REQUEST, FETCH_GET_USER_DATA_SUCCESS, FETCH_GET_USER_DATA_FAILURE
 } from '../../actions/member/fetchUserData'
+import {
+  CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_FAILURE, CHANGE_PASSWORD_RESET,
+  INCORRECT_CURRENT_PASSWORD
+} from "../../actions/member/changePassword";
 
 var Immutable = require('immutable');
 
@@ -199,9 +203,63 @@ const userDataState = (state = {
   }
 }
 
+const changePasswordState = (state = {
+  isFetching: false,
+  isFailed: false,
+  incorrectCurrPassword: false,
+  success: false,
+}, action) => {
+  switch (action.type) {
+    case CHANGE_PASSWORD_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+        success: false,
+        incorrectCurrPassword: false,
+      }
+    case CHANGE_PASSWORD_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        success: true,
+        incorrectCurrPassword: false,
+      }
+    case INCORRECT_CURRENT_PASSWORD:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        success: false,
+        incorrectCurrPassword: true,
+      }
+    case CHANGE_PASSWORD_RESET:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        success: false,
+        incorrectCurrPassword: false,
+      }
+    case CHANGE_PASSWORD_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+        success: false,
+        incorrectCurrPassword: false,
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   refinanceState,
   loanList,
   paymentState,
   userDataState,
+  changePasswordState,
 }

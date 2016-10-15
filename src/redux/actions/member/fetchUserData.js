@@ -4,9 +4,6 @@ export const FETCH_GET_USER_DATA_REQUEST = 'FETCH_GET_USER_DATA_REQUEST'
 export const FETCH_GET_USER_DATA_SUCCESS = 'FETCH_GET_USER_DATA_SUCCESS'
 export const FETCH_GET_USER_DATA_FAILURE = 'FETCH_GET_USER_DATA_FAILURE'
 
-/*
- Fetch loan list data if no data has been cached
- */
 export const fetchGetUserDataAction = () => {
   return (dispatch, getState) => {
     dispatch(fetchGetUserDataRequest())

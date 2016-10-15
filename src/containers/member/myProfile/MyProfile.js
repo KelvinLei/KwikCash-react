@@ -1,23 +1,28 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
-import { MyProfileContent } from '../../../components/member/myProfile/MyProfileContent'
+import MyProfileContent from '../../../components/member/myProfile/MyProfileContent'
 import { fetchGetUserDataAction } from '../../../redux/actions/member/fetchUserData'
+import { changePasswordAction, changePasswordReset } from "../../../redux/actions/member/changePassword";
 
 class MyProfile extends Component {
 
   componentDidMount() {
-    const { fetchUserData } = this.props
-    fetchUserData();
+    const { fetchUserData, resetChangePassword } = this.props
+    fetchUserData()
+    resetChangePassword()
   }
 
   render() {
-    const { isFetching, isFailed, userData } = this.props
+    const { isFetching, isFailed, userData, changePasswordState, changePasswordOnclick } = this.props
 
     return (
       <div>
         <MyProfileContent isFetching={isFetching}
                           isFailed={isFailed}
-                          userData={userData}/>
+                          userData={userData}
+                          changePasswordState={changePasswordState}
+                          changePasswordOnclick={changePasswordOnclick}
+        />
       </div>
     )
   }
@@ -26,12 +31,16 @@ class MyProfile extends Component {
 MyProfile.propTypes = {
   isFailed: PropTypes.bool.isRequired,
   isFetching: PropTypes.bool.isRequired,
-  userData: PropTypes.object.isRequired
+  userData: PropTypes.object.isRequired,
+  changePasswordState: PropTypes.object.isRequired,
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchUserData: () => dispatch(fetchGetUserDataAction())
+    fetchUserData         : () => dispatch(fetchGetUserDataAction()),
+    changePasswordOnclick : (currPassword, newPassword) =>
+                              dispatch(changePasswordAction(currPassword, newPassword)),
+    resetChangePassword   : () => dispatch(changePasswordReset()),
   }
 }
 
@@ -42,6 +51,7 @@ function mapStateToProps(state) {
     isFetching,
     isFailed,
     userData,
+    changePasswordState: state.changePasswordState,
   }
 }
 

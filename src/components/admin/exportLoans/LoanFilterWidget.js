@@ -103,7 +103,8 @@ export default class LoanFilterWidget extends Component {
       }
     }
 
-    const filterOnClick = () => {
+    const filterOnClick = (e) => {
+      e.preventDefault()
       filterLoans(getFilters())
     }
 
@@ -125,7 +126,7 @@ export default class LoanFilterWidget extends Component {
     return (
       <Panel header="Loan Filtering Widget">
 
-        <form className="form-horizontal">
+        <form onSubmit={filterOnClick.bind(this)} className="form-horizontal">
           <fieldset>
             <div className="form-group">
               <label className="col-lg-2 control-label">Fund date range</label>
@@ -206,7 +207,7 @@ export default class LoanFilterWidget extends Component {
 
           <div className="form-group">
             <Col lgOffset={ 2 } lg={ 3 }>
-              <Button onClick={filterOnClick.bind(this)} bsStyle="primary">Filter</Button>
+              <Button type="submit" bsStyle="primary">Filter</Button>
               <span className="help-block m-b-none">Filter loans and see results in table below</span>
             </Col>
 

@@ -19,7 +19,7 @@ export function getUser(userId) {
               encryptedPassword: row.admin_password,
               email: row.admin_email,
             }
-            debug('getUser db response ' + JSON.stringify(result))
+            debug('getUserByName db response ' + JSON.stringify(result))
             resolve(result);
           } else {
             debug('coudnlt validate user')

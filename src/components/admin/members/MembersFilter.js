@@ -3,14 +3,15 @@ import { Row, Col, Panel, Button } from 'react-bootstrap';
 
 export const MembersFilter = ( {fetchMembers} ) => {
 
-  const filterMembersOnClick = () => {
+  const filterMembersOnClick = (e) => {
+    e.preventDefault()
     const memberName = $('#memberNameInput').val()
     fetchMembers(memberName)
   }
 
   return (
     <Panel header="Members Filtering Widget">
-      <form className="form-horizontal">
+      <form onSubmit={filterMembersOnClick.bind(this)} className="form-horizontal">
         <fieldset>
           <div className="form-group">
             <label className="col-lg-2 control-label">Member name</label>
@@ -23,7 +24,7 @@ export const MembersFilter = ( {fetchMembers} ) => {
 
         <div className="form-group">
           <Col lgOffset={ 2 } lg={ 10 }>
-            <Button onClick={filterMembersOnClick.bind(this)} bsStyle="primary">Filter</Button>
+            <Button type="submit" bsStyle="primary">Filter</Button>
             <span className="help-block m-b-none">Filter members and see results in table below</span>
           </Col>
         </div>

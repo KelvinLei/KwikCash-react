@@ -5,7 +5,7 @@ import _debug from 'debug'
 
 const debug = _debug('app:server:api:shared:password')
 
-function salted_hash(text, salt, saltLength = 4) {
+export function salted_hash(text, salt, saltLength = 4) {
   if (!salt) {
     var res = "";
     for (var i = 0; i < saltLength; i++) {

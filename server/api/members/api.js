@@ -1,4 +1,4 @@
-import { authenticateUser } from './authenticate'
+import { authenticateUserByName } from './authenticate'
 import { getLoans } from './loan-list'
 import { getPayments } from './payments'
 import { getUserDataAsync } from './get-user-data'
@@ -8,18 +8,18 @@ import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from '../../config'
 import isEmail from 'validator/lib/isEmail';
+import {changePassword} from "./changePasswordExecutor";
 
-const debug = _debug('app:server:api')
+const debug = _debug('app:server:member:api')
 
 export function init(server) {
   server.post('/api/authenticate', (req, res) => {
-    debug("calling authenticate");
+    debug(`calling authenticate ${req.body.username}`);
 
     (async () => {
-      debug(`${req.body.username} ${req.body.password}`);
       let user;
       try {
-        user = await authenticateUser(req.body.username, req.body.password);
+        user = await authenticateUserByName(req.body.username, req.body.password);
       } catch(e) {
         res.status(401).send("wrong user or password");
       }
@@ -202,6 +202,27 @@ export function init(server) {
         }
       });
   });
+
+  server.post('/api/changePassword', (req, res) => {
+    (async () => {
+      debug(`calling changePassword api userId ${req.user.id}`);
+      try {
+        var changePasswordResult = await changePassword(req.user.id, req.body.currentPassword, req.body.newPassword);
+        debug("changePassword results: " + JSON.stringify(changePasswordResult));
+
+        res.format({
+          'application/json': () => {
+            res.send({
+              changePasswordResult: changePasswordResult
+            });
+          }
+        });
+      } catch (err) {
+        debug(`changePassword error ${err}`);
+      }
+    }) ();
+  });
+
 };
 
 
