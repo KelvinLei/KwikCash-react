@@ -30,6 +30,8 @@ async function getLoanSummaryData(loanId) {
 
   const loanLevelResult = loanLevelDataRows.map( (row) => {
     const memberSsn = decrypt(row.member_ssn.toString())
+    const paymentScheduleCode = row.loan_paymentschedule
+    const paymentSchedule = PAYMENT_SCHEDULE_MAPPING[row.loan_paymentschedule]
 
     const loanFundDate = convertDateFormat(row.loan_funddate)
     const loanNoteDate = convertDateFormat(row.loan_notedate)
@@ -43,34 +45,36 @@ async function getLoanSummaryData(loanId) {
     const nextPaymentDate = convertDateFormat(row.nextPaymentDate)
 
     return {
-      loanId : row.loan_id,
-      loanNumber : row.loan_number,
-      isRepeatLoan: row.loan_repeat,
-      loanFundAmount: formatToCurrency(row.loan_amount),
-      memberName : row.member_name,
-      firstPaymentDate,
-      fundAmount: row.loan_fundamount,
-      fundMethod: row.loan_fundmethod,
-      memberSsn,
-      loanTerm: row.loan_term,
+      loanId              : row.loan_id,
+      loanNumber          : row.loan_number,
+      isRepeatLoan        : row.loan_repeat,
+      loanFundAmount      : formatToCurrency(row.loan_amount),
+      memberName          : row.member_name,
+      fundAmount          : row.loan_fundamount,
+      fundMethod          : row.loan_fundmethod,
+      loanTerm            : row.loan_term,
+      loanRate            : row.loan_rate,
+      loanStatus          : LOAN_STATUS_MAP[row.loan_status],
+      loanCode            : row.loan_status,
+      balance             : row.remainingBalance.toFixed(2),
+      remainingPayments   : row.remainingPaymentsCount,
+      email               : row.member_email,
+      recovery            : row.loan_recovery,
+      recoveryBalance     : row.loan_recoverybalance,
+      judgement           : row.loan_judgement,
       loanFundDate,
       loanNoteDate,
+      memberSsn,
       nextPaymentDate,
       refiDate,
-      loanRate: row.loan_rate,
-      loanStatus : LOAN_STATUS_MAP[row.loan_status],
-      loanCode: row.loan_status,
-      balance: row.remainingBalance.toFixed(2),
-      remainingPayments: row.remainingPaymentsCount,
-      email: row.member_email,
+      firstPaymentDate,
       defaultDate,
       manualDate,
       lateDate,
       recoveryDate,
       recoveryEndDate,
-      recovery: row.loan_recovery,
-      recoveryBalance: row.loan_recoverybalance,
-      judgement: row.loan_judgement,
+      paymentScheduleCode,
+      paymentSchedule,
     }
   })
   return loanLevelResult.length > 0 ? loanLevelResult[0] : {}

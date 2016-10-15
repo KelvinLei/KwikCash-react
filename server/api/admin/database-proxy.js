@@ -1,6 +1,7 @@
 import _debug from 'debug'
 import pool from '../database'
 import queryBuilder from '../database/queryBuilder'
+import {convertDateFormat} from "../shared/dateHelper";
 const debug = _debug('app:server:admin:api:databaseproxy')
 
 export function getUser(userId) {
@@ -100,14 +101,14 @@ export function filterLoansQuery(filterContext) {
       .join('tbl_loans as l', function() {
         this.on('e.id', '=', 'l.loan_application')
         if (filterContext.fundStartDate) {
-          this.andOn(queryBuilder.raw(`l.loan_funddate > '${filterContext.fundStartDate}'`))
+          this.andOn(queryBuilder.raw(`l.loan_notedate >= '${filterContext.fundStartDate}'`))
         }
         else if (!filterContext.payoffStartDate) { // if payoff date is specified, don't default anything
-          this.andOn(queryBuilder.raw(`l.loan_funddate > DATE_SUB(NOW(), INTERVAL 1 MONTH)`))
+          this.andOn(queryBuilder.raw(`l.loan_notedate >= DATE_SUB(NOW(), INTERVAL 1 MONTH)`))
         }
 
         if (filterContext.fundEndDate) {
-          this.andOn(queryBuilder.raw(`l.loan_funddate < '${filterContext.fundEndDate}'`))
+          this.andOn(queryBuilder.raw(`l.loan_notedate <= '${filterContext.fundEndDate}'`))
         }
         if (filterContext.loanStatus && filterContext.loanStatus != 'ALL') {
           this.andOn(queryBuilder.raw(`l.loan_status = '${filterContext.loanStatus}'`))
@@ -284,7 +285,7 @@ export function fetchPayoffQuery(loanId) {
         ORDER BY p.loanpayment_date ASC`, [loanId],
         (err, rows) => {
           if (rows) {
-            // debug('getPaymentsForLoan database response ' + rows)
+            debug('fetchPayoffQuery database response ' + JSON.stringify(rows))
             resolve(rows);
           } else {
             debug('couldnt fetchPayoffQuery')
@@ -363,13 +364,62 @@ export function fetchMemberProfileQuery(memberId) {
   });
 }
 
-export function editLoanQuery(memberId) {
-  debug('editLoanQuery');
+export function editLoanQuery(editLoanContext) {
+  debug('editLoanQuery ' + JSON.stringify(editLoanContext));
+  const {
+    loanId, loanStatus, repeatLoan, paymentScheduleCode, loanFundAmount, firstPaymentDate,
+    loanFundDate, loanNoteDate, refiDate, loanRate, loanTerm, clientFundAmount, fundMethod,
+    isJudgement, defaultDate, lateDate, manualDate, isRecovery, recoveryBalance, recoveryDate,
+    recoveryEndDate
+  } = editLoanContext
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       connection.query(`
-        select * from e_tbl_members where member_id = ?`, [memberId],
+        UPDATE tbl_loans
+        SET
+        loan_status = ?, 
+        loan_repeat = ?, 
+        loan_paymentschedule = ?, 
+        loan_amount = ?,
+        loan_paymentdate = ?,
+        loan_funddate = ?,
+        loan_notedate = ?,
+        loan_refidate = ?,
+        loan_rate = ?,
+        loan_term = ?,
+        loan_fundamount = ?,
+        loan_fundmethod = ?,
+        loan_judgement = ?,
+        loan_defaultdate = ?,
+        loan_latedate = ?,
+        loan_manualdate = ?,
+        loan_recovery = ?,
+        loan_recoverybalance = ?,
+        loan_recoverydate = ?,
+        loan_recoverystop = ?
+        WHERE loan_id = ?`,
+        [ loanStatus,
+          repeatLoan,
+          paymentScheduleCode,
+          loanFundAmount,
+          firstPaymentDate,
+          loanFundDate,
+          loanNoteDate,
+          refiDate,
+          loanRate,
+          loanTerm,
+          clientFundAmount,
+          fundMethod,
+          isJudgement,
+          defaultDate,
+          lateDate,
+          manualDate,
+          isRecovery,
+          recoveryBalance,
+          recoveryDate,
+          recoveryEndDate,
+          loanId],
         (err, rows) => {
           if (rows) {
             resolve(rows);
@@ -383,3 +433,42 @@ export function editLoanQuery(memberId) {
   });
 }
 
+
+export function updateLoanChangesQuery(editLoanContext) {
+  debug('updateLoanChangesQuery ' + JSON.stringify(editLoanContext));
+  const {
+    loanId, loanStatus, paymentSchedule, loanRate, firstPaymentDate, balance, loanTerm
+  } = editLoanContext
+
+  const query = `INSERT INTO tbl_loanchanges
+        (
+          loanchange_loan,
+          loanchange_date,
+          loanchange_status,
+          loanchange_paymentdate,
+          loanchange_paymentschedule,
+          loanchange_balance,
+          loanchange_rate,
+          loanchange_payment,
+          loanchange_term
+        )
+        VALUES (${loanId}, '${convertDateFormat(new Date())}', '${loanStatus}', '${firstPaymentDate}', '${paymentSchedule}',
+         ${balance}, ${loanRate}, ${0}, ${loanTerm})`
+
+  debug(`updateLoanChangesQuery query ${query}`)
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(query,
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug('couldnt updateLoanChangesQuery')
+            reject(new Error("couldnt updateLoanChangesQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}

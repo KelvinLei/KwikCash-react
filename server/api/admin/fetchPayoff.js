@@ -10,9 +10,12 @@ export async function fetchPayoff(loanId) {
   const rows = await fetchPayoffQuery(loanId)
   const payoffData = getPayoffData(rows)
   const { balanceFromLastPayment, lastPaymentDate, interestFromNextPayment } = payoffData
+  // debug(`payoffData ${JSON.stringify(payoffData)}`);
+
+  const daysBetweenNowAndLastPayment = getDaysDiff(new Date(), lastPaymentDate)
+  // debug(`daysBetweenNowAndLastPayment ${daysBetweenNowAndLastPayment}`)
 
   const payoffAmountList = []
-  const daysBetweenNowAndLastPayment = getDaysDiff(new Date(), lastPaymentDate)
   for (var i = 0; i < 31; i++) {
     let payoffInterest, payoffAmount = 0
     const payoffDate = addDaysToDate(new Date(), i)
@@ -100,6 +103,8 @@ const getPayoffData = ( rows ) => {
 }
 
 const getDaysDiff = (day1, day2) => {
+  if (day1 == null || day2 == null) return 0
+  
   var _MS_PER_DAY = 1000 * 60 * 60 * 24;
 
   // Discard the time and time-zone information.
