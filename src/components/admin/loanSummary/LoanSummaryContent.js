@@ -17,7 +17,7 @@ export const LoanSummaryContent = ({
     <ContentWrapper>
       <Row>
         <Col md={ 12 } className="text-left">
-          <Panel id="loanChangePanel" className="panel-default" header="Loan Changes History">
+          <Panel id="loanChangePanel" className="panel-default" header="Loan Schedule Change History">
             <LoanChangesTable loanChangesData={loanSummary.loanChangesData} />
           </Panel>
         </Col>

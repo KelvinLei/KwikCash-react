@@ -20,6 +20,11 @@ export default () => {
   new Pikaday({
     field: document.getElementById('input-defaultDate'),
     maxDate: new Date(2025, 12, 31)
+  })  
+  
+  new Pikaday({
+    field: document.getElementById('input-payoffDate'),
+    maxDate: new Date(2025, 12, 31)
   })
 
   new Pikaday({

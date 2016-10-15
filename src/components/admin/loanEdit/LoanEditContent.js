@@ -6,6 +6,7 @@ import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import { FailureWidget } from '../../../components/shared/FailureWidget'
 import { PAYMENT_SCHEDULE_MAPPING } from './PaymentScheduleMap'
 import Calender from './Calendar'
+var moment = require('moment')
 
 require('pikaday/pikaday.js')
 require('pikaday/plugins/pikaday.jquery.js')
@@ -21,6 +22,10 @@ export default class LoanEditContent extends Component {
     const { loanLevelData, editLoanActionState, editLoanOnclick } = this.props
 
     const loanEditOnClick = () => {
+      const loanId = loanLevelData.loanId
+      const balance = loanLevelData.balance
+      const currLoanStatus = loanLevelData.loanCode
+
       // LoanEditWidget
       const loanStatus = $('input[name=loanStatusRadio]:checked').val()
       const repeatLoan = $('input[name=repeatLoanRadio]:checked').val()
@@ -36,12 +41,31 @@ export default class LoanEditContent extends Component {
       // FundEditWidget
       const clientFundAmount = $('#inputClientFundAmount').val()
       const fundMethodRadio = $('input[name=fundMethodRadio]:checked').val()
+      let fundMethod = loanLevelData.fundMethod
+      if (fundMethodRadio == 'None') {
+        fundMethod = ''
+      }
+      else if (fundMethodRadio != 'Unchanged') {
+        fundMethod = fundMethodRadio
+      }
 
       // MiscInfoWidget
       const isJudgement = $('input[name=judgementRadio]:checked').val()
-      const defaultDate = $('#input-defaultDate').val()
-      const lateDate = $('#input-lateDate').val()
-      const manualDate = $('#input-manualDate').val()
+      const payoffDate = loanStatus == 'P' && $('#input-payoffDate').val() == '' ?
+                          moment().format('YYYY-MM-DD') :
+                          $('#input-payoffDate').val()
+
+      const defaultDate = loanStatus == 'D' && $('#input-defaultDate').val() == '' ?
+                          moment().format('YYYY-MM-DD') :
+                          $('#input-defaultDate').val()
+
+      const lateDate = loanStatus == 'L' && $('#input-lateDate').val() == '' ?
+                          moment().format('YYYY-MM-DD') :
+                          $('#input-lateDate').val()
+
+      const manualDate = loanStatus == 'M' && $('#input-manualDate').val() == '' ?
+                          moment().format('YYYY-MM-DD') :
+                          $('#input-manualDate').val()
 
       // RecoveryInfoWidget
       const isRecovery = $('input[name=recoveryRadio]:checked').val()
@@ -50,6 +74,9 @@ export default class LoanEditContent extends Component {
       const recoveryEndDate = $('#input-recoveryEndDate').val()
 
       editLoanOnclick({
+        currLoanStatus,
+        balance,
+        loanId,
         loanStatus,
         repeatLoan,
         paymentSchedule,
@@ -61,10 +88,11 @@ export default class LoanEditContent extends Component {
         loanRate,
         loanTerm,
         clientFundAmount,
-        fundMethodRadio,
+        fundMethod,
         isJudgement,
         defaultDate,
         lateDate,
+        payoffDate,
         manualDate,
         isRecovery,
         recoveryBalance,
@@ -113,7 +141,7 @@ export default class LoanEditContent extends Component {
             {
               editLoanActionState.isFailed &&
               <Alert bsStyle="danger" className="text-center">
-                <strong>Error - </strong> Loan failed to get updated! Please refresh the page and try agian.
+                <strong>Error - </strong> Loan failed to get updated! Please refresh and try agian.
               </Alert>
             }
           </Col>
@@ -131,7 +159,7 @@ const LoanEditWidget = ( {loanLevelData} ) => {
     M: 'Manual',
     P: 'Paid',
     D: 'ChargedOff',
-    F: 'Plan'
+    // F: 'Plan',
   }
 
   const loanStatusRadioButtons = Object.keys(LOAN_STATUS_MAP).map( (statusCode, i) => {
@@ -148,8 +176,9 @@ const LoanEditWidget = ( {loanLevelData} ) => {
   })
 
   const paymentScheduleDropdown = PAYMENT_SCHEDULE_MAPPING.map( (schedule, id) => {
+    // const selected = schedule.code == loanLevelData.paymentScheduleCode ? 'selected' : ''
     return (
-      <option key={id} value={schedule.code}>
+      <option key={id} value={schedule.code} >
         {schedule.schedule}
       </option>
     )
@@ -210,6 +239,8 @@ const LoanEditWidget = ( {loanLevelData} ) => {
               <Row>
                 { loanStatusRadioButtons }
               </Row>
+              <span className="help-block m-b-none">A payoff payment will be auto-created when change to paid or chargedOff</span>
+              <span className="help-block m-b-none">To change loans to plan, use paymentSchedule change page</span>
             </Col>
           </div>
         </fieldset>
@@ -234,7 +265,7 @@ const LoanEditWidget = ( {loanLevelData} ) => {
           <div className="form-group">
             <label className="col-lg-4 control-label">Payment Schedule</label>
             <Col lg={ 8 }>
-              <select id="paymentScheduleSelect" className="form-control">
+              <select id="paymentScheduleSelect" defaultValue={loanLevelData.paymentScheduleCode} className="form-control">
                 { paymentScheduleDropdown }
               </select>
             </Col>
@@ -297,6 +328,7 @@ const FundEditWidget = ( {loanLevelData} ) => {
 
 const MiscInfoWidget = ( {loanLevelData} ) => {
   const DATE_LIST = [
+    { dateType: 'Payoff', fieldName: 'payoffDate'},
     { dateType: 'ChargeOff', fieldName: 'defaultDate'},
     { dateType: 'Late', fieldName: 'lateDate'},
     { dateType: 'Manual', fieldName: 'manualDate'},
@@ -325,11 +357,15 @@ const MiscInfoWidget = ( {loanLevelData} ) => {
             <label className="col-lg-4 control-label">Judgement</label>
             <Col lg={ 8 }>
               <label className="radio-inline c-radio">
-                <input id="judgementYes" type="radio" defaultValue="Y" name="judgementRadio" defaultChecked={isJudgement ? 'defaultChecked' : ''}/>
+                <input id="judgementYes" type="radio" defaultValue="Y" name="judgementRadio"
+                       defaultChecked={isJudgement ? 'defaultChecked' : ''}
+                />
                 <em className="fa fa-circle"/>Yes
               </label>
               <label className="radio-inline c-radio">
-                <input id="judgementNo" type="radio" defaultValue="N" name="judgementRadio" defaultChecked={!isJudgement ? 'defaultChecked' : ''}/>
+                <input id="judgementNo" type="radio" defaultValue="N" name="judgementRadio"
+                       defaultChecked={!isJudgement ? 'defaultChecked' : ''}
+                />
                 <em className="fa fa-circle"/>No
               </label>
             </Col>
@@ -372,11 +408,15 @@ const RecoveryInfoWidget = ( {loanLevelData} ) => {
             <label className="col-lg-4 control-label">Recovery Income</label>
             <Col lg={ 8 }>
               <label className="radio-inline c-radio">
-                <input id="recoveryIncomeYes" type="radio" defaultValue="Y" name="recoveryRadio" defaultChecked={isRecoveryIncome ? 'defaultChecked' : ''}/>
+                <input id="recoveryIncomeYes" type="radio" defaultValue="Y" name="recoveryRadio"
+                       defaultChecked={isRecoveryIncome ? 'defaultChecked' : ''}
+                />
                 <em className="fa fa-circle"/>Yes
               </label>
               <label className="radio-inline c-radio">
-                <input id="recoveryIncomeNo" type="radio" defaultValue="N" name="recoveryRadio" defaultChecked={!isRecoveryIncome ? 'defaultChecked' : ''}/>
+                <input id="recoveryIncomeNo" type="radio" defaultValue="N" name="recoveryRadio"
+                       defaultChecked={!isRecoveryIncome ? 'defaultChecked' : ''}
+                />
                 <em className="fa fa-circle"/>No
               </label>
             </Col>

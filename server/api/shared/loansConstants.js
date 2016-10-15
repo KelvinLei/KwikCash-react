@@ -10,5 +10,9 @@ export const LOAN_STATUS_MAP = {
 export const SCHEDULE_TYPE = {
   Y: 'Yes',
   N: 'No',
-  W: 'Waived'
+  W: 'Waived',
+  C: 'ChargedOff',
+  I: 'Increase',
+  R: 'Recovery',
+  G: 'Garnishment',
 }

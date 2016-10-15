@@ -43,11 +43,6 @@ export function getUser(userId) {
  * Sample query that fetches balance
  *
 
- SELECT
-     IF(paymentLoans.loan_status = 'P', MAX(p.loanpayment_date), "") as lastPaymentDateForPaidLoan,
-     paymentLoans.*
- FROM
- (
      SELECT
         IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount,
         IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance,
@@ -66,12 +61,6 @@ export function getUser(userId) {
      LEFT JOIN tbl_loanpayments p
      ON loan_result.loan_id = p.loanpayment_loan AND p.loanpayment_due > p.loanpayment_amount
      GROUP BY loan_result.loan_id
- ) as paymentLoans
- LEFT JOIN tbl_loanpayments p
- ON p.loanpayment_loan = paymentLoans.loan_id AND p.loanpayment_amount > p.loanpayment_due
- AND paymentLoans.loan_status = 'P'
- GROUP BY paymentLoans.loan_id
-
 
  Values in filterContext
         fundStartDate,
@@ -94,9 +83,16 @@ export function filterLoansQuery(filterContext) {
   // create query to fetch loan list
   const loanInner =
     queryBuilder
-      .select('e.fname', 'e.lname', 'e.hstate', 'e.email', 'l.loan_id', 'l.loan_number', 'l.loan_funddate',
-        'l.loan_rate', 'l.loan_amount', 'l.loan_notedate', 'l.loan_status', 'l.loan_defaultdate',
-        'l.loan_recoveryDate', 'l.loan_recoveryBalance', 'l.loan_judgement')
+      .select(queryBuilder.raw(`e.fname, e.lname, e.hstate, e.email, l.loan_id, l.loan_number,
+                                l.loan_rate, l.loan_amount, l.loan_status, l.loan_status, 
+                                DATE_FORMAT(l.loan_notedate, '%Y-%m-%d') as loan_notedate,
+                                DATE_FORMAT(l.loan_funddate, '%Y-%m-%d') as loan_funddate,
+                                DATE_FORMAT(l.loan_defaultdate, '%Y-%m-%d') as loan_defaultdate,
+                                DATE_FORMAT(l.loan_recoveryDate, '%Y-%m-%d') as loan_recoveryDate,
+                                DATE_FORMAT(l.loan_payoffdate, '%Y-%m-%d') as loan_payoffdate,
+                                DATE_FORMAT(l.loan_manualdate, '%Y-%m-%d') as loan_manualdate,
+                                DATE_FORMAT(l.loan_latedate, '%Y-%m-%d') as loan_latedate
+      `))
       .from('e_applications as e')
       .join('tbl_loans as l', function() {
         this.on('e.id', '=', 'l.loan_application')
@@ -106,16 +102,28 @@ export function filterLoansQuery(filterContext) {
         else if (!filterContext.payoffStartDate) { // if payoff date is specified, don't default anything
           this.andOn(queryBuilder.raw(`l.loan_notedate >= DATE_SUB(NOW(), INTERVAL 1 MONTH)`))
         }
-
         if (filterContext.fundEndDate) {
           this.andOn(queryBuilder.raw(`l.loan_notedate <= '${filterContext.fundEndDate}'`))
         }
+
+        if (filterContext.payoffStartDate) {
+          this.andOn(queryBuilder.raw(`l.loan_payoffdate >= '${filterContext.payoffStartDate}'`))
+        }
+        if (filterContext.payoffEndDate) {
+          this.andOn(queryBuilder.raw(`l.loan_payoffdate <= '${filterContext.payoffEndDate}'`))
+        }
+
         if (filterContext.loanStatus && filterContext.loanStatus != 'ALL') {
           this.andOn(queryBuilder.raw(`l.loan_status = '${filterContext.loanStatus}'`))
         }
+        else if (filterContext.payoffStartDate || filterContext.payoffEndDate) {
+          this.andOn(queryBuilder.raw(`l.loan_status = 'P'`))
+        }
+
         if (filterContext.state && filterContext.state != 'All') {
           this.andOn(queryBuilder.raw(`e.hstate = '${filterContext.state}'`))
         }
+
         if (filterContext.recoveryLoans == true) {
           this.andOn(queryBuilder.raw('l.loan_recovery = "Y"'))
         }
@@ -130,8 +138,8 @@ export function filterLoansQuery(filterContext) {
   // for each loan in list, fetch all payments and calculate balance and remaining payments count
   const paymentOuter =
     queryBuilder
-      .select(queryBuilder.raw("IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount"),
-        queryBuilder.raw("IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance"),
+      .select(queryBuilder.raw("IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', 0, COUNT(*)) as remainingPaymentsCount"),
+        queryBuilder.raw("IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', 0, SUM(p.loanpayment_principal)) as remainingBalance"),
         "loan_result.*")
       .from(loanInner)
       .leftJoin('tbl_loanpayments as p', function() {
@@ -140,36 +148,8 @@ export function filterLoansQuery(filterContext) {
       })
       .groupBy('loan_result.loan_id').as('paymentLoans')
 
-  const payoffDateQuery =
-    queryBuilder
-      .select(queryBuilder.raw("IF(paymentLoans.loan_status = 'P', MAX(p.loanpayment_date), '') as lastPaymentDateForPaidLoan"),
-        "paymentLoans.*")
-      .from(paymentOuter)
-      .leftJoin('tbl_loanpayments as p', function() {
-        this.on('p.loanpayment_loan', '=', 'paymentLoans.loan_id')
-          .andOn('p.loanpayment_amount', '>=', 'p.loanpayment_due')
-          .andOn(queryBuilder.raw("(p.loanpayment_due != 0 || p.loanpayment_scheduled != 'Y')"))
-          .andOn(queryBuilder.raw("paymentLoans.loan_status = 'P'"))
-      })
-      .groupBy('paymentLoans.loan_id').as('payoffLoans')
-
-  const payoffDateFilterQuery =
-    queryBuilder
-      .select(queryBuilder.raw("payoffLoans.*"))
-      .from(payoffDateQuery)
-      .where(queryBuilder.raw(`payoffLoans.lastPaymentDateForPaidLoan >= '${filterContext.payoffStartDate}'`))
-  if (filterContext.payoffEndDate) {
-    payoffDateFilterQuery.andWhere(queryBuilder.raw(`payoffLoans.lastPaymentDateForPaidLoan <= '${filterContext.payoffEndDate}'`))
-  }
-
   let query
-  if (filterContext.payoffStartDate) {
-    query = payoffDateFilterQuery
-  }
-  else if (filterContext.payoffDateWanted == true) {
-    query = payoffDateQuery
-  }
-  else if (filterContext.balanceWanted == true || filterContext.remainingPaymentsWanted == true) {
+  if (filterContext.balanceWanted == true || filterContext.remainingPaymentsWanted == true) {
     query = paymentOuter
   }
   else {
@@ -177,7 +157,6 @@ export function filterLoansQuery(filterContext) {
   }
 
   debug(query.toString())
-
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       connection.query(query.toString(),
@@ -224,24 +203,26 @@ export function fetchMembersQuery(memberName) {
 export function fetchLoanSummaryQuery(loanId) {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query(`
-          SELECT
-            IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount,
-            IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance,
-            IF(loan_result.loan_status = 'P', NULL, MIN(p.loanpayment_date)) as nextPaymentDate,
+      const query = `
+         SELECT
+            IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', 0, COUNT(*)) as remainingPaymentsCount,
+            IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', 0, SUM(p.loanpayment_principal)) as remainingBalance,
+            IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', NULL, MIN(p.loanpayment_date)) as nextPaymentDate,
             loan_result.*
          FROM
          (
              SELECT m.*, l.*
              FROM e_tbl_members m
              JOIN tbl_loans as l
-             ON m.member_id = l.loan_member AND l.loan_id = ?
+             ON m.member_id = l.loan_member AND l.loan_id = ${loanId}
              ORDER BY l.loan_funddate DESC
          ) AS loan_result
          LEFT JOIN tbl_loanpayments p
          ON loan_result.loan_id = p.loanpayment_loan AND p.loanpayment_due > p.loanpayment_amount
-         GROUP BY loan_result.loan_id`
-        , [loanId],
+         GROUP BY loan_result.loan_id
+      `
+      debug(`calling fetchLoanSummaryQuery ${query}`)
+      connection.query(query,
         (err, rows) => {
           if (rows) {
             // debug('getLoanList database response ' + rows)
@@ -286,7 +267,7 @@ export function fetchPayoffQuery(loanId) {
         ORDER BY p.loanpayment_date ASC`, [loanId],
         (err, rows) => {
           if (rows) {
-            debug('fetchPayoffQuery database response ' + JSON.stringify(rows))
+            // debug('fetchPayoffQuery database response ' + JSON.stringify(rows))
             resolve(rows);
           } else {
             debug('couldnt fetchPayoffQuery')
@@ -391,59 +372,42 @@ export function fetchMemberProfileQuery(memberId) {
 export function editLoanQuery(editLoanContext) {
   debug('editLoanQuery ' + JSON.stringify(editLoanContext));
   const {
-    loanId, loanStatus, repeatLoan, paymentScheduleCode, loanFundAmount, firstPaymentDate,
+    loanId, loanStatus, repeatLoan, paymentSchedule, loanFundAmount, firstPaymentDate,
     loanFundDate, loanNoteDate, refiDate, loanRate, loanTerm, clientFundAmount, fundMethod,
     isJudgement, defaultDate, lateDate, manualDate, isRecovery, recoveryBalance, recoveryDate,
-    recoveryEndDate
+    recoveryEndDate, payoffDate
   } = editLoanContext
 
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query(`
+      const query = `
         UPDATE tbl_loans
         SET
-        loan_status = ?, 
-        loan_repeat = ?, 
-        loan_paymentschedule = ?, 
-        loan_amount = ?,
-        loan_paymentdate = ?,
-        loan_funddate = ?,
-        loan_notedate = ?,
-        loan_refidate = ?,
-        loan_rate = ?,
-        loan_term = ?,
-        loan_fundamount = ?,
-        loan_fundmethod = ?,
-        loan_judgement = ?,
-        loan_defaultdate = ?,
-        loan_latedate = ?,
-        loan_manualdate = ?,
-        loan_recovery = ?,
-        loan_recoverybalance = ?,
-        loan_recoverydate = ?,
-        loan_recoverystop = ?
-        WHERE loan_id = ?`,
-        [ loanStatus,
-          repeatLoan,
-          paymentScheduleCode,
-          loanFundAmount,
-          firstPaymentDate,
-          loanFundDate,
-          loanNoteDate,
-          refiDate,
-          loanRate,
-          loanTerm,
-          clientFundAmount,
-          fundMethod,
-          isJudgement,
-          defaultDate,
-          lateDate,
-          manualDate,
-          isRecovery,
-          recoveryBalance,
-          recoveryDate,
-          recoveryEndDate,
-          loanId],
+        loan_status = '${loanStatus}', 
+        loan_repeat = '${repeatLoan}', 
+        loan_paymentschedule = '${paymentSchedule}', 
+        loan_payoffdate = '${payoffDate}',
+        loan_amount = ${loanFundAmount},
+        loan_paymentdate = '${firstPaymentDate}',
+        loan_funddate = '${loanFundDate}',
+        loan_notedate = '${loanNoteDate}',
+        loan_refidate = '${refiDate}',
+        loan_rate = ${loanRate},
+        loan_term = ${loanTerm},
+        loan_fundamount = ${clientFundAmount},
+        loan_fundmethod = '${fundMethod}',
+        loan_judgement = '${isJudgement}',
+        loan_defaultdate = '${defaultDate}',
+        loan_latedate = '${lateDate}',
+        loan_manualdate = '${manualDate}',
+        loan_recovery = '${isRecovery}',
+        loan_recoverybalance = ${recoveryBalance},
+        loan_recoverydate = '${recoveryDate}',
+        loan_recoverystop = '${recoveryEndDate}'
+        WHERE loan_id = ${loanId}
+      `
+      debug(`editLoanQuery query ${query}`)
+      connection.query(query,
         (err, rows) => {
           if (rows) {
             resolve(rows);
@@ -496,3 +460,90 @@ export function updateLoanChangesQuery(editLoanContext) {
     })
   });
 }
+
+export function createPaymentQuery(createPayoffPaymentContext) {
+  debug('createPaymentQuery ' + JSON.stringify(createPayoffPaymentContext));
+  const {
+    loanId, due, scheduled, paymentschedule, rate, paid, date, interest, principal,
+  } = createPayoffPaymentContext
+
+  const query = `INSERT INTO tbl_loanpayments
+        (
+          loanpayment_loan,
+          loanpayment_date,
+          loanpayment_due,
+          loanpayment_amount,
+          loanpayment_scheduled,
+          loanpayment_interest,
+          loanpayment_principal,
+          loanpayment_rate,
+          loanpayment_paymentschedule
+        )
+        VALUES (${loanId}, '${date}', '${due}', '${paid}', '${scheduled}',
+         ${interest}, ${principal}, ${rate}, '${paymentschedule}')`
+
+  debug(`createPaymentQuery query ${query}`)
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(query,
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug('couldnt createPaymentQuery')
+            reject(new Error("couldnt createPaymentQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}
+
+export function waivePaymentsQuery(loanId, date) {
+  debug(`waivePaymentsQuery loanId ${loanId} date ${date}`);
+
+  const query = `
+    UPDATE tbl_loanpayments
+    SET 
+    loanpayment_due = 0,
+    loanpayment_amount = 0,
+    loanpayment_interest = 0,
+    loanpayment_principal = 0
+    WHERE loanpayment_loan = ${loanId} AND loanpayment_date > '${date}'
+  `
+
+  debug(`waivePaymentsQuery query ${query}`)
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(query,
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug('couldnt waivePaymentsQuery')
+            reject(new Error("couldnt waivePaymentsQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}
+
+/**
+ * query to backfill payoff date for all paid loans
+ *
+ UPDATE tbl_loans as a
+ JOIN (
+   SELECT
+     MAX(p.loanpayment_date) as lastPaymentDateForPaidLoan,
+     l.*
+   FROM tbl_loans as l
+   JOIN tbl_loanpayments p
+   ON p.loanpayment_loan = l.loan_id AND p.loanpayment_amount >= p.loanpayment_due
+   AND (p.loanpayment_due != 0 || p.loanpayment_scheduled != 'Y') AND l.loan_status = 'P'
+   GROUP BY l.loan_id
+ ) as pl
+ ON a.loan_id = pl.loan_id
+ SET
+ a.loan_payoffdate = pl.lastPaymentDateForPaidLoan
+ */

@@ -162,6 +162,30 @@ export function getPaymentsForLoan(loanId) {
   });
 }
 
+export function getPaymentExtraQuery(loanId) {
+  debug('getPaymentExtraQuery ' + loanId);
+
+  const query = `
+    SELECT * FROM tbl_loanextras WHERE loanextra_loan = ${loanId} ORDER BY loanextra_date DESC LIMIT 1
+  `
+  debug(`getPaymentExtraQuery query ${query}`)
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(query,
+        (err, rows) => {
+          if (rows) {
+            // debug('getPaymentExtraQuery database response ' + rows)
+            resolve(rows);
+          } else {
+            debug('couldnt getPaymentExtraQuery')
+            reject(new Error("couldnt getPaymentExtraQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}
+
 export function changePasswordQuery(userId, encryptedNewPw) {
   debug('changePasswordQuery' + userId);
 

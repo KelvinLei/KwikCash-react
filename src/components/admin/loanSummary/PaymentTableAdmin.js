@@ -13,6 +13,7 @@ export const PaymentTableAdmin = ({
             scheduled,
             principal,
             paymentSchedule,
+            extraAmount,
             interest } = payment
 
     return (
@@ -25,6 +26,7 @@ export const PaymentTableAdmin = ({
                       scheduleType={scheduled}
                       principal={principal}
                       interest={interest}
+                      extraAmount={extraAmount}
                       paymentSchedule={paymentSchedule}
       />
     )
@@ -40,16 +42,17 @@ export const PaymentTableAdmin = ({
               <Table id="paymentPlantTable" responsive striped hover>
                 <thead>
                 <tr>
-                  <th className="sort-numeric">#</th>
-                  <th className="sort-alpha">Status</th>
-                  <th className="sort-numeric">Due Date</th>
-                  <th className="sort-numeric">Due</th>
-                  <th className="sort-numeric">Paid</th>
-                  <th className="sort-numeric">Principal</th>
-                  <th className="sort-numeric">Interest</th>
-                  <th className="sort-numeric">Scheduled</th>
-                  <th className="sort-numeric">PaymentSchedule</th>
-                  <th className="sort-numeric">Options</th>
+                  <th>#</th>
+                  <th>Status</th>
+                  <th>Due Date</th>
+                  <th>Due</th>
+                  <th>Paid</th>
+                  <th>Principal</th>
+                  <th>Interest</th>
+                  <th>Scheduled</th>
+                  <th>PaymentSchedule</th>
+                  <th>ExtraAmount</th>
+                  <th>Options</th>
                 </tr>
                 </thead>
 
@@ -74,6 +77,7 @@ const PaymentPlanRow = ({
   scheduleType,
   principal,
   interest,
+  extraAmount,
   paymentSchedule
 }) => {
   var className = status === "Complete" ? "label label-success" : "label label-warning"
@@ -91,6 +95,7 @@ const PaymentPlanRow = ({
       <td>{'$' + interest}</td>
       <td>{scheduleType}</td>
       <td>{paymentSchedule}</td>
+      <td>{'$' + extraAmount}</td>
       <td>
         <Button bsClass="btn btn-oval btn-info" >Edit</Button>
         <Button bsClass="btn btn-oval btn-success">Waive</Button>

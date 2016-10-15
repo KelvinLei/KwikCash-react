@@ -59,17 +59,20 @@ export function init(server) {
     debug("calling admin filter loans");
 
     (async () => {
-
-      debug("filtering loans for " + JSON.stringify(req.body.filterContext));
-      var loans = await filterLoans(req.body.filterContext);
-      //debug("loans: " + JSON.stringify(loans));
-      res.format({
-        'application/json': () => {
-          res.send({
-            loans: loans
-          });
-        }
-      });
+      try {
+        debug("filtering loans for " + JSON.stringify(req.body.filterContext));
+        var loans = await filterLoans(req.body.filterContext);
+        //debug("loans: " + JSON.stringify(loans));
+        res.format({
+          'application/json': () => {
+            res.send({
+              loans: loans
+            });
+          }
+        });
+      } catch (err) {
+        debug(`filterLoans error ${err}`);
+      }
     })();
   });
 
@@ -189,15 +192,20 @@ export function init(server) {
   server.post('/api/admin/editLoan', (req, res) => {
     (async () => {
       debug('hitting editLoan')
-      const results = await editLoan(req.body.editLoanContext);
+      try {
+        const results = await editLoan(req.body.editLoanContext);
 
-      res.format({
-        'application/json': () => {
-          res.send({
-            results
-          });
-        }
-      });
+        res.format({
+          'application/json': () => {
+            res.send({
+              results
+            });
+          }
+        });
+      }
+      catch (err) {
+        debug(`editLoan error. ${err}`)
+      }
     })();
   });
 

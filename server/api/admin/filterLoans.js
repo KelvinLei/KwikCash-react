@@ -25,11 +25,11 @@ export async function filterLoans(filterContext) {
       address = `${streetNum} ${streetName} ${aptNum} ${city} ${row.hstate}, ${zip}`
     }
 
-    const loanFundDate = convertDateFormat(row.loan_funddate)
-    const loanNoteDate = convertDateFormat(row.loan_notedate)
-    const payoffDate = convertDateFormat(row.lastPaymentDateForPaidLoan)
-    const recoveryDate = convertDateFormat(row.loan_recoveryDate)
-    const defaultDate = convertDateFormat(row.loan_defaultdate)
+    const loanFundDate = row.loan_funddate
+    const loanNoteDate = row.loan_notedate
+    const payoffDate = row.loan_payoffdate
+    const recoveryDate = row.loan_recoveryDate
+    const defaultDate = row.loan_defaultdate
     // debug(`loanid ${row.loan_id} unformated payoffdate ${row.lastPaymentDateForPaidLoan} payoffDate ${payoffDate}`)
     return {
       loanId              : row.loan_id,

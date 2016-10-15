@@ -29,12 +29,13 @@ async function getLoanSummaryData(loanId) {
   const loanLevelDataRows = await fetchLoanSummaryQuery(loanId)
 
   const loanLevelResult = loanLevelDataRows.map( (row) => {
-    const memberSsn = decrypt(row.member_ssn.toString())
+    const memberSsn = row.member_ssn ? decrypt(row.member_ssn.toString()) : null
     const paymentScheduleCode = row.loan_paymentschedule
     const paymentSchedule = PAYMENT_SCHEDULE_MAPPING[row.loan_paymentschedule]
 
     const loanFundDate = convertDateFormat(row.loan_funddate)
     const loanNoteDate = convertDateFormat(row.loan_notedate)
+    const payoffDate = convertDateFormat(row.loan_payoffdate)
     const firstPaymentDate = convertDateFormat(row.loan_paymentdate)
     const recoveryDate = convertDateFormat(row.loan_recoverydate)
     const recoveryEndDate = convertDateFormat(row.loan_recoverystop)
@@ -48,7 +49,7 @@ async function getLoanSummaryData(loanId) {
       loanId              : row.loan_id,
       loanNumber          : row.loan_number,
       isRepeatLoan        : row.loan_repeat,
-      loanFundAmount      : formatToCurrency(row.loan_amount),
+      loanFundAmount      : row.loan_amount ? formatToCurrency(row.loan_amount) : 0,
       memberName          : row.member_name,
       fundAmount          : row.loan_fundamount,
       fundMethod          : row.loan_fundmethod,
@@ -56,7 +57,7 @@ async function getLoanSummaryData(loanId) {
       loanRate            : row.loan_rate,
       loanStatus          : LOAN_STATUS_MAP[row.loan_status],
       loanCode            : row.loan_status,
-      balance             : row.remainingBalance.toFixed(2),
+      balance             : row.remainingBalance ? row.remainingBalance.toFixed(2) : 0,
       remainingPayments   : row.remainingPaymentsCount,
       email               : row.member_email,
       recovery            : row.loan_recovery,
@@ -64,6 +65,7 @@ async function getLoanSummaryData(loanId) {
       judgement           : row.loan_judgement,
       loanFundDate,
       loanNoteDate,
+      payoffDate,
       memberSsn,
       nextPaymentDate,
       refiDate,
@@ -95,7 +97,7 @@ async function getLoanChanges(loanId) {
       loanStatus : LOAN_STATUS_MAP[row.loanchange_status],
       paymentDate,
       paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanchange_paymentschedule],
-      balance: row.loanchange_balance.toFixed(2),
+      balance: row.loanchange_balance ? row.loanchange_balance.toFixed(2) : 0,
       interestRate: row.loanchange_rate,
       payment: row.loanchange_payment,
       term: row.loanchange_term,
