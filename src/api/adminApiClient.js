@@ -85,6 +85,10 @@ export const exportLoans = (filterContext) => {
   return authenticatedPost('/api/admin/exportLoans', {filterContext}, EXCEL)
 }
 
+export const exportRepeats = () => {
+  return authenticatedPost('/api/admin/exportRepeats', {}, EXCEL)
+}
+
 export const fetchMembers = (memberName) => {
   return authenticatedPost('/api/admin/fetchMembers', {memberName})
 }
