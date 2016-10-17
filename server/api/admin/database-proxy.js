@@ -344,6 +344,29 @@ export function getRepeatLoanCustomers() {
   });
 }
 
+export function getExportLoanClientsWithGrossIncome() {
+  debug('getExportLoanClientsWithGrossIncome');
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(`
+       SELECT id, lname, fname, mi, email, hphone, hstnum, hstname, haptnum, hcity, hstate, hzip, remarket, mgross
+       FROM e_applications, tbl_loans
+       WHERE loan_application = e_applications.id
+       ORDER BY lname, fname`,
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug('couldnt getExportLoanClientsWithGrossIncome')
+            reject(new Error("couldnt getExportLoanClientsWithGrossIncome"));
+          }
+        })
+      connection.release()
+    })
+  });
+}
+
 export function fetchMemberProfileQuery(memberId) {
   debug('fetchMemberProfileQuery');
 

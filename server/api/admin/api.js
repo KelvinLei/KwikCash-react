@@ -4,6 +4,7 @@ import config from '../../config'
 import { authenticateUser } from './authenticate'
 import { filterLoans } from './filterLoans'
 import { getRepeatCustomers } from './exportRepeats'
+import { getExportLoanClientsWithGrossIncome } from './database-proxy'
 import { fetchMembers } from './fetchMembers'
 import { getLoans } from '../members/loan-list'
 import json2xls from 'json2xls'
@@ -91,6 +92,16 @@ export function init(server) {
       res.xls('repeats.xlsx', repeats);
     })();
   });
+  
+  server.post('/api/admin/exportClientsWithGrossIncome', (req, res) => {
+    debug("calling exportClientsWithGrossIncome");
+
+    (async () => {
+      var clients = await getExportLoanClientsWithGrossIncome();
+      res.xls('clientsWithGrossIncome.xlsx', clients);
+    })();
+  });
+  
 
   server.post('/api/admin/fetchMembers', (req, res) => {
     (async () => {
