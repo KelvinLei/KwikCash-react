@@ -144,7 +144,9 @@ export function getPaymentsForLoan(loanId) {
       connection.query(`
         select p.*, l.loan_status
         from tbl_loanpayments as p, tbl_loans as l
-        where p.loanpayment_loan = ? AND l.loan_id = p.loanpayment_loan`
+        where p.loanpayment_loan = ? AND l.loan_id = p.loanpayment_loan
+        order by p.loanpayment_date
+        `
         , [loanId],
         (err, rows) => {
           if (rows) {

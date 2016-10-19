@@ -48,6 +48,8 @@ const filterPayments = ( paymentRow ) => {
 export const isPaymentPaid = (amountPaidInput, amountDueInput, paymentScheduled) => {
   const amountPaid = parseFloat(amountPaidInput)
   const amountDue = parseFloat(amountDueInput)
+  if (amountDue <= 0 && paymentScheduled == 'Y')
+    return false
 
   return paymentScheduled == 'W' || amountPaid >= amountDue
 }

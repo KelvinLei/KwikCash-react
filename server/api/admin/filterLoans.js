@@ -30,7 +30,7 @@ export async function filterLoans(filterContext) {
     const payoffDate = convertDateFormat(row.lastPaymentDateForPaidLoan)
     const recoveryDate = convertDateFormat(row.loan_recoveryDate)
     const defaultDate = convertDateFormat(row.loan_defaultdate)
-
+    // debug(`loanid ${row.loan_id} unformated payoffdate ${row.lastPaymentDateForPaidLoan} payoffDate ${payoffDate}`)
     return {
       loanId              : row.loan_id,
       loanNumber          : row.loan_number,

@@ -147,7 +147,8 @@ export function filterLoansQuery(filterContext) {
       .from(paymentOuter)
       .leftJoin('tbl_loanpayments as p', function() {
         this.on('p.loanpayment_loan', '=', 'paymentLoans.loan_id')
-          .andOn('p.loanpayment_amount', '>', 'p.loanpayment_due ')
+          .andOn('p.loanpayment_amount', '>=', 'p.loanpayment_due')
+          .andOn(queryBuilder.raw("(p.loanpayment_due != 0 || p.loanpayment_scheduled != 'Y')"))
           .andOn(queryBuilder.raw("paymentLoans.loan_status = 'P'"))
       })
       .groupBy('paymentLoans.loan_id').as('payoffLoans')
@@ -156,9 +157,9 @@ export function filterLoansQuery(filterContext) {
     queryBuilder
       .select(queryBuilder.raw("payoffLoans.*"))
       .from(payoffDateQuery)
-      .where(queryBuilder.raw(`payoffLoans.lastPaymentDateForPaidLoan > '${filterContext.payoffStartDate}'`))
+      .where(queryBuilder.raw(`payoffLoans.lastPaymentDateForPaidLoan >= '${filterContext.payoffStartDate}'`))
   if (filterContext.payoffEndDate) {
-    payoffDateFilterQuery.andWhere(queryBuilder.raw(`payoffLoans.lastPaymentDateForPaidLoan < '${filterContext.payoffEndDate}'`))
+    payoffDateFilterQuery.andWhere(queryBuilder.raw(`payoffLoans.lastPaymentDateForPaidLoan <= '${filterContext.payoffEndDate}'`))
   }
 
   let query

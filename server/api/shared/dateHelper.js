@@ -1,18 +1,15 @@
 import _debug from 'debug'
-
+var moment = require('moment')
 const debug = _debug('app:server:shared::dateHelper')
 
 export const convertDateFormat = ( date ) => {
   if (date == null) return ''
 
-  date = new Date(date)
-  if (date <= new Date('2002') || isNaN(date)) {
-    // debug(`date ${date} date <= new Date('2002') ${date <= new Date('2002')}, isNaN(date) ${isNaN(date)}`)
-    return ''
-  }
+  date = moment(date)
+  if (date <= moment('2002') || !date.isValid()) return ''
 
-  const month = (date.getMonth() + 1) < 10 ? `0${(date.getMonth() + 1)}` : (date.getMonth() + 1)
-  const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
+  // const month = (date.getMonth() + 1) < 10 ? `0${(date.getMonth() + 1)}` : (date.getMonth() + 1)
+  // const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate()
 
-  return `${date.getFullYear()}-${month}-${day}`
+  return date.format('YYYY-MM-DD'); // `${date.getFullYear()}-${month}-${day}`
 }

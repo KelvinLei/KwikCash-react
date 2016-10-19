@@ -109,6 +109,7 @@
     "locutus": "^2.0.4",
     "lru-memoize": "^1.0.0",
     "map-props": "^1.0.0",
+    "moment": "^2.15.1",
     "mysql": "^2.11.0",
     "node-sass": "^3.7.0",
     "npm": "^3.9.5",
