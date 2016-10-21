@@ -76,17 +76,20 @@ export function init(server) {
     debug("getting loanlist");
 
     (async () => {
-
-      debug("getting loanlist for " + req.user.id);
-      var loans = await getLoans(req.user.id);
-      debug("loans: " + JSON.stringify(loans));
-      res.format({
-        'application/json': () => {
-          res.send({
-            loans: loans
-          });
-        }
-      });
+      try {
+        debug("getting loanlist for " + req.user.id);
+        var loans = await getLoans(req.user.id);
+        debug("loans: " + JSON.stringify(loans));
+        res.format({
+          'application/json': () => {
+            res.send({
+              loans: loans
+            });
+          }
+        })
+      } catch (error) {
+        debug(`getting loanlist failed. ${error}`)
+      };
     })();
   });
 
@@ -196,11 +199,11 @@ export function init(server) {
     const type = req.body.type || 'DEBUG'
     const output = `[${type}] ${req.body.message}`
     debug(output)
-      res.format({
-        'application/json': () => {
-          res.send({'result': output});
-        }
-      });
+    res.format({
+      'application/json': () => {
+        res.send({'result': output});
+      }
+    });
   });
 
   server.post('/api/changePassword', (req, res) => {

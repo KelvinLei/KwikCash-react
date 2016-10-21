@@ -105,9 +105,9 @@ export function getLoanList(userId) {
     pool.getConnection((err, connection) => {
         connection.query(`
             SELECT
-              IF(loan_result.loan_status = 'P', 0, COUNT(*)) as remainingPaymentsCount, 
-              IF(loan_result.loan_status = 'P', 0, SUM(p.loanpayment_principal)) as remainingBalance, 
-              IF(loan_result.loan_status = 'P', NULL, MIN(p.loanpayment_date)) as nextPaymentDate, 
+              IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', 0, COUNT(*)) as remainingPaymentsCount, 
+              IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', 0, SUM(p.loanpayment_principal)) as remainingBalance, 
+              IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', NULL, MIN(p.loanpayment_date)) as nextPaymentDate, 
               loan_result.*
             FROM (
               SELECT 
