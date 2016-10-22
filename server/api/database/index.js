@@ -4,8 +4,8 @@ var pool = mysql.createPool({
   host     : 'kwikcashonline.net',
   user     : 'kwikca5_wp',
   password : 'fhXm9BnPx3', // TODO: find a better way to store password
-  // database : 'kwikca5_wp',
-  database : 'kwikca5_wp_test',
+  database : 'kwikca5_wp',
+  // database : 'kwikca5_wp_test',
 })
 
 export default pool
