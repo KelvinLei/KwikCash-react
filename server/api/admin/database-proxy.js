@@ -237,24 +237,6 @@ export function fetchLoanSummaryQuery(loanId) {
   });
 }
 
-export function fetchLoanChanges(loanId) {
-  return new Promise((resolve, reject) => {
-    pool.getConnection((err, connection) => {
-      connection.query(`select * from tbl_loanchanges where loanchange_loan = ?`, [loanId],
-        (err, rows) => {
-          if (rows) {
-            // debug('getLoanList database response ' + rows)
-            resolve(rows);
-          } else {
-            debug('couldnt fetchLoanChanges')
-            reject(new Error("couldnt fetchLoanChanges for id " + loanId));
-          }
-        })
-      connection.release()
-    })
-  });
-}
-
 export function fetchPayoffQuery(loanId) {
   debug('fetchPayoffQuery ' + loanId);
 
@@ -440,19 +422,17 @@ export function updateLoanChangesQuery(editLoanContext) {
           loanchange_payment,
           loanchange_term
         )
-        VALUES (${loanId}, '${convertDateFormat(new Date())}', '${loanStatus}', '${firstPaymentDate}', '${paymentSchedule}',
-         ${balance}, ${loanRate}, ${0}, ${loanTerm})`
-
-  debug(`updateLoanChangesQuery query ${query}`)
-
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query(query,
+      connection.query(
+        query,
+        [loanId, convertDateFormat(new Date()), loanStatus, firstPaymentDate, paymentSchedule, balance, loanRate, 0, loanTerm],
         (err, rows) => {
           if (rows) {
             resolve(rows);
           } else {
-            debug('couldnt updateLoanChangesQuery')
+            debug(`couldnt updateLoanChangesQuery err ${err}`)
             reject(new Error("couldnt updateLoanChangesQuery"));
           }
         })
@@ -467,7 +447,8 @@ export function createPaymentQuery(createPayoffPaymentContext) {
     loanId, due, scheduled, paymentschedule, rate, paid, date, interest, principal,
   } = createPayoffPaymentContext
 
-  const query = `INSERT INTO tbl_loanpayments
+  const query = `
+        INSERT INTO tbl_loanpayments
         (
           loanpayment_loan,
           loanpayment_date,
@@ -479,18 +460,15 @@ export function createPaymentQuery(createPayoffPaymentContext) {
           loanpayment_rate,
           loanpayment_paymentschedule
         )
-        VALUES (${loanId}, '${date}', '${due}', '${paid}', '${scheduled}',
-         ${interest}, ${principal}, ${rate}, '${paymentschedule}')`
-
-  debug(`createPaymentQuery query ${query}`)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query(query,
+      connection.query(query, [loanId, date, due, paid, scheduled, interest, principal, rate, paymentschedule],
         (err, rows) => {
           if (rows) {
             resolve(rows);
           } else {
-            debug('couldnt createPaymentQuery')
+            debug(`couldnt createPaymentQuery err ${err}`)
             reject(new Error("couldnt createPaymentQuery"));
           }
         })
@@ -499,7 +477,7 @@ export function createPaymentQuery(createPayoffPaymentContext) {
   });
 }
 
-export function waivePaymentsQuery(loanId, date) {
+export function waiveFuturePaymentsQuery(loanId, date) {
   debug(`waivePaymentsQuery loanId ${loanId} date ${date}`);
 
   const query = `
@@ -509,19 +487,44 @@ export function waivePaymentsQuery(loanId, date) {
     loanpayment_amount = 0,
     loanpayment_interest = 0,
     loanpayment_principal = 0
-    WHERE loanpayment_loan = ${loanId} AND loanpayment_date > '${date}'
+    WHERE loanpayment_loan = ? AND loanpayment_date > ?
   `
-
-  debug(`waivePaymentsQuery query ${query}`)
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
-      connection.query(query,
+      connection.query(query, [loanId, date],
         (err, rows) => {
           if (rows) {
             resolve(rows);
           } else {
-            debug('couldnt waivePaymentsQuery')
-            reject(new Error("couldnt waivePaymentsQuery"));
+            debug(`couldnt waiveFuturePaymentsQuery err ${err}`)
+            reject(new Error("couldnt waiveFuturePaymentsQuery"));
+          }
+        })
+      connection.release()
+    })
+  });
+}
+
+export const runParameterizedQuery = ({
+  actionName,
+  query,
+  paramValueList,
+}) => {
+  debug(`Executing action ${actionName},
+          query ${query}
+          paramValueList ${JSON.stringify(paramValueList)}`);
+
+  return new Promise((resolve, reject) => {
+    pool.getConnection((err, connection) => {
+      connection.query(
+        query,
+        paramValueList,
+        (err, rows) => {
+          if (rows) {
+            resolve(rows);
+          } else {
+            debug(`Failed to run action ${actionName} err ${err}`)
+            reject(new Error(`Failed to run action ${actionName}`));
           }
         })
       connection.release()

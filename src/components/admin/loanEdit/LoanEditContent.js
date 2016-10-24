@@ -4,7 +4,7 @@ import { Row, Col, Panel, Alert, ButtonGroup, Button, Table } from 'react-bootst
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import { FailureWidget } from '../../../components/shared/FailureWidget'
-import { PAYMENT_SCHEDULE_MAPPING } from './PaymentScheduleMap'
+import { PAYMENT_SCHEDULE_MAPPING, LOAN_STATUS_MAP } from '../../shared/constants'
 import Calender from './Calendar'
 var moment = require('moment')
 
@@ -52,20 +52,20 @@ export default class LoanEditContent extends Component {
       // MiscInfoWidget
       const isJudgement = $('input[name=judgementRadio]:checked').val()
       const payoffDate = loanStatus == 'P' && $('#input-payoffDate').val() == '' ?
-                          moment().format('YYYY-MM-DD') :
-                          $('#input-payoffDate').val()
+        moment().format('YYYY-MM-DD') :
+        $('#input-payoffDate').val()
 
       const defaultDate = loanStatus == 'D' && $('#input-defaultDate').val() == '' ?
-                          moment().format('YYYY-MM-DD') :
-                          $('#input-defaultDate').val()
+        moment().format('YYYY-MM-DD') :
+        $('#input-defaultDate').val()
 
       const lateDate = loanStatus == 'L' && $('#input-lateDate').val() == '' ?
-                          moment().format('YYYY-MM-DD') :
-                          $('#input-lateDate').val()
+        moment().format('YYYY-MM-DD') :
+        $('#input-lateDate').val()
 
       const manualDate = loanStatus == 'M' && $('#input-manualDate').val() == '' ?
-                          moment().format('YYYY-MM-DD') :
-                          $('#input-manualDate').val()
+        moment().format('YYYY-MM-DD') :
+        $('#input-manualDate').val()
 
       // RecoveryInfoWidget
       const isRecovery = $('input[name=recoveryRadio]:checked').val()
@@ -153,27 +153,27 @@ export default class LoanEditContent extends Component {
 
 const LoanEditWidget = ( {loanLevelData} ) => {
 
-  const LOAN_STATUS_MAP = {
-    A: 'Active',
-    L: 'Late',
-    M: 'Manual',
-    P: 'Paid',
-    D: 'ChargedOff',
-    // F: 'Plan',
+  const filterLoanStatus = ( status ) => {
+    return status != 'F' // to change loan to Plan, use payment schedule change page 
   }
 
-  const loanStatusRadioButtons = Object.keys(LOAN_STATUS_MAP).map( (statusCode, i) => {
-    const defaultChecked = statusCode == loanLevelData.loanCode ? 'defaultChecked' : ''
-    const id = "loanStatus-" + statusCode
-    return (
-      <Col lg={ 6 } key={i} >
-        <label key={"label"+id} className="radio-inline c-radio">
-          <input id={id} type="radio" defaultValue={statusCode} name="loanStatusRadio" defaultChecked={defaultChecked}/>
-          <em className="fa fa-circle"/>{LOAN_STATUS_MAP[statusCode]}
-        </label>
-      </Col>
-    )
-  })
+  const loanStatusRadioButtons =
+    Object.keys(LOAN_STATUS_MAP).filter(filterLoanStatus).map( (statusCode, i) => {
+      const defaultChecked = statusCode == loanLevelData.loanCode ? 'defaultChecked' : ''
+      const id = "loanStatus-" + statusCode
+      return (
+        <Col lg={ 6 } key={i} >
+          <label key={"label"+id} className="radio-inline c-radio">
+            <input id={id} type="radio"
+                   defaultValue={statusCode}
+                   name="loanStatusRadio"
+                   defaultChecked={defaultChecked}
+            />
+            <em className="fa fa-circle"/>{LOAN_STATUS_MAP[statusCode]}
+          </label>
+        </Col>
+      )
+    })
 
   const paymentScheduleDropdown = PAYMENT_SCHEDULE_MAPPING.map( (schedule, id) => {
     // const selected = schedule.code == loanLevelData.paymentScheduleCode ? 'selected' : ''

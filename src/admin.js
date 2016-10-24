@@ -19,6 +19,7 @@ import ExportAnalytics from './containers/admin/ExportAnalytics'
 import MembersAdmin from './containers/admin/MembersAdmin'
 import MemberLoans from './containers/admin/MemberLoans'
 import PayoffAmount from './containers/admin/PayoffAmount'
+import PaymentEdit from './containers/admin/PaymentEdit'
 import LoanEdit from './containers/admin/LoanEdit'
 import LoanSummaryAdmin from './containers/admin/LoanSummaryAdmin'
 import Login from './containers/login/Login'
@@ -70,6 +71,7 @@ ReactDOM.render(
         <Route path="/admin/members/loanSummary/:loanId" component={LoanSummaryAdmin}/>
         <Route path="/admin/members/loanEdit/:loanId" component={LoanEdit}/>
         <Route path="/admin/members/payoff/:loanId" component={PayoffAmount}/>
+        <Route path="/admin/members/paymentEdit/:paymentId" component={PaymentEdit}/>
         <Route path="/admin/exportAnalytics" component={ExportAnalytics}/>
       </Route>
 

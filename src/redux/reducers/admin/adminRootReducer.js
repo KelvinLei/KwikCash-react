@@ -27,6 +27,18 @@ import {
 import {
   EDIT_LOAN_REQUEST, EDIT_LOAN_SUCCESS, EDIT_LOAN_FAILURE, RESET_EDIT_LOAN_ALERT
 } from "../../actions/admin/editLoan";
+import {
+  DELETE_PAYMENT_REQUEST, DELETE_PAYMENT_SUCCESS, DELETE_PAYMENT_FAILURE, RESET_DELETE_PAYMENT_STATE
+} from "../../actions/admin/deletePayment";
+import {
+  WAIVE_PAYMENT_REQUEST, WAIVE_PAYMENT_SUCCESS, WAIVE_PAYMENT_FAILURE, RESET_WAIVE_PAYMENT_STATE
+} from "../../actions/admin/waivePayment";
+import {
+  FETCH_SINGLE_PAYMENT_REQUEST, FETCH_SINGLE_PAYMENT_SUCCESS, FETCH_SINGLE_PAYMENT_FAILURE
+} from "../../actions/admin/fetchSinglePayment";
+import {
+  EDIT_PAYMENT_REQUEST, EDIT_PAYMENT_SUCCESS, EDIT_PAYMENT_FAILURE, RESET_EDIT_PAYMENT_STATE
+} from "../../actions/admin/editPayment";
 
 const loanListState = (state = {
   isFetching: false,
@@ -324,6 +336,169 @@ const editLoanActionState = (state = {
   }
 }
 
+const deletePaymentState = (state = {
+  isFetching: false,
+  isFailed: false,
+  success: false,
+  paymentId: 0
+}, action) => {
+  switch (action.type) {
+    case DELETE_PAYMENT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+        success: false,
+        paymentId: action.paymentId,
+      }
+    case DELETE_PAYMENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        success: true,
+        paymentId: 0,
+      }
+    case RESET_DELETE_PAYMENT_STATE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        success: false,
+        paymentId: 0,
+      }
+    case DELETE_PAYMENT_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+        success: false,
+        paymentId: action.paymentId,
+      }
+
+    default:
+      return state
+  }
+}
+
+const waivePaymentState = (state = {
+  isFetching: false,
+  isFailed: false,
+  success: false,
+  paymentId: 0
+}, action) => {
+  switch (action.type) {
+    case WAIVE_PAYMENT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+        success: false,
+        paymentId: action.paymentId,
+      }
+    case WAIVE_PAYMENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        success: true,
+        paymentId: 0,
+      }
+    case RESET_WAIVE_PAYMENT_STATE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        success: false,
+        paymentId: 0,
+      }
+    case WAIVE_PAYMENT_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+        success: false,
+        paymentId: action.paymentId,
+      }
+
+    default:
+      return state
+  }
+}
+
+const fetchSinglePaymentState = (state = {
+  isFetching: false,
+  isFailed: false,
+  payment: {},
+}, action) => {
+  switch (action.type) {
+    case FETCH_SINGLE_PAYMENT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+        payment: {},
+      }
+    case FETCH_SINGLE_PAYMENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        payment: action.payment,
+      }
+    case FETCH_SINGLE_PAYMENT_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+        payment: {},
+      }
+
+    default:
+      return state
+  }
+}
+
+const editPaymentState = (state = {
+  isFetching: false,
+  isFailed: false,
+  editSuccess: false,
+}, action) => {
+  switch (action.type) {
+    case EDIT_PAYMENT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+        editSuccess: false,
+      }
+    case EDIT_PAYMENT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        editSuccess: true,
+      }
+    case RESET_EDIT_PAYMENT_STATE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        editSuccess: false,
+      }
+    case EDIT_PAYMENT_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+        editSuccess: false,
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   loanListState,
   exportLoansState,
@@ -334,4 +509,8 @@ export default {
   getPayoffFormState,
   memberProfileState,
   editLoanActionState,
+  deletePaymentState,
+  waivePaymentState,
+  fetchSinglePaymentState,
+  editPaymentState,
 }

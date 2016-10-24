@@ -4,6 +4,8 @@ import { LoanSummaryContent } from '../../components/admin/loanSummary/LoanSumma
 import {fetchLoanSummaryAction} from "../../redux/actions/admin/fetchLoanSummary";
 import { LoadingSpinner } from '../../components/shared/LoadingSpinner'
 import { FailureWidget } from '../../components/shared/FailureWidget'
+import {deletePaymentAction, resetDeletePaymentState} from "../../redux/actions/admin/deletePayment";
+import {waivePaymentAction, resetWaivePaymentState} from "../../redux/actions/admin/waivePayment";
 
 class LoanSummaryAdmin extends Component {
 
@@ -12,13 +14,15 @@ class LoanSummaryAdmin extends Component {
   }
 
   componentDidMount() {
-    const { fetchLoanSummary } = this.props
+    const { fetchLoanSummary, resetDeletePaymentState, resetWaivePaymentState } = this.props
     const { loanId } = this.props.params
     fetchLoanSummary(loanId)
+    resetDeletePaymentState()
+    resetWaivePaymentState()
   }
 
   render() {
-    const { loanSummaryState } = this.props
+    const { loanSummaryState, deletePaymentState, waivePaymentState, deletePayment, waivePayment } = this.props
 
     let displayContent
     if (loanSummaryState.isFetching) {
@@ -28,7 +32,13 @@ class LoanSummaryAdmin extends Component {
       displayContent = <FailureWidget/>
     }
     else {
-      displayContent = <LoanSummaryContent loanSummary={loanSummaryState.loanSummary}/>
+      displayContent = <LoanSummaryContent loanSummary={loanSummaryState.loanSummary}
+                                           deletePaymentState={deletePaymentState}
+                                           waivePaymentState={waivePaymentState}
+                                           waivePayment={waivePayment}
+                                           deletePayment={deletePayment}
+
+      />
     }
 
     return (
@@ -45,15 +55,23 @@ LoanSummaryAdmin.propTypes = {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    fetchLoanSummary: (loanId) => dispatch(fetchLoanSummaryAction(loanId)),
+    fetchLoanSummary          : (loanId) => dispatch(fetchLoanSummaryAction(loanId)),
+    // delete payment
+    deletePayment             : (paymentId, loanId) => dispatch(deletePaymentAction(paymentId, loanId)),
+    resetDeletePaymentState   : () => dispatch(resetDeletePaymentState()),
+    // waive payment
+    waivePayment              : (paymentId, loanId) => dispatch(waivePaymentAction(paymentId, loanId)),
+    resetWaivePaymentState    : () => dispatch(resetWaivePaymentState()),
   }
 }
 
 function mapStateToProps(state) {
-  const { loanSummaryState } = state
+  const { loanSummaryState, deletePaymentState, waivePaymentState } = state
 
   return {
     loanSummaryState,
+    deletePaymentState,
+    waivePaymentState,
   }
 }
 

@@ -1,4 +1,4 @@
-import { editLoanQuery, createPaymentQuery, waivePaymentsQuery
+import { editLoanQuery, createPaymentQuery, waiveFuturePaymentsQuery
 } from './database-proxy'
 import _debug from 'debug'
 import {fetchPayoffForDate} from "./fetchPayoff"
@@ -52,7 +52,7 @@ export async function editLoan(editLoanContext) {
       interest          : payoffData.payoffInterest,
       principal         : payoffData.balanceFromLastPayment,
     })
-    await waivePaymentsQuery(loanId, payoffData.payoffDate)
+    await waiveFuturePaymentsQuery(loanId, payoffData.payoffDate)
   }
   else if (loanStatus == 'D' && currLoanStatus != 'D') {
     const payoffData = await fetchPayoffForDate(loanId, payoffDate)
@@ -69,7 +69,7 @@ export async function editLoan(editLoanContext) {
       interest          : 0,
       principal         : payoffData.balanceFromLastPayment,
     })
-    await waivePaymentsQuery(loanId, defaultDate)
+    await waiveFuturePaymentsQuery(loanId, defaultDate)
   }
 
   debug(`editLoanContext ${JSON.stringify(editLoanContext)}`)

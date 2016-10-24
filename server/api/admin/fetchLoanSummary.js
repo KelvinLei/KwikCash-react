@@ -1,4 +1,4 @@
-import { fetchLoanSummaryQuery, fetchLoanChanges } from './database-proxy'
+import { fetchLoanSummaryQuery, runParameterizedQuery } from './database-proxy'
 import _debug from 'debug'
 import { LOAN_STATUS_MAP } from '../shared/loansConstants'
 import {decrypt} from "../shared/decrypter";
@@ -16,6 +16,7 @@ export async function fetchLoanSummary(loanId) {
   const loanLevelData = await getLoanSummaryData(loanId)
   const paymentLevelData = await getPayments(loanId)
   const loanChangesData = await getLoanChanges(loanId)
+  debug(`loanChangesData result  ${JSON.stringify(loanChangesData)}`)
 
   return {
     loanLevelData,
@@ -84,23 +85,32 @@ async function getLoanSummaryData(loanId) {
 
 async function getLoanChanges(loanId) {
   debug(`calling getLoanChanges for loan id ${loanId}`)
-  const loanChangesRows = await fetchLoanChanges(loanId)
 
-  return loanChangesRows.map( (row) => {
+  const query = `
+        select * from tbl_loanchanges where loanchange_loan = ?
+        `
+  const rows = await runParameterizedQuery({
+    actionName      : 'getLoanChanges',
+    paramValueList  : [loanId],
+    query,
+  })
+
+  debug(`calling getLoan result ${JSON.stringify(rows)}`)
+  return rows.map( (row) => {
     const changeDate = convertDateFormat(row.loanchange_date)
     const paymentDate = convertDateFormat(row.loanchange_paymentdate)
-
+    debug(`looping result paymentDate ${paymentDate}`)
     return {
-      loanId: row.loanchange_loan,
+      loanId            : row.loanchange_loan,
+      loanCode          : row.loanchange_status,
+      loanStatus        : LOAN_STATUS_MAP[row.loanchange_status],
+      paymentSchedule   : PAYMENT_SCHEDULE_MAPPING[row.loanchange_paymentschedule],
+      balance           : row.loanchange_balance ? row.loanchange_balance.toFixed(2) : 0,
+      interestRate      : row.loanchange_rate,
+      payment           : row.loanchange_payment,
+      term              : row.loanchange_term,
       changeDate,
-      loanCode: row.loanchange_status,
-      loanStatus : LOAN_STATUS_MAP[row.loanchange_status],
       paymentDate,
-      paymentSchedule: PAYMENT_SCHEDULE_MAPPING[row.loanchange_paymentschedule],
-      balance: row.loanchange_balance ? row.loanchange_balance.toFixed(2) : 0,
-      interestRate: row.loanchange_rate,
-      payment: row.loanchange_payment,
-      term: row.loanchange_term,
     }
   })
 }

@@ -4,9 +4,6 @@ export const FETCH_MEMBERS_REQUEST = 'FETCH_MEMBERS_REQUEST'
 export const FETCH_MEMBERS_SUCCESS = 'FETCH_MEMBERS_SUCCESS'
 export const FETCH_MEMBERS_FAILURE = 'FETCH_MEMBERS_FAILURE'
 
-/*
- Fetch loan list data if no data has been cached
- */
 export const fetchMembersAction = (memberName) => {
   return (dispatch, getState) => {
     const state = getState()

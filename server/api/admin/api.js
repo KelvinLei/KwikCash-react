@@ -13,6 +13,9 @@ import {fetchPayoff} from "./fetchPayoff";
 import {payoffAuthorization} from "./payoffAuthorization";
 import {fetchMemberProfile} from "./fetchMemberProfile";
 import {editLoan} from "./editLoanExecutor";
+import {deletePaymentQuery, runParameterizedQuery} from "./database-proxy";
+import {fetchSinglePayment} from "./fetchSinglePayment";
+import {editPayment} from "./editPayment";
 
 const debug = _debug('app:server:admin:api')
 
@@ -95,7 +98,7 @@ export function init(server) {
       res.xls('repeats.xlsx', repeats);
     })();
   });
-  
+
   server.post('/api/admin/exportClientsWithGrossIncome', (req, res) => {
     debug("calling exportClientsWithGrossIncome");
 
@@ -104,7 +107,7 @@ export function init(server) {
       res.xls('clientsWithGrossIncome.xlsx', clients);
     })();
   });
-  
+
 
   server.post('/api/admin/fetchMembers', (req, res) => {
     (async () => {
@@ -135,15 +138,20 @@ export function init(server) {
 
   server.post('/api/admin/fetchLoanSummary', (req, res) => {
     (async () => {
-      var loanSummary = await fetchLoanSummary(req.body.loanId);
+      try {
+        var loanSummary = await fetchLoanSummary(req.body.loanId);
 
-      res.format({
-        'application/json': () => {
-          res.send({
-            loanSummary
-          });
-        }
-      });
+        res.format({
+          'application/json': () => {
+            res.send({
+              loanSummary
+            });
+          }
+        });
+      }
+      catch (err) {
+        debug(`fetchLoanSummary error. ${err}`)
+      }
     })();
   });
 
@@ -205,6 +213,104 @@ export function init(server) {
       }
       catch (err) {
         debug(`editLoan error. ${err}`)
+      }
+    })();
+  });
+
+  server.post('/api/admin/deletePayment', (req, res) => {
+    (async () => {
+      debug('hitting deletePayment')
+      try {
+        const query = `
+          DELETE FROM tbl_loanpayments
+          WHERE loanpayment_id = ?
+        `
+        const results = await runParameterizedQuery({
+          actionName      : 'deletePaymentQuery',
+          paramValueList  : [req.body.paymentId],
+          query,
+        })
+        res.format({
+          'application/json': () => {
+            res.send({
+              results
+            });
+          }
+        });
+      }
+      catch (err) {
+        debug(`deletePayment error. ${err}`)
+      }
+    })();
+  });
+
+  server.post('/api/admin/waivePayment', (req, res) => {
+    (async () => {
+      debug('hitting waivePayment')
+      try {
+        const query = `
+          UPDATE tbl_loanpayments
+          SET
+          loanpayment_scheduled = 'W',
+          loanpayment_due = 0,
+          loanpayment_amount = 0,
+          loanpayment_principal = 0,
+          loanpayment_interest = 0
+          WHERE loanpayment_id = ?
+        `
+        const results = await runParameterizedQuery({
+          actionName      : 'waivePaymentQuery',
+          paramValueList  : [req.body.paymentId],
+          query,
+        })
+        res.format({
+          'application/json': () => {
+            res.send({
+              results
+            });
+          }
+        });
+      }
+      catch (err) {
+        debug(`waivePayment error. ${err}`)
+      }
+    })();
+  });
+
+  server.post('/api/admin/fetchSinglePayment', (req, res) => {
+    (async () => {
+      debug('hitting fetchSinglePayment')
+      try {
+        const payment = await fetchSinglePayment(req.body.paymentId);
+        res.format({
+          'application/json': () => {
+            res.send({
+              payment
+            });
+          }
+        });
+      }
+      catch (err) {
+        debug(`fetchSinglePayment error. ${err}`)
+      }
+    })();
+  });
+
+  server.post('/api/admin/editPayment', (req, res) => {
+    (async () => {
+      debug('hitting editPayment')
+      try {
+        const results = await editPayment(req.body.editPaymentContext);
+        res.format({
+          'application/json': () => {
+            res.send({
+              results
+            });
+          }
+        });
+      }
+      catch (err) {
+        debug(`editPayment error. ${err}`)
       }
     })();
   });

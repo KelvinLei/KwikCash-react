@@ -25,7 +25,8 @@ export async function getPayments(loanId) {
       scheduled         : scheduleType,
       paymentSchedule   : PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
       paymentDate,
-      extraAmount
+      extraAmount,
+      loanId,
     }
   })
 
@@ -45,7 +46,7 @@ export async function getPayments(loanId) {
  */
 const filterPayments = ( paymentRow ) => {
   const isPaidOrDefault = paymentRow.loan_status == 'P' || paymentRow.loan_status == 'D'
-  
+
   return !(isPaidOrDefault
             && paymentRow.loanpayment_due == 0
             && paymentRow.loanpayment_scheduled == 'Y')

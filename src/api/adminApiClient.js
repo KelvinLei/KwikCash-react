@@ -116,3 +116,19 @@ export const fetchMemberProfile = (memberId) => {
 export const editLoan = (editLoanContext) => {
   return authenticatedPost('/api/admin/editLoan', {editLoanContext})
 }
+
+export const deletePayment = (paymentId) => {
+  return authenticatedPost('/api/admin/deletePayment', {paymentId})
+}
+
+export const waivePayment = (paymentId) => {
+  return authenticatedPost('/api/admin/waivePayment', {paymentId})
+}
+
+export const fetchSinglePayment = (paymentId) => {
+  return authenticatedPost('/api/admin/fetchSinglePayment', {paymentId})
+}
+
+export const editPayment = (editPaymentContext) => {
+  return authenticatedPost('/api/admin/editPayment', {editPaymentContext})
+}

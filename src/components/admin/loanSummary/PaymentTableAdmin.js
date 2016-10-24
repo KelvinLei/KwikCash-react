@@ -1,33 +1,24 @@
 import React from 'react'
-import { Grid, Row, Col, Panel, Table, Button, Dropdown, MenuItem } from 'react-bootstrap';
+import { Grid, Row, Col, Panel, Table, Button, Alert } from 'react-bootstrap';
+import { Link } from 'react-router';
 
 export const PaymentTableAdmin = ({
   paymentLevelData,
+  deletePaymentState,
+  waivePaymentState,
+  waivePayment,
+  deletePayment,
 }) => {
   const paymentListContent = paymentLevelData.payments.map((payment, index) => {
-    const { id,
-            isPaid,
-            paymentDate,
-            amountDue,
-            amountPaid,
-            scheduled,
-            principal,
-            paymentSchedule,
-            extraAmount,
-            interest } = payment
-
     return (
-      <PaymentPlanRow key={id}
+      <PaymentPlanRow key={payment.id}
                       index={index + 1}
-                      status={ isPaid ? 'Complete' : 'Pending'}
-                      dueDate={paymentDate}
-                      amountDue={amountDue}
-                      amountPaid={amountPaid}
-                      scheduleType={scheduled}
-                      principal={principal}
-                      interest={interest}
-                      extraAmount={extraAmount}
-                      paymentSchedule={paymentSchedule}
+                      loanId={paymentLevelData.loanId}
+                      payment={payment}
+                      deletePaymentState={deletePaymentState}
+                      waivePaymentState={waivePaymentState}
+                      waivePayment={waivePayment}
+                      deletePayment={deletePayment}
       />
     )
   })
@@ -70,17 +61,42 @@ export const PaymentTableAdmin = ({
 
 const PaymentPlanRow = ({
   index,
-  status,
-  dueDate,
-  amountDue,
-  amountPaid,
-  scheduleType,
-  principal,
-  interest,
-  extraAmount,
-  paymentSchedule
+  payment,
+  loanId,
+  deletePaymentState,
+  deletePayment,
+  waivePaymentState,
+  waivePayment,
 }) => {
+  const { id,
+          isPaid,
+          paymentDate,
+          amountDue,
+          amountPaid,
+          scheduled,
+          principal,
+          paymentSchedule,
+          extraAmount,
+          interest } = payment
+
+  const status = isPaid ? 'Complete' : 'Pending'
   var className = status === "Complete" ? "label label-success" : "label label-warning"
+
+  const deleteOnclick = () => {
+    deletePayment(id, loanId)
+  }
+  const deleteButtonDisabled = id == deletePaymentState.paymentId && deletePaymentState.isFetching
+
+  const waiveOnclick = () => {
+    waivePayment(id, loanId)
+  }
+  const waiveButtonDisabled = id == waivePaymentState.paymentId && waivePaymentState.isFetching
+
+  let failedAction
+  if (id == waivePaymentState.paymentId && waivePaymentState.isFailed)
+    failedAction = 'waive'
+  else if (id == deletePaymentState.paymentId && deletePaymentState.isFailed)
+    failedAction = 'delete'
 
   return (
     <tr>
@@ -88,18 +104,31 @@ const PaymentPlanRow = ({
       <td>
         <div className={className}>{status}</div>
       </td>
-      <td>{dueDate}</td>
+      <td>{paymentDate}</td>
       <td>{'$' + amountDue}</td>
       <td>{'$' + amountPaid}</td>
       <td>{'$' + principal}</td>
       <td>{'$' + interest}</td>
-      <td>{scheduleType}</td>
+      <td>{scheduled}</td>
       <td>{paymentSchedule}</td>
       <td>{'$' + extraAmount}</td>
       <td>
-        <Button bsClass="btn btn-oval btn-info" >Edit</Button>
-        <Button bsClass="btn btn-oval btn-success">Waive</Button>
-        <Button bsClass="btn btn-oval btn-danger">Delete</Button>
+        <Link to={"/admin/members/paymentEdit/" + id} className="btn btn-oval btn-info">Edit</Link>
+
+        <Button onClick={waiveOnclick.bind(this)}
+                bsClass="btn btn-oval btn-success"
+                disabled={waiveButtonDisabled}>
+          Waive
+        </Button>
+        <Button onClick={deleteOnclick.bind(this)}
+                bsClass="btn btn-oval btn-danger"
+                disabled={deleteButtonDisabled}>
+          Delete
+        </Button>
+        {
+          failedAction &&
+          <div>Failed to {failedAction}</div>
+        }
       </td>
     </tr>
   )

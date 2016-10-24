@@ -16,3 +16,10 @@ export const SCHEDULE_TYPE = {
   R: 'Recovery',
   G: 'Garnishment',
 }
+
+export const PAYMENT_TYPE = {
+  A: 'ACH',
+  C: 'Check',
+  D: 'Debit',
+  O: 'Other',
+}

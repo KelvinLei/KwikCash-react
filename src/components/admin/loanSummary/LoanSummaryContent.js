@@ -11,6 +11,10 @@ require('pikaday/css/pikaday.css')
 
 export const LoanSummaryContent = ({
   loanSummary,
+  deletePaymentState,
+  waivePaymentState,
+  waivePayment,
+  deletePayment,
 }) => {
 
   return (
@@ -39,7 +43,13 @@ export const LoanSummaryContent = ({
 
       <Row>
         <Col md={ 12 } >
-          <PaymentTableAdmin paymentLevelData={loanSummary.paymentLevelData}/>
+          <PaymentTableAdmin loanId
+                             paymentLevelData={loanSummary.paymentLevelData}
+                             deletePaymentState={deletePaymentState}
+                             waivePaymentState={waivePaymentState}
+                             waivePayment={waivePayment}
+                             deletePayment={deletePayment}
+          />
         </Col>
       </Row>
     </ContentWrapper>
