@@ -84,7 +84,7 @@ export function filterLoansQuery(filterContext) {
   const loanInner =
     queryBuilder
       .select(queryBuilder.raw(`e.fname, e.lname, e.hstate, e.email, l.loan_id, l.loan_number,
-                                l.loan_rate, l.loan_amount, l.loan_status, l.loan_status, 
+                                l.loan_rate, l.loan_amount, l.loan_status, 
                                 DATE_FORMAT(l.loan_notedate, '%Y-%m-%d') as loan_notedate,
                                 DATE_FORMAT(l.loan_funddate, '%Y-%m-%d') as loan_funddate,
                                 DATE_FORMAT(l.loan_defaultdate, '%Y-%m-%d') as loan_defaultdate,
@@ -165,7 +165,7 @@ export function filterLoansQuery(filterContext) {
             // debug('getLoanList database response ' + rows)
             resolve(rows);
           } else {
-            debug('couldnt filter loans')
+            debug(`couldnt filter loans error ${err}`)
             reject(new Error("couldnt filter loans from user"));
           }
         })

@@ -11,7 +11,7 @@ require('pikaday/css/pikaday.css')
 export default class ExportLoansTable extends Component {
 
   LOANS_TABLE_DIV_ID = 'loansDataTable'
-  
+
   componentDidMount() {
     DataTableScript(this.LOANS_TABLE_DIV_ID)
   }
@@ -70,7 +70,7 @@ export default class ExportLoansTable extends Component {
                   { filterContext.recoveryBalanceWanted && <th>RecoveryBalance</th> }
                   { filterContext.judgementWanted && <th>Judgement</th> }
                   { filterContext.emailWanted && <th>Email</th> }
-                  { filterContext.addressWanted && <th>Full Addresses</th> }
+                  { filterContext.addressWanted && <th>Full_Addresses________</th> }
                 </tr>
                 </thead>
                 <tbody>
