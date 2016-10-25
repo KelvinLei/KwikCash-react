@@ -2,7 +2,7 @@ import { authenticateUserByName } from './authenticate'
 import { getLoans } from './loan-list'
 import { getPayments } from './payments'
 import { getUserDataAsync } from './get-user-data'
-import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail } from './email-proxy'
+import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail, sendReapplyEmail } from './email-proxy'
 import { emitCounterMetrics } from './metrics-proxy'
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
@@ -165,6 +165,22 @@ export function init(server) {
       var result = await sendPayoffEmail({
         user: req.user,
         loanId: req.body.loanId
+      });
+
+      res.format({
+        'application/json': () => {
+          res.send({'result': result});
+        }
+      });
+    })();
+  });
+
+  server.post('/api/email/reapply', (req, res) => {
+    debug("invoking /api/email/reapply");
+
+    (async () => {
+      var result = await sendReapplyEmail({
+        user: req.user,
       });
 
       res.format({

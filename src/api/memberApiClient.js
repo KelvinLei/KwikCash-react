@@ -95,6 +95,10 @@ export const sendPayoffRequest = (loanId) => {
   })
 }
 
+export const sendReapplyRequest = () => {
+  return authenticatedPost('/api/email/reapply')
+}
+
 export const sendRefinanceRequest = (loanId, currentBalance, refinanceAmount) => {
   return authenticatedPost('/api/email/refinance', {
     loanId,

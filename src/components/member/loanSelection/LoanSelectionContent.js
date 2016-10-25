@@ -4,7 +4,7 @@ import { Row, Col, Panel, Alert, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {getClassNameForLoanStatus} from "../shared/LoanStyles";
-import {sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT} from "../../../api/memberApiClient";
+import {sendReapplyRequest, sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT} from "../../../api/memberApiClient";
 
 export const LoanSelectionContent = ({
   isFetching,
@@ -75,6 +75,7 @@ const LoanSelectionWidget = ({loanList}) => {
   }, true)
 
   const reapplyOnClick = () => {
+    sendReapplyRequest()
     sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
     window.location = "https://www.kwikcashonline.com/members/memberReApply.php"
   }

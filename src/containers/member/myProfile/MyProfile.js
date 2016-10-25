@@ -38,8 +38,11 @@ MyProfile.propTypes = {
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUserData         : () => dispatch(fetchGetUserDataAction()),
-    changePasswordOnclick : (currPassword, newPassword) =>
-                              dispatch(changePasswordAction(currPassword, newPassword)),
+    
+    changePasswordOnclick : (currPassword, newPassword) => {
+      dispatch(changePasswordAction(currPassword, newPassword))
+    },
+    
     resetChangePassword   : () => dispatch(changePasswordReset()),
   }
 }

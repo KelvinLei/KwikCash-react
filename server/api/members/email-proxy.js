@@ -77,3 +77,24 @@ export async function sendPayoffEmail({user, loanId}) {
     sendToThalia: true
   })
 }
+
+export async function sendReapplyEmail({user}) {
+  const subject = '[System] Customer request for re-apply'
+  const userData = await getUserDataAsync(user.id);
+
+  const message = `
+    Customer has requested for re-apply.
+
+    Infomation:
+    name: ${user.name}
+    username: ${user.username}
+    user id: ${user.id}
+    phone: ${userData.homePhone}
+  `
+
+  return await sendEmail({
+    subject,
+    message,
+    sendToThalia: true
+  })
+}
