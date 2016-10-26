@@ -9,7 +9,7 @@ const ses = new aws.SES({apiVersion: '2010-12-01'});
 export const sendEmail = ({subject, message, sendToThalia}) => {
   return new Promise((resolve, reject) => {
     debug("sending email");
-    const sendToAnddress = ['info@kwikcashonline.com']
+    const sendToAnddress = ['kelvin.j.lei@gmail.com']
     if (sendToThalia) {
       sendToAnddress.push('thalia@kwikcashonline.com')
     }

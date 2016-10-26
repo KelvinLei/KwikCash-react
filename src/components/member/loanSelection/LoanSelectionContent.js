@@ -6,6 +6,9 @@ import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {getClassNameForLoanStatus} from "../shared/LoanStyles";
 import {sendReapplyRequest, sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT} from "../../../api/memberApiClient";
 
+require("sweetalert/dist/sweetalert.min")
+require("sweetalert/dist/sweetalert.css")
+
 export const LoanSelectionContent = ({
   isFetching,
   fetchLoansFailed,
@@ -74,10 +77,19 @@ const LoanSelectionWidget = ({loanList}) => {
     return prevData && currLoan.canReapply
   }, true)
 
+  const showReapplyModal = () => {
+    swal({
+      title: "Re-apply request",
+      text: "Thank you for re-applying! We have notified our staff and will be in contact with you shortly.",
+      confirmButtonText: "Yes"
+    });
+  }
+
   const reapplyOnClick = () => {
     sendReapplyRequest()
     sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
-    window.location = "https://www.kwikcashonline.com/members/memberReApply.php"
+    showReapplyModal()
+    // window.location = "https://www.kwikcashonline.com/members/memberReApply.php"
   }
 
   return (
