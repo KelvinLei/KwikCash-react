@@ -89,6 +89,16 @@ export const getPayments = (loanId) => {
   })
 }
 
+export const getLastApplication = () => {
+  return authenticatedPost('/api/getLastApplication')
+}
+
+export const submitReapply = (reapplyInput) => {
+  return authenticatedPost('/api/submitReapply', {
+    reapplyInput
+  })
+}
+
 export const sendPayoffRequest = (loanId) => {
   return authenticatedPost('/api/email/payoff', {
     loanId,

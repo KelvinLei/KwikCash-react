@@ -79,14 +79,15 @@ export async function sendPayoffEmail({user, loanId}) {
   })
 }
 
-export async function sendReapplyEmail({user}) {
-  const subject = '[System] Customer request for re-apply'
+export async function sendReapplyEmail({ user, applicationId}) {
+  const subject = `[System] Re-apply application has been submitted`
   const userData = await getUserDataAsync(user.id);
 
   const message = `
-    Customer has requested for re-apply.
+    Customer has submitted an application for re-apply.
 
     Infomation:
+    applicationId: ${applicationId}
     name: ${user.name}
     username: ${user.username}
     user id: ${user.id}

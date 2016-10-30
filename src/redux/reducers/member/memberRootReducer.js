@@ -14,6 +14,12 @@ import {
   CHANGE_PASSWORD_REQUEST, CHANGE_PASSWORD_SUCCESS, CHANGE_PASSWORD_FAILURE, CHANGE_PASSWORD_RESET,
   INCORRECT_CURRENT_PASSWORD
 } from "../../actions/member/changePassword";
+import {
+  FETCH_LAST_APP_REQUEST, FETCH_LAST_APP_SUCCESS, FETCH_LAST_APP_FAILURE
+} from "../../actions/member/fetchLastApplication";
+import {
+  SUBMIT_REAPPLY_REQUEST, SUBMIT_REAPPLY_SUCCESS, SUBMIT_REAPPLY_FAILURE, SUBMIT_REAPPLY_RESET
+} from "../../actions/member/submitReapply";
 
 var Immutable = require('immutable');
 
@@ -256,10 +262,54 @@ const changePasswordState = (state = {
   }
 }
 
+const reapplyState = (state = {
+  isFetching: false,
+  isFetchFailed: false,
+  isSubmitting: false,
+  lastApplication: {}
+}, action) => {
+  switch (action.type) {
+    case FETCH_LAST_APP_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFetchFailed: false,
+        isSubmitting: false,
+        lastApplication: {}
+      }
+    case FETCH_LAST_APP_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: false,
+        isSubmitting: false,
+        lastApplication: action.lastApplication
+      }
+    case FETCH_LAST_APP_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: true,
+        isSubmitting: false,
+        lastApplication: {}
+      }
+    case SUBMIT_REAPPLY_REQUEST:
+      return {
+        ...state,
+        isFetching: false,
+        isFetchFailed: false,
+        isSubmitting: true,
+      }
+    default:
+      return state
+  }
+}
+
 export default {
   refinanceState,
   loanList,
   paymentState,
   userDataState,
   changePasswordState,
+  reapplyState,
 }

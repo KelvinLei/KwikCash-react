@@ -4,7 +4,7 @@ import { Row, Col, Panel, Alert, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {getClassNameForLoanStatus} from "../shared/LoanStyles";
-import {sendReapplyRequest, sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT} from "../../../api/memberApiClient";
+import { sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT } from "../../../api/memberApiClient";
 
 require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")
@@ -86,9 +86,9 @@ const LoanSelectionWidget = ({loanList}) => {
   }
 
   const reapplyOnClick = () => {
-    sendReapplyRequest()
-    sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
-    showReapplyModal()
+    // sendReapplyRequest()
+    // sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
+    // showReapplyModal()
     // window.location = "https://www.kwikcashonline.com/members/memberReApply.php"
   }
 
@@ -116,11 +116,15 @@ const LoanSelectionWidget = ({loanList}) => {
 
       {
         canReapply &&
-        <Row>
-          <Col md={ 12 } className="center">
-            <Button onClick={reapplyOnClick} bsClass="btn btn-oval btn-info" className="mb-sm">Re-apply</Button>
-          </Col>
-        </Row>
+        <div className="panel-footer text-center">
+          <Row>
+            <Col md={ 12 } className="center">
+              <Link to="/myLoans/reapply">
+                <Button bsClass="btn btn-oval btn-success" className="mb-sm">Re-apply</Button>
+              </Link>
+            </Col>
+          </Row>
+        </div>
       }
     </Panel>
   )

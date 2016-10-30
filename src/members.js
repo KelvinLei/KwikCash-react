@@ -15,6 +15,8 @@ import fontAwesome from './themeJsx/bower_components/fontawesome/css/font-awesom
 
 import App from './containers/App'
 import LoanSelection from './containers/member/loanSelection/LoanSelection'
+import Reapply from './containers/member/reapply/Reapply'
+import ReapplyResults from './containers/member/reapply/ReapplyResults'
 import LoanSummary from './containers/member/loanSummary/LoanSummary'
 import Refinance from './containers/member/refinance/Refinance'
 import MyProfile from './containers/member/myProfile/MyProfile'
@@ -66,6 +68,8 @@ ReactDOM.render(
         <Redirect from="/myLoans/loanSummary" to="/myLoans" />
         <Redirect from="/myLoans/refinance" to="/myLoans" />
 
+        <Route path="/myLoans/reapply/results/:success" component={ReapplyResults}/>
+        <Route path="/myLoans/reapply" component={Reapply}/>
         <Route path="/myLoans" component={LoanSelection}/>
 
         <Route path="/myProfile" component={MyProfile}/>

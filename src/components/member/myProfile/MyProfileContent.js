@@ -3,7 +3,7 @@ import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import {Row, Col, Panel, Button, Alert } from 'react-bootstrap';
 import runParsley from './runParsley'
 require('./profile.scss');
-require('./parsley.scss');
+require('../shared/parsley.scss');
 require('parsleyjs/dist/parsley.min.js')
 
 

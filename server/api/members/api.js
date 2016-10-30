@@ -2,13 +2,15 @@ import { authenticateUserByName } from './authenticate'
 import { getLoans } from './loan-list'
 import { getPayments } from './payments'
 import { getUserDataAsync } from './get-user-data'
-import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail, sendReapplyEmail } from './email-proxy'
+import { sendRefinanceEmail, sendPayoffEmail, sendReferalEmail } from './email-proxy'
 import { emitCounterMetrics } from './metrics-proxy'
 import _debug from 'debug'
 import jwt from 'jsonwebtoken'
 import config from '../../config'
 import isEmail from 'validator/lib/isEmail';
 import {changePassword} from "./changePasswordExecutor";
+import {fetchLastApplication} from "./fetchLastApplication";
+import {submitReapply} from "./submitReapply";
 
 const debug = _debug('app:server:member:api')
 
@@ -175,22 +177,6 @@ export function init(server) {
     })();
   });
 
-  server.post('/api/email/reapply', (req, res) => {
-    debug("invoking /api/email/reapply");
-
-    (async () => {
-      var result = await sendReapplyEmail({
-        user: req.user,
-      });
-
-      res.format({
-        'application/json': () => {
-          res.send({'result': result});
-        }
-      });
-    })();
-  });
-
   server.post('/api/metrics/counter', (req, res) => {
     debug("invoking /api/metrics/counter");
 
@@ -242,6 +228,47 @@ export function init(server) {
     }) ();
   });
 
+  server.post('/api/getLastApplication', (req, res) => {
+    (async () => {
+      debug(`calling getLastApplication api userId ${req.user.id}`);
+      try {
+        var lastApplication = await fetchLastApplication(req.user.id);
+
+        // debug(`in getLastApplication, result ${JSON.stringify(lastApplication)}`)
+        res.format({
+          'application/json': () => {
+            res.send({
+              lastApplication
+            });
+          }
+        });
+      } catch (err) {
+        debug(`getLastApplication error ${err}`);
+      }
+    }) ();
+  });
+
+  server.post('/api/submitReapply', (req, res) => {
+    (async () => {
+      debug(`calling submitReapply api userId ${req.user.id}`);
+      try {
+        var submitReapplyResult = await submitReapply({
+          user          : req.user,
+          reapplyInput  : req.body.reapplyInput
+        });
+        debug("submitReapply results: " + JSON.stringify(submitReapplyResult));
+
+        res.format({
+          'application/json': () => {
+            res.send({
+              submitReapplyResult
+            });
+          }
+        });
+      } catch (err) {
+        debug(`submitReapply error ${err}`);
+      }
+    }) ();
+  });
+
 };
-
-

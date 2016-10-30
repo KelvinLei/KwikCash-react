@@ -14,6 +14,7 @@ export const sendEmail = ({
 }) => {
   return new Promise((resolve, reject) => {
     debug("sending email");
+    // const sendToAnddress = ['kelvin.j.lei@gmail.com']
     const sendToAnddress = ['info@kwikcashonline.com']
     if (sendToThalia) {
       sendToAnddress.push('thalia@kwikcashonline.com')
