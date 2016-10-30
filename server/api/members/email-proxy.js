@@ -25,7 +25,7 @@ export async function sendRefinanceEmail({user, loanInput}) {
   return await sendEmail({
     subject,
     message,
-    sendToThalia        : false,
+    sendToThalia        : true,
     includeToddAndAna   : true,
   })
 }
