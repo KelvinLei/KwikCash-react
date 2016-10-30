@@ -19,9 +19,8 @@ export const sendEmail = ({
       sendToAnddress.push('thalia@kwikcashonline.com')
     }
     if (includeToddAndAna) {
-      // sendToAnddress.push('todd@kwikcashonline.com')
-      // sendToAnddress.push('ana@kwikcashonline.com')
-      sendToAnddress.push('kelvin.j.lei@gmail.com')
+      sendToAnddress.push('todd@kwikcashonline.com')
+      sendToAnddress.push('ana@kwikcashonline.com')
     }
 
     ses.sendEmail({

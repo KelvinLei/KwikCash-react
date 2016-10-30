@@ -20,7 +20,7 @@ export async function getLoans(userId) {
     const nextPaymentDate = convertDateFormat(row.nextPaymentDate)
     const loanFundDate = convertDateFormat(row.loan_funddate)
     const loanRate = row.loan_rate // .toFixed(2)
-    
+
     return {
       loanId                : row.loan_id,
       loanNumber            : row.loan_number,
