@@ -110,7 +110,7 @@ export default class ReapplyContent extends Component {
                   <input type="tel" id="homePhoneNumber" className="form-control"
                          defaultValue={lastApplication.homePhone}
                          data-parsley-required="true"
-                         data-parsley-pattern="/^\d{3}-?\d{3}-?\d{4}$/"
+                         data-parsley-pattern="/^\d{3}-\d{3}-\d{4}$/"
                          data-parsley-error-message="Format needs to be XXX-XXX-XXXX"
                   />
                 </div>
