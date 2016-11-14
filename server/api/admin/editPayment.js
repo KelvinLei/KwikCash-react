@@ -10,14 +10,15 @@ export async function editPayment(editPaymentContext) {
   debug(`calling editPayment`)
   const {
     paymentId,
+    currPaymentScheduled,
     paymentScheduled,
     paymentMethod,
     amountDue,
     amountPaid,
     paymentDate,
+    rate,
     principal,
     interest,
-    rate,
   } = editPaymentContext
 
   const query = `
@@ -34,9 +35,14 @@ export async function editPayment(editPaymentContext) {
     WHERE loanpayment_id = ?
   `
 
+  // when unwaive a payment, re-assign amount due value
+  const finalAmountDue = currPaymentScheduled == 'W' && paymentScheduled != 'W' ?
+                          interest + principal :
+                          amountDue
+
   return await runParameterizedQuery({
     actionName      : 'editPayment',
-    paramValueList  : [paymentDate, amountDue, amountPaid, principal, interest, paymentScheduled, rate, paymentMethod, paymentId],
+    paramValueList  : [paymentDate, finalAmountDue, amountPaid, principal, interest, paymentScheduled, rate, paymentMethod, paymentId],
     query,
   })
 }

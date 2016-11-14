@@ -25,19 +25,20 @@ export default class PaymentEditContent extends Component {
       const amountDue = $('#input-amountDue').val()
       const amountPaid = $('#input-amountPaid').val()
       const paymentDate = $('#input-paymentDate').val()
-      const principal = $('#input-principal').val()
-      const interest = $('#input-interest').val()
+      // const principal = $('#input-principal').val()
+      // const interest = $('#input-interest').val()
       const rate = $('#input-rate').val()
 
       editPayment({
-        paymentId: payment.paymentId,
+        paymentId             : payment.paymentId,
+        principal             : payment.principal,
+        interest              : payment.interest,
+        currPaymentScheduled  : payment.scheduled,
         paymentScheduled,
         paymentMethod,
         amountDue,
         amountPaid,
         paymentDate,
-        principal,
-        interest,
         rate,
       })
     }
@@ -46,9 +47,9 @@ export default class PaymentEditContent extends Component {
       { label: "Amount Due", fieldName: "amountDue"},
       { label: "Amount Paid", fieldName: "amountPaid"},
       { label: "Payment Date", fieldName: "paymentDate"},
-      { label: "Principal", fieldName: "principal"},
-      { label: "Interest", fieldName: "interest"},
       { label: "APR Rate", fieldName: "rate"},
+      // { label: "Principal", fieldName: "principal"},
+      // { label: "Interest", fieldName: "interest"},
     ]
 
     const paymentInputWidget = paymentInput.map( (input, i) => {

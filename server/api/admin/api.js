@@ -253,9 +253,7 @@ export function init(server) {
           SET
           loanpayment_scheduled = 'W',
           loanpayment_due = 0,
-          loanpayment_amount = 0,
-          loanpayment_principal = 0,
-          loanpayment_interest = 0
+          loanpayment_amount = 0
           WHERE loanpayment_id = ?
         `
         const results = await runParameterizedQuery({

@@ -1,4 +1,5 @@
 import { editPayment } from '../../../api/adminApiClient'
+import {fetchSinglePaymentAction} from "./fetchSinglePayment";
 
 export const EDIT_PAYMENT_REQUEST = 'EDIT_PAYMENT_REQUEST'
 export const EDIT_PAYMENT_SUCCESS = 'EDIT_PAYMENT_SUCCESS'
@@ -11,6 +12,7 @@ export const editPaymentAction = (editPaymentContext) => {
 
     editPayment(editPaymentContext)
       .then(response => {
+        dispatch(fetchSinglePaymentAction(editPaymentContext.paymentId))
         dispatch(editPaymentSuccess())
       })
       .catch(() => {
