@@ -1,11 +1,15 @@
 import React from 'react'
-import { Panel, Table } from 'react-bootstrap';
+import { Panel, Table, Alert } from 'react-bootstrap';
 
 export const EstimateTable = (
   {currentBalance, refinanceValueForTable, newBalance, shouldShowNewBalance}
 ) => {
   return (
     <Panel header="Estimated new balance">
+      <Alert bsStyle="success">
+        Check out your new estimated balance
+      </Alert>
+
       <Table id="estimateTable" responsive striped hover>
         <thead>
         <tr>

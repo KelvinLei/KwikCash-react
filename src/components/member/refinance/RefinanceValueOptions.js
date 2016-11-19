@@ -6,6 +6,7 @@ export const RefinanceValueOptions = ({
   valueList,
   currentBalance,
   shouldDisplayAlert,
+  alertMessage,
   onClickRefinanceValue,
   onClickUserRefinanceValue,
   onEnterUserFinanceValue
@@ -28,8 +29,6 @@ export const RefinanceValueOptions = ({
   })
 
   const refinanceValue = refinanceState.userInputRefinanceValue.value
-
-  const alertMessage = `Please select or enter a value that is higher than current balance: $${currentBalance}`
 
   return (
     <Panel header="Potential refinance value">
@@ -56,6 +55,9 @@ export const RefinanceValueOptions = ({
             />
             <span class="input-group-addon">.00</span>
           </div>
+          <span className="help-block m-b-none">
+            Refinance value range: ${valueList[0]} - ${valueList[valueList.length - 1]}
+          </span>
         </Col>
       </Row>
 

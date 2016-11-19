@@ -4,7 +4,7 @@ import { Row, Col, Panel } from 'react-bootstrap';
 import { RefinanceValueOptions } from './RefinanceValueOptions'
 import { EstimateTable } from './EstimateTable'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
-import {sendCounterMetrics, sendRefinanceRequest, METRICS_NAME_REFINANCE_BTN_COUNT} 
+import {sendCounterMetrics, sendRefinanceRequest, METRICS_NAME_REFINANCE_BTN_COUNT}
   from "../../../api/memberApiClient";
 import stylings from './refinanceStylings.scss'
 
@@ -58,7 +58,7 @@ const RefinanceContentBody = ({
   onEnterUserFinanceValue
 }) => {
 
-  const refinanceOptions = [2000, 3000, 4000, 5000];
+  const refinanceOptions = [2500, 3000, 3500, 4000, 4500, 5000];
 
   const currentBalance = loanData.balance
 
@@ -85,13 +85,21 @@ const RefinanceContentBody = ({
         }
       });
   }
-  
+
   const refinanceBtnOnclick = () => {
     showRefinanceModal()
     sendCounterMetrics(METRICS_NAME_REFINANCE_BTN_COUNT, [])
   }
 
-  const isSelectedRefinanceValueValid = parseInt(selectedRefinanceValue) >= currentBalance
+  let isSelectedRefinanceValueValid = true, alertMessage
+  if (parseInt(selectedRefinanceValue) < currentBalance) {
+    isSelectedRefinanceValueValid = false
+    alertMessage = `Please select or enter a value that is higher than current balance: $${currentBalance}`
+  }
+  else if (parseInt(selectedRefinanceValue) < 2500 || parseInt(selectedRefinanceValue) > 5000) {
+    isSelectedRefinanceValueValid = false
+    alertMessage = `Please select or enter a value within range of $2500 - $5000`
+  }
 
   return (
     <div>
@@ -108,6 +116,7 @@ const RefinanceContentBody = ({
                                  valueList={refinanceOptions}
                                  currentBalance={currentBalance}
                                  shouldDisplayAlert={!isSelectedRefinanceValueValid}
+                                 alertMessage={alertMessage}
                                  onClickRefinanceValue={onClickRefinanceValue}
                                  onClickUserRefinanceValue={onClickUserRefinanceValue}
                                  onEnterUserFinanceValue={onEnterUserFinanceValue}
