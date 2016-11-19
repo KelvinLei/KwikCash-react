@@ -16,6 +16,7 @@ import {editLoan} from "./editLoanExecutor";
 import {deletePaymentQuery, runParameterizedQuery} from "./database-proxy";
 import {fetchSinglePayment} from "./fetchSinglePayment";
 import {editPayment} from "./editPayment";
+import {waivePayment} from "./waivePayment";
 
 const debug = _debug('app:server:admin:api')
 
@@ -248,19 +249,7 @@ export function init(server) {
     (async () => {
       debug('hitting waivePayment')
       try {
-        const query = `
-          UPDATE tbl_loanpayments
-          SET
-          loanpayment_scheduled = 'W',
-          loanpayment_due = 0,
-          loanpayment_amount = 0
-          WHERE loanpayment_id = ?
-        `
-        const results = await runParameterizedQuery({
-          actionName      : 'waivePaymentQuery',
-          paramValueList  : [req.body.paymentId],
-          query,
-        })
+        const results = await waivePayment(req.body.waivePaymentContext)
         res.format({
           'application/json': () => {
             res.send({

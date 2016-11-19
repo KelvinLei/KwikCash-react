@@ -20,6 +20,7 @@ export async function fetchSinglePayment(paymentId) {
           e_tbl_members as m
         WHERE
           p.loanpayment_loan = l.loan_id AND m.member_id = l.loan_member AND p.loanpayment_id = ?
+        ORDER BY p.loanpayment_date
         `
   var rows = await runParameterizedQuery({
     actionName      : 'fetchSinglePayment',
@@ -27,7 +28,7 @@ export async function fetchSinglePayment(paymentId) {
     query,
   })
   if (rows.length == 0) return {}
-  
+
   const row = rows[0]
   return {
     paymentId         : row.loanpayment_id,

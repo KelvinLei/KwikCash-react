@@ -16,7 +16,6 @@ export async function fetchLoanSummary(loanId) {
   const loanLevelData = await getLoanSummaryData(loanId)
   const paymentLevelData = await getPayments(loanId)
   const loanChangesData = await getLoanChanges(loanId)
-  debug(`loanChangesData result  ${JSON.stringify(loanChangesData)}`)
 
   return {
     loanLevelData,

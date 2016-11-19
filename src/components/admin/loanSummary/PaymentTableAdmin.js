@@ -88,7 +88,12 @@ const PaymentPlanRow = ({
   const deleteButtonDisabled = id == deletePaymentState.paymentId && deletePaymentState.isFetching
 
   const waiveOnclick = () => {
-    waivePayment(id, loanId)
+    waivePayment({
+      paymentId : id,
+      loanId,
+      paymentDate,
+      paymentSchedule,
+    })
   }
   const waiveButtonDisabled = id == waivePaymentState.paymentId && waivePaymentState.isFetching
 

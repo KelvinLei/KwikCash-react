@@ -121,8 +121,8 @@ export const deletePayment = (paymentId) => {
   return authenticatedPost('/api/admin/deletePayment', {paymentId})
 }
 
-export const waivePayment = (paymentId) => {
-  return authenticatedPost('/api/admin/waivePayment', {paymentId})
+export const waivePayment = (waivePaymentContext) => {
+  return authenticatedPost('/api/admin/waivePayment', {waivePaymentContext})
 }
 
 export const fetchSinglePayment = (paymentId) => {

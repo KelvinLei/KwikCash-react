@@ -60,7 +60,7 @@ const mapDispatchToProps = (dispatch) => {
     deletePayment             : (paymentId, loanId) => dispatch(deletePaymentAction(paymentId, loanId)),
     resetDeletePaymentState   : () => dispatch(resetDeletePaymentState()),
     // waive payment
-    waivePayment              : (paymentId, loanId) => dispatch(waivePaymentAction(paymentId, loanId)),
+    waivePayment              : (waivePaymentContext) => dispatch(waivePaymentAction(waivePaymentContext)),
     resetWaivePaymentState    : () => dispatch(resetWaivePaymentState()),
   }
 }

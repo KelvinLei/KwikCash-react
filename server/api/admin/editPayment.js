@@ -1,7 +1,5 @@
-import { runParameterizedQuery
-} from './database-proxy'
-import _debug from 'debug'
-import {fetchPayoffForDate} from "./fetchPayoff"
+import {runParameterizedQuery} from "./database-proxy";
+import _debug from "debug";
 var moment = require('moment')
 
 const debug = _debug('app:server:admin:editPayment')
@@ -39,8 +37,8 @@ export async function editPayment(editPaymentContext) {
   const finalAmountDue = currPaymentScheduled == 'W' && paymentScheduled != 'W' ?
                           interest + principal :
                           amountDue
-
-  return await runParameterizedQuery({
+  // update current payment
+  await runParameterizedQuery({
     actionName      : 'editPayment',
     paramValueList  : [paymentDate, finalAmountDue, amountPaid, principal, interest, paymentScheduled, rate, paymentMethod, paymentId],
     query,
