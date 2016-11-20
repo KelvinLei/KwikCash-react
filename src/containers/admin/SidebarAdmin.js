@@ -18,7 +18,7 @@ export default class SidebarAdmin extends Component {
       },
       { tabName: 'Export Analytics',
         toLink: '/admin/exportAnalytics',
-        icon: "icon-user",
+        icon: "icon-book-open",
         className: currentPage.includes("exportAnalytics") ? "active" : ""
       },
       { tabName: 'Members',
