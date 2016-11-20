@@ -66,14 +66,6 @@ class ExportLoans extends Component {
   }
 }
 
-ExportLoans.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  fetchLoansFailed: PropTypes.bool.isRequired,
-  loans: PropTypes.array.isRequired,
-  filterLoans: PropTypes.func.isRequired,
-  exportLoans: PropTypes.func.isRequired,
-}
-
 const mapDispatchToProps = dispatch => {
   return {
     filterLoans: (filterContext) => dispatch(filterLoansAction(filterContext)),
