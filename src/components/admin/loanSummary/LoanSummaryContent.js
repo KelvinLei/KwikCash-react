@@ -1,6 +1,6 @@
 import React from 'react'
 import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
-import { Row, Col, Panel, Grid, ButtonGroup, Button, Table } from 'react-bootstrap';
+import { Row, Col, Panel, Grid, Button, Table } from 'react-bootstrap';
 import { Link } from 'react-router';
 import {PaymentTableAdmin} from "./PaymentTableAdmin";
 import {getClassNameForLoanStatus} from "../../member/shared/LoanStyles";
