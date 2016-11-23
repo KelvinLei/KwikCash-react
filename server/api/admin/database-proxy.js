@@ -243,7 +243,9 @@ export function fetchPayoffQuery(loanId) {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       connection.query(`
-        SELECT p.*, l.*
+        SELECT p.*, l.*,
+        DATE_FORMAT(p.loanpayment_date, '%Y-%m-%d') as paymentDate,
+        DATE_FORMAT(l.loan_funddate, '%Y-%m-%d') as loanFundDate
         FROM tbl_loanpayments as p, tbl_loans as l
         WHERE p.loanpayment_loan = l.loan_id AND loanpayment_loan = ?
         ORDER BY p.loanpayment_date ASC`, [loanId],

@@ -39,22 +39,25 @@ export async function fetchPayoff(loanId) {
     }
 
     payoffAmountList.push({
-      payoffDate: convertDateFormat(payoffDate),
-      payoffInterest: payoffInterest.toFixed(2),
-      payoffAmount: payoffAmount.toFixed(2)
+      payoffDate      : payoffDate.format('YYYY-MM-DD'),
+      payoffInterest  : payoffInterest.toFixed(2),
+      payoffAmount    : payoffAmount.toFixed(2)
     })
   }
 
   return {
     payoffData: {
-      balanceFromLastPayment: balanceFromLastPayment.toFixed(2),
-      lastPaymentDate: convertDateFormat(lastPaymentDate),
-      interestFromNextPayment: interestFromNextPayment
+      balanceFromLastPayment    : balanceFromLastPayment.toFixed(2),
+      lastPaymentDate           : lastPaymentDate,
+      interestFromNextPayment   : interestFromNextPayment
     },
     payoffAmountList,
   }
 }
 
+/**
+ * payoffDate format is expected to be YYYY-MM-DD
+ */
 export async function fetchPayoffForDate(loanId, payoffDate) {
   debug(`calling fetchPayoffForDate loanid ${loanId} payoff date ${payoffDate}`);
   const rows = await fetchPayoffQuery(loanId)
@@ -77,9 +80,9 @@ export async function fetchPayoffForDate(loanId, payoffDate) {
 
   return {
     balanceFromLastPayment    : balanceFromLastPayment.toFixed(2),
-    lastPaymentDate           : convertDateFormat(lastPaymentDate),
+    lastPaymentDate           : lastPaymentDate,
     interestFromNextPayment   : interestFromNextPayment,
-    payoffDate                : convertDateFormat(payoffDate),
+    payoffDate                : payoffDate,
     payoffInterest            : payoffInterest.toFixed(2),
     payoffAmount              : payoffAmount.toFixed(2),
   }
@@ -96,21 +99,22 @@ const getPayoffData = ( rows ) => {
   }
 
   let balanceFromLastPayment = rows[0].loan_amount
-  const currentDate = new Date()
+  const currentDate = moment()
+  const firstPaymentDate = moment(rows[0].paymentDate)
   // if loan is newly taken and has no paid payment yet
-  if (rows[0].loanpayment_date >= currentDate && rows[0].loanpayment_due > rows[0].loanpayment_amount) {
+  if (firstPaymentDate >= currentDate && rows[0].loanpayment_due > rows[0].loanpayment_amount) {
     return {
       balanceFromLastPayment,
-      lastPaymentDate: rows[0].loan_funddate, // use the initial fund date
+      lastPaymentDate: rows[0].loanFundDate, // use the initial fund date
       interestFromNextPayment: rows[0].loanpayment_rate
     }
   }
 
-  let lastPaymentDate = new Date()
+  let lastPaymentDate = moment()
   let interestFromNextPayment = 0
   for (var i = 0; i < rows.length; i++) {
     // substract paid principal from loan amount
-    const paymentDate = new Date(rows[i].loanpayment_date)
+    const paymentDate = moment(rows[i].paymentDate)
 
     // ensure amount due <= amount paid AND payment date <= current date AND payment is not a waived payment
     if (rows[i].loanpayment_due <= rows[i].loanpayment_amount
@@ -126,10 +130,11 @@ const getPayoffData = ( rows ) => {
       break
     }
   }
+
   return {
     balanceFromLastPayment,
-    lastPaymentDate,
-    interestFromNextPayment
+    interestFromNextPayment,
+    lastPaymentDate   : lastPaymentDate.format('YYYY-MM-DD'),
   }
 }
 
