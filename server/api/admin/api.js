@@ -17,6 +17,7 @@ import {deletePaymentQuery, runParameterizedQuery} from "./database-proxy";
 import {fetchSinglePayment} from "./fetchSinglePayment";
 import {editPayment} from "./editPayment";
 import {waivePayment} from "./waivePayment";
+import {deletePayment} from "./deletePayment";
 
 const debug = _debug('app:server:admin:api')
 
@@ -220,17 +221,9 @@ export function init(server) {
 
   server.post('/api/admin/deletePayment', (req, res) => {
     (async () => {
-      debug('hitting deletePayment')
+      debug(`hitting deletePayment payment id: ${req.body.paymentId}`)
       try {
-        const query = `
-          DELETE FROM tbl_loanpayments
-          WHERE loanpayment_id = ?
-        `
-        const results = await runParameterizedQuery({
-          actionName      : 'deletePaymentQuery',
-          paramValueList  : [req.body.paymentId],
-          query,
-        })
+        const results = await deletePayment(req.body.paymentId)
         res.format({
           'application/json': () => {
             res.send({

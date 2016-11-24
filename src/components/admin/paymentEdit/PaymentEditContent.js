@@ -31,6 +31,7 @@ export default class PaymentEditContent extends Component {
 
       editPayment({
         paymentId             : payment.paymentId,
+        loanId                : payment.loanId,
         principal             : payment.principal,
         interest              : payment.interest,
         currPaymentScheduled  : payment.scheduled,
