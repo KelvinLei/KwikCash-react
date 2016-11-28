@@ -25,6 +25,7 @@ export default class PaymentEditContent extends Component {
       const amountDue = $('#input-amountDue').val()
       const amountPaid = $('#input-amountPaid').val()
       const paymentDate = $('#input-paymentDate').val()
+      const postponeDate = $('#input-postponeDate').val()
       // const principal = $('#input-principal').val()
       // const interest = $('#input-interest').val()
       const rate = $('#input-rate').val()
@@ -40,6 +41,7 @@ export default class PaymentEditContent extends Component {
         amountDue,
         amountPaid,
         paymentDate,
+        postponeDate,
         rate,
       })
     }
@@ -146,6 +148,36 @@ export default class PaymentEditContent extends Component {
                       <Row>
                         { paymentScheduledWidget }
                       </Row>
+                    </Col>
+                  </div>
+                </fieldset>
+
+                <fieldset>
+                  <div className="form-group">
+                    <label className="col-lg-2 control-label">Waive and Create</label>
+                    <Col lg={ 8 }>
+                      <Row>
+                        <Col lg={ 3 } >
+                          <label key="labelWaiveAndCreate" className="radio-inline c-radio">
+                            <input id="paymentScheduled-WaiveAndCreate" type="radio"
+                                   defaultValue="POSTPONE"
+                                   name="paymentScheduledRadio"
+                            />
+                            <em className="fa fa-circle"/>Yes
+                          </label>
+                        </Col>
+
+                        <Col lg={ 8 } >
+                          <Row>
+                            <label className="col-lg-3 control-label">Postpone Date</label>
+                            <Col lg={ 5 }>
+                              <input type="text" id="input-postponeDate" className="form-control"/>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
+                      <span className="help-block m-b-none">Defer the selected payment to a provided date</span>
+                      <span className="help-block m-b-none">Selected payment will be waived and a new payment with the same interest/principal will be created</span>
                     </Col>
                   </div>
                 </fieldset>

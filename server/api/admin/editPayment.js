@@ -17,24 +17,11 @@ export async function editPayment(editPaymentContext) {
     amountDue,
     amountPaid,
     paymentDate,
+    postponeDate,
     rate,
     principal,
     interest,
   } = editPaymentContext
-
-  const query = `
-    UPDATE tbl_loanpayments
-    SET
-    loanpayment_date = ?,
-    loanpayment_due = ?,
-    loanpayment_amount = ?,
-    loanpayment_principal = ?,
-    loanpayment_interest = ?,
-    loanpayment_scheduled = ?,
-    loanpayment_rate = ?,
-    loanpayment_type = ?
-    WHERE loanpayment_id = ?
-  `
 
   // when unwaive a payment, shift future payments back up by one pay cycle
   // because when we waive a payment, we shift future payments back down by one pay cycle
@@ -52,8 +39,31 @@ export async function editPayment(editPaymentContext) {
       paymentDate,
     })
   }
+  else if (paymentScheduled == 'POSTPONE') {
+    // check if passed in postpone date is valid
+    const validatedPostponeDate = postponeDate || paymentDate
+    // create a new payment for the deferred date
+    await createPostponedPayment(paymentId, validatedPostponeDate)
+
+    // waive the payment
+    await waivePayment(paymentId)
+  }
   // for all cases that are not unwaive
   else {
+    const query = `
+      UPDATE tbl_loanpayments
+      SET
+      loanpayment_date = ?,
+      loanpayment_due = ?,
+      loanpayment_amount = ?,
+      loanpayment_principal = ?,
+      loanpayment_interest = ?,
+      loanpayment_scheduled = ?,
+      loanpayment_rate = ?,
+      loanpayment_type = ?
+      WHERE loanpayment_id = ?
+    `
+
     // update current payment
     await runParameterizedQuery({
       actionName      : 'editPayment',
@@ -61,4 +71,41 @@ export async function editPayment(editPaymentContext) {
       query,
     })
   }
+}
+
+async function waivePayment(paymentId) {
+  const query = `
+      UPDATE tbl_loanpayments
+      SET
+      loanpayment_due = 0,
+      loanpayment_scheduled = 'W'
+      WHERE loanpayment_id = ?
+  `
+  await runParameterizedQuery({
+    actionName      : 'waivePayment',
+    paramValueList  : [paymentId],
+    query,
+  })
+}
+
+async function createPostponedPayment(paymentId, postponeDate) {
+
+  const query = `
+          INSERT INTO tbl_loanpayments (
+            loanpayment_loan, loanpayment_date, loanpayment_due, loanpayment_amount,
+            loanpayment_scheduled, loanpayment_interest, loanpayment_principal,
+            loanpayment_rate, loanpayment_paymentschedule, loanpayment_type
+          )
+          SELECT
+            loanpayment_loan, ?, loanpayment_due, 0,
+            loanpayment_scheduled, loanpayment_interest, loanpayment_principal,
+            loanpayment_rate, loanpayment_paymentschedule, loanpayment_type
+          FROM tbl_loanpayments
+          WHERE loanpayment_id = ?
+        `
+  await runParameterizedQuery({
+    actionName      : 'waiveActualPayment',
+    paramValueList  : [postponeDate, paymentId],
+    query,
+  })
 }
