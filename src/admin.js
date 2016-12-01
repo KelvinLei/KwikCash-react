@@ -66,7 +66,9 @@ ReactDOM.render(
 
         {/* if no loadId is specified, redirect back to loan selection page */}
         <Route path="/admin/exportLoans" component={ExportLoans}/>
+        <Route path="/admin/members/:memberName" component={MembersAdmin}/>
         <Route path="/admin/members" component={MembersAdmin}/>
+
         <Route path="/admin/members/memberLoans/:memberId" component={MemberLoans}/>
         <Route path="/admin/members/loanSummary/:loanId" component={LoanSummaryAdmin}/>
         <Route path="/admin/members/loanEdit/:loanId" component={LoanEdit}/>

@@ -1,12 +1,14 @@
 import React from 'react'
+import { browserHistory } from 'react-router'
 import { Row, Col, Panel, Button } from 'react-bootstrap';
 
-export const MembersFilter = ( {fetchMembers} ) => {
+export const MembersFilter = ( {memberName, fetchMembers} ) => {
 
   const filterMembersOnClick = (e) => {
     e.preventDefault()
     const memberName = $('#memberNameInput').val()
-    fetchMembers(memberName)
+    // fetchMembers(memberName)
+    browserHistory.push('/admin/members/' + memberName)
   }
 
   return (
@@ -16,7 +18,7 @@ export const MembersFilter = ( {fetchMembers} ) => {
           <div className="form-group">
             <label className="col-lg-2 control-label">Member name</label>
             <Col lg={ 10 }>
-              <input id='memberNameInput' type="text" placeholder="enter member's name..." className="form-control" />
+              <input id='memberNameInput' type="text" placeholder="enter member's name..." defaultValue={memberName} className="form-control" />
               <span className="help-block m-b-none">Fetch 50 latest members if not provided</span>
             </Col>
           </div>

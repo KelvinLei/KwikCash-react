@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
+import { router } from 'react-router'
 import ContentWrapper from '../../themeJsx/Layout/ContentWrapper';
 import { fetchMembersAction } from '../../redux/actions/admin/fetchMembers'
 import MembersDataTable from "../../components/admin/members/MembersDataTable";
@@ -15,7 +16,16 @@ class MembersAdmin extends Component {
 
   componentDidMount() {
     const { fetchMembers } = this.props
-    fetchMembers("")
+    const { memberName } = this.props.params
+
+    fetchMembers(memberName || '')
+  }
+
+  componentWillUpdate(nextProps, nextState) {
+    if (this.props.params.memberName != nextProps.params.memberName) {
+      const { fetchMembers } = this.props
+      fetchMembers(nextProps.params.memberName)
+    }
   }
 
   render() {
@@ -23,7 +33,7 @@ class MembersAdmin extends Component {
             isFetchFailed,
             members,
             fetchMembers } = this.props;
-
+    const { memberName } = this.props.params
 
     let membersDataTable
     if (isFetching) {
@@ -40,7 +50,7 @@ class MembersAdmin extends Component {
       <ContentWrapper>
         <Row>
           <Col md={ 12 }>
-            <MembersFilter fetchMembers={fetchMembers}/>
+            <MembersFilter memberName={memberName} fetchMembers={fetchMembers} />
           </Col>
         </Row>
 
