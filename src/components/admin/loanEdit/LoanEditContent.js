@@ -38,6 +38,9 @@ export default class LoanEditContent extends Component {
       const loanRate = $('#input-loanRate').val()
       const loanTerm = $('#input-loanTerm').val()
 
+      const sendPayoffEmail = $('#checkboxPayoffEmail').is(":checked")
+      const sendPaymentTerminationReminder = $('#checkboxPaymentTerminationEmail').is(":checked")
+
       // FundEditWidget
       const clientFundAmount = $('#inputClientFundAmount').val()
       const fundMethodRadio = $('input[name=fundMethodRadio]:checked').val()
@@ -98,6 +101,8 @@ export default class LoanEditContent extends Component {
         recoveryBalance,
         recoveryDate,
         recoveryEndDate,
+        sendPayoffEmail,
+        sendPaymentTerminationReminder,
       })
     }
 
@@ -154,7 +159,7 @@ export default class LoanEditContent extends Component {
 const LoanEditWidget = ( {loanLevelData} ) => {
 
   const filterLoanStatus = ( status ) => {
-    return status != 'F' // to change loan to Plan, use payment schedule change page 
+    return status != 'F' // to change loan to Plan, use payment schedule change page
   }
 
   const loanStatusRadioButtons =
@@ -239,6 +244,29 @@ const LoanEditWidget = ( {loanLevelData} ) => {
               <Row>
                 { loanStatusRadioButtons }
               </Row>
+
+              <Row>
+                <Col lg={ 12 }>
+                  <div className="checkbox c-checkbox needsclick">
+                    <label className="needsclick">
+                      <input id='checkboxPayoffEmail' type="checkbox" className="needsclick"/>
+                      <em className="fa fa-check"/>Send payoff confirmation email to client
+                    </label>
+                  </div>
+                </Col>
+              </Row>
+
+              <Row>
+                <Col lg={ 12 }>
+                  <div className="checkbox c-checkbox needsclick">
+                    <label className="needsclick">
+                      <input id='checkboxPaymentTerminationEmail' type="checkbox" className="needsclick"/>
+                      <em className="fa fa-check"/>Send ACH payment termination reminder email to staff
+                    </label>
+                  </div>
+                </Col>
+              </Row>
+
               <span className="help-block m-b-none">A payoff payment will be auto-created when change to paid or chargedOff</span>
               <span className="help-block m-b-none">To change loans to plan, use paymentSchedule change page</span>
             </Col>
