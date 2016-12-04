@@ -1,7 +1,43 @@
 import _debug from 'debug'
-import { sendEmail } from './shared/EmailExecutor'
-import { getUserDataAsync } from './get-user-data'
+import { sendEmail } from './EmailExecutor'
+import { getUserDataAsync } from '../members/get-user-data'
+import {getPayoffConfirmationEmail} from "../admin/EmailTemplateProvider";
+import {getPaymentTerminationEmail} from "../admin/EmailTemplateProvider";
+const debug = _debug('app:server:admin:email-proxy')
 
+const INFO_EMAIL = 'info@kwikcashonline.com'
+const TODD_EMAIL = 'todd@kwikcashonline.com'
+const THALIA_EMAIL = 'thalia@kwikcashonline.com'
+const ANA_EMAIL = 'ana@kwikcashonline.com'
+const FRANKY_EMAIL = 'franky@kwikcashonline.com'
+const JOSIE_EMAIL = 'josie@kwikcashonline.com'
+const NATALIA_EMAIL = 'Natalia@kwikcashonline.com'
+const KELVIN_EMAIL = 'kelvin.j.lei@gmail.com'
+const TEXT = 'Text'
+const HTML = 'Html'
+
+export async function sendPayoffConfirmationEmail({loanId}) {
+  const { userEmail, subject, message } = await getPayoffConfirmationEmail({loanId})
+
+  debug(`userEmail: ${userEmail}`)
+  return await sendEmail({
+    subject,
+    message,
+    messageType   : HTML,
+    destinations  : [userEmail],
+  })
+}
+
+export async function sendPaymentTerminationReminderEmail({loanId}) {
+  const { subject, message } = await getPaymentTerminationEmail({loanId})
+
+  return await sendEmail({
+    subject,
+    message,
+    messageType   : HTML,
+    destinations  : [INFO_EMAIL, FRANKY_EMAIL, JOSIE_EMAIL, NATALIA_EMAIL, THALIA_EMAIL],
+  })
+}
 export async function sendRefinanceEmail({user, loanInput}) {
   const subject = `[System] Customer request for refinance loan id ${loanInput.loanId}`
   const userData = await getUserDataAsync(user.id);
@@ -25,8 +61,8 @@ export async function sendRefinanceEmail({user, loanInput}) {
   return await sendEmail({
     subject,
     message,
-    sendToThalia        : true,
-    includeToddAndAna   : true,
+    messageType   : TEXT,
+    destinations : [INFO_EMAIL, THALIA_EMAIL, TODD_EMAIL, ANA_EMAIL],
   })
 }
 
@@ -53,7 +89,8 @@ export async function sendReferalEmail({user, referalEmail, referalName}) {
   return await sendEmail({
     subject,
     message,
-    sendToThalia: false
+    messageType   : TEXT,
+    destinations : [INFO_EMAIL],
   })
 }
 
@@ -75,7 +112,8 @@ export async function sendPayoffEmail({user, loanId}) {
   return await sendEmail({
     subject,
     message,
-    sendToThalia: true
+    messageType   : TEXT,
+    destinations : [INFO_EMAIL, THALIA_EMAIL],
   })
 }
 
@@ -97,7 +135,7 @@ export async function sendReapplyEmail({ user, applicationId}) {
   return await sendEmail({
     subject,
     message,
-    sendToThalia        : true,
-    includeToddAndAna   : true,
+    messageType   : TEXT,
+    destinations : [INFO_EMAIL, THALIA_EMAIL, TODD_EMAIL, ANA_EMAIL],
   })
 }

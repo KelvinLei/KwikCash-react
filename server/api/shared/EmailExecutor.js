@@ -1,4 +1,4 @@
-import config from '../../../config'
+import config from '../../config'
 import _debug from 'debug'
 
 const debug = _debug('app:server:shared:EmailExecutor')
@@ -9,33 +9,34 @@ const ses = new aws.SES({apiVersion: '2010-12-01'});
 export const sendEmail = ({
   subject,
   message,
-  sendToThalia = false,
-  includeToddAndAna = false,
+  messageType,
+  destinations,
 }) => {
   return new Promise((resolve, reject) => {
     debug("sending email");
     // const sendToAnddress = ['kelvin.j.lei@gmail.com']
-    const sendToAnddress = ['info@kwikcashonline.com']
-    if (sendToThalia) {
-      sendToAnddress.push('thalia@kwikcashonline.com')
+
+    const body = messageType == 'Text' ?
+    {
+      Text: {
+        Data: message
+      }
     }
-    if (includeToddAndAna) {
-      sendToAnddress.push('todd@kwikcashonline.com')
-      sendToAnddress.push('ana@kwikcashonline.com')
+      :
+    {
+      Html: {
+        Data: message
+      }
     }
 
     ses.sendEmail({
         Source: 'info@kwikcashonline.com',
-        Destination: { ToAddresses: sendToAnddress },
+        Destination: { ToAddresses: destinations },
         Message: {
           Subject: {
             Data: (config.env === 'development' || config.env ===  'test') ? `[Test] ${subject}` : subject,
           },
-          Body: {
-            Text: {
-              Data: message
-            }
-          }
+          Body: body
         }
       },
       (err, data) => {

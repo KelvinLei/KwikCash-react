@@ -353,59 +353,6 @@ export function fetchMemberProfileQuery(memberId) {
   });
 }
 
-export function editLoanQuery(editLoanContext) {
-  debug('editLoanQuery ' + JSON.stringify(editLoanContext));
-  const {
-    loanId, loanStatus, repeatLoan, paymentSchedule, loanFundAmount, firstPaymentDate,
-    loanFundDate, loanNoteDate, refiDate, loanRate, loanTerm, clientFundAmount, fundMethod,
-    isJudgement, defaultDate, lateDate, manualDate, isRecovery, recoveryBalance, recoveryDate,
-    recoveryEndDate, payoffDate
-  } = editLoanContext
-
-  return new Promise((resolve, reject) => {
-    pool.getConnection((err, connection) => {
-      const query = `
-        UPDATE tbl_loans
-        SET
-        loan_status = '${loanStatus}', 
-        loan_repeat = '${repeatLoan}', 
-        loan_paymentschedule = '${paymentSchedule}', 
-        loan_payoffdate = '${payoffDate}',
-        loan_amount = ${loanFundAmount},
-        loan_paymentdate = '${firstPaymentDate}',
-        loan_funddate = '${loanFundDate}',
-        loan_notedate = '${loanNoteDate}',
-        loan_refidate = '${refiDate}',
-        loan_rate = ${loanRate},
-        loan_term = ${loanTerm},
-        loan_fundamount = ${clientFundAmount},
-        loan_fundmethod = '${fundMethod}',
-        loan_judgement = '${isJudgement}',
-        loan_defaultdate = '${defaultDate}',
-        loan_latedate = '${lateDate}',
-        loan_manualdate = '${manualDate}',
-        loan_recovery = '${isRecovery}',
-        loan_recoverybalance = ${recoveryBalance},
-        loan_recoverydate = '${recoveryDate}',
-        loan_recoverystop = '${recoveryEndDate}'
-        WHERE loan_id = ${loanId}
-      `
-      debug(`editLoanQuery query ${query}`)
-      connection.query(query,
-        (err, rows) => {
-          if (rows) {
-            resolve(rows);
-          } else {
-            debug('couldnt editLoanQuery')
-            reject(new Error("couldnt editLoanQuery"));
-          }
-        })
-      connection.release()
-    })
-  });
-}
-
-
 export function updateLoanChangesQuery(editLoanContext) {
   debug('updateLoanChangesQuery ' + JSON.stringify(editLoanContext));
   const {
@@ -472,34 +419,6 @@ export function createPaymentQuery(createPayoffPaymentContext) {
           } else {
             debug(`couldnt createPaymentQuery err ${err}`)
             reject(new Error("couldnt createPaymentQuery"));
-          }
-        })
-      connection.release()
-    })
-  });
-}
-
-export function waiveFuturePaymentsQuery(loanId, date) {
-  debug(`waivePaymentsQuery loanId ${loanId} date ${date}`);
-
-  const query = `
-    UPDATE tbl_loanpayments
-    SET 
-    loanpayment_due = 0,
-    loanpayment_amount = 0,
-    loanpayment_interest = 0,
-    loanpayment_principal = 0
-    WHERE loanpayment_loan = ? AND loanpayment_date > ?
-  `
-  return new Promise((resolve, reject) => {
-    pool.getConnection((err, connection) => {
-      connection.query(query, [loanId, date],
-        (err, rows) => {
-          if (rows) {
-            resolve(rows);
-          } else {
-            debug(`couldnt waiveFuturePaymentsQuery err ${err}`)
-            reject(new Error("couldnt waiveFuturePaymentsQuery"));
           }
         })
       connection.release()

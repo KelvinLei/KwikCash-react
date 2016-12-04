@@ -158,14 +158,11 @@ export default class LoanEditContent extends Component {
 
 const LoanEditWidget = ( {loanLevelData} ) => {
 
-  const filterLoanStatus = ( status ) => {
-    return status != 'F' // to change loan to Plan, use payment schedule change page
-  }
-
   const loanStatusRadioButtons =
-    Object.keys(LOAN_STATUS_MAP).filter(filterLoanStatus).map( (statusCode, i) => {
+    Object.keys(LOAN_STATUS_MAP).map( (statusCode, i) => {
       const defaultChecked = statusCode == loanLevelData.loanCode ? 'defaultChecked' : ''
       const id = "loanStatus-" + statusCode
+      const disabled = statusCode == 'F' ? 'disabled' : ''
       return (
         <Col lg={ 6 } key={i} >
           <label key={"label"+id} className="radio-inline c-radio">
@@ -173,6 +170,7 @@ const LoanEditWidget = ( {loanLevelData} ) => {
                    defaultValue={statusCode}
                    name="loanStatusRadio"
                    defaultChecked={defaultChecked}
+                   disabled={disabled}
             />
             <em className="fa fa-circle"/>{LOAN_STATUS_MAP[statusCode]}
           </label>

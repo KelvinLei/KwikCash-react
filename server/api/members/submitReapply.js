@@ -4,7 +4,7 @@ import {decrypt} from "../shared/decrypter";
 import {authenticateUserById} from "./authenticate";
 import {encrypt} from "../shared/decrypter";
 import {salted_hash, salted_compare} from "../shared/password";
-import {sendReapplyEmail} from "./email-proxy";
+import {sendReapplyEmail} from "../shared/email-proxy";
 
 const debug = _debug('app:server:api:submitReapply')
 
