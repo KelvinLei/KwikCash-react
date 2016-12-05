@@ -132,3 +132,7 @@ export const fetchSinglePayment = (paymentId) => {
 export const editPayment = (editPaymentContext) => {
   return authenticatedPost('/api/admin/editPayment', {editPaymentContext})
 }
+
+export const fetchLoanStats = (dateRange) => {
+  return authenticatedPost('/api/admin/fetchLoanStats', {dateRange})
+}

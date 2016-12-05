@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import Sidebar from '../../themeJsx/Layout/Sidebar'
+import Sidebar from '../../themeJsx/Layout/SidebarAdmin'
 
 export default class SidebarAdmin extends Component {
   render() {
@@ -25,7 +25,23 @@ export default class SidebarAdmin extends Component {
         toLink: '/admin/members',
         icon: "icon-user",
         className: currentPage.includes("adminmembers") ? "active" : ""
+      }
+    ]
+
+    const statsReportsTabList = [
+      { tabName: 'Loan Stats Report',
+        toLink: '/admin/loanStatsReport',
+        icon: "icon-chart",
+        className: currentPage.includes("loanStatsReport") ? "active" : ""
       },
+      { tabName: 'A/R Report',
+        toLink: '/admin/arReport',
+        icon: "icon-graph",
+        className: currentPage.includes("arReport") ? "active" : ""
+      }
+    ]
+
+    const moreTabList = [
       { tabName: 'Logout',
         toLink: '/admin/logout',
         icon: "icon-logout",
@@ -36,7 +52,11 @@ export default class SidebarAdmin extends Component {
     return (
       <aside className='aside'>
         { /* invoke Sidebar from theme pack */ }
-        <Sidebar tabList={tabList} onClickSidebarTab={this.props.handleSelectedNavTab}/>
+        <Sidebar tabList={tabList}
+                 statsReportsTabList={statsReportsTabList}
+                 moreTabList={moreTabList}
+                 onClickSidebarTab={this.props.handleSelectedNavTab}
+        />
       </aside>
     )
   }

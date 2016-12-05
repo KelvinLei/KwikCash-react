@@ -39,6 +39,9 @@ import {
 import {
   EDIT_PAYMENT_REQUEST, EDIT_PAYMENT_SUCCESS, EDIT_PAYMENT_FAILURE, RESET_EDIT_PAYMENT_STATE
 } from "../../actions/admin/editPayment";
+import {
+  FETCH_LOAN_STATS_FAILURE, FETCH_LOAN_STATS_REQUEST, FETCH_LOAN_STATS_SUCCESS
+} from "../../actions/admin/fetchLoanStats";
 
 const loanListState = (state = {
   isFetching: false,
@@ -499,6 +502,39 @@ const editPaymentState = (state = {
   }
 }
 
+const loanStatsDataState = (state = {
+  isFetching: false,
+  isFailed: false,
+  loanStats: [],
+}, action) => {
+  switch (action.type) {
+    case FETCH_LOAN_STATS_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+        loanStats: [],
+      }
+    case FETCH_LOAN_STATS_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        loanStats: action.loanStats,
+      }
+    case FETCH_LOAN_STATS_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+        loanStats: [],
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   loanListState,
   exportLoansState,
@@ -513,4 +549,5 @@ export default {
   waivePaymentState,
   fetchSinglePaymentState,
   editPaymentState,
+  loanStatsDataState,
 }

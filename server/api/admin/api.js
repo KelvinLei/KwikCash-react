@@ -18,6 +18,7 @@ import {fetchSinglePayment} from "./fetchSinglePayment";
 import {editPayment} from "./editPayment";
 import {waivePayment} from "./waivePayment";
 import {deletePayment} from "./deletePayment";
+import {fetchLoanStats} from "./fetchLoanStats";
 
 const debug = _debug('app:server:admin:api')
 
@@ -291,6 +292,25 @@ export function init(server) {
       }
       catch (err) {
         debug(`editPayment error. ${err}`)
+      }
+    })();
+  });
+
+  server.post('/api/admin/fetchLoanStats', (req, res) => {
+    (async () => {
+      debug('hitting fetchLoanStats')
+      try {
+        const loanStats = await fetchLoanStats(req.body.dateRange);
+        res.format({
+          'application/json': () => {
+            res.send({
+              loanStats
+            });
+          }
+        });
+      }
+      catch (err) {
+        debug(`fetchLoanStats error. ${err}`)
       }
     })();
   });
