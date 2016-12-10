@@ -63,12 +63,12 @@ export async function editLoan(editLoanContext) {
 
     // check whether to send payoff confirmation email to client
     if (sendPayoffEmail == true) {
-      // await sendPayoffConfirmationEmail({loanId})
+      await sendPayoffConfirmationEmail({loanId})
     }
 
     // check whether to send payment termination reminder email to staff
     if (sendPaymentTerminationReminder == true) {
-      // await sendPaymentTerminationReminderEmail({loanId})
+      await sendPaymentTerminationReminderEmail({loanId})
     }
   }
   // when mark a loan as Charged Off the first time
