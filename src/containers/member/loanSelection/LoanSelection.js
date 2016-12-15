@@ -6,6 +6,8 @@ import {fetchGetUserDataAction} from "../../../redux/actions/member/fetchUserDat
 
 class LoanSelection extends Component {
 
+  UNFUNDED_STATES = new Set(['NM', 'SC']);
+
   constructor(props) {
     super(props)
   }
@@ -16,10 +18,28 @@ class LoanSelection extends Component {
     fetchUserData()
   }
 
+  /**
+   * eligible to reapply only if user is in funded states and all loans satifify reapply
+   */
+  isEligibleToReapply(loanList, userState) {
+    if (this.UNFUNDED_STATES.has(userState)) {
+      return false
+    }
+
+    return loanList.reduce( (prevData, currLoan) => {
+      return prevData && currLoan.canReapply
+    }, true)
+  }
+
   render() {
     const { isFetching, fetchLoansFailed, loans, userDataState } = this.props;
 
-    const firstName = userDataState.isFetching || userDataState.isFailed ? '' : userDataState.userData.firstName
+    let canReapply = false
+    let firstName = ''
+    if (!userDataState.isFetching && !userDataState.isFailed) {
+      firstName = userDataState.userData.firstName
+      canReapply = this.isEligibleToReapply(loans, userDataState.userData.state)
+    }
 
     return (
       <div>
@@ -27,17 +47,11 @@ class LoanSelection extends Component {
                               fetchLoansFailed={fetchLoansFailed}
                               firstName={firstName}
                               loanList={loans}
+                              canReapply={canReapply}
         />
       </div>
     )
   }
-}
-
-LoanSelection.propTypes = {
-  isFetching: PropTypes.bool.isRequired,
-  fetchLoansFailed: PropTypes.bool.isRequired,
-  loans: PropTypes.array.isRequired,
-  fetchLoanList: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = dispatch => {

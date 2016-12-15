@@ -13,7 +13,8 @@ export const LoanSelectionContent = ({
   isFetching,
   fetchLoansFailed,
   firstName,
-  loanList
+  loanList,
+  canReapply,
 }) => {
   // display different components based on the status of getLoanList api call
   let displayContent
@@ -24,7 +25,7 @@ export const LoanSelectionContent = ({
     displayContent = <FailureWidget/>
   }
   else {
-    displayContent = <LoanSelectionWidget loanList={loanList}/>
+    displayContent = <LoanSelectionWidget loanList={loanList} canReapply={canReapply}/>
   }
 
   return (
@@ -49,7 +50,10 @@ export const LoanSelectionContent = ({
 /*
  Renders the loan selection widget if loan list data is available
  */
-const LoanSelectionWidget = ({loanList}) => {
+const LoanSelectionWidget = ({
+  loanList,
+  canReapply,
+}) => {
   let hasLatePayment = false
   const loanListDisplay = loanList.map( loan => {
     const { loanId, loanNumber, loanStatus, loanCode, balance, loanRate, loanTerm } = loan
@@ -72,24 +76,12 @@ const LoanSelectionWidget = ({loanList}) => {
     )
   })
 
-  // eligible to reapply only if all loans satifify reapply
-  const canReapply = loanList.reduce( (prevData, currLoan) => {
-    return prevData && currLoan.canReapply
-  }, true)
-
   const showReapplyModal = () => {
     swal({
       title: "Re-apply request",
       text: "Thank you for re-applying! We have notified our staff and will be in contact with you shortly.",
       confirmButtonText: "Yes"
     });
-  }
-
-  const reapplyOnClick = () => {
-    // sendReapplyRequest()
-    // sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
-    // showReapplyModal()
-    // window.location = "https://www.kwikcashonline.com/members/memberReApply.php"
   }
 
   return (
