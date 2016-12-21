@@ -42,6 +42,9 @@ import {
 import {
   FETCH_LOAN_STATS_FAILURE, FETCH_LOAN_STATS_REQUEST, FETCH_LOAN_STATS_SUCCESS
 } from "../../actions/admin/fetchLoanStats";
+import {
+  FETCH_AR_REPORT_FAILURE, FETCH_AR_REPORT_REQUEST, FETCH_AR_REPORT_SUCCESS
+} from "../../actions/admin/fetchARReport";
 
 const loanListState = (state = {
   isFetching: false,
@@ -535,6 +538,39 @@ const loanStatsDataState = (state = {
   }
 }
 
+const arReportState = (state = {
+  isFetching: true,
+  isFailed: false,
+  arReport: {},
+}, action) => {
+  switch (action.type) {
+    case FETCH_AR_REPORT_REQUEST:
+      return {
+        ...state,
+        isFetching: true,
+        isFailed: false,
+        arReport: {},
+      }
+    case FETCH_AR_REPORT_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: false,
+        arReport: action.arReport,
+      }
+    case FETCH_AR_REPORT_FAILURE:
+      return {
+        ...state,
+        isFetching: false,
+        isFailed: true,
+        arReport: {},
+      }
+
+    default:
+      return state
+  }
+}
+
 export default {
   loanListState,
   exportLoansState,
@@ -550,4 +586,5 @@ export default {
   fetchSinglePaymentState,
   editPaymentState,
   loanStatsDataState,
+  arReportState,
 }

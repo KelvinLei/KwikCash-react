@@ -136,3 +136,7 @@ export const editPayment = (editPaymentContext) => {
 export const fetchLoanStats = (dateRange) => {
   return authenticatedPost('/api/admin/fetchLoanStats', {dateRange})
 }
+
+export const fetchARReport = () => {
+  return authenticatedPost('/api/admin/fetchARReport', {})
+}

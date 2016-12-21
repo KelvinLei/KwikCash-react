@@ -19,6 +19,7 @@ import {editPayment} from "./editPayment";
 import {waivePayment} from "./waivePayment";
 import {deletePayment} from "./deletePayment";
 import {fetchLoanStats} from "./fetchLoanStats";
+import {fetchARReport} from "./fetchARReport";
 
 const debug = _debug('app:server:admin:api')
 
@@ -311,6 +312,25 @@ export function init(server) {
       }
       catch (err) {
         debug(`fetchLoanStats error. ${err}`)
+      }
+    })();
+  });
+
+  server.post('/api/admin/fetchARReport', (req, res) => {
+    (async () => {
+      debug('hitting fetchARReport')
+      try {
+        const arReport = await fetchARReport();
+        res.format({
+          'application/json': () => {
+            res.send({
+              arReport
+            });
+          }
+        });
+      }
+      catch (err) {
+        debug(`fetchARReport error. ${err}`)
       }
     })();
   });

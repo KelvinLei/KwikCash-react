@@ -1,4 +1,4 @@
-export default (tableDivId, sortArray, pageLength = 10, bFilter = true, innerScroll = false) => {
+export default (tableDivId, sortArray = [], pageLength = 10, bFilter = true, innerScroll = false) => {
 
   if (!$.fn.dataTable) return;
 
@@ -12,6 +12,8 @@ export default (tableDivId, sortArray, pageLength = 10, bFilter = true, innerScr
       bFilter         : bFilter,
       scrollY         : "500px",
       scrollCollapse  : true,
+      bProcessing : true,
+      bDeferRender : true,
       // Text translation options
       // Note the required keywords between underscores (e.g _MENU_)
       oLanguage: {
