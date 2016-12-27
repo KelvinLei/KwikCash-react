@@ -12,7 +12,7 @@ import {fetchLoanSummary} from "./fetchLoanSummary";
 import {fetchPayoff} from "./fetchPayoff";
 import {payoffAuthorization} from "./payoffAuthorization";
 import {fetchMemberProfile} from "./fetchMemberProfile";
-import {editLoan} from "./editLoanExecutor";
+import {editLoan} from "./editLoan";
 import {deletePaymentQuery, runParameterizedQuery} from "./database-proxy";
 import {fetchSinglePayment} from "./fetchSinglePayment";
 import {editPayment} from "./editPayment";

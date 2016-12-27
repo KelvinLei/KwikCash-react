@@ -39,6 +39,7 @@ export async function editLoan(editLoanContext) {
     defaultDate,
     sendPayoffEmail,
     sendPaymentTerminationReminder,
+    lateDate,
   } = editLoanContext
 
   // only generate payoff payment once (when the loan is marked as paid for the first time
@@ -88,6 +89,11 @@ export async function editLoan(editLoanContext) {
       principal         : payoffData.balanceFromLastPayment,
     })
     await waiveFuturePayments(loanId, defaultDate)
+  }
+  // when mark a loan as LATE, check if there's a payment due on that date
+  // if so, update amount paid to 0 for that payment
+  else if (loanStatus == 'L') {
+    await zeroAmountPaidForPayment(loanId, lateDate)
   }
 
   debug(`editLoanContext ${JSON.stringify(editLoanContext)}`)
@@ -154,6 +160,22 @@ async function editLoanLevelData(editLoanContext) {
       loanStatus, repeatLoan, paymentSchedule, payoffDate, loanFundAmount, firstPaymentDate,
       loanFundDate, loanNoteDate, refiDate, loanRate, loanTerm, clientFundAmount, fundMethod, isJudgement,
       defaultDate, lateDate, manualDate, isRecovery, recoveryBalance, recoveryDate, recoveryEndDate, loanId,
+    ],
+    query,
+  })
+}
+
+async function zeroAmountPaidForPayment(loanId, lateDate) {
+  const query = `
+    UPDATE tbl_loanpayments
+    SET loanpayment_amount = 0
+    WHERE loanpayment_loan = ? AND loanpayment_date = ?
+  `
+
+  await runParameterizedQuery({
+    actionName      : 'zeroAmountPaidForPayment',
+    paramValueList  : [
+      loanId, lateDate
     ],
     query,
   })
