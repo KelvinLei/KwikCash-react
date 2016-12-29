@@ -6,7 +6,7 @@ import {fetchGetUserDataAction} from "../../../redux/actions/member/fetchUserDat
 
 class LoanSelection extends Component {
 
-  UNFUNDED_STATES = new Set(['NM', 'SC']);
+  UNFUNDED_STATES = new Set(['NM', 'SC', 'IL', 'GA']);
 
   constructor(props) {
     super(props)
