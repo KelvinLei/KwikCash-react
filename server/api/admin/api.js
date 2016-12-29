@@ -19,7 +19,7 @@ import {editPayment} from "./editPayment";
 import {waivePayment} from "./waivePayment";
 import {deletePayment} from "./deletePayment";
 import {fetchLoanStats} from "./fetchLoanStats";
-import {fetchARReport} from "./fetchARReport";
+import {fetchARReport, exportARReport} from "./fetchARReport";
 
 const debug = _debug('app:server:admin:api')
 
@@ -112,6 +112,15 @@ export function init(server) {
     })();
   });
 
+  server.post('/api/admin/exportARReport', (req, res) => {
+    debug("calling exportARReport");
+
+    (async () => {
+      var loans = await exportARReport();
+
+      res.xls('exportARReport.xlsx', loans);
+    })();
+  });
 
   server.post('/api/admin/fetchMembers', (req, res) => {
     (async () => {

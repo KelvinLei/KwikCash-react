@@ -45,6 +45,7 @@ import {
 import {
   FETCH_AR_REPORT_FAILURE, FETCH_AR_REPORT_REQUEST, FETCH_AR_REPORT_SUCCESS
 } from "../../actions/admin/fetchARReport";
+import { List, Map } from 'immutable';
 
 const loanListState = (state = {
   isFetching: false,
@@ -541,7 +542,10 @@ const loanStatsDataState = (state = {
 const arReportState = (state = {
   isFetching: true,
   isFailed: false,
-  arReport: {},
+  arReport: {
+    applications: List([]),
+    stats: {},
+  },
 }, action) => {
   switch (action.type) {
     case FETCH_AR_REPORT_REQUEST:

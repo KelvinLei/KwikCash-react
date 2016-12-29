@@ -89,6 +89,10 @@ export const exportRepeats = () => {
   return authenticatedPost('/api/admin/exportRepeats', {}, EXCEL)
 }
 
+export const exportARReport = () => {
+  return authenticatedPost('/api/admin/exportARReport', {}, EXCEL)
+}
+
 export const fetchMembers = (memberName) => {
   return authenticatedPost('/api/admin/fetchMembers', {memberName})
 }

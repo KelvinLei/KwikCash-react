@@ -127,7 +127,7 @@ export async function fetchARReport() {
       if (daysLate < 31) {
         balance_00 = loanBalance
         stats.total_00 = (parseFloat(stats.total_00) + parseFloat(loanBalance)).toFixed(2)
-        debug(`full name: ${row.fname + ' ' + row.lname}. ID: ${row.id} loanBalance ${loanBalance} stats.total_00  ${stats.total_00}`)
+        // debug(`full name: ${row.fname + ' ' + row.lname}. ID: ${row.id} loanBalance ${loanBalance} stats.total_00  ${stats.total_00}`)
         stats.count_00++
       }
       else if (daysLate < 61) {
@@ -172,12 +172,12 @@ export async function fetchARReport() {
       id                : row.id,
       fullName          : row.fname + ' ' + row.lname,
       loanNumber        : row.loan_number,
-      lastAmount        : row.lastAmount,
+      loanBalance,
       loanFundDate      : row.loanFundDate,
       loanNoteDate      : row.loanNoteDate,
+      lastAmount        : row.lastAmount,
       lastPaymentDate   : row.lastDate,
       nextPaymentDate   : row.nextDate,
-      daysLate          : row.days,
       loanStatus        : LOAN_STATUS_MAP[loanStatusCode],
       loanStatusCode,
       balance_00,
@@ -186,7 +186,7 @@ export async function fetchARReport() {
       balance_91,
       balance_121,
       balance_151,
-      loanBalance,
+      daysLate          : row.days,
     }
   })
 
@@ -210,4 +210,32 @@ export async function fetchARReport() {
     applications,
     stats,
   }
+}
+
+export async function exportARReport() {
+  const { applications, stats } = await fetchARReport()
+  const total = {
+    fullName      : 'Total',
+    loanBalance   : stats.total_balance,
+    lastAmount    : stats.total_lastpayment,
+    balance_00    : stats.total_00,
+    balance_31    : stats.total_31,
+    balance_61    : stats.total_61,
+    balance_91    : stats.total_91,
+    balance_121   : stats.total_121,
+    balance_151   : stats.total_151,
+  }
+  const counts = {
+    fullName      : 'Count',
+    balance_00    : stats.count_00,
+    balance_31    : stats.count_31,
+    balance_61    : stats.count_61,
+    balance_91    : stats.count_91,
+    balance_121   : stats.count_121,
+    balance_151   : stats.count_151,
+  }
+  applications.push(total)
+  applications.push(counts)
+
+  return applications
 }

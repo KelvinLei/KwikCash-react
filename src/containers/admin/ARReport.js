@@ -14,6 +14,11 @@ class ARReport extends Component {
     super(props)
   }
 
+  // componentWillMount() {
+  //   const { resetARReport } = this.props
+  //   resetARReport()
+  // }
+
   componentDidMount() {
     const { fetchARReport } = this.props
     fetchARReport()
@@ -33,7 +38,7 @@ class ARReport extends Component {
       statsDisplay = <FailureWidget/>
     }
     else {
-      arReportTableDisplay = <ARReportDataTable loans={arReport.applications} />
+      arReportTableDisplay = <ARReportDataTable loans={[]} />
       statsDisplay = <ARReportContent stats={arReport.stats}/>
     }
 

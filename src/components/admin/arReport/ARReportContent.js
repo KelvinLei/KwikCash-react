@@ -1,9 +1,18 @@
 import React, { Component } from 'react'
 import { Row, Col, Panel, Table, Grid, Button } from 'react-bootstrap';
-import { Link } from 'react-router';
+import { exportARReport } from '../../../api/adminApiClient'
+import downloadjs from 'downloadjs'
 
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+const exportOnClick = () => {
+  exportARReport().then(response => {
+    downloadjs(response, "exportARReport.xlsx", "application/vnd.ms-excel")
+  }).catch(() => {
+    console.log("exportARReport failed")
+  })
 }
 
 export const ARReportContent = ({
@@ -73,7 +82,7 @@ const ARReportCounts = ({
       </Table>
 
       <div className="panel-footer text-center">
-        <Button bsClass="btn btn-oval btn-info" className="mb-sm">Export</Button>
+        <Button onClick={exportOnClick} bsClass="btn btn-oval btn-info" className="mb-sm">Export</Button>
       </div>
     </Panel>
   )

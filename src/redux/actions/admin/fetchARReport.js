@@ -5,7 +5,9 @@ export const FETCH_AR_REPORT_SUCCESS = 'FETCH_AR_REPORT_SUCCESS'
 export const FETCH_AR_REPORT_FAILURE = 'FETCH_AR_REPORT_FAILURE'
 
 export const fetchARReportAction = () => {
-  return (dispatch) => {
+  return (dispatch, getState) => {
+    const state = getState()
+
     dispatch(fetchARReportRequest())
 
     fetchARReport()
