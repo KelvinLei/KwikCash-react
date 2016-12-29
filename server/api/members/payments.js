@@ -1,8 +1,9 @@
-import { getPaymentsForLoan, getPaymentExtraQuery } from './database-proxy'
+import { getPaymentExtraQuery } from './database-proxy'
 import { PAYMENT_SCHEDULE_MAPPING } from './shared/payments-schedule-mapping'
 import _debug from 'debug'
-import {SCHEDULE_TYPE} from "../shared/loansConstants";
 import {convertDateFormat} from "../shared/dateHelper";
+import {SCHEDULE_TYPE_CLIENTS} from "../shared/loansConstants";
+import {runParameterizedQuery} from "./database-proxy";
 var moment = require('moment')
 
 const debug = _debug('app:server:api:payments')
@@ -13,8 +14,9 @@ export async function getPayments(loanId) {
 
   const payments = rows.filter(filterPayments).map((row) => {
     const paymentDate = convertDateFormat(row.loanpayment_date)
-    const scheduleType = SCHEDULE_TYPE[row.loanpayment_scheduled]
+    const scheduleType = SCHEDULE_TYPE_CLIENTS[row.loanpayment_scheduled]
     const extraAmount = calculateExtraAmount(extraRows, paymentDate, row.loanpayment_scheduled)
+
     return {
       id                : row.loanpayment_id,
       amountDue         : row.loanpayment_due,
@@ -39,16 +41,39 @@ export async function getPayments(loanId) {
   }
 }
 
+async function getPaymentsForLoan(loanId) {
+  const varQuery = ` SET @totalPrincipal:=0; `
+  await runParameterizedQuery({
+    actionName      : 'getPaymentsForLoan',
+    paramValueList  : [],
+    query           : varQuery,
+  })
+
+  const query = `
+    SELECT p.*, l.loan_status,
+      (@totalPrincipal := @totalPrincipal + p.loanpayment_principal) as principalSum
+    FROM tbl_loanpayments as p, tbl_loans as l
+    WHERE p.loanpayment_loan = ? AND l.loan_id = p.loanpayment_loan
+    ORDER BY p.loanpayment_date
+  `
+
+  return await runParameterizedQuery({
+    actionName      : 'getPaymentsForLoan',
+    paramValueList  : [loanId],
+    query,
+  })
+}
+
 /**
- * If loan is paid, we only display payments that are paid previously and the manually paid payment.
- * The ones that in the future and get cancelled (amount due set to 0) due to paying off early
- * don't need to be displayed
+ * Suppress payments that are in the future and get cancelled (amount due set to 0),
+ * Due to either paying off early, or manually making principal payments shorterning loan term
  */
 const filterPayments = ( paymentRow ) => {
   const isPaidOrDefault = paymentRow.loan_status == 'P' || paymentRow.loan_status == 'D'
+  // if principal is 0, suppress it because loan amount has been met
+  const isLoanAmountMet = paymentRow.loanpayment_principal == 0
 
-  return !(isPaidOrDefault
-            && paymentRow.loanpayment_due == 0
+  return !(paymentRow.loanpayment_due == 0
             && paymentRow.loanpayment_scheduled == 'Y')
 }
 

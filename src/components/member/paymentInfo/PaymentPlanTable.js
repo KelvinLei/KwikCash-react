@@ -13,8 +13,6 @@ export const PaymentPlanTable = ({paymentList}) => {
             paymentSchedule,
             interest } = payment
 
-    const scheduleType = scheduled == 'Y' ? 'Scheduled' : 'Manual'
-
     return (
       <PaymentPlanRow key={id}
                       index={index + 1}
@@ -22,7 +20,7 @@ export const PaymentPlanTable = ({paymentList}) => {
                       dueDate={paymentDate}
                       amountDue={amountDue}
                       amountPaid={amountPaid}
-                      scheduleType={scheduleType}
+                      scheduleType={scheduled}
                       principal={principal}
                       interest={interest}
                       paymentSchedule={paymentSchedule}
@@ -65,7 +63,7 @@ const PaymentPlanRow = ({
   interest
 }) => {
   var className = status === "Complete" ? "label label-success" : "label label-warning"
-  
+
   return (
     <tr>
       <td>{index}</td>

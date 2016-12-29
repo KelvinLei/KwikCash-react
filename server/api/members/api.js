@@ -104,7 +104,7 @@ export function init(server) {
 
     (async () => {
       var payments = await getPayments(req.body.loanId);
-      debug("payments: " + JSON.stringify(payments));
+      // debug("payments: " + JSON.stringify(payments));
       res.format({
         'application/json': () => {
           res.send(payments);

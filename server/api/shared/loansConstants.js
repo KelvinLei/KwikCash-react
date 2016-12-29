@@ -17,6 +17,16 @@ export const SCHEDULE_TYPE = {
   G: 'Garnishment',
 }
 
+export const SCHEDULE_TYPE_CLIENTS = {
+  Y: 'Scheduled',
+  N: 'Manual',
+  W: 'Waived',
+  C: 'ChargedOff',
+  I: 'Increase',
+  R: 'Recovery',
+  G: 'Garnishment',
+}
+
 export const PAYMENT_TYPE = {
   A: 'ACH',
   C: 'Check',

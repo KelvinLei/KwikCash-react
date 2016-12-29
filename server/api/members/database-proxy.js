@@ -86,32 +86,6 @@ export function getUserData(userId) {
   });
 }
 
-export function getPaymentsForLoan(loanId) {
-  debug('getPaymentsForLoan ' + loanId);
-
-  return new Promise((resolve, reject) => {
-    pool.getConnection((err, connection) => {
-      connection.query(`
-        select p.*, l.loan_status
-        from tbl_loanpayments as p, tbl_loans as l
-        where p.loanpayment_loan = ? AND l.loan_id = p.loanpayment_loan
-        order by p.loanpayment_date
-        `
-        , [loanId],
-        (err, rows) => {
-          if (rows) {
-            // debug('getPaymentsForLoan database response ' + rows)
-            resolve(rows);
-          } else {
-            debug('couldnt get loans from user')
-            reject(new Error("couldnt get loans from user"));
-          }
-      })
-      connection.release()
-    })
-  });
-}
-
 export function getPaymentExtraQuery(loanId) {
   debug('getPaymentExtraQuery ' + loanId);
 
