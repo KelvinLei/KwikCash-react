@@ -36,7 +36,7 @@ export async function getLoans(userId) {
       ORDER BY a.loan_funddate DESC
     ) AS loan_result
     LEFT JOIN tbl_loanpayments p
-    ON loan_result.loan_id = p.loanpayment_loan AND p.loanpayment_due > p.loanpayment_amount
+    ON loan_result.loan_id = p.loanpayment_loan AND p.loanpayment_scheduled != 'W' AND p.loanpayment_due > p.loanpayment_amount
     GROUP BY loan_result.loan_id
   `
 

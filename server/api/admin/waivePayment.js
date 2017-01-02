@@ -45,7 +45,7 @@ async function createWaivePayment(paymentId, paymentDate) {
           )
           SELECT
             loanpayment_loan, ?, 0, 0,
-            'W', loanpayment_interest, loanpayment_principal,
+            'W', 0, 0,
             loanpayment_rate, loanpayment_paymentschedule, loanpayment_type
           FROM tbl_loanpayments
           WHERE loanpayment_id = ?

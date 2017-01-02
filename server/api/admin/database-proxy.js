@@ -144,6 +144,7 @@ export function filterLoansQuery(filterContext) {
       .from(loanInner)
       .leftJoin('tbl_loanpayments as p', function() {
         this.on('loan_result.loan_id', '=', 'p.loanpayment_loan')
+            .andOn(queryBuilder.raw("p.loanpayment_scheduled != 'W'"))
             .andOn(queryBuilder.raw("p.loanpayment_due > p.loanpayment_amount"))
       })
       .groupBy('loan_result.loan_id').as('paymentLoans')
@@ -204,22 +205,18 @@ export function fetchLoanSummaryQuery(loanId) {
   return new Promise((resolve, reject) => {
     pool.getConnection((err, connection) => {
       const query = `
-         SELECT
-            IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', 0, COUNT(*)) as remainingPaymentsCount,
-            IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', 0, SUM(p.loanpayment_principal)) as remainingBalance,
-            IF(loan_result.loan_status = 'P' OR loan_result.loan_status = 'D', NULL, MIN(p.loanpayment_date)) as nextPaymentDate,
-            loan_result.*
-         FROM
-         (
-             SELECT m.*, l.*
-             FROM e_tbl_members m
-             JOIN tbl_loans as l
-             ON m.member_id = l.loan_member AND l.loan_id = ${loanId}
-             ORDER BY l.loan_funddate DESC
-         ) AS loan_result
-         LEFT JOIN tbl_loanpayments p
-         ON loan_result.loan_id = p.loanpayment_loan AND p.loanpayment_due > p.loanpayment_amount
-         GROUP BY loan_result.loan_id
+        SELECT
+          m.*, l.*,
+          IF(l.loan_status = 'P' OR l.loan_status = 'D', 0, COUNT(*)) as remainingPaymentsCount,
+          IF(l.loan_status = 'P' OR l.loan_status = 'D', 0, SUM(p.loanpayment_principal)) as remainingBalance,
+          IF(l.loan_status = 'P' OR l.loan_status = 'D', NULL, MIN(p.loanpayment_date)) as nextPaymentDate
+        FROM e_tbl_members m
+        JOIN tbl_loans as l
+        ON m.member_id = l.loan_member AND l.loan_id = ${loanId}
+        LEFT JOIN tbl_loanpayments p
+        ON l.loan_id = p.loanpayment_loan AND p.loanpayment_scheduled != 'W' AND p.loanpayment_due > p.loanpayment_amount
+        GROUP BY l.loan_id
+        ORDER BY l.loan_funddate DESC
       `
       debug(`calling fetchLoanSummaryQuery ${query}`)
       connection.query(query,
