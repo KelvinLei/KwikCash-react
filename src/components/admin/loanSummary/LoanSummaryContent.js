@@ -44,6 +44,7 @@ export const LoanSummaryContent = ({
       <Row>
         <Col md={ 12 } >
           <PaymentTableAdmin loanId
+                             loanLevelData={loanSummary.loanLevelData}
                              paymentLevelData={loanSummary.paymentLevelData}
                              deletePaymentState={deletePaymentState}
                              waivePaymentState={waivePaymentState}

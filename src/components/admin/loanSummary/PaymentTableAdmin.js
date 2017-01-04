@@ -4,6 +4,7 @@ import { Link } from 'react-router';
 
 export const PaymentTableAdmin = ({
   paymentLevelData,
+  loanLevelData,
   deletePaymentState,
   waivePaymentState,
   waivePayment,
@@ -13,6 +14,7 @@ export const PaymentTableAdmin = ({
     return (
       <PaymentPlanRow key={payment.id}
                       index={index + 1}
+                      loanLevelData={loanLevelData}
                       loanId={paymentLevelData.loanId}
                       payment={payment}
                       deletePaymentState={deletePaymentState}
@@ -61,6 +63,7 @@ export const PaymentTableAdmin = ({
 
 const PaymentPlanRow = ({
   index,
+  loanLevelData,
   payment,
   loanId,
   deletePaymentState,
@@ -89,10 +92,9 @@ const PaymentPlanRow = ({
 
   const waiveOnclick = () => {
     waivePayment({
-      paymentId : id,
       loanId,
-      paymentDate,
-      paymentSchedule,
+      loanStatus  : loanLevelData.loanCode,
+      payment,
     })
   }
   const waiveButtonDisabled = id == waivePaymentState.paymentId && waivePaymentState.isFetching
