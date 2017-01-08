@@ -38,7 +38,7 @@ class ARReport extends Component {
       statsDisplay = <FailureWidget/>
     }
     else {
-      arReportTableDisplay = <ARReportDataTable loans={[]} />
+      arReportTableDisplay = <ARReportDataTable loans={arReport.applications} />
       statsDisplay = <ARReportContent stats={arReport.stats}/>
     }
 
