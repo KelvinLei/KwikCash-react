@@ -5,21 +5,23 @@ import {authenticateUserById} from "./authenticate";
 import {encrypt} from "../shared/decrypter";
 import {salted_hash, salted_compare} from "../shared/password";
 import {sendReapplyEmail} from "../shared/email-proxy";
+import {fetchLoanInfoForLastApplication} from "./fetchLastApplication";
 
 const debug = _debug('app:server:api:submitReapply')
 
 export async function submitReapply({
   user, reapplyInput
 }) {
+  // gets loan info for the last loan
+  const loanInfo = await fetchLoanInfoForLastApplication(user.id)
 
+  // creates a new application
   const firstName = reapplyInput.firstName
   const middleInitial = reapplyInput.middleInitial
   const lastName = reapplyInput.lastName
   const loanAmount = reapplyInput.loanAmount
-
   const encryptedHomePhone = encrypt(reapplyInput.homePhoneNumber)
   const encryptedMobilePhone = encrypt(reapplyInput.mobilePhoneNumber)
-
   const query = `
       INSERT INTO e_applications (
       active, agent, fname, mi, lname, suffix, hphone, mphone, wphone, wphoneext, email,
@@ -56,8 +58,10 @@ export async function submitReapply({
     query,
   })
 // debug(`result ${JSON.stringify(result)}`)
+
   await sendReapplyEmail({
     user,
+    loanInfo,
     applicationId: result.insertId
   });
 

@@ -117,7 +117,7 @@ export async function sendPayoffEmail({user, loanId}) {
   })
 }
 
-export async function sendReapplyEmail({ user, applicationId}) {
+export async function sendReapplyEmail({ user, loanInfo, applicationId}) {
   const subject = `[System] Re-apply application has been submitted`
   const userData = await getUserDataAsync(user.id);
 
@@ -125,11 +125,17 @@ export async function sendReapplyEmail({ user, applicationId}) {
     Customer has submitted an application for re-apply.
 
     Infomation:
-    applicationId: ${applicationId}
+    previous loan number: ${loanInfo.loanNumber}
+    new application id: ${applicationId}
     name: ${user.name}
     username: ${user.username}
     user id: ${user.id}
     phone: ${userData.homePhone}
+    
+    bank name: ${loanInfo.bankName}  
+    bank account: ${loanInfo.bankAccount}
+    bank routering: ${loanInfo.bankRouting}
+    bank type: ${loanInfo.bankType}
   `
 
   return await sendEmail({
