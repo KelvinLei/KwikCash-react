@@ -125,18 +125,19 @@ export async function sendReapplyEmail({ user, loanInfo, applicationId}) {
     Customer has submitted an application for re-apply.
 
     Infomation:
-    previous loan number: ${loanInfo.loanNumber}
+    loan number: ${loanInfo.loanNumber}
     new application id: ${applicationId}
     name: ${user.name}
     username: ${user.username}
     user id: ${user.id}
     phone: ${userData.homePhone}
-    
-    bank name: ${loanInfo.bankName}  
-    bank account: ${loanInfo.bankAccount}
-    bank routering: ${loanInfo.bankRouting}
-    bank type: ${loanInfo.bankType}
   `
+  /*
+   bank name: ${loanInfo.bankName}
+   bank account: ${loanInfo.bankAccount}
+   bank routering: ${loanInfo.bankRouting}
+   bank type: ${loanInfo.bankType}
+   */
 
   return await sendEmail({
     subject,
