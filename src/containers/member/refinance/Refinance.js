@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import {selectRefinanceValue, enterRefinanceValue, selectUserRefinanceValue} from '../../../redux/actions/member/memberAction'
 
@@ -51,14 +51,6 @@ class Refinance extends Component {
       </div>
     )
   }
-}
-
-Refinance.propTypes = {
-  loanList: PropTypes.array.isRequired,
-  refinanceState: PropTypes.object.isRequired,
-  handleSelectRefinanceValue: PropTypes.func.isRequired,
-  handleSelectUserRefinanceValue: PropTypes.func.isRequired,
-  handleEnterUserRefinanceValue: PropTypes.func.isRequired
 }
 
 const mapDispatchToProps = (dispatch) => {

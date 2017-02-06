@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import MyProfileContent from '../../../components/member/myProfile/MyProfileContent'
 import { fetchGetUserDataAction } from '../../../redux/actions/member/fetchUserData'
@@ -28,21 +28,14 @@ class MyProfile extends Component {
   }
 }
 
-MyProfile.propTypes = {
-  isFailed: PropTypes.bool.isRequired,
-  isFetching: PropTypes.bool.isRequired,
-  userData: PropTypes.object.isRequired,
-  changePasswordState: PropTypes.object.isRequired,
-}
-
 const mapDispatchToProps = (dispatch) => {
   return {
     fetchUserData         : () => dispatch(fetchGetUserDataAction()),
-    
+
     changePasswordOnclick : (currPassword, newPassword) => {
       dispatch(changePasswordAction(currPassword, newPassword))
     },
-    
+
     resetChangePassword   : () => dispatch(changePasswordReset()),
   }
 }

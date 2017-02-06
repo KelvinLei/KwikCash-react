@@ -1,4 +1,4 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { selectPaymentStatus, selectPaymentYear } from '../../../redux/actions/member/memberAction'
 import LoanSummaryContent from '../../../components/member/loanSummary/LoanSummaryContent'
@@ -177,11 +177,6 @@ class LoanSummary extends Component {
       </div>
     )
   }
-}
-
-LoanSummary.propTypes = {
-  loans: PropTypes.array.isRequired,
-  paymentState: PropTypes.object.isRequired
 }
 
 const mapDispatchToProps = (dispatch) => {

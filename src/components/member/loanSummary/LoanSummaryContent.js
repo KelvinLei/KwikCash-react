@@ -3,16 +3,21 @@ import ContentWrapper from '../../../themeJsx/Layout/ContentWrapper';
 import { Row, Col, Panel, Button } from 'react-bootstrap';
 import { Link } from 'react-router';
 import ProgressChart from './progressChart';
+import PopoverRun from '../loanSelection/PopoverRun'
+import popoverStyles from '../loanSelection/popoverStyles.scss'
 import styles from './styles.scss'
 import { PaymentPlanContent } from '../paymentInfo/PaymentPlanContent'
 import {getClassNameForLoanStatus} from "../shared/LoanStyles";
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
+
+require('bootstrap')
 
 export default class LoanSummaryContent extends Component {
 
   componentDidMount() {
     const { completePercentage, amountPaid, amountRemaining } = this.props.paymentsProgressData
     ProgressChart(completePercentage, amountPaid, amountRemaining);
+    PopoverRun()
   }
 
   componentWillReceiveProps(nextProps) {
@@ -21,6 +26,7 @@ export default class LoanSummaryContent extends Component {
     if (completePercentage !== this.props.paymentsProgressData.completePercentage) {
       ProgressChart(completePercentage, amountPaid, amountRemaining);
     }
+    PopoverRun()
   }
 
   render() {
@@ -77,69 +83,82 @@ export default class LoanSummaryContent extends Component {
   }
 }
 
-const LoanSummaryOverview = ({loanData, shouldDisplayRefinance}) => {
+class LoanSummaryOverview  extends React.Component {
 
-  const styleClassName = getClassNameForLoanStatus(loanData.loanCode)
+  render() {
+    const {loanData, shouldDisplayRefinance} = this.props
 
-  const isLoanPaidOff = loanData.loanStatus == 'PAID'
+    const styleClassName = getClassNameForLoanStatus(loanData.loanCode)
 
-  const refinanceOption =
-    shouldDisplayRefinance &&
-    <div className="panel-footer">
-      <div className="text-bold">
-        <div className="text-left">
-          <Link to={"/myLoans/refinance/" + loanData.loanId} className="btn btn-info btn-sm">Refinance</Link>
+    const isLoanPaidOff = loanData.loanStatus == 'PAID'
+
+    const refinanceOption =
+      shouldDisplayRefinance &&
+      <div className="panel-footer">
+        <div className="text-bold">
+          <div className="text-left">
+            <Link to="/myLoans/reapply">
+              <Button bsClass="btn btn-labeled btn-success mr"
+                      data-toggle="refiPopover"
+                      title="Congratulation"
+                      data-content="You are eligible for a new loan!"
+                      bsSize="large"
+                      className="mb-sm">
+                <span className="btn-label"><i className="fa fa-check"/></span> Refinance
+              </Button>
+            </Link>
+          </div>
         </div>
       </div>
-    </div>
 
-  return (
-    <Panel className="panel-default" header="Overview">
-      <div>
-        <div className="list-group mb0">
-          <div className="list-group-item">
-            <span className={"pull-right " + styleClassName}>{loanData.loanStatus}</span>
-            <div className="text-bold">Status:</div>
-          </div>
-
-          <div className="list-group-item">
-            <span className="pull-right">${loanData.loanFundAmount}</span>
-            <div className="text-bold">Fund amount:</div>
-          </div>
-
-          <div className="list-group-item">
-            <span className="pull-right">{loanData.loanFundDate}</span>
-            <div className="text-bold">Fund date:</div>
-          </div>
-
-          <div className="list-group-item">
-            <span className="pull-right">{loanData.loanTerm}</span>
-            <div className="text-bold">Term:</div>
-          </div>
-
-          <div className="list-group-item">
-            <span className="pull-right">{loanData.loanRate}%</span>
-            <div className="text-bold">APR:</div>
-          </div>
-
-          <div className="list-group-item">
-            <span className="pull-right">${loanData.balance}</span>
-            <div className="text-bold">Current balance:</div>
-          </div>
-
-          {
-            !isLoanPaidOff &&
-            <div>
-              <div className="list-group-item">
-                <span className="pull-right">{loanData.nextPaymentDate}</span>
-                <div className="text-bold">Next payment:</div>
-              </div>
+    return (
+      <Panel className="panel-default" header="Overview">
+        <div>
+          <div className="list-group mb0">
+            <div className="list-group-item">
+              <span className={"pull-right " + styleClassName}>{loanData.loanStatus}</span>
+              <div className="text-bold">Status:</div>
             </div>
-          }
-        </div>
 
-        { refinanceOption }
-      </div>
-    </Panel>
-  )
+            <div className="list-group-item">
+              <span className="pull-right">${loanData.loanFundAmount}</span>
+              <div className="text-bold">Fund amount:</div>
+            </div>
+
+            <div className="list-group-item">
+              <span className="pull-right">{loanData.loanFundDate}</span>
+              <div className="text-bold">Fund date:</div>
+            </div>
+
+            <div className="list-group-item">
+              <span className="pull-right">{loanData.loanTerm}</span>
+              <div className="text-bold">Term:</div>
+            </div>
+
+            <div className="list-group-item">
+              <span className="pull-right">{loanData.loanRate}%</span>
+              <div className="text-bold">APR:</div>
+            </div>
+
+            <div className="list-group-item">
+              <span className="pull-right">${loanData.balance}</span>
+              <div className="text-bold">Current balance:</div>
+            </div>
+
+            {
+              !isLoanPaidOff &&
+              <div>
+                <div className="list-group-item">
+                  <span className="pull-right">{loanData.nextPaymentDate}</span>
+                  <div className="text-bold">Next payment:</div>
+                </div>
+              </div>
+            }
+          </div>
+
+          { refinanceOption }
+        </div>
+      </Panel>
+    )
+  }
 }

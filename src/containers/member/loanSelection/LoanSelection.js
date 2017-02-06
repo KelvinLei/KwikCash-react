@@ -1,6 +1,6 @@
-import React, { Component, PropTypes } from 'react'
+import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { LoanSelectionContent } from '../../../components/member/loanSelection/LoanSelectionContent'
+import LoanSelectionContent from '../../../components/member/loanSelection/LoanSelectionContent'
 import { fetchLoanListAction } from '../../../redux/actions/member/fetchLoanList'
 import {fetchGetUserDataAction} from "../../../redux/actions/member/fetchUserData";
 
@@ -40,7 +40,7 @@ class LoanSelection extends Component {
       firstName = userDataState.userData.firstName
       canReapply = this.isEligibleToReapply(loans, userDataState.userData.state)
     }
-    
+
     return (
       <div>
         <LoanSelectionContent isFetching={isFetching}
