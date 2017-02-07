@@ -49,8 +49,9 @@ export async function getLoans(userId) {
   debug(JSON.stringify(rows))
 
   const loanListResult = rows.map((row) => {
-    // eligible to re-apply if loan is paid or 12 payments left or less
-    const canReapply = row.loan_status == "P" || row.remainingPaymentsCount <= 12
+    // eligible to re-apply if loan is paid or a non-default/late loan with 12 payments left or less
+    const isDefaultOrLate = row.loan_status == "D" || row.loan_status == "L"
+    const canReapply = row.loan_status == "P" || (!isDefaultOrLate && row.remainingPaymentsCount <= 12)
 
     const nextPaymentDate = convertDateFormat(row.nextPaymentDate)
     const loanFundDate = convertDateFormat(row.loan_funddate)

@@ -77,7 +77,8 @@ export default class ReapplyContent extends Component {
                   <input type="text" id="firstNameInput" className="form-control"
                          defaultValue={lastApplication.firstName}
                          data-parsley-required="true"
-                         data-parsley-type="alphanum"
+                         data-parsley-pattern="^[a-zA-Z ]+$"
+                         data-parsley-error-message="Please enter a valid name (alphabet only)"
                   />
                 </div>
               </Col>
@@ -97,7 +98,8 @@ export default class ReapplyContent extends Component {
                   <input type="text" id="lastNameInput" className="form-control"
                          defaultValue={lastApplication.lastName}
                          data-parsley-required="true"
-                         data-parsley-type="alphanum"
+                         data-parsley-pattern="^[a-zA-Z ]+$"
+                         data-parsley-error-message="Please enter a valid name (alphabet only)"
                   />
                 </div>
               </Col>
@@ -110,8 +112,8 @@ export default class ReapplyContent extends Component {
                   <input type="tel" id="homePhoneNumber" className="form-control"
                          defaultValue={lastApplication.homePhone}
                          data-parsley-required="true"
-                         data-parsley-pattern="/^\d{3}-\d{3}-\d{4}$/"
-                         data-parsley-error-message="Format needs to be XXX-XXX-XXXX"
+                         data-parsley-pattern="/^\d{3}\d{3}\d{4}$/"
+                         data-parsley-error-message="Invalid phone number. Needs to be 10-digit"
                   />
                 </div>
               </Col>
@@ -121,8 +123,8 @@ export default class ReapplyContent extends Component {
                   <input type="tel" id="mobilePhoneNumber" className="form-control"
                          defaultValue={lastApplication.mobilePhone}
                          data-parsley-required="true"
-                         data-parsley-pattern="/^\d{3}-\d{3}-\d{4}$/"
-                         data-parsley-error-message="Format needs to be XXX-XXX-XXXX"
+                         data-parsley-pattern="/^\d{3}\d{3}\d{4}$/"
+                         data-parsley-error-message="Invalid phone number. Needs to be 10-digit"
                   />
                 </div>
               </Col>
