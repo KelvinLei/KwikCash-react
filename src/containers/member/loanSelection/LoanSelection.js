@@ -40,7 +40,7 @@ class LoanSelection extends Component {
       firstName = userDataState.userData.firstName
       canReapply = this.isEligibleToReapply(loans, userDataState.userData.state)
     }
-    if (userDataState.userData.firstName == 'Amy') { canReapply = true }
+    
     return (
       <div>
         <LoanSelectionContent isFetching={isFetching}
