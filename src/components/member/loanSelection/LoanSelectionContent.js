@@ -68,6 +68,10 @@ class LoanSelectionWidget extends React.Component {
     PopoverRun()
   }
 
+  componentWillReceiveProps(nextProps) {
+    PopoverRun()
+  }
+
   render() {
     const {loanList, canReapply} = this.props
 
