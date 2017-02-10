@@ -100,7 +100,7 @@ class LoanSummaryOverview  extends React.Component {
             <Link to="/myLoans/reapply">
               <Button bsClass="btn btn-labeled btn-success mr"
                       data-toggle="refiPopover"
-                      title="Congratulation"
+                      title="Congratulations"
                       data-content="You are eligible for a new loan!"
                       bsSize="large"
                       className="mb-sm">

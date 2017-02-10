@@ -136,8 +136,8 @@ class LoanSelectionWidget extends React.Component {
                 <Link to="/myLoans/reapply">
                     <Button bsClass="btn btn-labeled btn-success mr"
                             data-toggle="reapplyPopover"
-                            title="Congratulation"
-                            data-content="You are eligible to reapply a new loan!"
+                            title="Congratulations"
+                            data-content="You are eligible for a new loan!"
                             bsSize="large"
                             className="mb-sm">
                       <span className="btn-label"><i className="fa fa-check"/></span> Re-apply

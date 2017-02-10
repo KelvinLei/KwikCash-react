@@ -35,7 +35,7 @@ export async function fetchLoanInfoForLastApplication(userId) {
   const query = `
       SELECT e_applications.*
       FROM e_applications
-      WHERE e_applications.application_member = ?
+      WHERE e_applications.application_member = ? AND e_applications.loan_number > 0
       ORDER BY time DESC
       LIMIT 1
     `
