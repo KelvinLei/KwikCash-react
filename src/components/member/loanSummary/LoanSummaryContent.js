@@ -97,7 +97,7 @@ class LoanSummaryOverview  extends React.Component {
       <div className="panel-footer">
         <div className="text-bold">
           <div className="text-left">
-            <Link to="/myLoans/reapply">
+            <Link to={"/myLoans/refinance/" + loanData.loanId}>
               <Button bsClass="btn btn-labeled btn-success mr"
                       data-toggle="refiPopover"
                       title="Congratulations"
