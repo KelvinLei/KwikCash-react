@@ -93,8 +93,7 @@ class LoanSummary extends Component {
    */
   shouldDisplayRefinanceButton(loanData, paymentList, userData) {
     // only ACTIVE loans and CA users can refinance
-    if (!loanData || !paymentList || !userData ||
-        loanData.loanCode != 'A' || userData.state != 'CA') {
+    if (!loanData || !paymentList || !userData || loanData.loanCode != 'A' || userData.state != 'CA') {
       return false
     }
 
