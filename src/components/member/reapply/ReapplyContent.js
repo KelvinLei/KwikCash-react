@@ -5,6 +5,9 @@ import runParsley from './runParsley'
 import { sendCounterMetrics, METRICS_NAME_REAPPLY_BTN_COUNT } from "../../../api/memberApiClient";
 require('../shared/parsley.scss');
 require('parsleyjs/dist/parsley.min.js')
+require('bootstrap')
+require("sweetalert/dist/sweetalert.min")
+require("sweetalert/dist/sweetalert.css")
 
 export default class ReapplyContent extends Component {
 
@@ -40,10 +43,22 @@ export default class ReapplyContent extends Component {
       )
     })
 
-    const reapplyOnclick = (e) => {
+    const showReapplyConfirmModal = (e) => {
       e.preventDefault()
-      if (!$('form[data-parsley-validate]').parsley().isValid()) return false
+      swal({
+          title: "Re-apply confirmation",
+          text: "Please confirm of the re-apply request. A pre-approved application will be submitted and our staff will be in contat with you shortly",
+          showCancelButton: true,
+          closeOnConfirm: true,
+          animation: "slide-from-top", },
+        (isConfirm) => {
+          if (isConfirm) {
+            submitReapplyRequest()
+          }
+        });
+    }
 
+    const submitReapplyRequest = () => {
       sendCounterMetrics(METRICS_NAME_REAPPLY_BTN_COUNT, [])
 
       const firstName = $('#firstNameInput').val()
@@ -60,6 +75,13 @@ export default class ReapplyContent extends Component {
         mobilePhoneNumber,
         loanAmount,
       })
+    }
+
+    const reapplyOnclick = (e) => {
+      e.preventDefault()
+      if (!$('form[data-parsley-validate]').parsley().isValid()) return false
+
+      showReapplyConfirmModal(e)
     }
 
     return (
