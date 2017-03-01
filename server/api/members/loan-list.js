@@ -3,7 +3,9 @@ import _debug from 'debug'
 import {PAYMENT_SCHEDULE_MAPPING} from './shared/payments-schedule-mapping'
 import {LOAN_STATUS_MAP} from '../shared/loansConstants'
 import {convertDateFormat} from "../shared/dateHelper";
+import {fetchPayoffForDate} from "../admin/fetchPayoff";
 const debug = _debug('app:server:api:loan-list')
+var moment = require('moment')
 
 const formatToCurrency = (num) => {
   return Number(num).toFixed(2)
@@ -48,32 +50,37 @@ export async function getLoans(userId) {
   // var rows = await getLoanList(userId)
   debug(JSON.stringify(rows))
 
-  const loanListResult = rows.map((row) => {
-    // eligible to re-apply if loan is paid or active loan with 12 payments left or less
-    const isActiveLoan = row.loan_status == "A"
-    const canReapply = row.loan_status == "P" || (isActiveLoan && row.remainingPaymentsCount <= 12)
+  const loanListResult = await Promise.all(rows.map(async (row) => {
+      // eligible to re-apply if loan is paid or active loan with 12 payments left or less
+      const isActiveLoan = row.loan_status == "A"
+      const canReapply = row.loan_status == "P" || (isActiveLoan && row.remainingPaymentsCount <= 12)
 
-    const nextPaymentDate = convertDateFormat(row.nextPaymentDate)
-    const loanFundDate = convertDateFormat(row.loan_funddate)
-    const loanRate = row.loan_rate // .toFixed(2)
+      const payoffData = row.loan_status == "A" || row.loan_status == "M" || row.loan_status == "F" ?
+        await fetchPayoffForDate(row.loan_id, moment().format('YYYY-MM-DD')) : null
 
-    return {
-      loanId              : row.loan_id,
-      loanNumber          : row.loan_number,
-      loanFundAmount      : row.loan_amount ? formatToCurrency(row.loan_amount) : 0,
-      loanTerm            : row.loan_term,
-      loanStatus          : LOAN_STATUS_MAP[row.loan_status],
-      loanCode            : row.loan_status,
-      paymentSchedule     : PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
-      paymentScheduleCode : row.loanpayment_paymentschedule,
-      balance             : row.remainingBalance ? row.remainingBalance.toFixed(2) : 0,
-      remainingPayments   : row.remainingPaymentsCount,
-      nextPaymentDate,
-      loanFundDate,
-      loanRate,
-      canReapply
-    }
-  })
+      const nextPaymentDate = convertDateFormat(row.nextPaymentDate)
+      const loanFundDate = convertDateFormat(row.loan_funddate)
+      const loanRate = row.loan_rate // .toFixed(2)
+
+      return {
+        loanId              : row.loan_id,
+        loanNumber          : row.loan_number,
+        loanFundAmount      : row.loan_amount ? formatToCurrency(row.loan_amount) : 0,
+        loanTerm            : row.loan_term,
+        loanStatus          : LOAN_STATUS_MAP[row.loan_status],
+        loanCode            : row.loan_status,
+        paymentSchedule     : PAYMENT_SCHEDULE_MAPPING[row.loanpayment_paymentschedule],
+        paymentScheduleCode : row.loanpayment_paymentschedule,
+        balance             : row.remainingBalance ? row.remainingBalance.toFixed(2) : 0,
+        remainingPayments   : row.remainingPaymentsCount,
+        payoffAmount        : payoffData ? payoffData.payoffAmount : null,
+        nextPaymentDate,
+        loanFundDate,
+        loanRate,
+        canReapply,
+      }
+    })
+  )
 
   return loanListResult
 }

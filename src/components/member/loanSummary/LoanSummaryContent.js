@@ -59,6 +59,7 @@ export default class LoanSummaryContent extends Component {
             {
               loanData
                 ? <LoanSummaryOverview loanData={loanData}
+                                       shouldDisplayPayoff={shouldDisplayPayoff}
                                        shouldDisplayRefinance={shouldDisplayRefinance}/>
                 : <LoadingSpinner/>
             }
@@ -67,7 +68,8 @@ export default class LoanSummaryContent extends Component {
 
         <Row>
           <Col md={ 12 } >
-            <PaymentPlanContent paymentsData={paymentsData}
+            <PaymentPlanContent loanData={loanData}
+                                paymentsData={paymentsData}
                                 customerName={customerName}
                                 tabList={tabList}
                                 shouldDisplayPayoff={shouldDisplayPayoff}
@@ -83,10 +85,10 @@ export default class LoanSummaryContent extends Component {
   }
 }
 
-class LoanSummaryOverview  extends React.Component {
+class LoanSummaryOverview extends React.Component {
 
   render() {
-    const {loanData, shouldDisplayRefinance} = this.props
+    const {loanData, shouldDisplayPayoff, shouldDisplayRefinance} = this.props
 
     const styleClassName = getClassNameForLoanStatus(loanData.loanCode)
 
@@ -144,6 +146,14 @@ class LoanSummaryOverview  extends React.Component {
               <span className="pull-right">${loanData.balance}</span>
               <div className="text-bold">Current balance:</div>
             </div>
+
+            {
+              shouldDisplayPayoff &&
+              <div className="list-group-item">
+                <span className="pull-right">${loanData.payoffAmount}</span>
+                <div className="text-bold">Payoff amount:</div>
+              </div>
+            }
 
             {
               !isLoanPaidOff &&

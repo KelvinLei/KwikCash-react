@@ -10,6 +10,7 @@ require("sweetalert/dist/sweetalert.min")
 require("sweetalert/dist/sweetalert.css")
 
 export const PaymentPlanContent = ({
+  loanData,
   paymentsData,
   customerName,
   tabList,
@@ -46,7 +47,7 @@ export const PaymentPlanContent = ({
     e.preventDefault();
     swal({
         title: "Payoff request",
-        text: "Please confirm of the payoff request, and our staff will reach out to you",
+        text: `Payoff amount is $${loanData.payoffAmount}. Please confirm of the payoff request, and our staff will reach out to you`,
         showCancelButton: true,
         closeOnConfirm: false,
         animation: "slide-from-top", },
@@ -60,7 +61,7 @@ export const PaymentPlanContent = ({
         }
       });
   }
-  
+
   const payoffOnClick = (e) => {
     showPayoffModal2(e)
     sendCounterMetrics(METRICS_NAME_PAYOFF_BTN_COUNT, [])
