@@ -85,11 +85,7 @@ class LoanSummary extends Component {
   }
 
   /**
-   * For clients that have 24 payments - 12 payments remaining we can show refinance button
-   * but only clients who have 36%-59% rates and are in California
-   *
-   * For clients that have 12 payments or less remaining
-   * we can show refinance button for all rates. CA only
+   * Show refinance button if clients are in CA and have active loans with 0 - 24 remaining payments for all rate
    */
   shouldDisplayRefinanceButton(loanData, paymentList, userData) {
     // only ACTIVE loans and CA users can refinance
@@ -101,9 +97,9 @@ class LoanSummary extends Component {
     if (loanData.remainingPayments > 24) {
       return false
     }
-    else if (loanData.remainingPayments > 12) {
-      return rate > 35 && rate < 60
-    }
+    // else if (loanData.remainingPayments > 12) {
+    //   return rate > 35 && rate < 60
+    // }
     else {
       return true
     }
