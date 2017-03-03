@@ -85,7 +85,7 @@ class LoanSummary extends Component {
   }
 
   /**
-   * Show refinance button if clients are in CA and have active loans with 0 - 24 remaining payments for all rate
+   * Show refinance button if clients are in CA and have active loans with 0 - 30 remaining payments for all rate
    */
   shouldDisplayRefinanceButton(loanData, paymentList, userData) {
     // only ACTIVE loans and CA users can refinance
@@ -94,7 +94,7 @@ class LoanSummary extends Component {
     }
 
     const rate = parseInt(loanData.loanRate)
-    if (loanData.remainingPayments > 24) {
+    if (loanData.remainingPayments > 30) {
       return false
     }
     // else if (loanData.remainingPayments > 12) {
