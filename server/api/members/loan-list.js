@@ -3,7 +3,7 @@ import _debug from 'debug'
 import {PAYMENT_SCHEDULE_MAPPING} from './shared/payments-schedule-mapping'
 import {LOAN_STATUS_MAP} from '../shared/loansConstants'
 import {convertDateFormat} from "../shared/dateHelper";
-import {fetchPayoffForDate} from "../admin/fetchPayoff";
+import {fetchPayoffForDate, fetchPayoff} from "../admin/fetchPayoff";
 const debug = _debug('app:server:api:loan-list')
 var moment = require('moment')
 
@@ -55,8 +55,8 @@ export async function getLoans(userId) {
       const isActiveLoan = row.loan_status == "A"
       const canReapply = row.loan_status == "P" || (isActiveLoan && row.remainingPaymentsCount <= 12)
 
-      const payoffData = row.loan_status == "A" || row.loan_status == "M" || row.loan_status == "F" ?
-        await fetchPayoffForDate(row.loan_id, moment().format('YYYY-MM-DD')) : null
+      const payoffData = row.loan_status == "A" || row.loan_status == "M" || row.loan_status == "F" || row.loan_status == "L" ?
+        await fetchPayoff(row.loan_id) : null // moment().format('YYYY-MM-DD')
 
       const nextPaymentDate = convertDateFormat(row.nextPaymentDate)
       const loanFundDate = convertDateFormat(row.loan_funddate)
@@ -73,7 +73,7 @@ export async function getLoans(userId) {
         paymentScheduleCode : row.loanpayment_paymentschedule,
         balance             : row.remainingBalance ? row.remainingBalance.toFixed(2) : 0,
         remainingPayments   : row.remainingPaymentsCount,
-        payoffAmount        : payoffData ? payoffData.payoffAmount : null,
+        payoffData          : payoffData,
         nextPaymentDate,
         loanFundDate,
         loanRate,

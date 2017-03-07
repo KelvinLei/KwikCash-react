@@ -2,6 +2,7 @@ import React from 'react'
 import { Grid, Row, Col, Panel, Button, Dropdown, MenuItem } from 'react-bootstrap';
 
 import { PaymentPlanTable } from './PaymentPlanTable'
+import { PayoffAmountTable } from '../loanSummary/PayoffAmountTable'
 import { PaymentStatusTabs } from './PaymentStatusTabs'
 import { LoadingSpinner } from '../../../components/shared/LoadingSpinner'
 import {sendCounterMetrics, METRICS_NAME_PAYOFF_BTN_COUNT} from "../../../api/memberApiClient";
@@ -14,6 +15,7 @@ export const PaymentPlanContent = ({
   paymentsData,
   customerName,
   tabList,
+  isPayoffRequestAllowed,
   shouldDisplayPayoff,
   onClickPaymentTab,
   onClickPaymentYear,
@@ -31,23 +33,30 @@ export const PaymentPlanContent = ({
 
   // display different components based on the status of getLoanList api call
   let displayContent
-  if (isFetching) {
-    displayContent = <LoadingSpinner/>
+  // for payoff tabe
+  if (selectedPaymentStatus == 'Payoff') {
+    displayContent = <PayoffAmountTable payoffData={loanData.payoffData} />
   }
-  else if (fetchPaymentsFailed) {
-    displayContent = <FailureWidget/>
-  }
+  // for All, Paid, Pending tabs
   else {
-    displayContent = <PaymentPlanTable paymentList={paymentList}/>
+    if (isFetching) {
+      displayContent = <LoadingSpinner/>
+    }
+    else if (fetchPaymentsFailed) {
+      displayContent = <FailureWidget/>
+    }
+    else {
+      displayContent = <PaymentPlanTable paymentList={paymentList}/>
+    }
   }
 
   const handleOnClickPaymentsYear = (event) => onClickPaymentYear(event.target.text, loanId)
 
-  const showPayoffModal2 = (e) => {
+  const showPayoffRequestModal = (e) => {
     e.preventDefault();
     swal({
         title: "Payoff request",
-        text: `Payoff amount is $${loanData.payoffAmount}. Please confirm of the payoff request, and our staff will reach out to you`,
+        text: `Please confirm of the payoff request, and our staff will reach out to you`,
         showCancelButton: true,
         closeOnConfirm: false,
         animation: "slide-from-top", },
@@ -62,8 +71,24 @@ export const PaymentPlanContent = ({
       });
   }
 
+  const showContactOfficePayoffModal = (e) => {
+    e.preventDefault();
+    swal({
+        title: "Payoff request",
+        text: `Please call our office 1-800-478-6230 to payoff your loan. Thanks`,
+        showCancelButton: true,
+        closeOnConfirm: true,
+        animation: "slide-from-top",
+      });
+  }
+
   const payoffOnClick = (e) => {
-    showPayoffModal2(e)
+    if (isPayoffRequestAllowed) {
+      showPayoffRequestModal(e)
+    }
+    else {
+      showContactOfficePayoffModal(e)
+    }
     sendCounterMetrics(METRICS_NAME_PAYOFF_BTN_COUNT, [])
   }
 

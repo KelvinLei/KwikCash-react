@@ -12,15 +12,21 @@ class LoanSummary extends Component {
   constructor(props) {
     super(props)
 
-    this.tabList = ["All", "Complete", "Pending"];
+    this.tabList = ["All", "Complete", "Pending", "Payoff"];
   }
 
   componentDidMount() {
-    const { fetchPayments, fetchUserData, fetchLoanList } = this.props
+    const { loans, paymentState, fetchPayments, fetchUserData, fetchLoanList } = this.props
     const { loanId } = this.props.params
     fetchPayments(loanId)
     fetchUserData()
     fetchLoanList()
+
+    // only shows payoff tab for loans that are not paid nor charged off
+    const loanData = loans.find( (loan) => loan.loanId == loanId)
+    if (!this.shouldDisplayPayoff(loanData)) {
+      this.tabList = ["All", "Complete", "Pending"];
+    }
   }
 
   filterPaymentsForDisplay(paymentList, paymentYear, paymentStatus) {
@@ -106,11 +112,12 @@ class LoanSummary extends Component {
   }
 
   /**
-   * show payoff for MANUAL, PLAN loans for all rates.
-   * show payoff for ACTIVE loans whose rate is within 36-59%
+   * Allows payoff request
+   * for MANUAL, PLAN loans for all rates.
+   * for ACTIVE loans whose rate is within 36-59%
    * @param loanData
    */
-  shouldDisplayPayoff(loanData) {
+  isPayoffRequestAllowed(loanData) {
     if (!loanData) {
       return false
     }
@@ -121,6 +128,13 @@ class LoanSummary extends Component {
     return isManualOrPlan || isActiveAndProperRate
   }
 
+  shouldDisplayPayoff(loanData) {
+    if (!loanData) {
+      return false
+    }
+    return loanData.loanCode != 'P' && loanData.loanCode != 'D'
+  }
+
   render() {
     const { loans, paymentState, handleSelectPaymentTab, handleSelectPaymentYear, userDataState } = this.props
     const { loanId } = this.props.params
@@ -128,6 +142,7 @@ class LoanSummary extends Component {
     const loanData = loans.find( (loan) => loan.loanId == loanId)
     const loanNumber = loanData ? loanData.loanNumber : ''
 
+    const isPayoffRequestAllowed = this.isPayoffRequestAllowed(loanData)
     const shouldDisplayPayoff = this.shouldDisplayPayoff(loanData)
 
     const { paymentDataForSelectedLoan,
@@ -149,7 +164,11 @@ class LoanSummary extends Component {
       paymentList: paymentsToDisplay,
       selectedPaymentYear: paymentDataForSelectedLoan.selectedPaymentYear,
       paymentYearsList: paymentDataForSelectedLoan.paymentYearsList || [],
-      selectedPaymentStatus: paymentState.selectedPaymentStatus
+      // the following avoids errors when payoff tab is selected previously and user switches to a paid/chargedoff loan
+      // which disallows payoff tab to show
+      selectedPaymentStatus: !this.shouldDisplayPayoff(loanData) && paymentState.selectedPaymentStatus == 'Payoff'
+                             ? 'All'
+                             : paymentState.selectedPaymentStatus
     }
 
     const customerName = userDataState.isFetching || userDataState.isFailed
@@ -163,6 +182,7 @@ class LoanSummary extends Component {
                             customerName={customerName}
                             paymentsProgressData={paymentsProgressData}
                             shouldDisplayRefinance={shouldDisplayRefinance}
+                            isPayoffRequestAllowed={isPayoffRequestAllowed}
                             shouldDisplayPayoff={shouldDisplayPayoff}
                             tabList={this.tabList}
                             onClickPaymentTab={handleSelectPaymentTab}
