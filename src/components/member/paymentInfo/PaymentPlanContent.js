@@ -15,8 +15,7 @@ export const PaymentPlanContent = ({
   paymentsData,
   customerName,
   tabList,
-  isPayoffRequestAllowed,
-  shouldDisplayPayoff,
+  shouldDisplayPayoffBtn,
   onClickPaymentTab,
   onClickPaymentYear,
   onClickPayoff
@@ -83,12 +82,7 @@ export const PaymentPlanContent = ({
   }
 
   const payoffOnClick = (e) => {
-    if (isPayoffRequestAllowed) {
-      showPayoffRequestModal(e)
-    }
-    else {
-      showContactOfficePayoffModal(e)
-    }
+    showPayoffRequestModal(e)
     sendCounterMetrics(METRICS_NAME_PAYOFF_BTN_COUNT, [])
   }
 
@@ -111,7 +105,7 @@ export const PaymentPlanContent = ({
         </Col>
 
         {
-          shouldDisplayPayoff &&
+          shouldDisplayPayoffBtn &&
           <Col sm={6} xs={12}>
             <Button onClick={payoffOnClick} bsStyle="info" className="mb-sm">Payoff Loan</Button>
           </Col>

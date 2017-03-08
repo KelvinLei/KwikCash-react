@@ -35,8 +35,7 @@ export default class LoanSummaryContent extends Component {
       paymentsProgressData,
       customerName,
       shouldDisplayRefinance,
-      isPayoffRequestAllowed,
-      shouldDisplayPayoff,
+      shouldDisplayPayoffBtn,
       tabList,
       onClickPaymentTab,
       onClickPaymentYear,
@@ -72,8 +71,7 @@ export default class LoanSummaryContent extends Component {
                                 paymentsData={paymentsData}
                                 customerName={customerName}
                                 tabList={tabList}
-                                isPayoffRequestAllowed={isPayoffRequestAllowed}
-                                shouldDisplayPayoff={shouldDisplayPayoff}
+                                shouldDisplayPayoffBtn={shouldDisplayPayoffBtn}
                                 onClickPaymentTab={onClickPaymentTab}
                                 onClickPaymentYear={onClickPaymentYear}
                                 onClickPayoff={onClickPayoff}
